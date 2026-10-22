@@ -1,0 +1,195 @@
+{% extends 'instructor_panel/base_admin.html' %}
+
+{% block title %}Language Tracks CRUD — Instructor CMS{% endblock %}
+
+{% block admin_content %}
+<div class="space-y-6">
+    <div class="flex justify-between items-center pb-4 border-b border-slate-800">
+        <div>
+            <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-indigo-400"></i> Language Tracks Management (CRUD)
+            </h1>
+            <p class="text-xs text-slate-400">Create, edit, toggle active status, or delete programming tracks</p>
+        </div>
+        <button onclick="openModal('create-track-modal')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition shadow-lg shadow-indigo-600/20">
+            <i class="fa-solid fa-plus"></i> Create Track
+        </button>
+    </div>
+
+    <!-- Tracks Table -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300">
+                <thead class="bg-slate-950/80 uppercase font-semibold text-slate-400 border-b border-slate-800">
+                    <tr>
+                        <th class="p-3.5 pl-5">Order</th>
+                        <th class="p-3.5">Icon</th>
+                        <th class="p-3.5">Track Title</th>
+                        <th class="p-3.5">Slug</th>
+                        <th class="p-3.5">Difficulty</th>
+                        <th class="p-3.5">Levels</th>
+                        <th class="p-3.5">Status</th>
+                        <th class="p-3.5 pr-5 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 font-sans">
+                    {% for track in tracks %}
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="p-3.5 pl-5 font-mono text-slate-400">#{{ track.order }}</td>
+                            <td class="p-3.5 text-xl">{{ track.icon }}</td>
+                            <td class="p-3.5 font-bold text-white">{{ track.title }}</td>
+                            <td class="p-3.5 font-mono text-slate-400">{{ track.slug }}</td>
+                            <td class="p-3.5">
+                                <span class="px-2 py-0.5 rounded font-medium {% if track.difficulty == 'Beginner' %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/30{% elif track.difficulty == 'Intermediate' %}bg-blue-500/10 text-blue-400 border border-blue-500/30{% else %}bg-purple-500/10 text-purple-400 border border-purple-500/30{% endif %}">
+                                    {{ track.difficulty }}
+                                </span>
+                            </td>
+                            <td class="p-3.5 font-mono">{{ track.level_count }} Levels</td>
+                            <td class="p-3.5">
+                                <span class="px-2 py-0.5 rounded text-[10px] {% if track.is_active %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/30{% else %}bg-slate-800 text-slate-500{% endif %}">
+                                    {% if track.is_active %}Active{% else %}Inactive{% endif %}
+                                </span>
+                            </td>
+                            <td class="p-3.5 pr-5 text-right space-x-2">
+                                <button onclick="openEditTrackModal({{ track.id }}, '{{ track.title|escapejs }}', '{{ track.icon|escapejs }}', '{{ track.difficulty|escapejs }}', {{ track.order }}, {{ track.is_active|yesno:'true,false' }}, '{{ track.description|escapejs }}')" class="text-indigo-400 hover:text-indigo-300 p-1.5 rounded-lg hover:bg-slate-800" title="Edit">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this track and its levels?');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="track_id" value="{{ track.id }}">
+                                    <button type="submit" class="text-rose-400 hover:text-rose-300 p-1.5 rounded-lg hover:bg-slate-800" title="Delete">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="8" class="p-8 text-center text-slate-500">No tracks found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Create Track -->
+<div id="create-track-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+        <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+            <h3 class="text-base font-bold text-white">Create Language Track</h3>
+            <button onclick="closeModal('create-track-modal')" class="text-slate-400 hover:text-white">✕</button>
+        </div>
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Track Title *</label>
+                <input type="text" name="title" required placeholder="e.g. Rust Systems Programming" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-indigo-500">
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Icon Emoji</label>
+                    <input type="text" name="icon" value="💻" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Difficulty</label>
+                    <select name="difficulty" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2 py-2 text-white text-xs focus:outline-none focus:border-indigo-500">
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate" selected>Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Order</label>
+                    <input type="number" name="order" value="1" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-indigo-500">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Description</label>
+                <textarea name="description" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-indigo-500" placeholder="Brief curriculum scope..."></textarea>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+                <button type="button" onclick="closeModal('create-track-modal')" class="px-4 py-2 rounded-xl text-slate-400 text-xs">Cancel</button>
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2 rounded-xl text-xs transition">Save Track</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Edit Track -->
+<div id="edit-track-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+        <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+            <h3 class="text-base font-bold text-white">Edit Language Track</h3>
+            <button onclick="closeModal('edit-track-modal')" class="text-slate-400 hover:text-white">✕</button>
+        </div>
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="track_id" id="edit-track-id">
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Track Title</label>
+                <input type="text" name="title" id="edit-track-title" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-indigo-500">
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Icon Emoji</label>
+                    <input type="text" name="icon" id="edit-track-icon" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Difficulty</label>
+                    <select name="difficulty" id="edit-track-difficulty" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2 py-2 text-white text-xs focus:outline-none focus:border-indigo-500">
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Order</label>
+                    <input type="number" name="order" id="edit-track-order" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-indigo-500">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Description</label>
+                <textarea name="description" id="edit-track-description" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-indigo-500"></textarea>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <input type="checkbox" name="is_active" id="edit-track-active" class="rounded bg-slate-950 border-slate-700">
+                <label for="edit-track-active" class="text-xs text-slate-300">Active / Published</label>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+                <button type="button" onclick="closeModal('edit-track-modal')" class="px-4 py-2 rounded-xl text-slate-400 text-xs">Cancel</button>
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2 rounded-xl text-xs transition">Update Track</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openModal(id) { document.getElementById(id)?.classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id)?.classList.add('hidden'); }
+
+    function openEditTrackModal(id, title, icon, difficulty, order, isActive, desc) {
+        document.getElementById('edit-track-id').value = id;
+        document.getElementById('edit-track-title').value = title;
+        document.getElementById('edit-track-icon').value = icon;
+        document.getElementById('edit-track-difficulty').value = difficulty;
+        document.getElementById('edit-track-order').value = order;
+        document.getElementById('edit-track-active').checked = isActive;
+        document.getElementById('edit-track-description').value = desc;
+        openModal('edit-track-modal');
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'instructor_panel/base_admin.html' %}
+
+{% block title %}Lab Announcements — Instructor CMS{% endblock %}
+
+{% block admin_content %}
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-800">
+        <div>
+            <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-bullhorn text-indigo-400"></i> Lab Announcements Management (CRUD)
+            </h1>
+            <p class="text-xs text-slate-400">Broadcast banner announcements and evaluation notices across the entire portal</p>
+        </div>
+        <button onclick="openModal('create-ann-modal')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition shadow-lg shadow-indigo-600/20">
+            <i class="fa-solid fa-plus"></i> Post Announcement
+        </button>
+    </div>
+
+    <!-- Announcements Table -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300">
+                <thead class="bg-slate-950/80 uppercase font-semibold text-slate-400 border-b border-slate-800">
+                    <tr>
+                        <th class="p-3.5 pl-5">Badge</th>
+                        <th class="p-3.5">Announcement Title</th>
+                        <th class="p-3.5">Message</th>
+                        <th class="p-3.5">Status</th>
+                        <th class="p-3.5">Created</th>
+                        <th class="p-3.5 pr-5 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 font-sans">
+                    {% for ann in announcements %}
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="p-3.5 pl-5">
+                                <span class="bg-slate-800 px-2 py-0.5 rounded font-mono text-[10px] text-cyan-400 font-semibold">{{ ann.badge }}</span>
+                            </td>
+                            <td class="p-3.5 font-bold text-white">{{ ann.title }}</td>
+                            <td class="p-3.5 text-slate-300 max-w-sm">{{ ann.message }}</td>
+                            <td class="p-3.5">
+                                <form method="POST" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="toggle">
+                                    <input type="hidden" name="ann_id" value="{{ ann.id }}">
+                                    <button type="submit" class="px-2 py-0.5 rounded text-[10px] font-mono {% if ann.is_active %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/30{% else %}bg-slate-800 text-slate-500{% endif %}" title="Click to toggle status">
+                                        {% if ann.is_active %}Active (Showing){% else %}Inactive (Hidden){% endif %}
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="p-3.5 font-mono text-slate-400 text-[11px]">{{ ann.created_at|date:"M d, Y" }}</td>
+                            <td class="p-3.5 pr-5 text-right space-x-2">
+                                <form method="POST" class="inline" onsubmit="return confirm('Delete this announcement?');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="ann_id" value="{{ ann.id }}">
+                                    <button type="submit" class="text-rose-400 hover:text-rose-300 p-1.5 rounded-lg hover:bg-slate-800" title="Delete">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="6" class="p-8 text-center text-slate-500">No announcements posted.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Post Announcement -->
+<div id="create-ann-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+            <h3 class="text-base font-bold text-white">Broadcast Lab Announcement</h3>
+            <button onclick="closeModal('create-ann-modal')" class="text-slate-400 hover:text-white">✕</button>
+        </div>
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Badge Tag</label>
+                <select name="badge" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-indigo-500">
+                    <option value="CSE 324 Final">CSE 324 Final 🎓</option>
+                    <option value="PHP Evaluation">PHP Evaluation 🐘</option>
+                    <option value="Leaderboard Update">Leaderboard Update 🏆</option>
+                    <option value="System Notice">System Notice ⚡</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Title *</label>
+                <input type="text" name="title" required placeholder="e.g. Lab Evaluation 4 on PHP CRUD" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-indigo-500">
+            </div>
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Message Text *</label>
+                <textarea name="message" rows="3" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-indigo-500" placeholder="Please prepare your prepared queries and test cases..."></textarea>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <input type="checkbox" name="is_active" id="ann-active" checked class="rounded bg-slate-950 border-slate-700">
+                <label for="ann-active" class="text-xs text-slate-300">Publish immediately to top banner</label>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+                <button type="button" onclick="closeModal('create-ann-modal')" class="px-4 py-2 rounded-xl text-slate-400 text-xs">Cancel</button>
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2 rounded-xl text-xs transition">Post Announcement</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openModal(id) { document.getElementById(id)?.classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id)?.classList.add('hidden'); }
+</script>
+{% endblock %}

@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+
+{% block title %}Lvl {{ level.level_number }}: {{ level.title }} — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Top Level Navigation Header -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+        <div class="flex items-center gap-3">
+            <a href="{% url 'arena:track_detail' track.slug %}" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-xs transition" title="Back to Track">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-mono text-emerald-400 font-semibold">{{ track.title }}</span>
+                    <span class="text-slate-600">•</span>
+                    <span class="text-xs font-mono text-slate-400">Level {{ level.level_number }}</span>
+                    {% if is_solved %}
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono font-bold">
+                            ✓ SOLVED
+                        </span>
+                    {% endif %}
+                </div>
+                <h1 class="text-lg font-bold text-white">{{ level.title }}</h1>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <span class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl font-mono flex items-center gap-1.5">
+                <i class="fa-solid fa-star"></i> +{{ level.xp_reward }} XP
+            </span>
+
+            <div class="flex items-center gap-1">
+                {% if prev_level %}
+                    <a href="{% url 'arena:level_play' prev_level.slug %}" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl text-xs transition" title="Previous Level">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                {% endif %}
+                {% if next_level %}
+                    <a href="{% url 'arena:level_play' next_level.slug %}" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl text-xs transition" title="Next Level">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Play Area: 2-Column Split -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- Left Column: Story, Instructions & Visual Stage (5 or 6 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+
+            <!-- Mission Scenario & Lore -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-mono text-emerald-400 uppercase font-semibold flex items-center gap-1.5">
+                        <i class="fa-solid fa-terminal"></i> Mission Lore
+                    </span>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded font-semibold {% if level.engine == 'ROVER_MAZE' %}bg-indigo-500/10 text-indigo-400 border border-indigo-500/30{% elif level.engine == 'DOM_BUILDER' %}bg-cyan-500/10 text-cyan-400 border border-cyan-500/30{% else %}bg-amber-500/10 text-amber-400 border border-amber-500/30{% endif %}">
+                        {{ level.get_engine_display }}
+                    </span>
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed font-sans">{{ level.story_brief }}</p>
+
+                <div class="pt-3 border-t border-slate-800/80 space-y-2">
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Objectives & Requirements:</h3>
+                    <div class="text-xs text-slate-400 leading-relaxed space-y-1">
+                        {{ level.instructions_markdown|linebreaks }}
+                    </div>
+                </div>
+
+                {% if level.hints %}
+                    <details class="pt-2 group">
+                        <summary class="text-xs font-mono text-amber-400 cursor-pointer hover:underline flex items-center gap-1.5 list-none font-semibold">
+                            <i class="fa-solid fa-lightbulb"></i> View Level Hints ({{ level.hints|length }})
+                        </summary>
+                        <div class="mt-2 p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1 font-mono">
+                            {% for hint in level.hints %}
+                                <p>💡 {{ hint }}</p>
+                            {% endfor %}
+                        </div>
+                    </details>
+                {% endif %}
+            </div>
+
+            <!-- VISUAL STAGE: ENGINE-SPECIFIC VIEW -->
+            {% if level.engine == 'ROVER_MAZE' %}
+                <!-- Mode 1: 2D Grid Rover Maze Visual Stage -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-compass text-emerald-400"></i> Cyber Rover Grid (8x8)
+                        </h2>
+                        <div class="flex items-center gap-2 font-mono text-xs">
+                            <span class="text-cyan-400">Gems: <strong id="rover-gem-count">0/0</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- 8x8 Grid Canvas -->
+                    <div id="rover-grid-stage" class="grid gap-1.5 bg-slate-950 p-3 rounded-2xl border border-slate-800 max-w-sm mx-auto"></div>
+
+                    <div class="flex justify-between items-center text-[11px] font-mono text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
+                        <span id="rover-status-text">Ready for command sequence.</span>
+                        <button onclick="window.mazeInstance?.reset()" class="text-slate-400 hover:text-white underline">Reset Grid</button>
+                    </div>
+                </div>
+
+            {% elif level.engine == 'DOM_BUILDER' %}
+                <!-- Mode 2: Visual CSS & DOM Stage -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-bezier-curve text-cyan-400"></i> Visual DOM Sandbox
+                        </h2>
+                        <span id="dom-status-badge" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                            Checking alignment...
+                        </span>
+                    </div>
+
+                    <!-- DOM Stage Container -->
+                    <div id="dom-visual-stage" class="w-full"></div>
+
+                    <p class="text-[11px] text-slate-400 font-mono">
+                        Type CSS flexbox properties in the editor. Watch the drones align with target landing pads in real-time!
+                    </p>
+                </div>
+            {% endif %}
+
+        </div>
+
+        <!-- Right Column: Code Editor, Language Selector & Terminal (7 or 6 cols) -->
+        <div class="lg:col-span-7 space-y-4">
+
+            <!-- IDE Control Bar -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-xl">
+                <div class="flex items-center gap-2">
+                    <label class="text-xs font-mono text-slate-400 font-semibold">Language:</label>
+                    <select id="language-select" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs font-mono text-white focus:outline-none focus:border-emerald-500">
+                        {% if level.starter_code_c %}<option value="c" selected>C (GCC 10.2)</option>{% endif %}
+                        {% if level.starter_code_cpp %}<option value="cpp">C++ (G++ 10.2)</option>{% endif %}
+                        {% if level.starter_code_python %}<option value="python">Python 3.10</option>{% endif %}
+                        {% if level.starter_code_javascript %}<option value="javascript">JavaScript (Node/DOM)</option>{% endif %}
+                        {% if level.starter_code_php %}<option value="php">PHP 8.2 (MySQLi)</option>{% endif %}
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button id="btn-run-code" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 hover:text-emerald-300 font-semibold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition border border-slate-700">
+                        <i class="fa-solid fa-play text-[10px]"></i>
+                        <span>{% if level.engine == 'ROVER_MAZE' %}Run Rover{% elif level.engine == 'DOM_BUILDER' %}Test Alignment{% else %}Run Code{% endif %}</span>
+                    </button>
+
+                    <button id="btn-submit-code" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg shadow-emerald-500/20">
+                        <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                        <span>Submit Solution</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Code Editor Container -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+                <div class="bg-slate-950/80 px-4 py-2 border-b border-slate-800 flex justify-between items-center text-xs font-mono text-slate-400">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-code text-emerald-400"></i> solution_editor
+                    </span>
+                    <button id="btn-reset-code" class="hover:text-white transition">Reset Template</button>
+                </div>
+
+                <textarea id="code-editor" rows="15" spellcheck="false" class="w-full bg-slate-950 text-slate-100 font-mono text-sm p-4 focus:outline-none resize-y leading-relaxed border-none selection:bg-indigo-600">{{ level.starter_code_c|default:level.starter_code_python|default:level.starter_code_javascript|default:level.starter_code_php|default:level.starter_code_cpp }}</textarea>
+            </div>
+
+            <!-- Console Output & Test Cases Tabs -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+                <!-- Tab Headers -->
+                <div class="flex border-b border-slate-800 bg-slate-950/60 text-xs font-mono">
+                    <button id="tab-console-btn" onclick="switchConsoleTab('console')" class="px-4 py-2.5 font-bold text-white border-b-2 border-emerald-500 bg-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-terminal text-emerald-400"></i> Terminal Output
+                    </button>
+                    <button id="tab-tests-btn" onclick="switchConsoleTab('tests')" class="px-4 py-2.5 font-bold text-slate-400 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-vial text-cyan-400"></i> Test Cases ({{ level.test_cases|length }})
+                    </button>
+                </div>
+
+                <!-- Tab 1: Terminal Output -->
+                <div id="tab-content-console" class="p-3 bg-slate-950 min-h-[120px] max-h-60 overflow-y-auto">
+                    <pre id="console-output-text" class="font-mono text-xs text-slate-400 whitespace-pre-wrap">Click 'Run Code' or 'Submit Solution' to execute via Piston Cloud & Offline Sandbox...</pre>
+                </div>
+
+                <!-- Tab 2: Test Cases List -->
+                <div id="tab-content-tests" class="p-4 bg-slate-950 min-h-[120px] max-h-60 overflow-y-auto hidden space-y-3">
+                    <div id="test-results-container" class="space-y-2">
+                        {% for tc in level.test_cases %}
+                            <div class="p-3 rounded-lg border border-slate-800 bg-slate-900/40 text-xs font-mono space-y-1">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-300 font-bold">Test Case #{{ forloop.counter }}</span>
+                                    {% if tc.is_hidden %}
+                                        <span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Hidden</span>
+                                    {% endif %}
+                                </div>
+                                <div class="text-slate-400"><span class="text-slate-500">Input:</span> {{ tc.input|default:"(None)" }}</div>
+                                <div class="text-slate-400"><span class="text-slate-500">Expected:</span> {{ tc.expected_output }}</div>
+                            </div>
+                        {% empty %}
+                            <p class="text-xs text-slate-500 font-mono">No structured test cases defined for this level. Evaluated via direct stdout validation.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Celebration Modal -->
+<div id="celebration-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-emerald-500/40 rounded-3xl max-w-md w-full p-8 shadow-2xl text-center space-y-6 glow-emerald">
+        <div class="w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-400 text-4xl flex items-center justify-center mx-auto border border-emerald-500/40 animate-bounce">
+            🎉
+        </div>
+        <div>
+            <span class="text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider">Level Completed!</span>
+            <h3 class="text-2xl font-black text-white mt-1">Excellent Work, Coder!</h3>
+            <p class="text-xs text-slate-300 mt-2">All test cases verified successfully across the execution pipeline.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+            <div class="flex justify-between text-xs text-slate-400">
+                <span>Earned XP:</span>
+                <span id="modal-earned-xp" class="font-bold text-amber-400 font-mono text-base">+{{ level.xp_reward }} XP</span>
+            </div>
+            <div class="flex justify-between text-xs text-slate-400">
+                <span>Current Rank:</span>
+                <span id="modal-user-rank" class="font-bold text-emerald-300 font-mono">Syntax Rookie</span>
+            </div>
+        </div>
+
+        <div class="flex gap-3">
+            <button onclick="document.getElementById('celebration-modal').classList.add('hidden')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 rounded-xl text-xs transition">
+                Close
+            </button>
+            {% if next_level %}
+                <a href="{% url 'arena:level_play' next_level.slug %}" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition shadow-lg shadow-emerald-500/20">
+                    Next Level <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
+            {% else %}
+                <a href="{% url 'arena:tracks' %}" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+                    All Tracks
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/rover_engine.js"></script>
+<script src="/static/js/dom_builder_engine.js"></script>
+<script src="/static/js/code_runner.js"></script>
+
+<script>
+    // Templates map for starter code per language
+    const starterTemplates = {
+        c: `{{ level.starter_code_c|escapejs }}`,
+        cpp: `{{ level.starter_code_cpp|escapejs }}`,
+        python: `{{ level.starter_code_python|escapejs }}`,
+        javascript: `{{ level.starter_code_javascript|escapejs }}`,
+        php: `{{ level.starter_code_php|escapejs }}`
+    };
+
+    const engineType = "{{ level.engine }}";
+    const mazeConfig = {{ maze_config_json|safe }};
+    const domConfig = {{ dom_config_json|safe }};
+    const csrfToken = "{{ csrf_token }}";
+
+    let mazeInstance = null;
+    let domInstance = null;
+
+    // Initialize Engine
+    if (engineType === 'ROVER_MAZE') {
+        mazeInstance = new RoverMazeEngine('rover-grid-stage', mazeConfig);
+        window.mazeInstance = mazeInstance;
+    } else if (engineType === 'DOM_BUILDER') {
+        domInstance = new DomBuilderEngine('dom-visual-stage', domConfig);
+        window.domInstance = domInstance;
+    }
+
+    // Initialize Code Runner Controller
+    const runner = new CodeQuestRunner({
+        levelId: {{ level.id }},
+        engineType: engineType,
+        csrfToken: csrfToken,
+        mazeEngine: mazeInstance,
+        domEngine: domInstance,
+    });
+
+    // Language switch listener
+    const langSelect = document.getElementById('language-select');
+    const codeEditor = document.getElementById('code-editor');
+
+    if (langSelect && codeEditor) {
+        langSelect.addEventListener('change', (e) => {
+            const lang = e.target.value;
+            if (starterTemplates[lang] && starterTemplates[lang].trim().length > 0) {
+                codeEditor.value = starterTemplates[lang];
+            }
+        });
+    }
+
+    // Reset code template
+    document.getElementById('btn-reset-code')?.addEventListener('click', () => {
+        const lang = langSelect ? langSelect.value : 'c';
+        if (starterTemplates[lang]) {
+            codeEditor.value = starterTemplates[lang];
+        }
+    });
+
+    // Console / Test Tab Switcher
+    function switchConsoleTab(tab) {
+        const consoleBtn = document.getElementById('tab-console-btn');
+        const testsBtn = document.getElementById('tab-tests-btn');
+        const consoleContent = document.getElementById('tab-content-console');
+        const testsContent = document.getElementById('tab-content-tests');
+
+        if (tab === 'console') {
+            consoleContent?.classList.remove('hidden');
+            testsContent?.classList.add('hidden');
+            consoleBtn?.classList.add('border-b-2', 'border-emerald-500', 'bg-slate-900', 'text-white');
+            consoleBtn?.classList.remove('text-slate-400');
+            testsBtn?.classList.remove('border-b-2', 'border-emerald-500', 'bg-slate-900', 'text-white');
+            testsBtn?.classList.add('text-slate-400');
+        } else {
+            consoleContent?.classList.add('hidden');
+            testsContent?.classList.remove('hidden');
+            testsBtn?.classList.add('border-b-2', 'border-emerald-500', 'bg-slate-900', 'text-white');
+            testsBtn?.classList.remove('text-slate-400');
+            consoleBtn?.classList.remove('border-b-2', 'border-emerald-500', 'bg-slate-900', 'text-white');
+            consoleBtn?.classList.add('text-slate-400');
+        }
+    }
+</script>
+{% endblock %}

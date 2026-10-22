@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block title %}CSE 324 Formal Project Proposal — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+
+    <!-- Print Control Bar -->
+    <div class="no-print bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap justify-between items-center gap-4 shadow-xl">
+        <div class="flex items-center gap-2 text-xs text-slate-300">
+            <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+            <span>Printable Official Academic Document formatted for <strong>BAIUST CSE 324 Sessional Evaluation</strong></span>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition shadow-lg shadow-emerald-500/20">
+                <i class="fa-solid fa-print"></i> Print Proposal / Save as PDF
+            </button>
+            <a href="{% url 'arena:home' %}" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-2 rounded-xl text-xs border border-slate-700">
+                Back to App
+            </a>
+        </div>
+    </div>
+
+    <!-- Official Proposal Paper Container -->
+    <article class="proposal-page bg-white text-slate-900 rounded-3xl p-8 sm:p-14 shadow-2xl border border-slate-200 space-y-10 font-sans leading-relaxed">
+
+        <!-- University Formal Header -->
+        <header class="text-center border-b-2 border-slate-900 pb-8 space-y-2">
+            <div class="flex justify-center items-center gap-4 mb-2">
+                <div class="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-black text-2xl font-mono">
+                    B
+                </div>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-black uppercase tracking-wider text-slate-950">
+                Bangladesh Army International University of Science & Technology
+            </h1>
+            <p class="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+                Department of Computer Science and Engineering | Cumilla Cantonment
+            </p>
+            <div class="inline-block bg-slate-100 border border-slate-300 px-4 py-1.5 rounded-full text-xs font-mono font-bold text-slate-800 mt-2">
+                CSE 324: Web Technologies Sessional — Final Lab Project Proposal
+            </div>
+        </header>
+
+        <!-- Project Title & Metadata Grid -->
+        <section class="space-y-4">
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-2">
+                <span class="text-xs uppercase font-bold text-slate-500 tracking-wider">Project Title:</span>
+                <h2 class="text-xl sm:text-2xl font-black text-slate-950">
+                    CodeQuest BD: An Interactive Gamified Multi-Language Programming & Problem-Solving Web Platform
+                </h2>
+                <p class="text-xs text-slate-600 font-medium">
+                    Incorporating 2D Logic Mazes, Real-time Visual DOM Builders, Multi-Language Compiler Sandboxes, and Standalone PHP MySQLi CRUD.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1">
+                    <span class="font-bold text-slate-500 uppercase">Submitted By:</span>
+                    <p class="text-sm font-bold text-slate-900">Md Najmus Sakib Rahatul</p>
+                    <p class="font-mono text-slate-700"><strong>Student ID:</strong> 1119003</p>
+                    <p class="text-slate-700">Level 3, Term 2, Section A</p>
+                    <p class="text-slate-700">Dept. of Computer Science & Engineering, BAIUST</p>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1">
+                    <span class="font-bold text-slate-500 uppercase">Course Information & Evaluation:</span>
+                    <p class="text-sm font-bold text-slate-900">CSE 324 — Web Technologies Sessional</p>
+                    <p class="text-slate-700"><strong>Continuous Evaluations:</strong> i, ii, iii, iv (PHP CRUD)</p>
+                    <p class="text-slate-700"><strong>Lab Exam:</strong> 20-Mark Code Quiz & Final Project Viva</p>
+                    <p class="font-mono text-slate-700"><strong>Submission Date:</strong> October 2026</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1. Executive Summary & Problem Statement -->
+        <section class="space-y-3">
+            <h3 class="text-base font-black uppercase text-slate-900 border-b border-slate-300 pb-1 flex items-center gap-2">
+                1. Executive Summary & Problem Statement
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-800 text-justify">
+                Undergraduate computer science students frequently face a disconnect between theoretical programming syntax and spatial, computational intuition. Traditional online judges (e.g., Codeforces, LeetCode) present abstract text-in/text-out interfaces that fail to visually engage early-tier learners. Simultaneously, web development courses require students to bridge complex frontend DOM trees with backend relational databases.
+            </p>
+            <p class="text-xs sm:text-sm text-slate-800 text-justify">
+                <strong>CodeQuest BD</strong> addresses this pedagogical bottleneck by synthesizing four specialized interactive engines into a unified web portal: (1) a 2D Cyber Rover Grid Maze for procedural loop mastery, (2) a live CSS/DOM split-screen sandbox for web layout visualization, (3) a Piston-backed multi-language compiler sandbox with offline lab fallback, and (4) a 60-second Bug-Hunter Blitz mode for continuous quiz readiness. Additionally, a dedicated procedural PHP + MySQLi CRUD module directly satisfies all CSE 324 Evaluation iv requirements.
+            </p>
+        </section>
+
+        <!-- 2. Comparative Literature Matrix -->
+        <section class="space-y-3 print-break-inside-avoid">
+            <h3 class="text-base font-black uppercase text-slate-900 border-b border-slate-300 pb-1 flex items-center gap-2">
+                2. Comparative Literature Matrix
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border border-slate-300">
+                    <thead class="bg-slate-100 font-bold border-b border-slate-300">
+                        <tr>
+                            <th class="p-2.5 border-r border-slate-300">Platform</th>
+                            <th class="p-2.5 border-r border-slate-300">Primary Focus</th>
+                            <th class="p-2.5 border-r border-slate-300">Languages Supported</th>
+                            <th class="p-2.5 border-r border-slate-300">Backend / CRUD</th>
+                            <th class="p-2.5">Academic Quiz Prep</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr>
+                            <td class="p-2.5 font-bold border-r border-slate-300">Flexbox Froggy</td>
+                            <td class="p-2.5 border-r border-slate-300">CSS Flexbox alignment</td>
+                            <td class="p-2.5 border-r border-slate-300 font-mono">CSS only</td>
+                            <td class="p-2.5 border-r border-slate-300">None (Static JS)</td>
+                            <td class="p-2.5">No</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-bold border-r border-slate-300">CSS Diner</td>
+                            <td class="p-2.5 border-r border-slate-300">CSS Selector puzzles</td>
+                            <td class="p-2.5 border-r border-slate-300 font-mono">CSS Selectors</td>
+                            <td class="p-2.5 border-r border-slate-300">None</td>
+                            <td class="p-2.5">No</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-bold border-r border-slate-300">CodinGame</td>
+                            <td class="p-2.5 border-r border-slate-300">Game simulation</td>
+                            <td class="p-2.5 border-r border-slate-300 font-mono">C++, Java, Python</td>
+                            <td class="p-2.5 border-r border-slate-300">Proprietary Cloud</td>
+                            <td class="p-2.5">No</td>
+                        </tr>
+                        <tr class="bg-emerald-50/60 font-semibold">
+                            <td class="p-2.5 font-bold border-r border-slate-300 text-emerald-900">CodeQuest BD (Proposed)</td>
+                            <td class="p-2.5 border-r border-slate-300 text-emerald-900">Full-Stack Sessional Syllabus</td>
+                            <td class="p-2.5 border-r border-slate-300 font-mono text-emerald-900">C, C++, Py, JS, PHP, CSS</td>
+                            <td class="p-2.5 border-r border-slate-300 text-emerald-900">Django + PHP MySQLi CRUD</td>
+                            <td class="p-2.5 text-emerald-900">Yes (60s Bug Blitz)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 3. System Architecture & Database ER Schema -->
+        <section class="space-y-4 print-break-inside-avoid">
+            <h3 class="text-base font-black uppercase text-slate-900 border-b border-slate-300 pb-1 flex items-center gap-2">
+                3. System Architecture & Database Schema
+            </h3>
+
+            <!-- SVG Diagram -->
+            <div class="border border-slate-300 rounded-2xl p-4 bg-slate-50 flex flex-col items-center">
+                <svg viewBox="0 0 780 260" class="w-full max-w-2xl h-auto" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="10" y="20" width="180" height="220" rx="10" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+                    <text x="100" y="45" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">CLIENT FRONTEND</text>
+                    <text x="100" y="70" font-size="10" text-anchor="middle" fill="#475569">HTML5 Semantic DOM</text>
+                    <text x="100" y="95" font-size="10" text-anchor="middle" fill="#475569">Tailwind CSS 3</text>
+                    <text x="100" y="120" font-size="10" text-anchor="middle" fill="#475569">2D Rover Grid Engine</text>
+                    <text x="100" y="145" font-size="10" text-anchor="middle" fill="#475569">DOM Visual Stage</text>
+                    <text x="100" y="170" font-size="10" text-anchor="middle" fill="#475569">Web Audio API Synth</text>
+                    <text x="100" y="195" font-size="10" text-anchor="middle" fill="#475569">AJAX / Fetch API</text>
+
+                    <!-- Arrow 1 -->
+                    <path d="M 190 130 L 250 130" stroke="#059669" stroke-width="3" marker-end="url(#arrow)"/>
+
+                    <rect x="250" y="20" width="260" height="220" rx="10" fill="#f8fafc" stroke="#059669" stroke-width="2"/>
+                    <text x="380" y="45" font-size="12" font-weight="bold" text-anchor="middle" fill="#047857">DJANGO 5 + PHP BACKEND</text>
+                    <text x="380" y="75" font-size="10" text-anchor="middle" fill="#334155">Django Apps: arena, accounts, admin</text>
+                    <text x="380" y="105" font-size="10" text-anchor="middle" fill="#334155">Dual Execution (Piston + Offline)</text>
+                    <text x="380" y="135" font-size="10" text-anchor="middle" fill="#334155">Custom Instructor CMS Panel</text>
+                    <text x="380" y="165" font-size="10" text-anchor="middle" fill="#334155">Standalone PHP MySQLi CRUD Module</text>
+                    <text x="380" y="195" font-size="10" text-anchor="middle" fill="#334155">Session Auth & XP Engine</text>
+
+                    <!-- Arrow 2 -->
+                    <path d="M 510 130 L 570 130" stroke="#4f46e5" stroke-width="3"/>
+
+                    <rect x="570" y="20" width="200" height="220" rx="10" fill="#f8fafc" stroke="#4f46e5" stroke-width="2"/>
+                    <text x="670" y="45" font-size="12" font-weight="bold" text-anchor="middle" fill="#3730a3">PERSISTENCE TIER</text>
+                    <text x="670" y="80" font-size="10" text-anchor="middle" fill="#475569">SQLite (Local Dev)</text>
+                    <text x="670" y="110" font-size="10" text-anchor="middle" fill="#475569">PostgreSQL (Neon / Cloud)</text>
+                    <text x="670" y="140" font-size="10" text-anchor="middle" fill="#475569">MySQL (PHP Sessional DB)</text>
+                    <text x="670" y="170" font-size="10" text-anchor="middle" fill="#475569">Entities: User, Track, Level,</text>
+                    <text x="670" y="195" font-size="10" text-anchor="middle" fill="#475569">Quiz, Submission, Announcement</text>
+                </svg>
+                <span class="text-[10px] text-slate-500 font-mono mt-2">Figure 1: High-Level End-to-End System Architecture Diagram</span>
+            </div>
+        </section>
+
+        <!-- 4. Implementation Tech Stack -->
+        <section class="space-y-3 print-break-inside-avoid">
+            <h3 class="text-base font-black uppercase text-slate-900 border-b border-slate-300 pb-1 flex items-center gap-2">
+                4. Implementation Technology Stack
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                <div class="border border-slate-300 p-3 rounded-xl bg-slate-50">
+                    <span class="font-bold text-slate-600 uppercase block text-[10px]">Frontend UI</span>
+                    <p class="font-bold text-slate-900 mt-1">HTML5 & Tailwind CSS</p>
+                    <span class="text-slate-500 text-[10px]">High contrast dark theme</span>
+                </div>
+                <div class="border border-slate-300 p-3 rounded-xl bg-slate-50">
+                    <span class="font-bold text-slate-600 uppercase block text-[10px]">Client Engines</span>
+                    <p class="font-bold text-slate-900 mt-1">JavaScript ES6+ DOM</p>
+                    <span class="text-slate-500 text-[10px]">Web Audio API + 2D Grid</span>
+                </div>
+                <div class="border border-slate-300 p-3 rounded-xl bg-slate-50">
+                    <span class="font-bold text-slate-600 uppercase block text-[10px]">Backend Framework</span>
+                    <p class="font-bold text-slate-900 mt-1">Python Django 5.x</p>
+                    <span class="text-slate-500 text-[10px]">MVC architecture & ORM</span>
+                </div>
+                <div class="border border-slate-300 p-3 rounded-xl bg-slate-50">
+                    <span class="font-bold text-slate-600 uppercase block text-[10px]">Server-Side CRUD</span>
+                    <p class="font-bold text-slate-900 mt-1">PHP 8.x & MySQLi</p>
+                    <span class="text-slate-500 text-[10px]">Evaluation iv Compliance</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Academic Verification & Sign-Off -->
+        <section class="pt-8 border-t-2 border-slate-900 space-y-8 print-break-inside-avoid">
+            <div class="flex flex-col sm:flex-row justify-between items-end gap-8 pt-8">
+                <div class="text-center sm:text-left space-y-1">
+                    <div class="w-48 border-b border-slate-400 pb-1 font-mono text-xs text-slate-600">
+                        Md Najmus Sakib Rahatul
+                    </div>
+                    <p class="text-xs font-bold text-slate-900">Student Signature</p>
+                    <p class="text-[10px] text-slate-500">ID: 1119003 | CSE 3-2 (A), BAIUST</p>
+                </div>
+
+                <div class="text-center sm:text-right space-y-1">
+                    <div class="w-48 border-b border-slate-400 pb-1 font-mono text-xs text-slate-600">
+                        Approved / Evaluated
+                    </div>
+                    <p class="text-xs font-bold text-slate-900">Course Instructor Signature</p>
+                    <p class="text-[10px] text-slate-500">CSE 324 Web Technologies Sessional, BAIUST</p>
+                </div>
+            </div>
+        </section>
+
+    </article>
+</div>
+{% endblock %}

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CodeQuest BD — Gamified Programming & Problem-Solving Platform{% endblock %}</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/custom.css">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950">
+
+    <!-- Top Announcement Bar (if active) -->
+    {% if global_announcements %}
+        {% for ann in global_announcements %}
+            <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-indigo-950 border-b border-emerald-500/20 py-2 px-4 text-center text-xs text-emerald-300 flex items-center justify-center gap-2">
+                <span class="bg-emerald-500/20 text-emerald-400 font-mono font-bold px-2 py-0.5 rounded text-[10px] border border-emerald-500/30">
+                    {{ ann.badge }}
+                </span>
+                <span><strong>{{ ann.title }}:</strong> {{ ann.message }}</span>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Navigation Bar -->
+    {% include 'navbar.html' %}
+
+    <!-- Flash Messages -->
+    {% if messages %}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 w-full">
+            {% for message in messages %}
+                <div class="p-4 rounded-xl text-sm font-medium flex items-center justify-between shadow-lg {% if message.tags == 'error' %}bg-rose-950/60 border border-rose-500/30 text-rose-200{% elif message.tags == 'success' %}bg-emerald-950/60 border border-emerald-500/30 text-emerald-200{% else %}bg-indigo-950/60 border border-indigo-500/30 text-indigo-200{% endif %}">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid {% if message.tags == 'error' %}fa-circle-xmark text-rose-400{% elif message.tags == 'success' %}fa-circle-check text-emerald-400{% else %}fa-circle-info text-indigo-400{% endif %}"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white text-xs">✕</button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Body Content -->
+    <div class="flex-1 w-full">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Skill Level Diagnostic Wizard Modal ("Find Your Track") -->
+    <div id="track-wizard-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-6">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <div>
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        🧭 Find Your Track — Skill Diagnostic
+                    </h3>
+                    <p class="text-xs text-slate-400">Answer 3 questions to get your personalized learning path</p>
+                </div>
+                <button onclick="closeTrackWizard()" class="text-slate-400 hover:text-white">✕</button>
+            </div>
+
+            <!-- Step 1 -->
+            <div id="wizard-step-1" class="space-y-4">
+                <span class="text-xs font-mono text-emerald-400 uppercase font-semibold">Step 1 of 3: Academic Level</span>
+                <h4 class="text-base font-semibold text-white">What is your current CSE academic level?</h4>
+                <div class="space-y-2">
+                    <button onclick="setWizardChoice('academic', '1st_year', 2)" class="w-full text-left p-3.5 rounded-xl border border-slate-800 hover:border-emerald-500 bg-slate-950 hover:bg-slate-900 transition text-sm">
+                        🌱 1st Year (Learning C Programming & Basic Logic)
+                    </button>
+                    <button onclick="setWizardChoice('academic', '2nd_year', 2)" class="w-full text-left p-3.5 rounded-xl border border-slate-800 hover:border-emerald-500 bg-slate-950 hover:bg-slate-900 transition text-sm">
+                        ⚡ 2nd Year (C++ OOP, Data Structures & Python)
+                    </button>
+                    <button onclick="setWizardChoice('academic', '3rd_year', 2)" class="w-full text-left p-3.5 rounded-xl border border-slate-800 hover:border-emerald-500 bg-slate-950 hover:bg-slate-900 transition text-sm">
+                        🚀 3rd Year (CSE 324 Web Technologies Sessional & PHP CRUD)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div id="wizard-step-2" class="space-y-4 hidden">
+                <span class="text-xs font-mono text-emerald-400 uppercase font-semibold">Step 2 of 3: Primary Learning Goal</span>
+                <h4 class="text-base font-semibold text-white">What is your primary focus for this lab session?</h4>
+                <div class="space-y-2">
+                    <button onclick="setWizardChoice('goal', 'backend_crud', 3)" class="w-full text-left p-3.5 rounded-xl border border-slate-800 hover:border-emerald-500 bg-slate-950 hover:bg-slate-900 transition text-sm">
+                        🐘 Master PHP & MySQLi CRUD (Continuous Evaluation iv)
+                    </button>
+                    <button onclick="setWizardChoice('goal', 'frontend_dom', 3)" class="w-full text-left p-3.5 rounded-xl border border-slate-800 hover:border-emerald-500 bg-slate-950 hover:bg-slate-900 transition text-sm">
+                        🎨 Master JavaScript DOM & CSS Flexbox Stage Builder
+                    </button>
+                    <button onclick="setWizardChoice('goal', 'logic_rover', 3)" class="w-full text-left p-3.5 rounded-xl border border-slate-800 hover:border-emerald-500 bg-slate-950 hover:bg-slate-900 transition text-sm">
+                        🤖 2D Cyber Rover Maze (C / C++ / Python Loop Logic)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Recommendation Result -->
+            <div id="wizard-step-3" class="space-y-4 hidden text-center">
+                <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-3xl flex items-center justify-center mx-auto">
+                    🎯
+                </div>
+                <h4 class="text-lg font-bold text-white">Your Recommended Starting Track:</h4>
+                <div id="wizard-result-box" class="p-4 rounded-xl bg-slate-950 border border-emerald-500/30 text-emerald-300 font-mono font-bold text-base">
+                    C Programming Fundamentals
+                </div>
+                <p id="wizard-result-desc" class="text-xs text-slate-400">
+                    Perfect starting point for your academic tier and target lab competencies.
+                </p>
+                <div class="pt-2">
+                    <a id="wizard-result-link" href="/tracks/" class="inline-block bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition shadow-lg shadow-emerald-500/20">
+                        Launch Recommended Track 🚀
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% include 'footer.html' %}
+
+    <!-- Shared JS Engines -->
+    <script src="/static/js/sound_effects.js"></script>
+
+    <!-- Wizard Controller Script -->
+    <script>
+        const wizardState = { academic: '', goal: '' };
+
+        function openTrackWizard() {
+            document.getElementById('track-wizard-modal')?.classList.remove('hidden');
+            showWizardStep(1);
+        }
+
+        function closeTrackWizard() {
+            document.getElementById('track-wizard-modal')?.classList.add('hidden');
+        }
+
+        function showWizardStep(stepNum) {
+            document.getElementById('wizard-step-1')?.classList.add('hidden');
+            document.getElementById('wizard-step-2')?.classList.add('hidden');
+            document.getElementById('wizard-step-3')?.classList.add('hidden');
+
+            document.getElementById(`wizard-step-1`)?.classList.toggle('hidden', stepNum !== 1);
+            document.getElementById(`wizard-step-2`)?.classList.toggle('hidden', stepNum !== 2);
+            document.getElementById(`wizard-step-3`)?.classList.toggle('hidden', stepNum !== 3);
+        }
+
+        function setWizardChoice(field, value, nextStep) {
+            wizardState[field] = value;
+            if (nextStep === 3) {
+                calculateWizardRecommendation();
+            }
+            showWizardStep(nextStep);
+        }
+
+        function calculateWizardRecommendation() {
+            let trackTitle = "C Programming Fundamentals";
+            let trackSlug = "c-programming-fundamentals";
+            let desc = "Master arrays, pointers, and 2D Rover Maze loops.";
+
+            if (wizardState.goal === 'backend_crud') {
+                trackTitle = "PHP & MySQLi CRUD Mastery";
+                trackSlug = "php-mysqli-crud-mastery";
+                desc = "Directly satisfies Evaluation iv with full MySQLi INSERT/SELECT/UPDATE/DELETE queries.";
+            } else if (wizardState.goal === 'frontend_dom') {
+                trackTitle = "JavaScript & DOM Manipulation";
+                trackSlug = "javascript-dom-manipulation";
+                desc = "Learn querySelector, event listeners, and dynamic DOM visual stage engineering.";
+            } else if (wizardState.academic === '2nd_year') {
+                trackTitle = "C++ OOP & STL Arena";
+                trackSlug = "cpp-oop-stl-arena";
+                desc = "Master vectors, classes, and algorithmic problem-solving.";
+            }
+
+            const resBox = document.getElementById('wizard-result-box');
+            const resDesc = document.getElementById('wizard-result-desc');
+            const resLink = document.getElementById('wizard-result-link');
+
+            if (resBox) resBox.textContent = trackTitle;
+            if (resDesc) resDesc.textContent = desc;
+            if (resLink) resLink.href = `/tracks/${trackSlug}/`;
+        }
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

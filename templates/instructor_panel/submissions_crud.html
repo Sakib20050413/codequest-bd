@@ -1,0 +1,98 @@
+{% extends 'instructor_panel/base_admin.html' %}
+
+{% block title %}Submissions Log — Instructor CMS{% endblock %}
+
+{% block admin_content %}
+<div class="space-y-6">
+    <div class="pb-4 border-b border-slate-800">
+        <h1 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-code-commit text-emerald-400"></i> Student Submissions Log & Auditing
+        </h1>
+        <p class="text-xs text-slate-400">Review submitted code solutions, execution statuses, and audit academic integrity</p>
+    </div>
+
+    <!-- Submissions Table -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300">
+                <thead class="bg-slate-950/80 uppercase font-semibold text-slate-400 border-b border-slate-800">
+                    <tr>
+                        <th class="p-3.5 pl-5">Timestamp</th>
+                        <th class="p-3.5">Student</th>
+                        <th class="p-3.5">ID</th>
+                        <th class="p-3.5">Level</th>
+                        <th class="p-3.5">Language</th>
+                        <th class="p-3.5">Status</th>
+                        <th class="p-3.5">Time (ms)</th>
+                        <th class="p-3.5">XP Earned</th>
+                        <th class="p-3.5 pr-5 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 font-sans">
+                    {% for sub in submissions %}
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="p-3.5 pl-5 text-slate-400 font-mono text-[11px]">{{ sub.submitted_at|date:"M d, H:i:s" }}</td>
+                            <td class="p-3.5 font-bold text-white">{{ sub.user.first_name|default:sub.user.username }}</td>
+                            <td class="p-3.5 font-mono text-slate-400">{{ sub.user.profile.student_id }}</td>
+                            <td class="p-3.5 font-medium text-slate-200">{{ sub.level.title }}</td>
+                            <td class="p-3.5 font-mono text-cyan-400">{{ sub.language }}</td>
+                            <td class="p-3.5">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold {% if sub.status == 'ACCEPTED' %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/30{% else %}bg-rose-500/10 text-rose-400 border border-rose-500/30{% endif %}">
+                                    {{ sub.status }}
+                                </span>
+                            </td>
+                            <td class="p-3.5 font-mono text-slate-400">{{ sub.execution_time_ms }} ms</td>
+                            <td class="p-3.5 font-bold text-amber-400 font-mono">+{{ sub.xp_earned }}</td>
+                            <td class="p-3.5 pr-5 text-right space-x-2">
+                                <button onclick="viewCodeSnippet('{{ sub.user.username }}', '{{ sub.level.title|escapejs }}', `{{ sub.submitted_code|escapejs }}`)" class="text-indigo-400 hover:text-indigo-300 p-1.5 rounded-lg hover:bg-slate-800" title="Inspect Code">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                                <form method="POST" class="inline" onsubmit="return confirm('Delete this submission log?');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="sub_id" value="{{ sub.id }}">
+                                    <button type="submit" class="text-rose-400 hover:text-rose-300 p-1.5 rounded-lg hover:bg-slate-800" title="Delete">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="9" class="p-8 text-center text-slate-500">No submissions recorded yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Code Viewer -->
+<div id="code-viewer-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
+        <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+            <div>
+                <h3 class="text-base font-bold text-white" id="modal-code-title">Submitted Code</h3>
+                <span class="text-xs text-slate-400 font-mono" id="modal-code-student"></span>
+            </div>
+            <button onclick="document.getElementById('code-viewer-modal').classList.add('hidden')" class="text-slate-400 hover:text-white">✕</button>
+        </div>
+
+        <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800 overflow-x-auto max-h-96">
+            <pre id="modal-code-content" class="font-mono text-xs text-emerald-400"></pre>
+        </div>
+
+        <div class="flex justify-end">
+            <button onclick="document.getElementById('code-viewer-modal').classList.add('hidden')" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-4 py-2 rounded-xl text-xs">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function viewCodeSnippet(username, levelTitle, code) {
+        document.getElementById('modal-code-title').textContent = `Challenge: ${levelTitle}`;
+        document.getElementById('modal-code-student').textContent = `Submitted by @${username}`;
+        document.getElementById('modal-code-content').textContent = code;
+        document.getElementById('code-viewer-modal').classList.remove('hidden');
+    }
+</script>
+{% endblock %}

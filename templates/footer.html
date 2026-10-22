@@ -1,0 +1,27 @@
+<footer class="bg-slate-950 border-t border-slate-900 py-10 px-4 sm:px-6 lg:px-8 mt-20 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="space-y-1 text-center md:text-left">
+            <p class="font-bold text-slate-200 text-sm flex items-center justify-center md:justify-start gap-2">
+                ⚡ CodeQuest BD — Gamified Programming Platform
+            </p>
+            <p class="text-slate-400">
+                CSE 324 Web Technologies Sessional Lab Final Project & Continuous Evaluations
+            </p>
+            <p class="text-slate-500 font-mono text-[11px]">
+                Built by <strong>Md Najmus Sakib Rahatul</strong> (Student ID: <strong>1119003</strong>), Level 3 Term 2, Section A
+            </p>
+            <p class="text-slate-500 text-[11px]">
+                Department of Computer Science & Engineering, Bangladesh Army International University of Science & Technology (BAIUST), Cumilla
+            </p>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-medium">
+            <a href="{% url 'arena:proposal' %}" class="hover:text-emerald-400 transition">Formal Proposal</a>
+            <a href="{% url 'arena:tracks' %}" class="hover:text-emerald-400 transition">6 Tracks</a>
+            <a href="{% url 'arena:blitz' %}" class="hover:text-emerald-400 transition">Bug Blitz</a>
+            <a href="{% url 'arena:leaderboard' %}" class="hover:text-emerald-400 transition">BAIUST Leaderboard</a>
+            <a href="/php_sessional_crud/index.php" target="_blank" class="hover:text-emerald-400 transition">PHP CRUD Module</a>
+            <a href="{% url 'instructor_panel:dashboard' %}" class="hover:text-indigo-400 transition">Admin Panel</a>
+        </div>
+    </div>
+</footer>

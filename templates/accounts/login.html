@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto px-4 py-16">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 shadow-2xl">
+        <div class="text-center space-y-2">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 text-2xl flex items-center justify-center mx-auto border border-emerald-500/30">
+                ⚡
+            </div>
+            <h1 class="text-2xl font-black text-white">Student & Admin Login</h1>
+            <p class="text-xs text-slate-400">Log in with your BAIUST Student ID or Username</p>
+        </div>
+
+        <!-- Pre-populated credentials hint for Viva Examiners -->
+        <div class="p-3 bg-slate-950 rounded-xl border border-indigo-500/30 text-xs font-mono space-y-1">
+            <span class="text-indigo-400 font-bold block"><i class="fa-solid fa-key"></i> Pre-Configured Lab Credentials:</span>
+            <div class="text-slate-300">Admin/Student: <strong class="text-white">sakib_admin</strong> (or <strong class="text-white">1119003</strong>)</div>
+            <div class="text-slate-300">Password: <strong class="text-white">baiust1119003</strong></div>
+        </div>
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1.5">Student ID or Username</label>
+                <input type="text" name="identifier" required placeholder="1119003 or sakib_admin" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1.5">Password</label>
+                <input type="password" name="password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-emerald-500/20">
+                Log In to Arena 🚀
+            </button>
+        </form>
+
+        <div class="text-center pt-2 border-t border-slate-800 text-xs text-slate-400">
+            Don't have an account yet? <a href="{% url 'accounts:register' %}" class="text-emerald-400 hover:underline font-semibold">Join Quest</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

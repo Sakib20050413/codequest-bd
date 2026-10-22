@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Programming Tracks — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-800 pb-6">
+        <div>
+            <span class="text-xs font-mono text-emerald-400 uppercase font-semibold">CSE Curriculum Alignment</span>
+            <h1 class="text-3xl font-extrabold text-white mt-1">Multi-Language Quest Tracks</h1>
+            <p class="text-xs text-slate-400 mt-1">Explore all 6 tracks spanning foundational syntax, web engineering, and server-side CRUD.</p>
+        </div>
+        <button onclick="openTrackWizard()" class="bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2">
+            <i class="fa-solid fa-compass text-emerald-400"></i> Skill Diagnostic Wizard
+        </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for track in tracks %}
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5 flex flex-col justify-between hover:border-slate-700 transition shadow-xl">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-start">
+                        <span class="text-3xl p-3 bg-slate-800/80 rounded-2xl border border-slate-700/50">
+                            {{ track.icon }}
+                        </span>
+                        <span class="text-xs px-2.5 py-1 rounded-full font-medium {% if track.difficulty == 'Beginner' %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/30{% elif track.difficulty == 'Intermediate' %}bg-blue-500/10 text-blue-400 border border-blue-500/30{% else %}bg-purple-500/10 text-purple-400 border border-purple-500/30{% endif %}">
+                            {{ track.difficulty }}
+                        </span>
+                    </div>
+
+                    <h2 class="text-xl font-bold text-white">{{ track.title }}</h2>
+                    <p class="text-xs text-slate-400 leading-relaxed">{{ track.description }}</p>
+                </div>
+
+                <div class="space-y-4 pt-4 border-t border-slate-800">
+                    <div class="flex justify-between text-xs text-slate-400 font-mono">
+                        <span><i class="fa-solid fa-gamepad text-emerald-400"></i> {{ track.level_count }} Levels</span>
+                        <span><i class="fa-solid fa-star text-amber-400"></i> {{ track.total_xp }} Total XP</span>
+                    </div>
+
+                    <a href="{% url 'arena:track_detail' track.slug %}" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-500/20">
+                        <span>Open Track Levels</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
