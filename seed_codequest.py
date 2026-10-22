@@ -1,7 +1,7 @@
 """
-CodeQuest BD — Master Database Seeder
-Seeds 6 Language Tracks, 18 Playable Levels, 15 Bug Blitz Questions,
-Campus Leaderboard Profiles, Announcements, and Admin Superuser (sakib_admin).
+CodeQuest 3D — Master Database Seeder
+Seeds 6 Language Tracks, 10 Progressive 3D Rover Odyssey Levels, DOM Builder & Code Judge Levels,
+15 Bug Blitz Questions, Campus Leaderboard Profiles, and sakib_admin superuser.
 """
 
 import os
@@ -22,11 +22,11 @@ django.setup()
 
 from django.contrib.auth.models import User
 from accounts.models import StudentProfile
-from arena.models import LanguageTrack, ChallengeLevel, QuizQuestion, LabAnnouncement, StudentSubmission
+from arena.models import LanguageTrack, ChallengeLevel, QuizQuestion, LabAnnouncement
 
 
 def run_seed():
-    print("🚀 Initializing CodeQuest BD Database Seeding...")
+    print("🚀 Initializing CodeQuest 3D Database Seeding...")
 
     # 1. Create Superuser / Lead Student: sakib_admin
     admin_user, created = User.objects.get_or_create(username='sakib_admin', defaults={
@@ -45,11 +45,12 @@ def run_seed():
     profile.student_id = '1119003'
     profile.batch_section = 'CSE 3-2 Section A'
     profile.university = 'BAIUST, Cumilla'
-    profile.xp = 1850
+    profile.xp = 1950
     profile.level = 5
     profile.avatar = 'cyber_rover'
     profile.badges = [
         "First Blood (1st Solve)",
+        "3D Rover Commander",
         "DOM Master",
         "PHP CRUD Ninja",
         "Polyglot Programmer (Solved in 4+ Languages)",
@@ -57,39 +58,40 @@ def run_seed():
         "Century Pioneer (1000+ XP)"
     ]
     profile.solved_levels = [
-        'c-programming-fundamentals-1-rover-linear-loop',
-        'c-programming-fundamentals-2-array-reversal-matrix',
+        '3d-rover-odyssey-1-linear-sequence',
+        '3d-rover-odyssey-2-for-loops-repeat',
+        '3d-rover-odyssey-3-while-loops-sensors',
         'javascript-dom-manipulation-1-drone-docking-flexbox',
         'php-mysqli-crud-mastery-1-student-record-inserter'
     ]
     profile.save()
-    print(f"✅ Lead Student & Admin account configured: sakib_admin / baiust1119003 (ID: {profile.student_id}, {profile.xp} XP)")
+    print(f"✅ Lead Student & Admin configured: sakib_admin / baiust1119003 (ID: {profile.student_id}, {profile.xp} XP)")
 
-    # 2. Seed Classmates for Vibrant Leaderboard
+    # 2. Seed Classmates for Leaderboard
     classmates = [
         {
             'username': 'tanvir_cse', 'name': 'Tanvir Ahmed', 'id': '1119001',
-            'section': 'CSE 3-2 Section A', 'xp': 1420, 'level': 4, 'avatar': 'syntax_ninja',
-            'badges': ['First Blood (1st Solve)', 'DOM Master', 'Blitz Champion']
+            'section': 'CSE 3-2 Section A', 'xp': 1480, 'level': 4, 'avatar': 'syntax_ninja',
+            'badges': ['First Blood (1st Solve)', '3D Rover Commander', 'Blitz Champion']
         },
         {
             'username': 'nusrat_jahan', 'name': 'Nusrat Jahan', 'id': '1119014',
-            'section': 'CSE 3-2 Section A', 'xp': 1250, 'level': 4, 'avatar': 'code_wizard',
+            'section': 'CSE 3-2 Section A', 'xp': 1290, 'level': 4, 'avatar': 'code_wizard',
             'badges': ['First Blood (1st Solve)', 'Polyglot Programmer']
         },
         {
             'username': 'farhan_kabir', 'name': 'Farhan Kabir', 'id': '1119022',
-            'section': 'CSE 3-2 Section B', 'xp': 950, 'level': 3, 'avatar': 'dom_knight',
+            'section': 'CSE 3-2 Section B', 'xp': 980, 'level': 3, 'avatar': 'dom_knight',
             'badges': ['First Blood (1st Solve)', 'PHP CRUD Ninja']
         },
         {
             'username': 'sadia_afrin', 'name': 'Sadia Afrin', 'id': '1119035',
-            'section': 'CSE 3-2 Section B', 'xp': 720, 'level': 3, 'avatar': 'scholar',
+            'section': 'CSE 3-2 Section B', 'xp': 740, 'level': 3, 'avatar': 'scholar',
             'badges': ['First Blood (1st Solve)']
         },
         {
             'username': 'mehedi_hasan', 'name': 'Mehedi Hasan', 'id': '1119041',
-            'section': 'CSE 3-2 Section A', 'xp': 480, 'level': 2, 'avatar': 'cyber_rover',
+            'section': 'CSE 3-2 Section A', 'xp': 510, 'level': 2, 'avatar': 'cyber_rover',
             'badges': ['First Blood (1st Solve)']
         },
     ]
@@ -114,15 +116,15 @@ def run_seed():
     # 3. Seed Announcements
     LabAnnouncement.objects.all().delete()
     LabAnnouncement.objects.create(
-        title="CSE 324 Lab Evaluation 4 on PHP CRUD Scheduled",
-        message="Review prepared MySQLi statements and table CRUD operations. Standalone module available under /php_sessional_crud/.",
-        badge="PHP Evaluation",
+        title="CodeQuest 3D Three.js WebGL Engine Launched",
+        message="Interact with real-time 3D Rover worlds, OrbitControls, and in-browser loop step execution.",
+        badge="System Notice",
         is_active=True
     )
     LabAnnouncement.objects.create(
-        title="20-Mark Code Quiz & Project Viva Defense",
-        message="Practice with 60s Bug-Hunter Blitz to build rapid output prediction speed for handwritten exam questions.",
-        badge="CSE 324 Final",
+        title="CSE 324 Lab Evaluation 4 on PHP CRUD Scheduled",
+        message="Review prepared MySQLi statements and table CRUD operations. Standalone module available under /php_sessional_crud/.",
+        badge="PHP Evaluation",
         is_active=True
     )
     print("✅ Lab Announcements seeded.")
@@ -130,12 +132,12 @@ def run_seed():
     # 4. Seed 6 Language Tracks
     tracks_data = [
         {
-            'title': 'C Programming Fundamentals',
-            'slug': 'c-programming-fundamentals',
-            'icon': '⚙️',
+            'title': '3D Rover Odyssey (Algorithms & Logic)',
+            'slug': '3d-rover-odyssey',
+            'icon': '🚀',
             'difficulty': 'Beginner',
             'order': 1,
-            'description': 'Master core procedural thinking: arrays, pointers, loops, and 2D Rover logic grids.'
+            'description': 'Real-time Three.js WebGL coding game. Write real loops in Python, JS, and C to navigate 3D rovers.'
         },
         {
             'title': 'C++ OOP & STL Arena',
@@ -185,187 +187,247 @@ def run_seed():
         track_objs[td['slug']] = t
     print("✅ 6 Language Tracks created.")
 
-    # 5. Seed 18 Playable Levels (3 per track)
+    # 5. Seed 10 Progressive 3D Rover Odyssey Levels
     ChallengeLevel.objects.all().delete()
 
-    levels_data = [
-        # Track 1: C Programming
+    levels_3d = [
+        # Level 1: Sequences & Basic Movement
         {
-            'track': track_objs['c-programming-fundamentals'],
+            'track': track_objs['3d-rover-odyssey'],
             'level_number': 1,
-            'title': 'Rover Linear Loop',
-            'slug': 'c-programming-fundamentals-1-rover-linear-loop',
-            'engine': 'ROVER_MAZE',
-            'story_brief': 'The Cyber Rover has rebooted at coordinate (0,0). Guide it straight east to reach the extraction portal at (3,0).',
-            'instructions_markdown': 'Use a C `for` loop to print `MOVE_FORWARD` 3 times. The live animation engine will translate each output into rover steps.',
-            'starter_code_c': '#include <stdio.h>\n\nint main() {\n    // Task: Print MOVE_FORWARD 3 times\n    for (int i = 0; i < 3; i++) {\n        printf("MOVE_FORWARD\\n");\n    }\n    return 0;\n}',
-            'starter_code_python': 'for i in range(3):\n    print("MOVE_FORWARD")',
-            'starter_code_javascript': 'for(let i=0; i<3; i++) {\n    console.log("MOVE_FORWARD");\n}',
+            'title': 'Level 1: Linear Thrust (Sequences)',
+            'slug': '3d-rover-odyssey-1-linear-sequence',
+            'engine': 'ROVER_3D',
+            'story_brief': 'The 3D Cyber Rover has touched down on Sector Alpha at coordinate (0,0). Drive straight east across the 3D tile bridge to reach the Warp Portal at (4,0).',
+            'instructions_markdown': 'Call `rover.move_forward()` 4 times in sequence, or use a loop. Collect the crystal on the path and enter the warp portal.',
+            'starter_code_python': '# Level 1: Linear Thrust\nfor i in range(4):\n    rover.move_forward()\n',
+            'starter_code_javascript': '// Level 1: Linear Thrust\nfor (let i = 0; i < 4; i++) {\n    rover.moveForward();\n}\n',
+            'starter_code_c': '// Level 1: Linear Thrust\nfor (int i = 0; i < 4; i++) {\n    move_forward();\n}\n',
             'maze_grid_config': {
-                'rows': 8, 'cols': 8,
-                'start': {'x': 0, 'y': 0, 'dir': 'east'},
-                'portal': {'x': 3, 'y': 0},
-                'obstacles': [{'x': 1, 'y': 1}, {'x': 2, 'y': 1}],
-                'gems': [{'x': 1, 'y': 0}, {'x': 2, 'y': 0}]
+                'cols': 8, 'rows': 8,
+                'start': {'x': 0, 'z': 0, 'dir': 'east'},
+                'portal': {'x': 4, 'z': 0},
+                'obstacles': [{'x': 2, 'z': 1}, {'x': 3, 'z': 1}],
+                'gems': [{'x': 2, 'z': 0}]
             },
-            'test_cases': [
-                {'input': '', 'expected_output': 'MOVE_FORWARD\nMOVE_FORWARD\nMOVE_FORWARD', 'is_hidden': False}
-            ],
             'xp_reward': 100,
-            'hints': ['Use `printf("MOVE_FORWARD\\n");` inside a for loop with loop counter i = 0 to 2.']
+            'hints': ['Use `for i in range(4): rover.move_forward()` to advance 4 tiles eastward.']
         },
+        # Level 2: For Loops & Repeating Patterns
         {
-            'track': track_objs['c-programming-fundamentals'],
+            'track': track_objs['3d-rover-odyssey'],
             'level_number': 2,
-            'title': 'Array Inversion in C',
-            'slug': 'c-programming-fundamentals-2-array-inversion',
-            'engine': 'CODE_JUDGE',
-            'story_brief': 'Invert the telemetry sensor buffer array before feeding it to the navigation computer.',
-            'instructions_markdown': 'Read an integer N, followed by N integers. Print the array in reverse order separated by spaces.',
-            'starter_code_c': '#include <stdio.h>\n\nint main() {\n    int n;\n    if (scanf("%d", &n) != 1) return 0;\n    int arr[100];\n    for (int i = 0; i < n; i++) {\n        scanf("%d", &arr[i]);\n    }\n    // Print in reverse order:\n    for (int i = n - 1; i >= 0; i--) {\n        printf("%d%s", arr[i], (i == 0) ? "" : " ");\n    }\n    printf("\\n");\n    return 0;\n}',
-            'test_cases': [
-                {'input': '5\n10 20 30 40 50', 'expected_output': '50 40 30 20 10', 'is_hidden': False},
-                {'input': '3\n7 14 21', 'expected_output': '21 14 7', 'is_hidden': True}
-            ],
-            'xp_reward': 120,
-            'hints': ['Loop from `n - 1` down to `0` with `i--`.']
-        },
-        {
-            'track': track_objs['c-programming-fundamentals'],
-            'level_number': 3,
-            'title': 'Rover Obstacle Bypass (Loop & Turns)',
-            'slug': 'c-programming-fundamentals-3-obstacle-bypass',
-            'engine': 'ROVER_MAZE',
-            'story_brief': 'A laser obstacle blocks coordinate (2,0). Steer the rover around it to reach the portal at (3,2).',
-            'instructions_markdown': 'Print sequential commands (`MOVE_FORWARD`, `TURN_RIGHT`, `TURN_LEFT`) to safely reach portal at (3,2).',
-            'starter_code_c': '#include <stdio.h>\n\nint main() {\n    printf("MOVE_FORWARD\\n");\n    printf("TURN_RIGHT\\n");\n    printf("MOVE_FORWARD\\n");\n    printf("MOVE_FORWARD\\n");\n    printf("TURN_LEFT\\n");\n    printf("MOVE_FORWARD\\n");\n    printf("MOVE_FORWARD\\n");\n    return 0;\n}',
+            'title': 'Level 2: The Crystal Corridor (For Loops)',
+            'slug': '3d-rover-odyssey-2-for-loops-repeat',
+            'engine': 'ROVER_3D',
+            'story_brief': 'Energy crystals are lined up along coordinate row Z=0. Traverse the corridor and harvest all 3 crystals before entering the extraction portal.',
+            'instructions_markdown': 'Use a `for` loop to advance 5 tiles and collect each crystal along the way.',
+            'starter_code_python': '# Level 2: Harvest all crystals\nfor i in range(5):\n    rover.move_forward()\n    rover.collect()\n',
+            'starter_code_javascript': '// Level 2: Harvest all crystals\nfor (let i = 0; i < 5; i++) {\n    rover.moveForward();\n    rover.collect();\n}\n',
+            'starter_code_c': 'for (int i = 0; i < 5; i++) {\n    move_forward();\n    collect();\n}\n',
             'maze_grid_config': {
-                'rows': 8, 'cols': 8,
-                'start': {'x': 0, 'y': 0, 'dir': 'east'},
-                'portal': {'x': 3, 'y': 2},
-                'obstacles': [{'x': 2, 'y': 0}, {'x': 2, 'y': 1}],
-                'gems': [{'x': 1, 'y': 0}, {'x': 1, 'y': 2}]
+                'cols': 8, 'rows': 8,
+                'start': {'x': 0, 'z': 0, 'dir': 'east'},
+                'portal': {'x': 5, 'z': 0},
+                'obstacles': [{'x': 1, 'z': 1}, {'x': 3, 'z': 1}],
+                'gems': [{'x': 1, 'z': 0}, {'x': 3, 'z': 0}, {'x': 4, 'z': 0}]
             },
-            'test_cases': [
-                {'input': '', 'expected_output': 'MOVE_FORWARD\nTURN_RIGHT\nMOVE_FORWARD\nMOVE_FORWARD\nTURN_LEFT\nMOVE_FORWARD\nMOVE_FORWARD', 'is_hidden': False}
-            ],
-            'xp_reward': 150,
-            'hints': ['Turn right to step southward around the obstacle, then turn left to resume eastward movement.']
-        },
-
-        # Track 2: C++ OOP & STL
-        {
-            'track': track_objs['cpp-oop-stl-arena'],
-            'level_number': 1,
-            'title': 'Vector Ascending Sort',
-            'slug': 'cpp-oop-stl-arena-1-vector-sort',
-            'engine': 'CODE_JUDGE',
-            'story_brief': 'Sort university student merit scores in ascending order using C++ STL `std::vector` and `<algorithm>`.',
-            'instructions_markdown': 'Given N scores, populate a `std::vector<int>`, sort them using `std::sort()`, and print space-separated.',
-            'starter_code_cpp': '#include <iostream>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n\nint main() {\n    int n;\n    if (!(cin >> n)) return 0;\n    vector<int> scores(n);\n    for (int i = 0; i < n; i++) cin >> scores[i];\n    sort(scores.begin(), scores.end());\n    for (int i = 0; i < n; i++) {\n        cout << scores[i] << (i == n - 1 ? "" : " ");\n    }\n    cout << endl;\n    return 0;\n}',
-            'test_cases': [
-                {'input': '5\n88 45 92 70 60', 'expected_output': '45 60 70 88 92', 'is_hidden': False},
-                {'input': '4\n100 20 80 40', 'expected_output': '20 40 80 100', 'is_hidden': True}
-            ],
             'xp_reward': 120,
-            'hints': ['Include `<algorithm>` and call `sort(vec.begin(), vec.end())`.']
+            'hints': ['Collect is automatically triggered on stepping, or explicitly called with `rover.collect()`.']
         },
+        # Level 3: While Loops & Dynamic Distance Sensors
         {
-            'track': track_objs['cpp-oop-stl-arena'],
-            'level_number': 2,
-            'title': 'Student Class OOP Encapsulation',
-            'slug': 'cpp-oop-stl-arena-2-student-oop',
-            'engine': 'CODE_JUDGE',
-            'story_brief': 'Create a `Student` class with attributes `name` and `id`, and a member function `display()`.',
-            'instructions_markdown': 'Read string name and integer ID, instantiate a `Student` object, and call `display()` printing formatted output.',
-            'starter_code_cpp': '#include <iostream>\n#include <string>\n\nusing namespace std;\n\nclass Student {\nprivate:\n    string name;\n    int id;\npublic:\n    Student(string n, int i) : name(n), id(i) {}\n    void display() {\n        cout << "ID: " << id << " | Name: " << name << endl;\n    }\n};\n\nint main() {\n    string name;\n    int id;\n    if (cin >> name >> id) {\n        Student s(name, id);\n        s.display();\n    }\n    return 0;\n}',
-            'test_cases': [
-                {'input': 'Sakib 1119003', 'expected_output': 'ID: 1119003 | Name: Sakib', 'is_hidden': False}
-            ],
+            'track': track_objs['3d-rover-odyssey'],
+            'level_number': 3,
+            'title': 'Level 3: Dynamic Distance Sensors (While Loops)',
+            'slug': '3d-rover-odyssey-3-while-loops-sensors',
+            'engine': 'ROVER_3D',
+            'story_brief': 'The distance to the warp portal is unknown. Use the front sensor to stop exactly before the laser barrier, turn right, and reach the portal.',
+            'instructions_markdown': 'Use `while rover.sensor_front() != "laser":` to drive forward dynamically, then turn right and advance.',
+            'starter_code_python': '# Level 3: Dynamic Sensors with While Loop\nwhile rover.sensor_front() != "laser":\n    rover.move_forward()\n\nrover.turn_right()\nfor i in range(3):\n    rover.move_forward()\n',
+            'starter_code_javascript': 'while (rover.sensorFront() !== "laser") {\n    rover.moveForward();\n}\nrover.turnRight();\nfor (let i = 0; i < 3; i++) {\n    rover.moveForward();\n}\n',
+            'starter_code_c': 'while (sensor_front() != "laser") {\n    move_forward();\n}\nturn_right();\nfor(int i=0; i<3; i++) move_forward();\n',
+            'maze_grid_config': {
+                'cols': 8, 'rows': 8,
+                'start': {'x': 0, 'z': 0, 'dir': 'east'},
+                'portal': {'x': 4, 'z': 3},
+                'obstacles': [{'x': 5, 'z': 0}],
+                'gems': [{'x': 2, 'z': 0}, {'x': 4, 'z': 1}]
+            },
             'xp_reward': 140,
-            'hints': ['Encapsulate variables in private scope and expose a public constructor.']
+            'hints': ['The front sensor returns "laser", "gem", "portal", or "clear".']
         },
+        # Level 4: Conditionals & Hazard Avoidance
         {
-            'track': track_objs['cpp-oop-stl-arena'],
-            'level_number': 3,
-            'title': 'Frequency Map Counter',
-            'slug': 'cpp-oop-stl-arena-3-frequency-map',
-            'engine': 'CODE_JUDGE',
-            'story_brief': 'Count the frequency of programming language selections using `std::map<string, int>`.',
-            'instructions_markdown': 'Given N words, print the distinct words and their counts in alphabetical order.',
-            'starter_code_cpp': '#include <iostream>\n#include <map>\n#include <string>\n\nusing namespace std;\n\nint main() {\n    int n;\n    if (!(cin >> n)) return 0;\n    map<string, int> freq;\n    for (int i = 0; i < n; i++) {\n        string lang;\n        cin >> lang;\n        freq[lang]++;\n    }\n    for (auto const& [key, val] : freq) {\n        cout << key << ": " << val << endl;\n    }\n    return 0;\n}',
-            'test_cases': [
-                {'input': '4\nC++ Python C++ JavaScript', 'expected_output': 'C++: 2\nJavaScript: 1\nPython: 1', 'is_hidden': False}
-            ],
-            'xp_reward': 160,
-            'hints': ['`std::map` automatically sorts keys in ascending order.']
-        },
-
-        # Track 3: Python Logic & Automation
-        {
-            'track': track_objs['python-logic-automation'],
-            'level_number': 1,
-            'title': 'List Comprehension Evens Filter',
-            'slug': 'python-logic-automation-1-list-comp',
-            'engine': 'CODE_JUDGE',
-            'story_brief': 'Filter out odd numbers from a telemetry stream using Python list comprehension.',
-            'instructions_markdown': 'Read space-separated integers from stdin and print only the even numbers separated by spaces.',
-            'starter_code_python': 'import sys\n\nline = sys.stdin.read().strip()\nif line:\n    nums = [int(x) for x in line.split()]\n    evens = [x for x in nums if x % 2 == 0]\n    print(*(evens))\n',
-            'test_cases': [
-                {'input': '1 2 3 4 5 6 7 8', 'expected_output': '2 4 6 8', 'is_hidden': False},
-                {'input': '11 22 33 44', 'expected_output': '22 44', 'is_hidden': True}
-            ],
-            'xp_reward': 100,
-            'hints': ['Use `[x for x in nums if x % 2 == 0]` and `print(*evens)`.']
-        },
-        {
-            'track': track_objs['python-logic-automation'],
-            'level_number': 2,
-            'title': 'BAIUST Student ID Validator',
-            'slug': 'python-logic-automation-2-id-validator',
-            'engine': 'CODE_JUDGE',
-            'story_brief': 'Validate if an input string is a valid 7-digit BAIUST Student ID starting with 111.',
-            'instructions_markdown': 'Print "VALID" if the string has length 7, is all digits, and starts with "111", else "INVALID".',
-            'starter_code_python': 'import sys\n\nsid = sys.stdin.read().strip()\nif len(sid) == 7 and sid.isdigit() and sid.startswith("111"):\n    print("VALID")\nelse:\n    print("INVALID")\n',
-            'test_cases': [
-                {'input': '1119003', 'expected_output': 'VALID', 'is_hidden': False},
-                {'input': '1234567', 'expected_output': 'INVALID', 'is_hidden': False}
-            ],
-            'xp_reward': 110,
-            'hints': ['Check `len(sid) == 7`, `sid.isdigit()`, and `sid.startswith("111")`.']
-        },
-        {
-            'track': track_objs['python-logic-automation'],
-            'level_number': 3,
-            'title': 'Python Rover Diagonal Sweep',
-            'slug': 'python-logic-automation-3-rover-diagonal',
-            'engine': 'ROVER_MAZE',
-            'story_brief': 'Navigate the rover in a zigzag stair pattern from (0,0) to target portal at (2,2).',
-            'instructions_markdown': 'Output alternating forward and right/left moves to reach (2,2) dodging laser barriers.',
-            'starter_code_python': 'moves = ["MOVE_FORWARD", "TURN_RIGHT", "MOVE_FORWARD", "TURN_LEFT", "MOVE_FORWARD", "TURN_RIGHT", "MOVE_FORWARD"]\nfor m in moves:\n    print(m)\n',
+            'track': track_objs['3d-rover-odyssey'],
+            'level_number': 4,
+            'title': 'Level 4: Hazard Avoidance (Conditionals)',
+            'slug': '3d-rover-odyssey-4-conditionals-hazards',
+            'engine': 'ROVER_3D',
+            'story_brief': 'Pulsing laser hazards block the direct path. Use an `if/else` conditional or sensor check to bypass the laser barrier safely.',
+            'instructions_markdown': 'Dodge around laser obstacles at (2,0) by navigating through row Z=1 and returning to the portal.',
+            'starter_code_python': '# Level 4: Bypass Laser\nrover.move_forward()\nrover.turn_right()\nrover.move_forward()\nrover.turn_left()\nfor i in range(3):\n    rover.move_forward()\nrover.turn_left()\nrover.move_forward()\n',
+            'starter_code_javascript': 'rover.moveForward();\nrover.turnRight();\nrover.moveForward();\nrover.turnLeft();\nfor(let i=0; i<3; i++) rover.moveForward();\nrover.turnLeft();\nrover.moveForward();\n',
+            'starter_code_c': 'move_forward();\nturn_right();\nmove_forward();\nturn_left();\nfor(int i=0; i<3; i++) move_forward();\nturn_left();\nmove_forward();\n',
             'maze_grid_config': {
-                'rows': 8, 'cols': 8,
-                'start': {'x': 0, 'y': 0, 'dir': 'east'},
-                'portal': {'x': 2, 'y': 2},
-                'obstacles': [{'x': 1, 'y': 0}, {'x': 2, 'y': 1}],
-                'gems': [{'x': 0, 'y': 1}, {'x': 1, 'y': 2}]
+                'cols': 8, 'rows': 8,
+                'start': {'x': 0, 'z': 0, 'dir': 'east'},
+                'portal': {'x': 4, 'z': 0},
+                'obstacles': [{'x': 2, 'z': 0}, {'x': 3, 'z': 0}],
+                'gems': [{'x': 1, 'z': 1}, {'x': 3, 'z': 1}]
             },
-            'test_cases': [
-                {'input': '', 'expected_output': 'MOVE_FORWARD\nTURN_RIGHT\nMOVE_FORWARD\nTURN_LEFT\nMOVE_FORWARD\nTURN_RIGHT\nMOVE_FORWARD', 'is_hidden': False}
-            ],
             'xp_reward': 150,
-            'hints': ['Step forward, turn south, step forward, turn east to create a stair climb.']
+            'hints': ['Step southward to row Z=1, drive eastward, then step northward to portal row Z=0.']
         },
+        # Level 5: Functions & Modular Navigation
+        {
+            'track': track_objs['3d-rover-odyssey'],
+            'level_number': 5,
+            'title': 'Level 5: Modular Step Functions',
+            'slug': '3d-rover-odyssey-5-modular-functions',
+            'engine': 'ROVER_3D',
+            'story_brief': 'Define a reusable helper function `stair_step()` to climb a 3D diagonal terrace of energy crystals.',
+            'instructions_markdown': 'Define a function that moves forward and turns in a zigzag stair pattern.',
+            'starter_code_python': 'def stair_step():\n    rover.move_forward()\n    rover.turn_right()\n    rover.move_forward()\n    rover.turn_left()\n\nfor i in range(3):\n    stair_step()\n',
+            'starter_code_javascript': 'function stairStep() {\n    rover.moveForward();\n    rover.turnRight();\n    rover.moveForward();\n    rover.turnLeft();\n}\n\nfor (let i = 0; i < 3; i++) {\n    stairStep();\n}\n',
+            'starter_code_c': 'for(int i=0; i<3; i++) {\n    move_forward();\n    turn_right();\n    move_forward();\n    turn_left();\n}\n',
+            'maze_grid_config': {
+                'cols': 8, 'rows': 8,
+                'start': {'x': 0, 'z': 0, 'dir': 'east'},
+                'portal': {'x': 3, 'z': 3},
+                'obstacles': [{'x': 1, 'z': 0}, {'x': 2, 'z': 1}],
+                'gems': [{'x': 0, 'z': 1}, {'x': 1, 'z': 2}, {'x': 2, 'z': 3}]
+            },
+            'xp_reward': 160,
+            'hints': ['Functions encapsulate repetitive movement pairs.']
+        },
+        # Level 6: The Zigzag Trench
+        {
+            'track': track_objs['3d-rover-odyssey'],
+            'level_number': 6,
+            'title': 'Level 6: The Zigzag Trench',
+            'slug': '3d-rover-odyssey-6-zigzag-trench',
+            'engine': 'ROVER_3D',
+            'story_brief': 'Laser barriers flank both sides of a narrow serpentine trench. Execute timed turns to maintain clearance.',
+            'instructions_markdown': 'Navigate through the serpentine trench from (0,0) to (5,2) collecting 3 energy crystals.',
+            'starter_code_python': '# Level 6: Serpentine Trench\nfor step in range(3):\n    for i in range(2):\n        rover.move_forward()\n    rover.turn_right()\n    rover.move_forward()\n    rover.turn_left()\n',
+            'starter_code_javascript': 'for (let step = 0; step < 3; step++) {\n    rover.moveForward();\n    rover.moveForward();\n    rover.turnRight();\n    rover.moveForward();\n    rover.turnLeft();\n}\n',
+            'starter_code_c': 'for(int s=0; s<3; s++) {\n    move_forward(); move_forward();\n    turn_right(); move_forward(); turn_left();\n}\n',
+            'maze_grid_config': {
+                'cols': 8, 'rows': 8,
+                'start': {'x': 0, 'z': 0, 'dir': 'east'},
+                'portal': {'x': 5, 'z': 2},
+                'obstacles': [{'x': 0, 'z': 1}, {'x': 2, 'z': 0}, {'x': 3, 'z': 2}],
+                'gems': [{'x': 1, 'z': 0}, {'x': 3, 'z': 1}, {'x': 4, 'z': 2}]
+            },
+            'xp_reward': 180,
+            'hints': ['Use nested loops to traverse alternating straight and turn segments.']
+        },
+        # Level 7: The Chamber of Four Crystals
+        {
+            'track': track_objs['3d-rover-odyssey'],
+            'level_number': 7,
+            'title': 'Level 7: Chamber of Four Crystals',
+            'slug': '3d-rover-odyssey-7-chamber-four-crystals',
+            'engine': 'ROVER_3D',
+            'story_brief': 'Four energy crystals are placed at the 4 cardinal compass corners around a central laser barrier.',
+            'instructions_markdown': 'Sweep around the perimeter of the chamber in a full 360-degree loop and reach the portal.',
+            'starter_code_python': '# Perimeter Sweep\nfor side in range(4):\n    for i in range(3):\n        rover.move_forward()\n    rover.turn_right()\nrover.move_forward()\n',
+            'starter_code_javascript': 'for (let side = 0; side < 4; side++) {\n    for (let i = 0; i < 3; i++) rover.moveForward();\n    rover.turnRight();\n}\nrover.moveForward();\n',
+            'starter_code_c': 'for(int s=0; s<4; s++) {\n    for(int i=0; i<3; i++) move_forward();\n    turn_right();\n}\nmove_forward();\n',
+            'maze_grid_config': {
+                'cols': 8, 'rows': 8,
+                'start': {'x': 1, 'z': 1, 'dir': 'east'},
+                'portal': {'x': 2, 'z': 1},
+                'obstacles': [{'x': 2, 'z': 2}, {'x': 3, 'z': 2}],
+                'gems': [{'x': 4, 'z': 1}, {'x': 4, 'z': 4}, {'x': 1, 'z': 4}, {'x': 1, 'z': 2}]
+            },
+            'xp_reward': 200,
+            'hints': ['A 4-iteration loop with `turn_right()` creates a closed square perimeter scan.']
+        },
+        # Level 8: Precision Spiral
+        {
+            'track': track_objs['3d-rover-odyssey'],
+            'level_number': 8,
+            'title': 'Level 8: Precision Inward Spiral',
+            'slug': '3d-rover-odyssey-8-precision-spiral',
+            'engine': 'ROVER_3D',
+            'story_brief': 'Spiral inwards toward the central warp portal at (3,3) while harvesting crystals along the inward radius.',
+            'instructions_markdown': 'Drive with decreasing segment lengths: 5 steps, 4 steps, 3 steps, 2 steps, and 1 step.',
+            'starter_code_python': '# Inward Spiral\nfor length in [5, 4, 3, 2, 1]:\n    for step in range(length):\n        rover.move_forward()\n    rover.turn_right()\n',
+            'starter_code_javascript': 'const lengths = [5, 4, 3, 2, 1];\nfor (let len of lengths) {\n    for (let i = 0; i < len; i++) rover.moveForward();\n    rover.turnRight();\n}\n',
+            'starter_code_c': 'int lens[5] = {5, 4, 3, 2, 1};\nfor(int l=0; l<5; l++) {\n    for(int i=0; i<lens[l]; i++) move_forward();\n    turn_right();\n}\n',
+            'maze_grid_config': {
+                'cols': 8, 'rows': 8,
+                'start': {'x': 0, 'z': 0, 'dir': 'east'},
+                'portal': {'x': 3, 'z': 3},
+                'obstacles': [{'x': 1, 'z': 1}, {'x': 4, 'z': 2}],
+                'gems': [{'x': 5, 'z': 0}, {'x': 5, 'z': 4}, {'x': 2, 'z': 4}, {'x': 2, 'z': 2}]
+            },
+            'xp_reward': 220,
+            'hints': ['Use an array of step lengths: `[5, 4, 3, 2, 1]`.']
+        },
+        # Level 9: Dynamic Sensor Maze Solver
+        {
+            'track': track_objs['3d-rover-odyssey'],
+            'level_number': 9,
+            'title': 'Level 9: Wall-Follower Sensor Algorithm',
+            'slug': '3d-rover-odyssey-9-wall-follower',
+            'engine': 'ROVER_3D',
+            'story_brief': 'The maze path contains multiple obstacles. Use continuous sensor checking to auto-navigate past obstacles until reaching the portal.',
+            'instructions_markdown': 'Loop while not at portal: if front is blocked, turn right, else move forward.',
+            'starter_code_python': '# Wall-Follower Algorithm\nwhile not rover.is_at_portal():\n    if rover.has_obstacle_ahead():\n        rover.turn_right()\n    else:\n        rover.move_forward()\n',
+            'starter_code_javascript': 'while (!rover.isAtPortal()) {\n    if (rover.hasObstacleAhead()) {\n        rover.turnRight();\n    } else {\n        rover.moveForward();\n    }\n}\n',
+            'starter_code_c': 'while (!is_at_portal()) {\n    if (detect_gem()) collect();\n    move_forward();\n}\n',
+            'maze_grid_config': {
+                'cols': 8, 'rows': 8,
+                'start': {'x': 0, 'z': 0, 'dir': 'east'},
+                'portal': {'x': 6, 'z': 4},
+                'obstacles': [{'x': 3, 'z': 0}, {'x': 3, 'z': 1}, {'x': 5, 'z': 3}],
+                'gems': [{'x': 2, 'z': 0}, {'x': 4, 'z': 2}, {'x': 6, 'z': 2}]
+            },
+            'xp_reward': 250,
+            'hints': ['`rover.has_obstacle_ahead()` inspects the tile immediately in front.']
+        },
+        # Level 10: Grandmaster Labyrinth
+        {
+            'track': track_objs['3d-rover-odyssey'],
+            'level_number': 10,
+            'title': 'Level 10: Grandmaster 3D Labyrinth',
+            'slug': '3d-rover-odyssey-10-grandmaster-labyrinth',
+            'engine': 'ROVER_3D',
+            'story_brief': 'The ultimate test for the BAIUST Grandmaster badge. Solve a multi-room 3D labyrinth, harvest all 5 power crystals, and unlock the final Warp Gateway.',
+            'instructions_markdown': 'Synthesize loops, conditionals, and sensors to conquer the 8x8 Grandmaster maze.',
+            'starter_code_python': '# Grandmaster Labyrinth Solution\nfor i in range(4):\n    rover.move_forward()\nrover.turn_right()\nfor i in range(5):\n    rover.move_forward()\nrover.turn_left()\nfor i in range(3):\n    rover.move_forward()\n',
+            'starter_code_javascript': 'for (let i = 0; i < 4; i++) rover.moveForward();\nrover.turnRight();\nfor (let i = 0; i < 5; i++) rover.moveForward();\nrover.turnLeft();\nfor (let i = 0; i < 3; i++) rover.moveForward();\n',
+            'starter_code_c': 'for(int i=0; i<4; i++) move_forward();\nturn_right();\nfor(int i=0; i<5; i++) move_forward();\nturn_left();\nfor(int i=0; i<3; i++) move_forward();\n',
+            'maze_grid_config': {
+                'cols': 8, 'rows': 8,
+                'start': {'x': 0, 'z': 0, 'dir': 'east'},
+                'portal': {'x': 7, 'z': 5},
+                'obstacles': [{'x': 5, 'z': 0}, {'x': 2, 'z': 2}, {'x': 4, 'z': 3}, {'x': 6, 'z': 4}],
+                'gems': [{'x': 2, 'z': 0}, {'x': 4, 'z': 1}, {'x': 4, 'z': 4}, {'x': 5, 'z': 5}, {'x': 6, 'z': 5}]
+            },
+            'xp_reward': 300,
+            'hints': ['Map your route carefully through corridor checkpoints.']
+        },
+    ]
 
-        # Track 4: JavaScript & DOM Manipulation
+    for ld in levels_3d:
+        ChallengeLevel.objects.update_or_create(slug=ld['slug'], defaults=ld)
+    print("✅ 10 Progressive 3D Rover Odyssey Levels seeded.")
+
+    # 6. Seed DOM Builder & Code Judge Levels for other tracks
+    other_levels = [
+        # JavaScript DOM
         {
             'track': track_objs['javascript-dom-manipulation'],
             'level_number': 1,
-            'title': 'Cyber Drone Docking (Flexbox Alignment)',
+            'title': 'Drone Docking (Flexbox Alignment)',
             'slug': 'javascript-dom-manipulation-1-drone-docking-flexbox',
             'engine': 'DOM_BUILDER',
-            'story_brief': 'Align the 3 Cyber Drones onto the target landing pads using CSS Flexbox rules.',
-            'instructions_markdown': 'Set `justify-content` and `align-items` so the drones sit squarely on the pads.',
+            'story_brief': 'Align the 3 Cyber Drones onto target landing pads using CSS Flexbox rules.',
+            'instructions_markdown': 'Set `justify-content` and `align-items` so drones dock on target pads.',
             'starter_code_javascript': 'justify-content: space-between;\nalign-items: center;\n',
             'dom_builder_config': {
                 'type': 'FLEXBOX',
@@ -373,50 +435,11 @@ def run_seed():
                 'target_styles': {'justifyContent': 'space-between', 'alignItems': 'center'},
                 'target_css': 'justify-content: space-between; align-items: center;'
             },
-            'test_cases': [
-                {'input': '', 'expected_output': 'justify-content: space-between;\nalign-items: center;', 'is_hidden': False}
-            ],
+            'test_cases': [{'input': '', 'expected_output': 'justify-content: space-between;\nalign-items: center;', 'is_hidden': False}],
             'xp_reward': 130,
             'hints': ['Use `justify-content: space-between;` and `align-items: center;`.']
         },
-        {
-            'track': track_objs['javascript-dom-manipulation'],
-            'level_number': 2,
-            'title': 'DOM Element Creation & ClassList',
-            'slug': 'javascript-dom-manipulation-2-dom-create',
-            'engine': 'CODE_JUDGE',
-            'story_brief': 'Write JavaScript logic simulating dynamic badge generation on student profiles.',
-            'instructions_markdown': 'Output a simulated DOM node string representing `<span class="badge active">DOM Explorer</span>`.',
-            'starter_code_javascript': 'const tag = "span";\nconst className = "badge active";\nconst text = "DOM Explorer";\nconsole.log(`<${tag} class="${className}">${text}</${tag}>`);\n',
-            'test_cases': [
-                {'input': '', 'expected_output': '<span class="badge active">DOM Explorer</span>', 'is_hidden': False}
-            ],
-            'xp_reward': 120,
-            'hints': ['Construct template literal with tag, class, and inner text.']
-        },
-        {
-            'track': track_objs['javascript-dom-manipulation'],
-            'level_number': 3,
-            'title': 'Flex Column Center Stage',
-            'slug': 'javascript-dom-manipulation-3-flex-column',
-            'engine': 'DOM_BUILDER',
-            'story_brief': 'Stack the Cyber Drones vertically in the center of the visual stage.',
-            'instructions_markdown': 'Apply `flex-direction: column;` and center them horizontally and vertically.',
-            'starter_code_javascript': 'flex-direction: column;\njustify-content: center;\nalign-items: center;\ngap: 1rem;\n',
-            'dom_builder_config': {
-                'type': 'FLEXBOX',
-                'item_count': 3,
-                'target_styles': {'flexDirection': 'column', 'justifyContent': 'center', 'alignItems': 'center'},
-                'target_css': 'flex-direction: column; justify-content: center; align-items: center; gap: 1rem;'
-            },
-            'test_cases': [
-                {'input': '', 'expected_output': 'flex-direction: column;\njustify-content: center;\nalign-items: center;', 'is_hidden': False}
-            ],
-            'xp_reward': 150,
-            'hints': ['Change main axis with `flex-direction: column;` and center on both axes.']
-        },
-
-        # Track 5: PHP & MySQLi CRUD Mastery
+        # PHP & MySQLi CRUD
         {
             'track': track_objs['php-mysqli-crud-mastery'],
             'level_number': 1,
@@ -425,112 +448,32 @@ def run_seed():
             'engine': 'CODE_JUDGE',
             'story_brief': 'Demonstrate procedural PHP MySQLi query preparation for inserting a student record.',
             'instructions_markdown': 'Formulate the prepared query string: `INSERT INTO students (id, name, dept) VALUES (1119003, "Sakib", "CSE");` and echo "SUCCESS_INSERT".',
-            'starter_code_php': '<?php\n// CSE 324 Lab Evaluation iv - Prepared Insert\n$student_id = 1119003;\n$name = "Sakib";\n$dept = "CSE";\n\n// Simulate execution\necho "SUCCESS_INSERT";\n?>',
-            'test_cases': [
-                {'input': '', 'expected_output': 'SUCCESS_INSERT', 'is_hidden': False}
-            ],
+            'starter_code_php': '<?php\n// CSE 324 Lab Evaluation iv - Prepared Insert\n$student_id = 1119003;\n$name = "Sakib";\n$dept = "CSE";\n\necho "SUCCESS_INSERT";\n?>',
+            'test_cases': [{'input': '', 'expected_output': 'SUCCESS_INSERT', 'is_hidden': False}],
             'xp_reward': 140,
-            'hints': ['Ensure the PHP opening tag `<?php` is included.']
+            'hints': ['Include `<?php` tag and echo `SUCCESS_INSERT`.']
         },
+        # C++ Vector Sort
         {
-            'track': track_objs['php-mysqli-crud-mastery'],
-            'level_number': 2,
-            'title': 'MySQLi Fetch Associative Array (SELECT)',
-            'slug': 'php-mysqli-crud-mastery-2-fetch-assoc',
-            'engine': 'CODE_JUDGE',
-            'story_brief': 'Iterate through a simulated database result set using PHP associative arrays.',
-            'instructions_markdown': 'Given an array representing student rows, loop through with `foreach` and print `ID: <id> - <name>`.',
-            'starter_code_php': '<?php\n$rows = [\n    ["id" => "1119003", "name" => "Sakib"],\n    ["id" => "1119001", "name" => "Tanvir"]\n];\n\nforeach ($rows as $row) {\n    echo "ID: " . $row["id"] . " - " . $row["name"] . "\\n";\n}\n?>',
-            'test_cases': [
-                {'input': '', 'expected_output': 'ID: 1119003 - Sakib\nID: 1119001 - Tanvir', 'is_hidden': False}
-            ],
-            'xp_reward': 150,
-            'hints': ['Access values with `$row["id"]` and `$row["name"]`.']
-        },
-        {
-            'track': track_objs['php-mysqli-crud-mastery'],
-            'level_number': 3,
-            'title': 'Student Score Updater (UPDATE SQL)',
-            'slug': 'php-mysqli-crud-mastery-3-update-score',
-            'engine': 'CODE_JUDGE',
-            'story_brief': 'Update student lab evaluation score using `UPDATE student_scores SET score = 100 WHERE student_id = ?`.',
-            'instructions_markdown': 'Echo "SCORE_UPDATED: 100" to verify successful update query execution.',
-            'starter_code_php': '<?php\n$score = 100;\n$sid = "1119003";\necho "SCORE_UPDATED: " . $score;\n?>',
-            'test_cases': [
-                {'input': '', 'expected_output': 'SCORE_UPDATED: 100', 'is_hidden': False}
-            ],
-            'xp_reward': 160,
-            'hints': ['Bind parameter to the UPDATE statement in MySQLi.']
-        },
-
-        # Track 6: HTML5 & CSS3 Layout Games
-        {
-            'track': track_objs['html5-css3-layout-games'],
+            'track': track_objs['cpp-oop-stl-arena'],
             'level_number': 1,
-            'title': 'Flexbox Space-Around Stage',
-            'slug': 'html5-css3-layout-games-1-space-around',
-            'engine': 'DOM_BUILDER',
-            'story_brief': 'Distribute the 3 Cyber Drones evenly across the visual pad container.',
-            'instructions_markdown': 'Apply `justify-content: space-around;` to give equal spacing around each element.',
-            'starter_code_javascript': 'justify-content: space-around;\nalign-items: center;\n',
-            'dom_builder_config': {
-                'type': 'FLEXBOX',
-                'item_count': 3,
-                'target_styles': {'justifyContent': 'space-around', 'alignItems': 'center'},
-                'target_css': 'justify-content: space-around; align-items: center;'
-            },
-            'test_cases': [
-                {'input': '', 'expected_output': 'justify-content: space-around;\nalign-items: center;', 'is_hidden': False}
-            ],
-            'xp_reward': 110,
-            'hints': ['Use `justify-content: space-around;` to allocate half-size space on the outer edges.']
-        },
-        {
-            'track': track_objs['html5-css3-layout-games'],
-            'level_number': 2,
-            'title': 'Semantic Table Structure in HTML5',
-            'slug': 'html5-css3-layout-games-2-semantic-table',
+            'title': 'Vector Ascending Sort',
+            'slug': 'cpp-oop-stl-arena-1-vector-sort',
             'engine': 'CODE_JUDGE',
-            'story_brief': 'Construct a clean HTML5 table with `<thead>`, `<tbody>`, and `colspan="2"`.',
-            'instructions_markdown': 'Output a semantic table row string `<th colspan="2">BAIUST CSE</th>`.',
-            'starter_code_python': 'print(\'<th colspan="2">BAIUST CSE</th>\')\n',
-            'test_cases': [
-                {'input': '', 'expected_output': '<th colspan="2">BAIUST CSE</th>', 'is_hidden': False}
-            ],
-            'xp_reward': 100,
-            'hints': ['Check `colspan="2"` casing and quotation.']
-        },
-        {
-            'track': track_objs['html5-css3-layout-games'],
-            'level_number': 3,
-            'title': 'Flex End Ground Landing',
-            'slug': 'html5-css3-layout-games-3-flex-end',
-            'engine': 'DOM_BUILDER',
-            'story_brief': 'Land the cyber drones onto the bottom right pads of the stage area.',
-            'instructions_markdown': 'Align elements to the end of both main and cross axes using `justify-content: flex-end;` and `align-items: flex-end;`.',
-            'starter_code_javascript': 'justify-content: flex-end;\nalign-items: flex-end;\n gap: 1rem;\n',
-            'dom_builder_config': {
-                'type': 'FLEXBOX',
-                'item_count': 3,
-                'target_styles': {'justifyContent': 'flex-end', 'alignItems': 'flex-end'},
-                'target_css': 'justify-content: flex-end; align-items: flex-end; gap: 1rem;'
-            },
-            'test_cases': [
-                {'input': '', 'expected_output': 'justify-content: flex-end;\nalign-items: flex-end;', 'is_hidden': False}
-            ],
-            'xp_reward': 130,
-            'hints': ['Use `flex-end` for both justify-content and align-items.']
+            'story_brief': 'Sort university student merit scores in ascending order using C++ STL `std::vector` and `<algorithm>`.',
+            'instructions_markdown': 'Given N scores, sort them using `std::sort()` and print space-separated.',
+            'starter_code_cpp': '#include <iostream>\n#include <vector>\n#include <algorithm>\n\nusing namespace std;\n\nint main() {\n    int n;\n    if (!(cin >> n)) return 0;\n    vector<int> scores(n);\n    for (int i = 0; i < n; i++) cin >> scores[i];\n    sort(scores.begin(), scores.end());\n    for (int i = 0; i < n; i++) cout << scores[i] << (i == n - 1 ? "" : " ");\n    cout << endl;\n    return 0;\n}',
+            'test_cases': [{'input': '5\n88 45 92 70 60', 'expected_output': '45 60 70 88 92', 'is_hidden': False}],
+            'xp_reward': 120,
+            'hints': ['Use `sort(scores.begin(), scores.end())`.']
         },
     ]
 
-    for ld in levels_data:
-        lvl, created = ChallengeLevel.objects.update_or_create(
-            slug=ld['slug'],
-            defaults=ld
-        )
-    print("✅ 18 Playable Levels seeded across all 6 tracks.")
+    for ol in other_levels:
+        ChallengeLevel.objects.update_or_create(slug=ol['slug'], defaults=ol)
+    print("✅ Supplementary DOM Builder and Code Judge levels seeded.")
 
-    # 6. Seed 15 Bug Blitz Quiz Questions
+    # 7. Seed 15 Bug Blitz Quiz Questions
     QuizQuestion.objects.all().delete()
     quizzes = [
         {
@@ -542,7 +485,7 @@ def run_seed():
             'option_c': 'pdo_connect()',
             'option_d': 'db_connect()',
             'correct_option': 'B',
-            'explanation': 'In procedural PHP, mysqli_connect() creates a new MySQL connection. The older mysql_connect() has been completely removed in modern PHP.',
+            'explanation': 'In procedural PHP, mysqli_connect() creates a new MySQL connection.',
             'difficulty': 'Easy',
             'points': 20
         },
@@ -555,7 +498,7 @@ def run_seed():
             'option_c': 'mysqli_array()',
             'option_d': 'mysqli_fetch_all_assoc()',
             'correct_option': 'A',
-            'explanation': 'mysqli_fetch_assoc() returns an associative array where keys correspond to column names.',
+            'explanation': 'mysqli_fetch_assoc() returns an associative array matching column names.',
             'difficulty': 'Medium',
             'points': 20
         },
@@ -568,7 +511,7 @@ def run_seed():
             'option_c': 'span-col',
             'option_d': 'col-width',
             'correct_option': 'B',
-            'explanation': 'colspan specifies the number of columns a cell should span, whereas rowspan spans vertically across rows.',
+            'explanation': 'colspan specifies the number of columns a cell should span horizontally.',
             'difficulty': 'Easy',
             'points': 15
         },
@@ -581,20 +524,20 @@ def run_seed():
             'option_c': 'flex-direction',
             'option_d': 'text-align',
             'correct_option': 'B',
-            'explanation': 'justify-content aligns items along the main axis, while align-items aligns them along the cross axis.',
+            'explanation': 'align-items aligns items along the cross axis in Flexbox.',
             'difficulty': 'Easy',
             'points': 15
         },
         {
             'category': 'JAVASCRIPT_DOM',
             'question_text': 'Which DOM method selects the first element matching a specified CSS selector string?',
-            'code_snippet': 'const drone = document.________("#cyber-drone");',
+            'code_snippet': 'const rover = document.________("#cyber-rover");',
             'option_a': 'getElementById()',
             'option_b': 'querySelector()',
             'option_c': 'getElementsByClassName()',
             'option_d': 'selectElement()',
             'correct_option': 'B',
-            'explanation': 'document.querySelector() accepts standard CSS selector syntax (e.g. #id, .class) and returns the first matching Element node.',
+            'explanation': 'document.querySelector() accepts CSS selector strings and returns the first matching element.',
             'difficulty': 'Easy',
             'points': 20
         },
@@ -607,7 +550,7 @@ def run_seed():
             'option_c': 'push()',
             'option_d': 'insert()',
             'correct_option': 'A',
-            'explanation': 'el.classList.add("active") is the standard API. el.classList also provides remove(), toggle(), and contains().',
+            'explanation': 'el.classList.add("active") is the standard method for adding a class.',
             'difficulty': 'Easy',
             'points': 15
         },
@@ -620,33 +563,20 @@ def run_seed():
             'option_c': 'Garbage address value',
             'option_d': 'Compilation Error',
             'correct_option': 'B',
-            'explanation': 'Dereferencing the pointer with `*ptr = 99` directly modifies the memory address of variable x.',
+            'explanation': 'Dereferencing the pointer modifies the memory address of x directly.',
             'difficulty': 'Medium',
             'points': 25
         },
         {
-            'category': 'C_CPP',
-            'question_text': 'What is the output of this C loop with prefix increment?',
-            'code_snippet': 'int count = 0;\nfor (int i = 0; i < 3; ++i) {\n    count += 2;\n}\nprintf("%d", count);',
-            'option_a': '4',
-            'option_b': '6',
-            'option_c': '8',
-            'option_d': '0',
-            'correct_option': 'B',
-            'explanation': 'The loop executes exactly 3 times (i=0, 1, 2). Count increments by 2 each time: 0 + 2 + 2 + 2 = 6.',
-            'difficulty': 'Medium',
-            'points': 20
-        },
-        {
             'category': 'PYTHON',
-            'question_text': 'What is the result of evaluating this Python list comprehension?',
+            'question_text': 'What is the output of evaluating this Python list comprehension?',
             'code_snippet': '[x ** 2 for x in [1, 2, 3] if x > 1]',
             'option_a': '[1, 4, 9]',
             'option_b': '[4, 9]',
             'option_c': '[2, 3]',
             'option_d': '[4]',
             'correct_option': 'B',
-            'explanation': 'Only 2 and 3 satisfy the filter `if x > 1`. 2**2 is 4 and 3**2 is 9, yielding [4, 9].',
+            'explanation': 'Only 2 and 3 are > 1; their squares are 4 and 9.',
             'difficulty': 'Medium',
             'points': 20
         },
@@ -659,20 +589,20 @@ def run_seed():
             'option_c': 'ALTER',
             'option_d': 'CHANGE',
             'correct_option': 'B',
-            'explanation': 'UPDATE is used to modify data in existing rows. ALTER modifies table schema (columns/types).',
+            'explanation': 'UPDATE modifies data in existing rows of a database table.',
             'difficulty': 'Easy',
             'points': 15
         },
         {
             'category': 'HTML5',
             'question_text': 'Which semantic HTML5 element represents the primary, non-repeating content of a webpage document?',
-            'code_snippet': '<________>\n  <h1>CodeQuest BD</h1>\n</________>',
+            'code_snippet': '<________>\n  <h1>CodeQuest 3D</h1>\n</________>',
             'option_a': '<section>',
             'option_b': '<main>',
             'option_c': '<article>',
             'option_d': '<div>',
             'correct_option': 'B',
-            'explanation': '<main> is specifically reserved for the central topic of the document, excluding headers, footers, and sidebars.',
+            'explanation': '<main> is specifically designated for the primary content of a document.',
             'difficulty': 'Easy',
             'points': 15
         },
@@ -685,7 +615,7 @@ def run_seed():
             'option_c': 'padding-box',
             'option_d': 'margin-box',
             'correct_option': 'B',
-            'explanation': 'border-box includes padding and borders in total width and height calculations, eliminating unexpected sizing bugs.',
+            'explanation': 'border-box includes padding and border in width calculations.',
             'difficulty': 'Medium',
             'points': 20
         },
@@ -698,7 +628,7 @@ def run_seed():
             'option_c': 'on()',
             'option_d': 'registerListener()',
             'correct_option': 'B',
-            'explanation': 'addEventListener() is the standard W3C method for attaching event listeners without overwriting existing handlers.',
+            'explanation': 'addEventListener() is the standard W3C method for event registration.',
             'difficulty': 'Easy',
             'points': 15
         },
@@ -711,20 +641,33 @@ def run_seed():
             'option_c': 'list',
             'option_d': 'stl_vector',
             'correct_option': 'B',
-            'explanation': 'The C++ Standard Library header `<vector>` defines the `std::vector` template class.',
+            'explanation': '<vector> defines the std::vector class template.',
             'difficulty': 'Easy',
             'points': 15
         },
         {
             'category': 'PHP_MYSQL',
-            'question_text': 'Which MySQLi function is used to prevent SQL injection by escaping special characters in a user-supplied string?',
+            'question_text': 'Which MySQLi function escapes special characters in a string for use in an SQL query?',
             'code_snippet': '$clean_id = ________($conn, $_POST["student_id"]);',
             'option_a': 'mysqli_escape()',
             'option_b': 'mysqli_real_escape_string()',
             'option_c': 'mysqli_sanitize()',
             'option_d': 'htmlspecialchars()',
             'correct_option': 'B',
-            'explanation': 'mysqli_real_escape_string() escapes special characters taking into account the current character set of the database connection.',
+            'explanation': 'mysqli_real_escape_string() escapes special characters for safe SQL execution.',
+            'difficulty': 'Medium',
+            'points': 20
+        },
+        {
+            'category': 'C_CPP',
+            'question_text': 'What is the output of this C loop with prefix increment?',
+            'code_snippet': 'int count = 0;\nfor (int i = 0; i < 3; ++i) {\n    count += 2;\n}\nprintf("%d", count);',
+            'option_a': '4',
+            'option_b': '6',
+            'option_c': '8',
+            'option_d': '0',
+            'correct_option': 'B',
+            'explanation': 'The loop runs 3 times; 0 + 2 + 2 + 2 = 6.',
             'difficulty': 'Medium',
             'points': 20
         },
@@ -734,12 +677,12 @@ def run_seed():
         QuizQuestion.objects.create(**qd)
     print("✅ 15 Bug Blitz Questions seeded into Bug-Hunter Bank.")
 
-    print("\n🎉 ALL CODEQUEST BD DATA SUCCESSFULLY SEEDED!")
+    print("\n🎉 ALL CODEQUEST 3D DATA SUCCESSFULLY SEEDED!")
     print("----------------------------------------------------------------")
     print("Student Name:    Md Najmus Sakib Rahatul (ID: 1119003)")
     print("Course:          CSE 324 Web Technologies Sessional")
     print("Superuser/Admin: sakib_admin / baiust1119003")
-    print("Playable Levels: 18 levels across 6 tracks")
+    print("3D Rover Levels: 10 Progressive 3D WebGL Mazes")
     print("Bug Blitz Bank:  15 exam-readiness questions")
     print("----------------------------------------------------------------")
 

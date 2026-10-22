@@ -1,18 +1,18 @@
 {% extends 'instructor_panel/base_admin.html' %}
 
-{% block title %}Challenge Levels CRUD — Instructor CMS{% endblock %}
+{% block title %}3D Levels & Maze Designer CRUD — Instructor CMS{% endblock %}
 
 {% block admin_content %}
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-800">
         <div>
             <h1 class="text-xl font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-gamepad text-emerald-400"></i> Challenge Levels Management (CRUD)
+                <i class="fa-solid fa-gamepad text-emerald-400"></i> 3D Levels & Maze Designer (CRUD)
             </h1>
-            <p class="text-xs text-slate-400">Manage levels across Rover Maze, DOM Builder, and Code Judge engines</p>
+            <p class="text-xs text-slate-400">Visually design 3D rover grids, place crystals/lasers, and manage programming challenges</p>
         </div>
         <button onclick="openModal('create-level-modal')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition shadow-lg shadow-emerald-500/20">
-            <i class="fa-solid fa-plus"></i> Create Level
+            <i class="fa-solid fa-plus"></i> Open 3D Level Designer
         </button>
     </div>
 
@@ -24,9 +24,9 @@
                     <tr>
                         <th class="p-3.5 pl-5">Track</th>
                         <th class="p-3.5">Lvl #</th>
-                        <th class="p-3.5">Title</th>
+                        <th class="p-3.5">Level Title</th>
                         <th class="p-3.5">Engine</th>
-                        <th class="p-3.5">Test Cases</th>
+                        <th class="p-3.5">Grid & Elements</th>
                         <th class="p-3.5">XP</th>
                         <th class="p-3.5 pr-5 text-right">Actions</th>
                     </tr>
@@ -35,19 +35,26 @@
                     {% for lvl in levels %}
                         <tr class="hover:bg-slate-800/40">
                             <td class="p-3.5 pl-5 font-semibold text-white">
-                                <span class="bg-slate-800 px-2 py-0.5 rounded text-[11px]">{{ lvl.track.title }}</span>
+                                <span class="bg-slate-800 px-2.5 py-1 rounded text-[11px]">{{ lvl.track.title }}</span>
                             </td>
                             <td class="p-3.5 font-mono font-bold text-slate-300">Lvl {{ lvl.level_number }}</td>
                             <td class="p-3.5 font-bold text-white">{{ lvl.title }}</td>
                             <td class="p-3.5">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold {% if lvl.engine == 'ROVER_MAZE' %}bg-indigo-500/10 text-indigo-400 border border-indigo-500/30{% elif lvl.engine == 'DOM_BUILDER' %}bg-cyan-500/10 text-cyan-400 border border-cyan-500/30{% else %}bg-amber-500/10 text-amber-400 border border-amber-500/30{% endif %}">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold {% if lvl.engine == 'ROVER_3D' or lvl.engine == 'ROVER_MAZE' %}bg-indigo-500/10 text-indigo-400 border border-indigo-500/30{% elif lvl.engine == 'DOM_BUILDER' %}bg-cyan-500/10 text-cyan-400 border border-cyan-500/30{% else %}bg-amber-500/10 text-amber-400 border border-amber-500/30{% endif %}">
                                     {{ lvl.get_engine_display }}
                                 </span>
                             </td>
-                            <td class="p-3.5 font-mono text-slate-400">{{ lvl.test_cases|length }} Cases</td>
-                            <td class="p-3.5 font-bold text-amber-400 font-mono">+{{ lvl.xp_reward }}</td>
+                            <td class="p-3.5 font-mono text-slate-400">
+                                {% if lvl.maze_grid_config.gems %}
+                                    <span class="text-cyan-400 font-bold">💎 {{ lvl.maze_grid_config.gems|length }}</span>
+                                    <span class="text-rose-400 font-bold ml-2">⚡ {{ lvl.maze_grid_config.obstacles|length }}</span>
+                                {% else %}
+                                    Standard Cases
+                                {% endif %}
+                            </td>
+                            <td class="p-3.5 font-bold text-amber-400 font-mono">+{{ lvl.xp_reward }} XP</td>
                             <td class="p-3.5 pr-5 text-right space-x-2">
-                                <a href="{% url 'arena:level_play' lvl.slug %}" target="_blank" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800" title="Play">
+                                <a href="{% url 'arena:level_play' lvl.slug %}" target="_blank" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800" title="Play 3D Level">
                                     <i class="fa-solid fa-play"></i>
                                 </a>
                                 <form method="POST" class="inline" onsubmit="return confirm('Delete this level?');">
@@ -69,11 +76,16 @@
     </div>
 </div>
 
-<!-- Modal: Create Level -->
+<!-- Modal: Interactive 3D Level Designer -->
 <div id="create-level-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-4xl w-full p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
         <div class="flex justify-between items-center pb-3 border-b border-slate-800">
-            <h3 class="text-base font-bold text-white">Create Challenge Level</h3>
+            <div>
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-compass-drafting text-emerald-400"></i> Interactive 3D Level Designer
+                </h3>
+                <p class="text-[11px] text-slate-400">Set level properties, click on grid tiles to visually place gems, lasers & portals</p>
+            </div>
             <button onclick="closeModal('create-level-modal')" class="text-slate-400 hover:text-white">✕</button>
         </div>
 
@@ -96,10 +108,10 @@
                 </div>
                 <div>
                     <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Engine *</label>
-                    <select name="engine" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
-                        <option value="CODE_JUDGE">Mode 3: Code Judge</option>
-                        <option value="ROVER_MAZE">Mode 1: Rover Maze</option>
+                    <select name="engine" id="designer-engine-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
+                        <option value="ROVER_3D" selected>Mode 1: 3D Rover Odyssey</option>
                         <option value="DOM_BUILDER">Mode 2: DOM Builder</option>
+                        <option value="CODE_JUDGE">Mode 3: Code Judge</option>
                     </select>
                 </div>
             </div>
@@ -107,37 +119,67 @@
             <div class="grid grid-cols-3 gap-3">
                 <div class="col-span-2">
                     <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Level Title *</label>
-                    <input type="text" name="title" required placeholder="e.g. Reverse Array In-Place" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
+                    <input type="text" name="title" required placeholder="e.g. 3D Laser Labyrinth" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">XP Reward</label>
-                    <input type="number" name="xp_reward" value="100" min="50" max="500" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
+                    <input type="number" name="xp_reward" value="150" min="50" max="500" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-emerald-500">
+                </div>
+            </div>
+
+            <!-- VISUAL 3D GRID CLICKER DESIGNER -->
+            <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
+                <div class="flex flex-wrap justify-between items-center gap-2">
+                    <span class="text-xs font-mono font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-grid-2 text-emerald-400"></i> Visual Tile Palette:
+                    </span>
+
+                    <div class="flex items-center gap-1.5 text-xs font-mono" id="designer-palette">
+                        <button type="button" onclick="setDesignerTool('start')" class="tool-btn bg-emerald-500 text-slate-950 font-bold px-2.5 py-1 rounded-lg">🤖 Start</button>
+                        <button type="button" onclick="setDesignerTool('gem')" class="tool-btn bg-slate-800 text-cyan-300 px-2.5 py-1 rounded-lg">💎 Gem</button>
+                        <button type="button" onclick="setDesignerTool('obstacle')" class="tool-btn bg-slate-800 text-rose-300 px-2.5 py-1 rounded-lg">⚡ Laser</button>
+                        <button type="button" onclick="setDesignerTool('portal')" class="tool-btn bg-slate-800 text-amber-300 px-2.5 py-1 rounded-lg">🏁 Portal</button>
+                        <button type="button" onclick="setDesignerTool('clear')" class="tool-btn bg-slate-800 text-slate-400 px-2.5 py-1 rounded-lg">🧹 Erase</button>
+                    </div>
+                </div>
+
+                <!-- 8x8 Clickable Grid Area -->
+                <div id="designer-grid-canvas" class="grid grid-cols-8 gap-1 max-w-sm mx-auto p-2 bg-slate-900 rounded-xl border border-slate-800"></div>
+
+                <div class="text-[11px] font-mono text-slate-400 text-center">
+                    Click any tile to paint the selected object. Auto-syncs to JSON config below.
                 </div>
             </div>
 
             <div>
                 <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Mission Lore / Story Brief</label>
-                <textarea name="story_brief" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500" placeholder="Gamified scenario narrative..."></textarea>
+                <textarea name="story_brief" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500" placeholder="Gamified mission narrative..."></textarea>
             </div>
 
             <div>
                 <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Task Instructions</label>
-                <textarea name="instructions_markdown" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500" placeholder="Requirements, inputs, outputs..."></textarea>
+                <textarea name="instructions_markdown" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500" placeholder="Objectives, loops, expected algorithm..."></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Starter Code (Python)</label>
+                    <textarea name="starter_code_python" rows="4" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 font-mono text-xs text-emerald-400 focus:outline-none focus:border-emerald-500" placeholder="for i in range(4):&#10;    rover.move_forward()"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Starter Code (JavaScript)</label>
+                    <textarea name="starter_code_javascript" rows="4" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 font-mono text-xs text-cyan-400 focus:outline-none focus:border-emerald-500" placeholder="for (let i = 0; i < 4; i++) {&#10;    rover.moveForward();&#10;}"></textarea>
+                </div>
             </div>
 
             <div>
-                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Starter Code (C or Primary)</label>
-                <textarea name="starter_code_c" rows="4" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 font-mono text-xs text-emerald-400 focus:outline-none focus:border-emerald-500" placeholder="#include <stdio.h>&#10;int main() { ... }"></textarea>
-            </div>
-
-            <div>
-                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Test Cases (JSON format)</label>
-                <textarea name="test_cases" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 font-mono text-xs text-amber-300 focus:outline-none focus:border-emerald-500" placeholder='[{"input": "5\n1 2 3 4 5", "expected_output": "5 4 3 2 1", "is_hidden": false}]'></textarea>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Maze Grid Config (Auto-Generated JSON)</label>
+                <textarea name="maze_grid_config" id="designer-json-config" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 font-mono text-xs text-amber-300 focus:outline-none focus:border-emerald-500">{"cols": 8, "rows": 8, "start": {"x": 0, "z": 0, "dir": "east"}, "portal": {"x": 7, "z": 7}, "obstacles": [], "gems": []}</textarea>
             </div>
 
             <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
                 <button type="button" onclick="closeModal('create-level-modal')" class="px-4 py-2 rounded-xl text-slate-400 text-xs">Cancel</button>
-                <button type="submit" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2 rounded-xl text-xs transition">Save Level</button>
+                <button type="submit" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-2 rounded-xl text-xs transition shadow-lg shadow-emerald-500/20">Save Level</button>
             </div>
         </form>
     </div>
@@ -146,5 +188,104 @@
 <script>
     function openModal(id) { document.getElementById(id)?.classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id)?.classList.add('hidden'); }
+
+    // Visual 3D Level Designer Palette
+    let currentTool = 'start';
+    const designerState = {
+        cols: 8, rows: 8,
+        start: { x: 0, z: 0, dir: 'east' },
+        portal: { x: 7, z: 7 },
+        obstacles: [],
+        gems: []
+    };
+
+    function setDesignerTool(tool) {
+        currentTool = tool;
+        const btns = document.querySelectorAll('#designer-palette .tool-btn');
+        btns.forEach(b => {
+            b.classList.remove('bg-emerald-500', 'text-slate-950', 'font-bold');
+            b.classList.add('bg-slate-800');
+        });
+        event.target.classList.remove('bg-slate-800');
+        event.target.classList.add('bg-emerald-500', 'text-slate-950', 'font-bold');
+    }
+
+    function initDesignerGrid() {
+        const gridEl = document.getElementById('designer-grid-canvas');
+        if (!gridEl) return;
+        gridEl.innerHTML = '';
+
+        for (let r = 0; r < 8; r++) {
+            for (let c = 0; c < 8; c++) {
+                const cell = document.createElement('button');
+                cell.type = 'button';
+                cell.className = 'aspect-square rounded border border-slate-700 bg-slate-950 flex items-center justify-center text-xs hover:border-emerald-400 transition';
+                cell.dataset.x = c;
+                cell.dataset.z = r;
+
+                if (designerState.start.x === c && designerState.start.z === r) {
+                    cell.textContent = '🤖';
+                } else if (designerState.portal.x === c && designerState.portal.z === r) {
+                    cell.textContent = '🏁';
+                }
+
+                cell.onclick = () => onCellClicked(c, r, cell);
+                gridEl.appendChild(cell);
+            }
+        }
+        syncDesignerJSON();
+    }
+
+    function onCellClicked(c, r, cell) {
+        if (currentTool === 'start') {
+            designerState.start = { x: c, z: r, dir: 'east' };
+        } else if (currentTool === 'portal') {
+            designerState.portal = { x: c, z: r };
+        } else if (currentTool === 'gem') {
+            if (!designerState.gems.some(g => g.x === c && g.z === r)) {
+                designerState.gems.push({ x: c, z: r });
+            }
+        } else if (currentTool === 'obstacle') {
+            if (!designerState.obstacles.some(o => o.x === c && o.z === r)) {
+                designerState.obstacles.push({ x: c, z: r });
+            }
+        } else if (currentTool === 'clear') {
+            designerState.gems = designerState.gems.filter(g => !(g.x === c && g.z === r));
+            designerState.obstacles = designerState.obstacles.filter(o => !(o.x === c && o.z === r));
+        }
+
+        renderDesignerGridIcons();
+        syncDesignerJSON();
+    }
+
+    function renderDesignerGridIcons() {
+        const cells = document.querySelectorAll('#designer-grid-canvas button');
+        cells.forEach(cell => {
+            const c = parseInt(cell.dataset.x);
+            const r = parseInt(cell.dataset.z);
+            cell.textContent = '';
+
+            if (designerState.start.x === c && designerState.start.z === r) {
+                cell.textContent = '🤖';
+            } else if (designerState.portal.x === c && designerState.portal.z === r) {
+                cell.textContent = '🏁';
+            } else if (designerState.gems.some(g => g.x === c && g.z === r)) {
+                cell.textContent = '💎';
+            } else if (designerState.obstacles.some(o => o.x === c && o.z === r)) {
+                cell.textContent = '⚡';
+            }
+        });
+    }
+
+    function syncDesignerJSON() {
+        const jsonEl = document.getElementById('designer-json-config');
+        if (jsonEl) {
+            jsonEl.value = JSON.stringify(designerState);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initDesignerGrid();
+    });
 </script>
 {% endblock %}

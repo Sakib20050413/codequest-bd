@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 
-{% block title %}Lvl {{ level.level_number }}: {{ level.title }} — CodeQuest BD{% endblock %}
+{% block title %}Lvl {{ level.level_number }}: {{ level.title }} — CodeQuest 3D{% endblock %}
+
+{% block extra_head %}
+<!-- Three.js r128 & OrbitControls -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+<div class="max-w-[1700px] mx-auto px-3 sm:px-6 py-4 space-y-4">
 
-    <!-- Top Level Navigation Header -->
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+    <!-- Studio Header Bar -->
+    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xl backdrop-blur-md">
         <div class="flex items-center gap-3">
-            <a href="{% url 'arena:track_detail' track.slug %}" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-xs transition" title="Back to Track">
+            <a href="{% url 'arena:track_detail' track.slug %}" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-xs transition border border-slate-700/60" title="Back to Track">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
             <div>
@@ -22,23 +28,35 @@
                         </span>
                     {% endif %}
                 </div>
-                <h1 class="text-lg font-bold text-white">{{ level.title }}</h1>
+                <h1 class="text-base sm:text-lg font-bold text-white">{{ level.title }}</h1>
             </div>
         </div>
 
+        <!-- Telemetry & XP Badges -->
         <div class="flex items-center gap-3">
+            <div class="hidden sm:flex items-center gap-3 bg-slate-950 px-3.5 py-1.5 rounded-xl border border-slate-800 font-mono text-xs">
+                <span class="text-emerald-400 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <strong id="hud-fps-count">60 FPS</strong>
+                </span>
+                <span class="text-slate-600">|</span>
+                <span class="text-cyan-400">Pos: <strong id="hud-rover-coords">(0, 0)</strong></span>
+                <span class="text-slate-600">|</span>
+                <span class="text-amber-400">Gems: <strong id="hud-gem-count">0 / 0</strong></span>
+            </div>
+
             <span class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl font-mono flex items-center gap-1.5">
                 <i class="fa-solid fa-star"></i> +{{ level.xp_reward }} XP
             </span>
 
             <div class="flex items-center gap-1">
                 {% if prev_level %}
-                    <a href="{% url 'arena:level_play' prev_level.slug %}" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl text-xs transition" title="Previous Level">
+                    <a href="{% url 'arena:level_play' prev_level.slug %}" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl text-xs transition border border-slate-700" title="Previous Level">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
                 {% endif %}
                 {% if next_level %}
-                    <a href="{% url 'arena:level_play' next_level.slug %}" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl text-xs transition" title="Next Level">
+                    <a href="{% url 'arena:level_play' next_level.slug %}" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl text-xs transition border border-slate-700" title="Next Level">
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
                 {% endif %}
@@ -46,35 +64,87 @@
         </div>
     </div>
 
-    <!-- Main Game Play Area: 2-Column Split -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    <!-- STUDIO MAIN WORKSPACE (Split Screen Studio: Left 60%, Right 40%) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
 
-        <!-- Left Column: Story, Instructions & Visual Stage (5 or 6 cols) -->
-        <div class="lg:col-span-5 space-y-6">
+        <!-- LEFT 60% (col-span-7): Real-Time Three.js 3D WebGL Viewport -->
+        <div class="lg:col-span-7 space-y-3">
 
-            <!-- Mission Scenario & Lore -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-mono text-emerald-400 uppercase font-semibold flex items-center gap-1.5">
-                        <i class="fa-solid fa-terminal"></i> Mission Lore
-                    </span>
-                    <span class="text-[10px] font-mono px-2 py-0.5 rounded font-semibold {% if level.engine == 'ROVER_MAZE' %}bg-indigo-500/10 text-indigo-400 border border-indigo-500/30{% elif level.engine == 'DOM_BUILDER' %}bg-cyan-500/10 text-cyan-400 border border-cyan-500/30{% else %}bg-amber-500/10 text-amber-400 border border-amber-500/30{% endif %}">
-                        {{ level.get_engine_display }}
-                    </span>
-                </div>
-                <p class="text-xs text-slate-300 leading-relaxed font-sans">{{ level.story_brief }}</p>
+            <!-- 3D Viewport Card -->
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl relative flex flex-col">
 
-                <div class="pt-3 border-t border-slate-800/80 space-y-2">
-                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Objectives & Requirements:</h3>
-                    <div class="text-xs text-slate-400 leading-relaxed space-y-1">
-                        {{ level.instructions_markdown|linebreaks }}
+                <!-- 3D Viewport Top Overlay Bar -->
+                <div class="absolute top-3 left-3 right-3 z-10 flex flex-wrap justify-between items-center gap-2 pointer-events-none">
+                    <!-- Camera View Angle Buttons -->
+                    <div class="flex items-center gap-1 bg-slate-950/80 backdrop-blur-md p-1 rounded-xl border border-slate-800 pointer-events-auto">
+                        <button onclick="window.world3D?.setCameraView('isometric')" class="cam-btn px-2.5 py-1 text-[11px] font-mono rounded-lg transition hover:bg-slate-800 text-slate-300 active:text-white" title="Isometric Perspective">
+                            <i class="fa-solid fa-cube text-emerald-400"></i> Isometric
+                        </button>
+                        <button onclick="window.world3D?.setCameraView('topdown')" class="cam-btn px-2.5 py-1 text-[11px] font-mono rounded-lg transition hover:bg-slate-800 text-slate-300 active:text-white" title="Top-Down Tactical">
+                            <i class="fa-solid fa-map text-cyan-400"></i> Top-Down
+                        </button>
+                        <button onclick="window.world3D?.setCameraView('follow')" class="cam-btn px-2.5 py-1 text-[11px] font-mono rounded-lg transition hover:bg-slate-800 text-slate-300 active:text-white" title="Third-Person Chase Cam">
+                            <i class="fa-solid fa-video text-amber-400"></i> Follow Cam
+                        </button>
+                    </div>
+
+                    <!-- Speed Multiplier Buttons -->
+                    <div id="speed-selector" class="flex items-center gap-1 bg-slate-950/80 backdrop-blur-md p-1 rounded-xl border border-slate-800 pointer-events-auto">
+                        <button data-speed="1" class="speed-btn px-2 py-0.5 text-[11px] font-mono rounded-lg transition bg-emerald-500 text-slate-950 font-bold">1x</button>
+                        <button data-speed="2" class="speed-btn px-2 py-0.5 text-[11px] font-mono rounded-lg transition text-slate-400 hover:text-white">2x</button>
+                        <button data-speed="4" class="speed-btn px-2 py-0.5 text-[11px] font-mono rounded-lg transition text-slate-400 hover:text-white">4x</button>
                     </div>
                 </div>
 
+                <!-- Three.js Canvas Container -->
+                <div id="viewport3d-container" class="w-full h-[480px] sm:h-[540px] bg-slate-950 relative cursor-grab active:cursor-grabbing"></div>
+
+                <!-- 3D Viewport Bottom Playback HUD Bar -->
+                <div class="bg-slate-950/95 border-t border-slate-800 p-3 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                        <!-- Play/Pause/Step/Reset Buttons -->
+                        <button id="btn-play-run" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition shadow-lg shadow-emerald-500/20">
+                            <i class="fa-solid fa-play"></i> Run 3D Rover
+                        </button>
+                        <button id="btn-step" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold px-3 py-2 rounded-xl text-xs flex items-center gap-1.5 transition border border-slate-700" title="Execute Next Atomic Step">
+                            <i class="fa-solid fa-forward-step"></i> Step
+                        </button>
+                        <button id="btn-pause" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl text-xs transition border border-slate-700" title="Pause Execution">
+                            <i class="fa-solid fa-pause"></i>
+                        </button>
+                        <button id="btn-reset" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl text-xs transition border border-slate-700" title="Reset Rover to Start">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <span id="active-line-indicator" class="hidden text-[11px] font-mono bg-cyan-950/60 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded animate-pulse"></span>
+                        <span id="playback-status-text" class="text-xs font-mono text-slate-400">Ready to execute. Write code and click Run!</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mission Scenario & Pedagogical Objectives Card -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3 shadow-xl">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xs font-mono uppercase text-emerald-400 font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-satellite-dish"></i> Mission Briefing
+                    </h2>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                        {{ level.get_engine_display }}
+                    </span>
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed">{{ level.story_brief }}</p>
+
+                <div class="pt-2 border-t border-slate-800/80 text-xs text-slate-400 space-y-1">
+                    <strong class="text-white">Requirements:</strong>
+                    {{ level.instructions_markdown|linebreaks }}
+                </div>
+
                 {% if level.hints %}
-                    <details class="pt-2 group">
-                        <summary class="text-xs font-mono text-amber-400 cursor-pointer hover:underline flex items-center gap-1.5 list-none font-semibold">
-                            <i class="fa-solid fa-lightbulb"></i> View Level Hints ({{ level.hints|length }})
+                    <details class="pt-1">
+                        <summary class="text-xs font-mono text-amber-400 cursor-pointer hover:underline flex items-center gap-1.5 font-semibold list-none">
+                            <i class="fa-solid fa-lightbulb"></i> View Hints ({{ level.hints|length }})
                         </summary>
                         <div class="mt-2 p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1 font-mono">
                             {% for hint in level.hints %}
@@ -85,126 +155,67 @@
                 {% endif %}
             </div>
 
-            <!-- VISUAL STAGE: ENGINE-SPECIFIC VIEW -->
-            {% if level.engine == 'ROVER_MAZE' %}
-                <!-- Mode 1: 2D Grid Rover Maze Visual Stage -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-compass text-emerald-400"></i> Cyber Rover Grid (8x8)
-                        </h2>
-                        <div class="flex items-center gap-2 font-mono text-xs">
-                            <span class="text-cyan-400">Gems: <strong id="rover-gem-count">0/0</strong></span>
-                        </div>
-                    </div>
-
-                    <!-- 8x8 Grid Canvas -->
-                    <div id="rover-grid-stage" class="grid gap-1.5 bg-slate-950 p-3 rounded-2xl border border-slate-800 max-w-sm mx-auto"></div>
-
-                    <div class="flex justify-between items-center text-[11px] font-mono text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
-                        <span id="rover-status-text">Ready for command sequence.</span>
-                        <button onclick="window.mazeInstance?.reset()" class="text-slate-400 hover:text-white underline">Reset Grid</button>
-                    </div>
-                </div>
-
-            {% elif level.engine == 'DOM_BUILDER' %}
-                <!-- Mode 2: Visual CSS & DOM Stage -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-bezier-curve text-cyan-400"></i> Visual DOM Sandbox
-                        </h2>
-                        <span id="dom-status-badge" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
-                            Checking alignment...
-                        </span>
-                    </div>
-
-                    <!-- DOM Stage Container -->
-                    <div id="dom-visual-stage" class="w-full"></div>
-
-                    <p class="text-[11px] text-slate-400 font-mono">
-                        Type CSS flexbox properties in the editor. Watch the drones align with target landing pads in real-time!
-                    </p>
-                </div>
-            {% endif %}
-
         </div>
 
-        <!-- Right Column: Code Editor, Language Selector & Terminal (7 or 6 cols) -->
-        <div class="lg:col-span-7 space-y-4">
+        <!-- RIGHT 40% (col-span-5): Studio Code Editor & Submissions Tab -->
+        <div class="lg:col-span-5 space-y-3">
 
-            <!-- IDE Control Bar -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-xl">
+            <!-- Editor Header Bar -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-2 shadow-xl">
                 <div class="flex items-center gap-2">
                     <label class="text-xs font-mono text-slate-400 font-semibold">Language:</label>
                     <select id="language-select" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs font-mono text-white focus:outline-none focus:border-emerald-500">
-                        {% if level.starter_code_c %}<option value="c" selected>C (GCC 10.2)</option>{% endif %}
-                        {% if level.starter_code_cpp %}<option value="cpp">C++ (G++ 10.2)</option>{% endif %}
-                        {% if level.starter_code_python %}<option value="python">Python 3.10</option>{% endif %}
-                        {% if level.starter_code_javascript %}<option value="javascript">JavaScript (Node/DOM)</option>{% endif %}
-                        {% if level.starter_code_php %}<option value="php">PHP 8.2 (MySQLi)</option>{% endif %}
+                        <option value="python" selected>Python 3.10</option>
+                        <option value="javascript">JavaScript ES6</option>
+                        <option value="c">C (GCC Syntax)</option>
                     </select>
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <button id="btn-run-code" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 hover:text-emerald-300 font-semibold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition border border-slate-700">
-                        <i class="fa-solid fa-play text-[10px]"></i>
-                        <span>{% if level.engine == 'ROVER_MAZE' %}Run Rover{% elif level.engine == 'DOM_BUILDER' %}Test Alignment{% else %}Run Code{% endif %}</span>
+                    <button id="btn-reset-template" class="text-xs font-mono text-slate-400 hover:text-white px-2 py-1 rounded transition">
+                        Reset Code
                     </button>
-
-                    <button id="btn-submit-code" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg shadow-emerald-500/20">
-                        <i class="fa-solid fa-paper-plane text-[10px]"></i>
-                        <span>Submit Solution</span>
+                    <button id="btn-submit-code" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition shadow-lg shadow-indigo-600/20">
+                        <i class="fa-solid fa-paper-plane text-[10px]"></i> Submit Solution
                     </button>
                 </div>
             </div>
 
-            <!-- Code Editor Container -->
+            <!-- Code Editor Box -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
-                <div class="bg-slate-950/80 px-4 py-2 border-b border-slate-800 flex justify-between items-center text-xs font-mono text-slate-400">
+                <div class="bg-slate-950 px-4 py-2 border-b border-slate-800 flex justify-between items-center text-xs font-mono text-slate-400">
                     <span class="flex items-center gap-2">
-                        <i class="fa-solid fa-code text-emerald-400"></i> solution_editor
+                        <i class="fa-solid fa-code text-cyan-400"></i> rover_solution.<span id="editor-ext">py</span>
                     </span>
-                    <button id="btn-reset-code" class="hover:text-white transition">Reset Template</button>
+                    <span class="text-[11px] text-slate-500">In-Browser Deterministic Sandbox</span>
                 </div>
 
-                <textarea id="code-editor" rows="15" spellcheck="false" class="w-full bg-slate-950 text-slate-100 font-mono text-sm p-4 focus:outline-none resize-y leading-relaxed border-none selection:bg-indigo-600">{{ level.starter_code_c|default:level.starter_code_python|default:level.starter_code_javascript|default:level.starter_code_php|default:level.starter_code_cpp }}</textarea>
+                <textarea id="code-editor" rows="18" spellcheck="false" class="w-full bg-slate-950 text-slate-100 font-mono text-xs sm:text-sm p-4 focus:outline-none resize-y leading-relaxed border-none selection:bg-indigo-600">{{ level.starter_code_python|default:level.starter_code_javascript|default:level.starter_code_c }}</textarea>
             </div>
 
-            <!-- Console Output & Test Cases Tabs -->
+            <!-- Output Console / Test Cases Tabs -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
-                <!-- Tab Headers -->
-                <div class="flex border-b border-slate-800 bg-slate-950/60 text-xs font-mono">
-                    <button id="tab-console-btn" onclick="switchConsoleTab('console')" class="px-4 py-2.5 font-bold text-white border-b-2 border-emerald-500 bg-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-terminal text-emerald-400"></i> Terminal Output
+                <div class="flex border-b border-slate-800 bg-slate-950/80 text-xs font-mono">
+                    <button id="tab-console-btn" onclick="switchConsoleTab('console')" class="px-4 py-2 font-bold text-white border-b-2 border-emerald-500 bg-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-terminal text-emerald-400"></i> Output Console
                     </button>
-                    <button id="tab-tests-btn" onclick="switchConsoleTab('tests')" class="px-4 py-2.5 font-bold text-slate-400 hover:text-white flex items-center gap-2">
-                        <i class="fa-solid fa-vial text-cyan-400"></i> Test Cases ({{ level.test_cases|length }})
+                    <button id="tab-tests-btn" onclick="switchConsoleTab('tests')" class="px-4 py-2 font-bold text-slate-400 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-vial text-cyan-400"></i> Verification Check
                     </button>
                 </div>
 
-                <!-- Tab 1: Terminal Output -->
-                <div id="tab-content-console" class="p-3 bg-slate-950 min-h-[120px] max-h-60 overflow-y-auto">
-                    <pre id="console-output-text" class="font-mono text-xs text-slate-400 whitespace-pre-wrap">Click 'Run Code' or 'Submit Solution' to execute via Piston Cloud & Offline Sandbox...</pre>
+                <div id="tab-content-console" class="p-3 bg-slate-950 min-h-[110px] max-h-52 overflow-y-auto">
+                    <pre id="console-output-text" class="font-mono text-xs text-slate-400 whitespace-pre-wrap">Click 'Run 3D Rover' to simulate your loop logic in real-time...</pre>
                 </div>
 
-                <!-- Tab 2: Test Cases List -->
-                <div id="tab-content-tests" class="p-4 bg-slate-950 min-h-[120px] max-h-60 overflow-y-auto hidden space-y-3">
-                    <div id="test-results-container" class="space-y-2">
-                        {% for tc in level.test_cases %}
-                            <div class="p-3 rounded-lg border border-slate-800 bg-slate-900/40 text-xs font-mono space-y-1">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-slate-300 font-bold">Test Case #{{ forloop.counter }}</span>
-                                    {% if tc.is_hidden %}
-                                        <span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Hidden</span>
-                                    {% endif %}
-                                </div>
-                                <div class="text-slate-400"><span class="text-slate-500">Input:</span> {{ tc.input|default:"(None)" }}</div>
-                                <div class="text-slate-400"><span class="text-slate-500">Expected:</span> {{ tc.expected_output }}</div>
-                            </div>
-                        {% empty %}
-                            <p class="text-xs text-slate-500 font-mono">No structured test cases defined for this level. Evaluated via direct stdout validation.</p>
-                        {% endfor %}
+                <div id="tab-content-tests" class="p-3 bg-slate-950 min-h-[110px] max-h-52 overflow-y-auto hidden space-y-2">
+                    <div id="test-results-container" class="space-y-2 font-mono text-xs">
+                        <div class="p-3 rounded-lg border border-slate-800 bg-slate-900/40 text-slate-400">
+                            <strong>Mission Objectives:</strong><br>
+                            1. Reach Destination Portal at {{ level.maze_grid_config.portal|default:"(target)" }}<br>
+                            2. Collect all {{ level.maze_grid_config.gems|length }} Energy Crystals<br>
+                            3. Avoid all Laser Barriers
+                        </div>
                     </div>
                 </div>
             </div>
@@ -215,16 +226,16 @@
 
 </div>
 
-<!-- Celebration Modal -->
+<!-- Victory / Level Complete Modal -->
 <div id="celebration-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-emerald-500/40 rounded-3xl max-w-md w-full p-8 shadow-2xl text-center space-y-6 glow-emerald">
         <div class="w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-400 text-4xl flex items-center justify-center mx-auto border border-emerald-500/40 animate-bounce">
-            🎉
+            🏆
         </div>
         <div>
             <span class="text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider">Level Completed!</span>
-            <h3 class="text-2xl font-black text-white mt-1">Excellent Work, Coder!</h3>
-            <p class="text-xs text-slate-300 mt-2">All test cases verified successfully across the execution pipeline.</p>
+            <h3 class="text-2xl font-black text-white mt-1">Outstanding Execution!</h3>
+            <p class="text-xs text-slate-300 mt-2">The 3D Rover collected all crystals and successfully reached the extraction portal.</p>
         </div>
 
         <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
@@ -257,68 +268,100 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="/static/js/rover_engine.js"></script>
-<script src="/static/js/dom_builder_engine.js"></script>
-<script src="/static/js/code_runner.js"></script>
+<!-- Three.js 3D Game Engine Scripts -->
+<script src="/static/js/game3d/rover_world.js"></script>
+<script src="/static/js/game3d/action_interpreter.js"></script>
+<script src="/static/js/game3d/playback_controller.js"></script>
 
 <script>
-    // Templates map for starter code per language
     const starterTemplates = {
-        c: `{{ level.starter_code_c|escapejs }}`,
-        cpp: `{{ level.starter_code_cpp|escapejs }}`,
         python: `{{ level.starter_code_python|escapejs }}`,
         javascript: `{{ level.starter_code_javascript|escapejs }}`,
-        php: `{{ level.starter_code_php|escapejs }}`
+        c: `{{ level.starter_code_c|escapejs }}`
     };
 
-    const engineType = "{{ level.engine }}";
     const mazeConfig = {{ maze_config_json|safe }};
-    const domConfig = {{ dom_config_json|safe }};
     const csrfToken = "{{ csrf_token }}";
 
-    let mazeInstance = null;
-    let domInstance = null;
+    // Initialize Three.js 3D Rover World
+    const world3D = new RoverWorld3D('viewport3d-container', {
+        cols: mazeConfig.cols || 8,
+        rows: mazeConfig.rows || 8,
+        start: mazeConfig.start || { x: 0, z: 0, dir: 'east' },
+        portal: mazeConfig.portal || { x: 7, z: 7 },
+        obstacles: mazeConfig.obstacles || [],
+        gems: mazeConfig.gems || [],
+    });
+    window.world3D = world3D;
 
-    // Initialize Engine
-    if (engineType === 'ROVER_MAZE') {
-        mazeInstance = new RoverMazeEngine('rover-grid-stage', mazeConfig);
-        window.mazeInstance = mazeInstance;
-    } else if (engineType === 'DOM_BUILDER') {
-        domInstance = new DomBuilderEngine('dom-visual-stage', domConfig);
-        window.domInstance = domInstance;
-    }
-
-    // Initialize Code Runner Controller
-    const runner = new CodeQuestRunner({
+    // Initialize Playback Controller
+    const playback = new PlaybackController(world3D, {
         levelId: {{ level.id }},
-        engineType: engineType,
         csrfToken: csrfToken,
-        mazeEngine: mazeInstance,
-        domEngine: domInstance,
+        onComplete: async (summary) => {
+            // Auto submit to Django backend
+            const langSelect = document.getElementById('language-select');
+            const lang = langSelect ? langSelect.value : 'python';
+            const code = document.getElementById('code-editor')?.value || '';
+
+            try {
+                const res = await fetch('/api/submit-level/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+                    body: JSON.stringify({
+                        level_id: {{ level.id }},
+                        language: lang,
+                        code: code
+                    })
+                });
+                const data = await res.json();
+                if (data.status === 'ok') {
+                    const modal = document.getElementById('celebration-modal');
+                    const earnedXpEl = document.getElementById('modal-earned-xp');
+                    const rankEl = document.getElementById('modal-user-rank');
+                    const navXp = document.getElementById('nav-user-xp');
+
+                    if (earnedXpEl) earnedXpEl.textContent = `+${data.earned_xp || {{ level.xp_reward }}} XP`;
+                    if (rankEl) rankEl.textContent = data.user_rank || 'Ranked';
+                    if (navXp) navXp.textContent = `${data.user_total_xp} XP`;
+                    modal?.classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error('Submit error:', err);
+            }
+        }
+    });
+    window.playback = playback;
+
+    // Manual Submit Button
+    document.getElementById('btn-submit-code')?.addEventListener('click', () => {
+        playback.handlePlay();
     });
 
-    // Language switch listener
+    // Language Selector Switcher
     const langSelect = document.getElementById('language-select');
     const codeEditor = document.getElementById('code-editor');
+    const extIndicator = document.getElementById('editor-ext');
 
     if (langSelect && codeEditor) {
         langSelect.addEventListener('change', (e) => {
-            const lang = e.target.value;
-            if (starterTemplates[lang] && starterTemplates[lang].trim().length > 0) {
-                codeEditor.value = starterTemplates[lang];
+            const l = e.target.value;
+            if (starterTemplates[l] && starterTemplates[l].trim().length > 0) {
+                codeEditor.value = starterTemplates[l];
+            }
+            if (extIndicator) {
+                extIndicator.textContent = (l === 'python') ? 'py' : (l === 'javascript' ? 'js' : 'c');
             }
         });
     }
 
-    // Reset code template
-    document.getElementById('btn-reset-code')?.addEventListener('click', () => {
-        const lang = langSelect ? langSelect.value : 'c';
-        if (starterTemplates[lang]) {
-            codeEditor.value = starterTemplates[lang];
+    document.getElementById('btn-reset-template')?.addEventListener('click', () => {
+        const l = langSelect ? langSelect.value : 'python';
+        if (starterTemplates[l]) {
+            codeEditor.value = starterTemplates[l];
         }
     });
 
-    // Console / Test Tab Switcher
     function switchConsoleTab(tab) {
         const consoleBtn = document.getElementById('tab-console-btn');
         const testsBtn = document.getElementById('tab-tests-btn');

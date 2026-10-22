@@ -42,8 +42,9 @@ class LanguageTrack(models.Model):
 
 class ChallengeLevel(models.Model):
     ENGINE_CHOICES = [
-        ('ROVER_MAZE', 'Mode 1: Grid Rover Maze 🤖'),
-        ('DOM_BUILDER', 'Mode 2: Visual CSS & DOM Builder 🎨'),
+        ('ROVER_3D', 'Mode 1: 3D Rover Odyssey (Three.js WebGL) 🚀'),
+        ('ROVER_MAZE', 'Mode 1: 3D Rover Odyssey (Legacy) 🤖'),
+        ('DOM_BUILDER', 'Mode 2: Visual 3D Stage & DOM Builder 🎨'),
         ('CODE_JUDGE', 'Mode 3: Multi-Language Code Judge ⚡'),
     ]
 
