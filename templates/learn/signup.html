@@ -1,51 +1,115 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Create Your Free Account — CodeQuest BD{% endblock %}
 
 {% block content %}
-<div class="shell" style="padding-top: 3.5rem; padding-bottom: 5rem; max-width: 420px;">
+<div class="shell" style="padding-top: 3.5rem; padding-bottom: 5rem; max-width: 960px;">
   
-  <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
-    <div style="text-align: center; margin-bottom: 1.75rem;">
-      <div class="brand-badge" style="margin: 0 auto 0.85rem; width: 44px; height: 44px; font-size: 1.1rem;">CQ</div>
-      <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.35rem; letter-spacing: -0.01em;">
-        Create Your Account
-      </h1>
-      <p style="font-size: 0.86rem; color: var(--text-muted);">Track your progress, earn XP, and unlock achievements</p>
-    </div>
-
-    {% if error %}
-    <div style="background: var(--danger-subtle); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: var(--radius-sm); padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--danger); margin-bottom: 1.25rem;">
-      {{ error }}
-    </div>
-    {% endif %}
-
-    <form method="POST" action="{% url 'signup_view' %}" style="display: flex; flex-direction: column; gap: 1.15rem;">
-      {% csrf_token %}
-      
-      <div>
-        <label for="username" class="form-label">Username</label>
-        <input type="text" id="username" name="username" required autocomplete="username" class="form-input" placeholder="Choose a username" autofocus />
+  <div class="auth-split-layout" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; align-items: center;">
+    
+    <!-- Left Hero Column: Flagship Branding & Join Perks -->
+    <div class="auth-hero-pane" style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <img src="{% static 'img/logo-icon.svg' %}" alt="CodeQuest BD" width="36" height="36" />
+        <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(99, 102, 241, 0.3); font-weight: 600;">
+          JOIN THE REVOLUTION
+        </span>
       </div>
 
       <div>
-        <label for="email" class="form-label">Email (Optional)</label>
-        <input type="email" id="email" name="email" autocomplete="email" class="form-input" placeholder="name@example.com" />
+        <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 0.75rem;">
+          Start learning with <span class="gradient-text">CodeQuest BD</span>
+        </h1>
+        <p style="font-size: 0.96rem; color: var(--text-secondary); line-height: 1.6;">
+          Join thousands of developers across Bangladesh. Build real software intuition through 3–7 minute interactive drills, 100+ coding games, and zero installation barrier.
+        </p>
       </div>
 
-      <div>
-        <label for="password" class="form-label">Password</label>
-        <input type="password" id="password" name="password" required autocomplete="new-password" class="form-input" placeholder="At least 6 characters" />
+      <!-- Perks Grid -->
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem;">
+        <div style="display: flex; align-items: flex-start; gap: 0.85rem;">
+          <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(56, 189, 248, 0.12); color: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">🏆</div>
+          <div>
+            <div style="font-size: 0.88rem; font-weight: 700; color: var(--text-primary);">Engineer Badges &amp; XP Progression</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.4;">Earn verified achievements and showcase your engineering level on your public profile.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: flex-start; gap: 0.85rem;">
+          <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(16, 185, 129, 0.12); color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">☁️</div>
+          <div>
+            <div style="font-size: 0.88rem; font-weight: 700; color: var(--text-primary);">Automatic Local-First Cloud Sync</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.4;">Any exercises completed as a guest are automatically imported into your new account.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: flex-start; gap: 0.85rem;">
+          <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(245, 158, 11, 0.12); color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">🛡️</div>
+          <div>
+            <div style="font-size: 0.88rem; font-weight: 700; color: var(--text-primary);">Streak Freeze Protection</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.4;">Never lose your momentum. Daily quests reward streak shields to protect busy days.</div>
+          </div>
+        </div>
       </div>
 
-      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-size: 0.92rem; margin-top: 0.5rem;">
-        Complete Registration &rarr;
-      </button>
-    </form>
-
-    <div style="text-align: center; margin-top: 1.75rem; font-size: 0.85rem; color: var(--text-muted);">
-      Already have an account? <a href="{% url 'login_view' %}" style="color: var(--accent); font-weight: 600; text-decoration: none;">Sign in here</a>
+      <!-- Mini dark terminal badge -->
+      <div style="background: #0b0e17; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-sm); padding: 0.85rem 1rem; font-family: var(--font-mono); font-size: 0.78rem; color: #a5b4fc;">
+        <span style="color: #64748b;">// Your developer profile</span><br>
+        <span style="color: #38bdf8;">const</span> learner = { name: <span style="color: #34d399;">"FutureEngineer"</span>, tier: <span style="color: #fbbf24;">"Level 1"</span> };<br>
+        <span style="color: #cbd5e1;">console</span>.log(<span style="color: #38bdf8;">`Starting quest: ${learner.name}`</span>);
+      </div>
     </div>
+
+    <!-- Right Column: Focused Signup Card -->
+    <div>
+      <div class="cq-card" style="padding: 2.5rem; border: 1px solid var(--border-strong); box-shadow: 0 12px 36px var(--shadow-surface);">
+        <div style="text-align: left; margin-bottom: 1.75rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.35rem; letter-spacing: -0.01em;">
+            Create Free Account
+          </h2>
+          <p style="font-size: 0.86rem; color: var(--text-muted);">Start coding in under 30 seconds. No credit card required.</p>
+        </div>
+
+        {% if error %}
+        <div style="background: var(--danger-subtle); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: var(--radius-sm); padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--danger); margin-bottom: 1.25rem;">
+          {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'signup_view' %}" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          {% csrf_token %}
+          
+          <div>
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" name="username" required autocomplete="username" class="form-input" placeholder="e.g. sakib_dev" autofocus />
+          </div>
+
+          <div>
+            <label for="email" class="form-label">Email (Optional)</label>
+            <input type="email" id="email" name="email" autocomplete="email" class="form-input" placeholder="name@example.com" />
+          </div>
+
+          <div>
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password" required autocomplete="new-password" class="form-input" placeholder="At least 6 characters" />
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; font-size: 0.94rem; margin-top: 0.5rem; justify-content: center;">
+            Create Account &amp; Start &rarr;
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); font-size: 0.85rem; color: var(--text-muted);">
+          Already have an account? <a href="{% url 'login_view' %}" style="color: var(--accent); font-weight: 600; text-decoration: none;">Sign in here</a>
+        </div>
+
+        <div style="margin-top: 1rem; text-align: center; font-size: 0.72rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+          <span>🔒</span> By registering, you agree to CodeQuest BD's community guidelines.
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </div>

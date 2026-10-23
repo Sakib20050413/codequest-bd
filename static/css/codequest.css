@@ -297,6 +297,26 @@ body {
   box-shadow: 0 0 8px var(--accent-primary);
 }
 
+.nav-actions-cluster {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 960px) {
+  .desktop-only-stat {
+    display: none !important;
+  }
+}
+
+@media (max-width: 540px) {
+  .nav-auth-btn {
+    padding: 0.38rem 0.65rem !important;
+    font-size: 0.78rem !important;
+  }
+}
+
 /* ==========================================================================
    Buttons & Interactive Elements
    ========================================================================== */
@@ -934,29 +954,22 @@ body {
 .cm-s-codequest .cm-builtin { color: #c084fc !important; }
 .cm-s-codequest .cm-bracket { color: var(--text-secondary) !important; }
 
-/* Light Mode Overrides for CodeMirror */
+/* Light Theme CodeMirror: Preserves authentic dark IDE console aesthetic per user requirement */
 [data-theme="light"] .CodeMirror {
-  background-color: #f8fafc !important;
-  color: #0f172a !important;
+  background-color: #0b0e17 !important;
+  color: #f8fafc !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
 }
 [data-theme="light"] .CodeMirror-gutters {
-  background-color: #f1f5f9 !important;
-  border-right: 1px solid #e2e8f0 !important;
+  background-color: #080a10 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 [data-theme="light"] .CodeMirror-linenumber {
-  color: #94a3b8 !important;
+  color: #64748b !important;
 }
 [data-theme="light"] .CodeMirror-selected {
-  background-color: rgba(99, 102, 241, 0.15) !important;
+  background-color: rgba(99, 102, 241, 0.28) !important;
 }
-[data-theme="light"] .cm-s-codequest .cm-keyword { color: #4f46e5 !important; }
-[data-theme="light"] .cm-s-codequest .cm-atom { color: #be185d !important; }
-[data-theme="light"] .cm-s-codequest .cm-number { color: #0284c7 !important; }
-[data-theme="light"] .cm-s-codequest .cm-def { color: #059669 !important; }
-[data-theme="light"] .cm-s-codequest .cm-variable { color: #0f172a !important; }
-[data-theme="light"] .cm-s-codequest .cm-tag { color: #db2777 !important; }
-[data-theme="light"] .cm-s-codequest .cm-attribute { color: #0284c7 !important; }
-[data-theme="light"] .cm-s-codequest .cm-string { color: #0d9488 !important; }
 
 /* ==========================================================================
    Draggable Workspace Splitter & Zen Fullscreen Mode

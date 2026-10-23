@@ -53,10 +53,15 @@
 
     renderTestList(null);
 
-    // Render iframe live preview
+    // Render iframe live preview with adaptive comfortable background
     function updatePreview() {
       if (!previewFrame || !editor) return;
       const code = editor.value;
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      const textColor = isDark ? '#f8fafc' : '#0f172a';
+      const bgColor = isDark ? '#0c0f17' : '#ffffff';
+
+      previewFrame.style.backgroundColor = bgColor;
       previewFrame.srcdoc = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,9 +71,10 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       padding: 1.25rem;
-      color: #0f172a;
-      background: #ffffff;
-      line-height: 1.5;
+      color: ${textColor};
+      background: ${bgColor};
+      line-height: 1.55;
+      transition: background 0.2s, color 0.2s;
     }
   </style>
 </head>

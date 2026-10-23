@@ -1,59 +1,181 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}{{ user.username }} — Learner Profile — CodeQuest BD{% endblock %}
+{% block title %}{{ user.username }} — Student Command Center — CodeQuest BD{% endblock %}
 
 {% block content %}
 <div class="shell shell-wide" style="padding-top: 2.5rem; padding-bottom: 5rem;">
   
-  <!-- Profile Summary Card -->
-  <div class="cq-card" style="padding: 2.25rem; margin-bottom: 2rem; border: 1px solid var(--border-strong); background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.08), var(--bg-surface) 70%);">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;">
-      <div style="display: flex; align-items: center; gap: 1.25rem;">
-        <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--bg-panel); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: var(--accent); font-family: var(--font-mono); box-shadow: 0 0 15px var(--accent-glow);">
+  <!-- Profile Command Header Card -->
+  <div class="cq-card" style="padding: 2.25rem; margin-bottom: 2rem; border: 1px solid var(--border-strong); background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.1), var(--bg-surface) 75%); position: relative; overflow: hidden;">
+    
+    <!-- Ambient subtle background glow -->
+    <div style="position: absolute; top: -50px; right: -50px; width: 220px; height: 220px; border-radius: 50%; background: var(--accent-subtle); filter: blur(50px); pointer-events: none;"></div>
+
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; position: relative; z-index: 1;">
+      
+      <!-- Avatar & Username Info -->
+      <div style="display: flex; align-items: center; gap: 1.35rem;">
+        <div style="width: 72px; height: 72px; border-radius: 50%; background: #0b0e17; border: 2.5px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; color: #38bdf8; font-family: var(--font-mono); box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);">
           {{ user.username|make_list|first|upper }}
         </div>
         <div>
-          <div style="display: flex; align-items: center; gap: 0.65rem;">
-            <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.01em;">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem; margin-bottom: 0.25rem;">
+            <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.02em;">
               {{ user.username }}
             </h1>
-            <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid rgba(99, 102, 241, 0.3);">
-              Engineer Level 1
+            <span id="rankBadge" style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.65rem; border-radius: 999px; border: 1px solid rgba(99, 102, 241, 0.35); font-weight: 700;">
+              {% if profile.xp < 200 %}Junior Cadet (Lvl 1)
+              {% elif profile.xp < 500 %}Software Apprentice (Lvl 2)
+              {% elif profile.xp < 1000 %}Systems Specialist (Lvl 3)
+              {% elif profile.xp < 2000 %}Senior Architect (Lvl 4)
+              {% else %}Staff Engineer (Lvl 5){% endif %}
+            </span>
+            <span style="font-size: 0.72rem; color: #10b981; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.15rem 0.55rem; border-radius: 999px; font-weight: 600;">
+              ● ACTIVE SESSION
             </span>
           </div>
           <span style="font-size: 0.85rem; color: var(--text-muted);">
-            Member since {{ user.date_joined|date:"F Y" }} &bull; Active Learner
+            Member since {{ user.date_joined|date:"F Y" }} &bull; Bangladesh Developer Cohort
           </span>
         </div>
       </div>
 
-      <!-- Sync Guest Storage Button -->
-      <div>
-        <button id="syncStorageBtn" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.45rem 0.95rem;">
+      <!-- Quick Action Cluster -->
+      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+        <button id="syncStorageBtn" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.5rem 1rem;">
           🔄 Sync Local Progress
         </button>
+        <a href="{% url 'catalogue' %}" class="btn btn-primary" style="font-size: 0.82rem; padding: 0.5rem 1.1rem;">
+          Resume Courses &rarr;
+        </a>
       </div>
     </div>
 
-    <!-- Quick Stats Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle);">
-      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel);">
-        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em;">Total Earned XP</div>
-        <div style="font-size: 1.7rem; font-weight: 800; color: var(--accent); margin-top: 0.25rem; font-family: var(--font-mono);">⚡ {{ profile.xp }}</div>
+    <!-- Level Progression Bar -->
+    <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); position: relative; z-index: 1;">
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; margin-bottom: 0.5rem;">
+        <span style="font-weight: 600; color: var(--text-primary);">XP Milestone Progression</span>
+        <span style="font-family: var(--font-mono); color: var(--accent); font-weight: 700;">{{ profile.xp }} Total XP</span>
       </div>
-      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel);">
-        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em;">Learning Streak</div>
-        <div style="font-size: 1.7rem; font-weight: 800; color: var(--warning); margin-top: 0.25rem; font-family: var(--font-mono);">🔥 {{ profile.streak }}d</div>
-      </div>
-      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel);">
-        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em;">Completed Lessons</div>
-        <div style="font-size: 1.7rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem; font-family: var(--font-mono);">📚 {{ progress_list|length }}</div>
-      </div>
-      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel);">
-        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em;">Unlocked Badges</div>
-        <div style="font-size: 1.7rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem; font-family: var(--font-mono);">🏆 {{ badges|length }}</div>
+      <div style="height: 8px; background: var(--bg-input); border-radius: 999px; overflow: hidden; border: 1px solid var(--border-subtle);">
+        {% widthratio profile.xp 1000 100 as xp_pct %}
+        <div style="width: {% if xp_pct > 100 %}100{% else %}{{ xp_pct|default:'5' }}{% endif %}%; height: 100%; background: linear-gradient(90deg, #6366f1, #38bdf8); border-radius: 999px; transition: width 0.6s ease;"></div>
       </div>
     </div>
+
+    <!-- Quick Telemetry Stats Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; position: relative; z-index: 1;">
+      
+      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle);">
+        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Total Earned XP</div>
+        <div style="font-size: 1.75rem; font-weight: 800; color: #38bdf8; margin-top: 0.25rem; font-family: var(--font-mono);">⚡ {{ profile.xp }}</div>
+      </div>
+
+      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle);">
+        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Active Streak</div>
+        <div style="font-size: 1.75rem; font-weight: 800; color: #f59e0b; margin-top: 0.25rem; font-family: var(--font-mono);">🔥 {{ profile.streak }}d</div>
+      </div>
+
+      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle);">
+        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Completed Lessons</div>
+        <div style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem; font-family: var(--font-mono);">📚 {{ progress_list|length }}</div>
+      </div>
+
+      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle);">
+        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Earned Badges</div>
+        <div style="font-size: 1.75rem; font-weight: 800; color: #10b981; margin-top: 0.25rem; font-family: var(--font-mono);">🏆 {{ badges|length }}</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Weekly Habit & Retention Mechanics Banner (Point 21) -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+    
+    <!-- 7-Day Consistency Tracker -->
+    <div class="cq-card" style="padding: 1.5rem; border: 1px solid var(--border-strong);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div>
+          <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--accent); letter-spacing: 0.05em;">Consistency Calendar</div>
+          <div style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary);">7-Day Practice Streak</div>
+        </div>
+        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: #f59e0b; background: rgba(245, 158, 11, 0.12); padding: 0.2rem 0.55rem; border-radius: 999px;">
+          🔥 {{ profile.streak }} DAYS STRONG
+        </span>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; gap: 0.5rem; text-align: center;">
+        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">MON</div>
+          <div style="font-size: 1.1rem; margin-top: 0.35rem;">✓</div>
+        </div>
+        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">TUE</div>
+          <div style="font-size: 1.1rem; margin-top: 0.35rem;">✓</div>
+        </div>
+        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">WED</div>
+          <div style="font-size: 1.1rem; margin-top: 0.35rem;">✓</div>
+        </div>
+        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">THU</div>
+          <div style="font-size: 1.1rem; margin-top: 0.35rem;">✓</div>
+        </div>
+        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">FRI</div>
+          <div style="font-size: 1.1rem; margin-top: 0.35rem;">✓</div>
+        </div>
+        <div style="flex: 1; padding: 0.65rem 0.25rem; background: rgba(99, 102, 241, 0.15); border-radius: var(--radius-sm); border: 1px solid var(--accent);">
+          <div style="font-size: 0.68rem; color: var(--accent); font-weight: 700;">TODAY</div>
+          <div style="font-size: 1.1rem; margin-top: 0.35rem; color: var(--accent);">🔥</div>
+        </div>
+        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); opacity: 0.5;">
+          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">SUN</div>
+          <div style="font-size: 1.1rem; margin-top: 0.35rem;">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily Quests & Streak Freeze Protection -->
+    <div class="cq-card" style="padding: 1.5rem; border: 1px solid var(--border-strong);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+        <div>
+          <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: #10b981; letter-spacing: 0.05em;">Daily Mission Directives</div>
+          <div style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary);">Today's Quests</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; background: rgba(56, 189, 248, 0.12); color: #38bdf8; padding: 0.2rem 0.55rem; border-radius: 999px; font-weight: 600;">
+          <span>🛡️</span> Streak Freeze Equipped
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; padding: 0.45rem 0.75rem; background: var(--bg-panel); border-radius: var(--radius-sm);">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <input type="checkbox" id="quest1" checked disabled style="accent-color: var(--accent);" />
+            <label for="quest1" style="color: var(--text-primary); text-decoration: line-through; opacity: 0.7;">Complete 1 interactive lesson</label>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #10b981; font-weight: 700;">+25 XP</span>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; padding: 0.45rem 0.75rem; background: var(--bg-panel); border-radius: var(--radius-sm);">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <input type="checkbox" id="quest2" style="accent-color: var(--accent);" />
+            <label for="quest2" style="color: var(--text-primary);">Play 1 game in the Practice Arena</label>
+          </div>
+          <a href="{% url 'games_hub' %}" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); font-weight: 700; text-decoration: none;">+30 XP &rarr;</a>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; padding: 0.45rem 0.75rem; background: var(--bg-panel); border-radius: var(--radius-sm);">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <input type="checkbox" id="quest3" checked disabled style="accent-color: var(--accent);" />
+            <label for="quest3" style="color: var(--text-primary); text-decoration: line-through; opacity: 0.7;">Preserve daily streak momentum</label>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #10b981; font-weight: 700;">+15 XP</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Studio Dashboard 2-Column Grid -->
@@ -63,7 +185,7 @@
     <div style="display: flex; flex-direction: column; gap: 2rem;">
       
       <!-- Skill Mastery Telemetry -->
-      <section class="cq-card" style="padding: 1.75rem;">
+      <section class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-strong);">
         <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin-bottom: 1.25rem;">
           Skill Competency Radar
         </h2>
@@ -72,44 +194,55 @@
           <!-- HTML5 Competency -->
           <div>
             <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
-              <span style="font-weight: 600; color: var(--lang-html);">🌐 HTML5 Semantic Architecture</span>
-              <span style="font-family: var(--font-mono); color: var(--text-muted);">Active Track</span>
+              <span style="font-weight: 600; color: #e34f26;">🌐 HTML5 Semantic Architecture</span>
+              <span style="font-family: var(--font-mono); color: var(--text-muted);">Active Track (85%)</span>
             </div>
             <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
-              <div style="width: 85%; height: 100%; background: var(--lang-html); border-radius: 999px;"></div>
+              <div style="width: 85%; height: 100%; background: #e34f26; border-radius: 999px;"></div>
             </div>
           </div>
 
           <!-- CSS3 Competency -->
           <div>
             <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
-              <span style="font-weight: 600; color: var(--lang-css);">🎨 CSS3 Modern Layouts &amp; Flexbox</span>
-              <span style="font-family: var(--font-mono); color: var(--text-muted);">Active Track</span>
+              <span style="font-weight: 600; color: #0284c7;">🎨 CSS3 Modern Layouts &amp; Flexbox</span>
+              <span style="font-family: var(--font-mono); color: var(--text-muted);">Active Track (70%)</span>
             </div>
             <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
-              <div style="width: 70%; height: 100%; background: var(--lang-css); border-radius: 999px;"></div>
+              <div style="width: 70%; height: 100%; background: #0284c7; border-radius: 999px;"></div>
             </div>
           </div>
 
           <!-- JavaScript Competency -->
           <div>
             <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
-              <span style="font-weight: 600; color: var(--lang-js);">⚡ JavaScript DOM &amp; State Loops</span>
-              <span style="font-family: var(--font-mono); color: var(--text-muted);">Ready to Unlock</span>
+              <span style="font-weight: 600; color: #eab308;">⚡ JavaScript DOM &amp; State Loops</span>
+              <span style="font-family: var(--font-mono); color: var(--text-muted);">In Progress (50%)</span>
             </div>
             <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
-              <div style="width: 45%; height: 100%; background: var(--lang-js); border-radius: 999px;"></div>
+              <div style="width: 50%; height: 100%; background: #eab308; border-radius: 999px;"></div>
             </div>
           </div>
 
           <!-- Python Competency -->
           <div>
             <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
-              <span style="font-weight: 600; color: var(--lang-py);">🐍 Python 3 Data &amp; Automation</span>
+              <span style="font-weight: 600; color: #10b981;">🐍 Python 3 Data &amp; Automation</span>
+              <span style="font-family: var(--font-mono); color: var(--text-muted);">Ready to Unlock (30%)</span>
+            </div>
+            <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
+              <div style="width: 30%; height: 100%; background: #10b981; border-radius: 999px;"></div>
+            </div>
+          </div>
+
+          <!-- SQL Competency -->
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
+              <span style="font-weight: 600; color: #a855f7;">🗄️ SQL Relational Schema &amp; Joins</span>
               <span style="font-family: var(--font-mono); color: var(--text-muted);">Ready to Unlock</span>
             </div>
             <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
-              <div style="width: 30%; height: 100%; background: var(--lang-py); border-radius: 999px;"></div>
+              <div style="width: 20%; height: 100%; background: #a855f7; border-radius: 999px;"></div>
             </div>
           </div>
         </div>
@@ -122,7 +255,7 @@
             Next Practice Drills
           </h2>
           <a href="{% url 'games_hub' %}" style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--accent); text-decoration: none;">
-            View Arena &rarr;
+            View All Arena Games &rarr;
           </a>
         </div>
         <div style="display: flex; flex-direction: column; gap: 0.75rem;">
@@ -134,7 +267,7 @@
                 <div style="font-size: 0.75rem; color: var(--text-muted);">Race vs Bot Turing &amp; Ada</div>
               </div>
             </div>
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);">+30 XP</span>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); font-weight: 700;">+30 XP</span>
           </a>
 
           <a href="{% url 'game_play' 'rover-3d' %}" class="cq-card cq-card-interactive" style="padding: 0.85rem 1.15rem; text-decoration: none; display: flex; justify-content: space-between; align-items: center;">
@@ -145,7 +278,18 @@
                 <div style="font-size: 0.75rem; color: var(--text-muted);">WebGL Space Gem Explorer</div>
               </div>
             </div>
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);">+40 XP</span>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); font-weight: 700;">+40 XP</span>
+          </a>
+
+          <a href="{% url 'game_play' 'flexbox-pond' %}" class="cq-card cq-card-interactive" style="padding: 0.85rem 1.15rem; text-decoration: none; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 1.4rem;">🐸</span>
+              <div>
+                <div style="font-weight: 700; font-size: 0.88rem; color: var(--text-primary);">Flexbox Alignment Pond</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Master CSS layout axis</div>
+              </div>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); font-weight: 700;">+25 XP</span>
           </a>
         </div>
       </section>
@@ -156,11 +300,14 @@
     <div style="display: flex; flex-direction: column; gap: 2rem;">
       
       <!-- Badges & Achievements Section -->
-      <section class="cq-card" style="padding: 1.75rem;">
+      <section class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-strong);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-          <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin: 0;">
-            Achievements &amp; Badges
-          </h2>
+          <div>
+            <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin: 0;">
+              Achievements &amp; Badges
+            </h2>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">Verified milestone credentials</div>
+          </div>
           <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
             {{ badges|length }} / {{ badges|length|add:available_badges|length }} unlocked
           </span>
@@ -186,10 +333,15 @@
       </section>
 
       <!-- Completed Lessons History -->
-      <section class="cq-card" style="padding: 1.75rem;">
-        <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin-bottom: 1.25rem;">
-          Completed Lessons History
-        </h2>
+      <section class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-strong);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin: 0;">
+            Completed Lessons History
+          </h2>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
+            {{ progress_list|length }} Completed
+          </span>
+        </div>
 
         <div style="display: flex; flex-direction: column; gap: 0.65rem; max-height: 380px; overflow-y: auto;">
           {% for prog in progress_list %}
@@ -207,13 +359,18 @@
                 {{ prog.completed_at|date:"M d, Y" }}
               </span>
               <a href="{% url 'lesson_detail' prog.lesson.course.slug prog.lesson.slug %}" class="btn btn-ghost" style="padding: 0.2rem 0.55rem; font-size: 0.75rem;">
-                Review
+                Review &rarr;
               </a>
             </div>
           </div>
           {% empty %}
-          <div style="text-align: center; padding: 2rem 1rem; color: var(--text-muted); font-size: 0.85rem;">
-            No completed lessons yet. Explore courses to begin your journey.
+          <div style="text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); font-size: 0.85rem; border: 1px dashed var(--border-subtle); border-radius: var(--radius-sm);">
+            <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🚀</div>
+            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Ready to Begin Your First Mission?</div>
+            <p style="margin-bottom: 1rem;">Complete your first 3-minute micro-lesson in HTML, CSS or JS to start earning XP and rank up.</p>
+            <a href="{% url 'catalogue' %}" class="btn btn-primary" style="font-size: 0.82rem; padding: 0.45rem 1rem;">
+              Explore Curriculum &rarr;
+            </a>
           </div>
           {% endfor %}
         </div>
@@ -229,13 +386,28 @@
 {% block extra_scripts %}
 <script>
   document.getElementById('syncStorageBtn')?.addEventListener('click', function () {
+    const btn = this;
+    btn.textContent = '⏳ Syncing...';
+    btn.disabled = true;
     if (window.CodeQuest && window.CodeQuest.syncGuestProgress) {
-      window.CodeQuest.syncGuestProgress().then(() => {
-        alert('Local progress successfully synced with your account!');
-        location.reload();
-      }).catch(err => {
-        alert('Unable to sync progress. Please try again.');
+      window.CodeQuest.syncGuestProgress().then(function (res) {
+        if (res.ok) {
+          if (window.CodeQuest.fireConfetti) window.CodeQuest.fireConfetti();
+          btn.textContent = '✓ Synced!';
+          setTimeout(function () { location.reload(); }, 800);
+        } else {
+          btn.textContent = '🔄 Sync Local Progress';
+          btn.disabled = false;
+          alert('Sync response: ' + (res.error || 'No new local progress found.'));
+        }
+      }).catch(function (err) {
+        btn.textContent = '🔄 Sync Local Progress';
+        btn.disabled = false;
+        alert('Unable to sync progress right now.');
       });
+    } else {
+      btn.disabled = false;
+      btn.textContent = '🔄 Sync Local Progress';
     }
   });
 </script>

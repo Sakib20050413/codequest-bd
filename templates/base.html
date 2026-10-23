@@ -8,14 +8,15 @@
   <meta name="description" content="Learn HTML, CSS, JavaScript, Python, and SQL through structured 3–7 minute interactive lessons, browser-based sandboxes, and automated verification." />
   <meta name="keywords" content="learn programming, coding exercises, bite-sized lessons, interactive coding, web development, python, sql" />
   
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d9488'/><text x='50' y='64' font-family='monospace' font-size='38' font-weight='800' fill='%23ffffff' text-anchor='middle'>CQ</text></svg>" />
+  <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}" />
+  <link rel="apple-touch-icon" href="{% static 'img/logo-icon.svg' %}" />
   
   <!-- Typography: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   
-  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=4.0" />
+  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=4.5" />
   {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -25,13 +26,12 @@
 
   <!-- Floating Sticky Navigation Bar -->
   <header class="cq-header">
-    <div class="shell">
+    <div class="shell shell-wide">
       <nav class="cq-nav" aria-label="Main Navigation">
         
-        <!-- Logo -->
+        <!-- Brand Logo with Vector Emblem -->
         <a href="{% url 'landing' %}" class="brand-logo" aria-label="CodeQuest Home">
-          <div class="brand-badge">CQ</div>
-          <span>CodeQuest</span>
+          <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="36" style="display: block; width: auto;" />
         </a>
 
         <!-- Desktop Navigation Links -->
@@ -42,8 +42,8 @@
             </a>
           </li>
           <li>
-            <a href="{% url 'games_hub' %}" class="nav-link {% if '/games/' in request.path %}active{% endif %}">
-              Practice
+            <a href="{% url 'games_hub' %}" class="nav-link {% if '/games/' in request.path or '/practice/' in request.path %}active{% endif %}">
+              Practice Arena
             </a>
           </li>
           <li>
@@ -58,17 +58,17 @@
           </li>
         </ul>
 
-        <!-- Right Side Widgets & User Controls -->
-        <div style="display: flex; align-items: center; gap: 0.65rem;">
+        <!-- Right Side Widgets & User Controls (Dynamic Priority Hierarchy) -->
+        <div class="nav-actions-cluster">
           
-          <!-- Streak Indicator -->
-          <div class="streak-pill" title="Daily Learning Streak">
+          <!-- Streak Indicator (Visible on Desktop) -->
+          <div class="streak-pill desktop-only-stat" title="Daily Learning Streak">
             <span>🔥</span>
             <span id="streakCount">{{ user_streak }}d</span>
           </div>
 
-          <!-- Total XP Badge -->
-          <div class="xp-pill" title="Total XP Earned">
+          <!-- Total XP Badge (Visible on Desktop) -->
+          <div class="xp-pill desktop-only-stat" title="Total XP Earned">
             <span>⚡</span>
             <span id="xpCount">{{ user_xp }}</span> XP
           </div>
@@ -85,17 +85,17 @@
 
           <!-- Account Buttons -->
           {% if user.is_authenticated %}
-            <a href="{% url 'profile_view' %}" class="btn btn-ghost" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;">
+            <a href="{% url 'profile_view' %}" class="btn btn-ghost nav-auth-btn" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;">
               Profile
             </a>
-            <a href="{% url 'logout_view' %}" class="btn btn-ghost" style="padding: 0.45rem 0.75rem; font-size: 0.84rem; color: var(--text-muted);">
+            <a href="{% url 'logout_view' %}" class="btn btn-ghost desktop-only-stat" style="padding: 0.45rem 0.75rem; font-size: 0.84rem; color: var(--text-muted);">
               Logout
             </a>
           {% else %}
-            <a href="{% url 'login_view' %}" class="btn btn-ghost" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;">
+            <a href="{% url 'login_view' %}" class="btn btn-ghost nav-auth-btn desktop-only-stat" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;">
               Sign In
             </a>
-            <a href="{% url 'signup_view' %}" class="btn btn-primary" style="padding: 0.45rem 0.95rem; font-size: 0.84rem;">
+            <a href="{% url 'signup_view' %}" class="btn btn-primary nav-auth-btn" style="padding: 0.45rem 0.95rem; font-size: 0.84rem;">
               Get Started
             </a>
           {% endif %}
@@ -116,16 +116,26 @@
 
   <!-- Mobile Off-Canvas Navigation Drawer -->
   <div id="mobileNavDrawer" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
-    <a href="{% url 'catalogue' %}" class="nav-link">Courses</a>
-    <a href="{% url 'games_hub' %}" class="nav-link">Practice &amp; Challenges</a>
-    <a href="{% url 'playground' %}" class="nav-link">Code Playground</a>
-    <a href="{% url 'about_view' %}" class="nav-link">About &amp; Principles</a>
+    <div style="display: flex; gap: 0.75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 0.5rem;">
+      <div class="streak-pill" style="font-size: 0.85rem;">
+        <span>🔥</span> <span>{{ user_streak }}d Streak</span>
+      </div>
+      <div class="xp-pill" style="font-size: 0.85rem;">
+        <span>⚡</span> <span>{{ user_xp }} XP</span>
+      </div>
+    </div>
+    <a href="{% url 'catalogue' %}" class="nav-link">📚 All Courses</a>
+    <a href="{% url 'games_hub' %}" class="nav-link">🎮 Practice Arena (6 Games)</a>
+    <a href="{% url 'playground' %}" class="nav-link">💻 Browser IDE Playground</a>
+    <a href="{% url 'about_view' %}" class="nav-link">🏛️ About &amp; Trademark Charter</a>
     {% if user.is_authenticated %}
-      <a href="{% url 'profile_view' %}" class="nav-link">Your Profile</a>
+      <a href="{% url 'profile_view' %}" class="nav-link">👤 Student Command Center</a>
       <a href="{% url 'logout_view' %}" class="nav-link" style="color: var(--danger);">Sign Out</a>
     {% else %}
-      <a href="{% url 'login_view' %}" class="nav-link">Sign In</a>
-      <a href="{% url 'signup_view' %}" class="nav-link" style="color: var(--accent); font-weight: 700;">Get Started (Free)</a>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;">
+        <a href="{% url 'login_view' %}" class="btn btn-ghost" style="text-align: center; justify-content: center;">Sign In</a>
+        <a href="{% url 'signup_view' %}" class="btn btn-primary" style="text-align: center; justify-content: center;">Sign Up</a>
+      </div>
     {% endif %}
   </div>
 
@@ -141,11 +151,10 @@
         
         <div>
           <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.75rem;">
-            <div class="brand-badge">CQ</div>
-            <span style="font-weight: 700; font-size: 1.05rem; color: var(--text-primary);">CodeQuest BD</span>
+            <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="30" style="display: block;" />
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; max-width: 320px;">
-            A modern, focused programming education platform. Master web technologies, scripting, and databases with structured 3–7 minute lessons and interactive browser tools.
+            Bangladesh's flagship developer education platform. Master web technologies, systems programming, and databases with structured 3–7 minute lessons and interactive browser tools.
           </p>
         </div>
 
@@ -204,7 +213,8 @@
     </div>
   </footer>
 
-  <script src="{% static 'js/codequest.js' %}?v=4.0"></script>
+  <script src="{% static 'js/ambient_canvas.js' %}?v=4.5"></script>
+  <script src="{% static 'js/codequest.js' %}?v=4.5"></script>
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>

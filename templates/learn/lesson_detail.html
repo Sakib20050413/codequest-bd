@@ -166,10 +166,15 @@
       <!-- Live Sandboxed Preview -->
       <div id="panelLivePreview" class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
         <div style="padding: 0.5rem 1rem; background: var(--bg-panel); border-bottom: 1px solid var(--border-subtle); font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
-          <span>🌐 Live Sandboxed Preview</span>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span>🌐 Live Sandboxed Preview</span>
+            <button id="togglePreviewCanvasBtn" class="btn btn-ghost" style="padding: 0.15rem 0.5rem; font-size: 0.7rem; height: auto;" title="Switch Preview Canvas Dark/Light">
+              🌓 Toggle Canvas
+            </button>
+          </div>
           <span id="runnerStatusMessage" style="font-weight: 600;"></span>
         </div>
-        <iframe id="previewIframe" sandbox="allow-scripts" style="width: 100%; height: 200px; border: none; background: #ffffff;"></iframe>
+        <iframe id="previewIframe" sandbox="allow-scripts" style="width: 100%; height: 210px; border: none; background: var(--bg-input);"></iframe>
       </div>
 
       <!-- Test Checklist Card -->

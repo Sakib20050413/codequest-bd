@@ -233,6 +233,29 @@
     } catch (e) {}
   }
 
+  // 5. Daily Retention & Quests Engine (Point 21)
+  function initDailyQuests() {
+    const today = new Date().toISOString().slice(0, 10);
+    const savedDate = localStorage.getItem('cq_quest_date');
+    if (savedDate !== today) {
+      localStorage.setItem('cq_quest_date', today);
+      localStorage.setItem('cq_quests_state', JSON.stringify({ q1: false, q2: false, q3: true }));
+    }
+    const qState = JSON.parse(localStorage.getItem('cq_quests_state') || '{"q1":false,"q2":false,"q3":true}');
+    const q2 = document.getElementById('quest2');
+    if (q2) {
+      q2.checked = !!qState.q2;
+      q2.addEventListener('change', function () {
+        qState.q2 = q2.checked;
+        localStorage.setItem('cq_quests_state', JSON.stringify(qState));
+        if (q2.checked) {
+          playTone('win');
+          fireConfetti();
+        }
+      });
+    }
+  }
+
   global.CodeQuest = {
     playTone: playTone,
     playMechanicalClick: playMechanicalClick,
@@ -246,5 +269,6 @@
     initTheme();
     initMobileMenu();
     initSoundToggle();
+    initDailyQuests();
   });
 })(typeof window !== 'undefined' ? window : this);
