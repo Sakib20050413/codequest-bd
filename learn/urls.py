@@ -8,8 +8,9 @@ urlpatterns = [
     path("learn/<slug:course_slug>/<slug:lesson_slug>/", views.lesson_detail, name="lesson_detail"),
     path("playground/", views.playground, name="playground"),
     
-    # 5 Interactive Mini-Games
+    # 5 Interactive Mini-Games / Practice Challenges
     path("games/", views.games_hub, name="games_hub"),
+    path("practice/", views.games_hub, name="practice"),
     path("games/<slug:game_slug>/", views.game_play, name="game_play"),
     path("api/games/<slug:game_slug>/score/", views.api_record_game_score, name="api_record_game_score"),
 
