@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.views.static import serve
 from learn import views
 
 urlpatterns = [
@@ -10,4 +11,6 @@ urlpatterns = [
     path(f"{settings.ADMIN_URL}/", admin.site.urls),
     # Core Application Routes
     path("", include("learn.urls")),
+    # Fallback static files serving for serverless environments (e.g. Vercel)
+    re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
 ]

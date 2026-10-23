@@ -16,6 +16,6 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Static collection
-staticfiles/
+# Static collection (allow staticfiles for serverless deployments like Vercel)
+# staticfiles/ is committed so all compiled assets are available to WhiteNoise
 staticfiles_build/
