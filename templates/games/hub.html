@@ -1,29 +1,29 @@
 {% extends "base.html" %}
 
-{% block title %}গেমস হাব — CodeQuest{% endblock %}
+{% block title %}Practice Arena: Coding Drills &amp; Challenges — CodeQuest BD{% endblock %}
 
 {% block content %}
 <div class="shell" style="padding-top: 2.5rem; padding-bottom: 5rem;">
   
   <div style="margin-bottom: 2.5rem;">
-    <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
-      🎮 ইন্টারঅ্যাক্টিভ আর্কেড
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+      Targeted Skill Drills
     </div>
-    <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.75rem;">
-      কোডিং মিনি-গেমস হাব
+    <h1 style="font-size: 2.3rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 0.75rem;">
+      Practice Arena &amp; Coding Challenges
     </h1>
-    <p style="font-size: 1rem; color: var(--text-muted); max-width: 620px; line-height: 1.6;">
-      কোডিংয়ের মৌলিক বিষয়গুলো মুখস্থ না করে গেম খেলার ছলে আত্মস্থ করুন। প্রতিটি গেমে ১–৩ মিনিটের দ্রুত রাউন্ডে পয়েন্ট ও XP অর্জন করুন।
+    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 650px; line-height: 1.6;">
+      Reinforce language fundamentals through fast, focused exercises. Each challenge tests a specific aspect of development: semantic structure, layout algorithms, debugging, syntax fluency, or program execution prediction.
     </p>
   </div>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
     {% for game in games %}
-    <div class="cq-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.75rem;">
+    <div class="cq-card cq-card-interactive" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2rem;">
       <div>
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-          <div style="font-size: 2.5rem;">{{ game.icon|default:'🎮' }}</div>
-          <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); background: var(--surface-2); border: 1px solid var(--border-color); padding: 0.2rem 0.5rem; border-radius: var(--radius-sm);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+          <div style="font-size: 2.25rem;">{{ game.icon_svg|default:'🎯' }}</div>
+          <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 600; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm);">
             +{{ game.xp_per_win }} XP
           </span>
         </div>
@@ -31,26 +31,26 @@
         <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">
           {{ game.title }}
         </h2>
-        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem; font-weight: 500;">
+        <div style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.75rem;">
           {{ game.tagline }}
         </div>
-        <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.5rem;">
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem;">
           {{ game.description }}
         </p>
       </div>
 
-      <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-color);">
-        <span style="font-size: 0.78rem; color: var(--text-muted);">
-          {{ game.difficulty }}
+      <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle);">
+        <span style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
+          ⏱ {{ game.difficulty }}
         </span>
         <a href="{% url 'game_play' game.slug %}" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.84rem;">
-          খেলুন →
+          Launch Challenge &rarr;
         </a>
       </div>
     </div>
     {% empty %}
-    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
-      বর্তমানে কোনো গেম উপলব্ধ নেই।
+    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted); background: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+      No practice challenges found.
     </div>
     {% endfor %}
   </div>

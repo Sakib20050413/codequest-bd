@@ -1,11 +1,11 @@
 /**
  * CodeQuest Core Platform Engine
- * Theme switching, Web Audio synth, single confetti burst, guest progress sync.
+ * Theme management, mobile drawer toggle, Web Audio synthesizer, and guest progress sync.
  */
 (function (global) {
   'use strict';
 
-  // 1. Theme Management
+  // 1. Theme Management (Light / Dark)
   function initTheme() {
     const saved = localStorage.getItem('cq_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', saved);
@@ -24,7 +24,33 @@
     }
   }
 
-  // 2. Web Audio API Chimes (Tone Synthesizer)
+  // 2. Mobile Navigation Drawer
+  function initMobileMenu() {
+    const btn = document.getElementById('mobileMenuBtn');
+    const drawer = document.getElementById('mobileNavDrawer');
+    if (!btn || !drawer) return;
+
+    btn.onclick = function () {
+      const isOpen = drawer.classList.contains('open');
+      if (isOpen) {
+        drawer.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      } else {
+        drawer.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    };
+
+    // Close drawer when clicking outside or resizing
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 860 && drawer.classList.contains('open')) {
+        drawer.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // 3. Web Audio API Chimes (Tone Synthesizer)
   let audioCtx = null;
   function isSoundEnabled() {
     return localStorage.getItem('cq_sound') !== 'false';
@@ -44,26 +70,26 @@
       if (type === 'success' || type === 'win') {
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(587.33, now); // D5
-        osc.frequency.exponentialRampToValueAtTime(880, now + 0.18); // A5
-        gain.gain.setValueAtTime(0.08, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-        osc.start(now);
-        osc.stop(now + 0.22);
-      } else if (type === 'error') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(220, now);
-        osc.frequency.setValueAtTime(180, now + 0.08);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.16); // A5
         gain.gain.setValueAtTime(0.06, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
         osc.start(now);
         osc.stop(now + 0.2);
+      } else if (type === 'error') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.setValueAtTime(180, now + 0.08);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        osc.start(now);
+        osc.stop(now + 0.18);
       } else {
         osc.type = 'sine';
         osc.frequency.setValueAtTime(440, now);
-        gain.gain.setValueAtTime(0.04, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        gain.gain.setValueAtTime(0.03, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
         osc.start(now);
-        osc.stop(now + 0.08);
+        osc.stop(now + 0.06);
       }
     } catch (e) {}
   }
@@ -78,81 +104,6 @@
       btn.textContent = next ? '🔊' : '🔇';
       if (next) playTone('click');
     };
-  }
-
-  // 3. Single Lightweight Confetti Particle Burst
-  function fireConfetti() {
-    const canvas = document.createElement('canvas');
-    canvas.style.position = 'fixed';
-    canvas.style.inset = '0';
-    canvas.style.width = '100vw';
-    canvas.style.height = '100vh';
-    canvas.style.pointerEvents = 'none';
-    canvas.style.zIndex = '99999';
-    document.body.appendChild(canvas);
-
-    const ctx = canvas.getContext('2d');
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    ctx.scale(dpr, dpr);
-
-    const colors = ['#10b981', '#34d399', '#6ee7b7', '#f59e0b', '#38bdf8'];
-    const particles = [];
-    const count = 45;
-    const originX = window.innerWidth / 2;
-    const originY = window.innerHeight * 0.45;
-
-    for (let i = 0; i < count; i++) {
-      const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
-      const speed = 4 + Math.random() * 7;
-      particles.push({
-        x: originX,
-        y: originY,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 2.5,
-        size: 5 + Math.random() * 4,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: 1,
-        rotation: Math.random() * 360,
-        vr: (Math.random() - 0.5) * 12,
-      });
-    }
-
-    let start = null;
-    function render(time) {
-      if (!start) start = time;
-      const elapsed = time - start;
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-      let alive = false;
-      for (let p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += 0.22; // gravity
-        p.vx *= 0.98;
-        p.rotation += p.vr;
-        p.alpha = Math.max(0, 1 - elapsed / 1100);
-
-        if (p.alpha > 0.01) {
-          alive = true;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate((p.rotation * Math.PI) / 180);
-          ctx.globalAlpha = p.alpha;
-          ctx.fillStyle = p.color;
-          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
-          ctx.restore();
-        }
-      }
-
-      if (alive && elapsed < 1200) {
-        requestAnimationFrame(render);
-      } else {
-        if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
-      }
-    }
-    requestAnimationFrame(render);
   }
 
   // 4. Guest LocalStorage Progress Sync
@@ -170,15 +121,32 @@
     return JSON.parse(localStorage.getItem('cq_guest_lessons') || '[]');
   }
 
+  function syncGuestProgress() {
+    const completedIds = getGuestCompletedIds();
+    const token = (document.cookie.match(/csrftoken=([^;]+)/) || [])[1] || '';
+    return fetch('/api/progress/sync/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': token,
+      },
+      body: JSON.stringify({ completed_ids: completedIds }),
+    }).then(function (res) {
+      return res.json();
+    });
+  }
+
   global.CodeQuest = {
     playTone: playTone,
-    fireConfetti: fireConfetti,
+    fireConfetti: function () {}, // Safe no-op per restrained visual guidelines
     recordGuestCompleted: recordGuestCompleted,
     getGuestCompletedIds: getGuestCompletedIds,
+    syncGuestProgress: syncGuestProgress,
   };
 
   window.addEventListener('DOMContentLoaded', function () {
     initTheme();
+    initMobileMenu();
     initSoundToggle();
   });
 })(typeof window !== 'undefined' ? window : this);

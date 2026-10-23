@@ -120,7 +120,7 @@ class CodeQuestCoreTests(TestCase):
     def test_playground(self):
         res = self.client.get(reverse("playground"))
         self.assertEqual(res.status_code, 200)
-        self.assertContains(res, "playgroundCode")
+        self.assertContains(res, "editorHtml")
 
     def test_games_hub_and_game_play(self):
         hub_res = self.client.get(reverse("games_hub"))

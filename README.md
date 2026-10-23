@@ -85,5 +85,5 @@ Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser.
 - **Database:** Provision a serverless Postgres database on **Neon** (Singapore region `ap-southeast-1` for South Asia/global low latency).
 - **Web Service:** Deploy on **Render** (Singapore region):
   - **Build Command:** `./build_files.sh`
-  - **Start Command:** `gunicorn codequest_project.wsgi:application`
+  - **Start Command:** `gunicorn config.wsgi:application`
   - **Environment Variables:** `SECRET_KEY`, `DEBUG=False`, `DATABASE_URL`, `ADMIN_URL`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`.

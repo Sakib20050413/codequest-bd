@@ -1,43 +1,45 @@
 {% extends "base.html" %}
 
-{% block title %}সাইন ইন — CodeQuest{% endblock %}
+{% block title %}Sign In — CodeQuest BD{% endblock %}
 
 {% block content %}
 <div class="shell" style="padding-top: 3.5rem; padding-bottom: 5rem; max-width: 420px;">
   
-  <div class="cq-card" style="padding: 2.25rem;">
+  <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
     <div style="text-align: center; margin-bottom: 1.75rem;">
-      <div class="brand-badge" style="margin: 0 auto 0.75rem; width: 44px; height: 44px; font-size: 1.1rem;">CQ</div>
-      <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.35rem;">সাইন ইন করুন</h1>
-      <p style="font-size: 0.85rem; color: var(--text-muted);">আপনার কোডিং যাত্রা এবং স্ট্রিক অব্যাহত রাখুন</p>
+      <div class="brand-badge" style="margin: 0 auto 0.85rem; width: 44px; height: 44px; font-size: 1.1rem;">CQ</div>
+      <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.35rem; letter-spacing: -0.01em;">
+        Sign In to CodeQuest
+      </h1>
+      <p style="font-size: 0.86rem; color: var(--text-muted);">Continue your progress and maintain your daily streak</p>
     </div>
 
     {% if error %}
-    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-sm); padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--danger); margin-bottom: 1.25rem;">
+    <div style="background: var(--danger-subtle); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: var(--radius-sm); padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--danger); margin-bottom: 1.25rem;">
       {{ error }}
     </div>
     {% endif %}
 
-    <form method="POST" action="{% url 'login_view' %}" style="display: flex; flex-direction: column; gap: 1.1rem;">
+    <form method="POST" action="{% url 'login_view' %}" style="display: flex; flex-direction: column; gap: 1.15rem;">
       {% csrf_token %}
       
       <div>
-        <label for="username" style="display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.35rem;">ইউজারনেম</label>
-        <input type="text" id="username" name="username" required autocomplete="username" class="form-input" style="width: 100%;" placeholder="আপনার ইউজারনেম" />
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" name="username" required autocomplete="username" class="form-input" placeholder="Your username" autofocus />
       </div>
 
       <div>
-        <label for="password" style="display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.35rem;">পাসওয়ার্ড</label>
-        <input type="password" id="password" name="password" required autocomplete="current-password" class="form-input" style="width: 100%;" placeholder="••••••••" />
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password" class="form-input" placeholder="••••••••" />
       </div>
 
       <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-size: 0.92rem; margin-top: 0.5rem;">
-        সাইন ইন করুন
+        Sign In &rarr;
       </button>
     </form>
 
-    <div style="text-align: center; margin-top: 1.75rem; font-size: 0.84rem; color: var(--text-muted);">
-      অ্যাকাউন্ট নেই? <a href="{% url 'signup_view' %}" style="color: var(--accent); font-weight: 600; text-decoration: none;">নতুন অ্যাকাউন্ট তৈরি করুন</a>
+    <div style="text-align: center; margin-top: 1.75rem; font-size: 0.85rem; color: var(--text-muted);">
+      Don't have an account? <a href="{% url 'signup_view' %}" style="color: var(--accent); font-weight: 600; text-decoration: none;">Create an account</a>
     </div>
   </div>
 

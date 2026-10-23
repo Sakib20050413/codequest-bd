@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Tag Match — HTML সেমান্টিক ট্যাগ ম্যাচিং — CodeQuest{% endblock %}
+{% block title %}Tag Match: Semantic HTML Architecture Drill — CodeQuest BD{% endblock %}
 
 {% block content %}
-<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 720px;">
+<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 760px;">
   
   <div style="margin-bottom: 1.5rem;">
     <a href="{% url 'games_hub' %}" style="font-size: 0.85rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
-      ← গেমস হাবে ফিরে যান
+      &larr; Back to Practice Arena
     </a>
   </div>
 
-  <div class="cq-card" style="padding: 2.25rem;">
-    <!-- Game Topbar -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+  <div class="cq-card" style="padding: 2.5rem; border: 1px solid var(--border-strong);">
+    <!-- Topbar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); text-transform: uppercase;">
-          মিনি-গেম ০১
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em;">
+          Practice Drill 01
         </div>
         <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
           Tag Match: Semantic HTML
@@ -25,20 +25,20 @@
       </div>
 
       <div style="text-align: right;">
-        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">স্কোর</div>
-        <div style="font-size: 1.35rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent);">
+        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Score</div>
+        <div style="font-size: 1.4rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent);">
           <span id="gameScore">0</span>
         </div>
       </div>
     </div>
 
-    <!-- Instruction Prompt -->
-    <div style="text-align: center; padding: 2rem 1.5rem; background: var(--surface-2); border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 2rem;">
-      <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
-        বর্ণনার সাথে সঠিক HTML ট্যাগটি নির্বাচন করুন
+    <!-- Description & Instruction Box -->
+    <div style="text-align: center; padding: 2rem 1.5rem; background: var(--bg-panel); border-radius: var(--radius-md); border: 1px solid var(--border-subtle); margin-bottom: 2rem;">
+      <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">
+        Match the structural definition with the correct HTML5 semantic element
       </div>
-      <div id="gamePrompt" style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); min-height: 52px; display: flex; align-items: center; justify-content: center;">
-        লোড হচ্ছে...
+      <div id="gamePrompt" style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); min-height: 52px; display: flex; align-items: center; justify-content: center; line-height: 1.4;">
+        Loading prompt...
       </div>
       <div id="gameFeedback" style="min-height: 24px; font-size: 0.9rem; font-weight: 600; margin-top: 0.5rem;"></div>
     </div>
