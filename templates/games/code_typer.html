@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Code Typer — কোড টাইপিং স্পিড টেস্ট — CodeQuest{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 760px;">
+  
+  <div style="margin-bottom: 1.5rem;">
+    <a href="{% url 'games_hub' %}" style="font-size: 0.85rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
+      ← গেমস হাবে ফিরে যান
+    </a>
+  </div>
+
+  <div class="cq-card" style="padding: 2.25rem;">
+    <!-- Topbar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); text-transform: uppercase;">
+          মিনি-গেম ০৪
+        </div>
+        <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
+          Code Typer: Syntax Speed Drill
+        </h1>
+      </div>
+
+      <div style="display: flex; gap: 1.5rem; text-align: right;">
+        <div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">WPM স্পিড</div>
+          <div style="font-size: 1.35rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent);">
+            <span id="wpmScore">0</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">সঠিকতা</div>
+          <div style="font-size: 1.35rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent);">
+            <span id="accuracyScore">100%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Target Code Display -->
+    <div style="margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+        <span style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">
+          টার্গেট কোড স্নিপেট:
+        </span>
+        <button id="newSnippetBtn" class="btn btn-ghost" style="font-size: 0.78rem; padding: 0.25rem 0.6rem;">
+          ↻ নতুন স্নিপেট
+        </button>
+      </div>
+
+      <div class="cq-card" style="padding: 1.25rem; background: var(--surface-2); font-family: var(--font-mono); font-size: 1.05rem; color: var(--text-primary); border-left: 3px solid var(--accent); user-select: none;">
+        <code id="targetCodeSnippet">লোড হচ্ছে...</code>
+      </div>
+    </div>
+
+    <!-- Typing Input Area -->
+    <div style="margin-bottom: 1.25rem;">
+      <input type="text" id="typeInputBox" class="code-editor" style="width: 100%; padding: 1rem; font-size: 1.05rem; font-family: var(--font-mono); border-radius: var(--radius-md); background: var(--surface-1); color: var(--text-primary); outline: none; border: 1px solid var(--border-color);" placeholder="এখানে দেখে দেখে টাইপ করা শুরু করুন..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </div>
+
+    <!-- Feedback Message -->
+    <div id="typeFeedback" style="font-size: 0.88rem; font-weight: 600; min-height: 24px; color: var(--text-muted);">
+      টাইপ শুরু করলেই টাইমার চালু হবে...
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/games/code_typer.js' %}"></script>
+{% endblock %}

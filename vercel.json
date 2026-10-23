@@ -1,15 +1,21 @@
 {
   "version": 2,
+  "regions": ["sin1"],
   "builds": [
     {
-      "src": "codequest_cms/wsgi.py",
+      "src": "config/wsgi.py",
       "use": "@vercel/python",
-      "config": { "maxLambdaSize": "15mb", "runtime": "python3.11" }
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.11"
+      }
     },
     {
-      "src": "build.sh",
+      "src": "build_files.sh",
       "use": "@vercel/static-build",
-      "config": { "distDir": "staticfiles" }
+      "config": {
+        "distDir": "staticfiles"
+      }
     }
   ],
   "routes": [
@@ -19,7 +25,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "codequest_cms/wsgi.py"
+      "dest": "config/wsgi.py"
     }
   ]
 }

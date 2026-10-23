@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}ইন্টারঅ্যাক্টিভ কোডিং প্লেগ্রাউন্ড — CodeQuest{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2rem; padding-bottom: 4rem;">
+  
+  <!-- Header -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+    <div>
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-bottom: 0.25rem;">
+        ✦ স্যান্ডবক্সড প্লেগ্রাউন্ড
+      </div>
+      <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+        লাইভ কোড প্লেগ্রাউন্ড
+      </h1>
+    </div>
+
+    <div style="display: flex; gap: 0.5rem;">
+      <button id="resetPlaygroundBtn" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.45rem 0.9rem;">
+        ↺ রিসেট
+      </button>
+      <button id="runPlaygroundBtn" class="btn btn-primary" style="font-size: 0.82rem; padding: 0.45rem 1rem;">
+        ▶ রান করুন
+      </button>
+    </div>
+  </div>
+
+  <!-- Split Screen Workspace -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.25rem;">
+    
+    <!-- Code Editor Column -->
+    <div class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 1rem; background: var(--surface-2); border-bottom: 1px solid var(--border-color); font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted);">
+        <span>index.html</span>
+        <span>HTML + CSS + JS</span>
+      </div>
+      <textarea id="playgroundCode" class="code-editor" style="width: 100%; min-height: 480px; border: none; border-radius: 0; outline: none; background: transparent; color: var(--text-primary); padding: 1.25rem; font-size: 0.9rem; line-height: 1.55;" spellcheck="false">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    body {
+      font-family: system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      margin: 0;
+      background: #0f172a;
+      color: #f8fafc;
+    }
+    .card {
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      border: 1px solid #334155;
+    }
+    button {
+      background: #10b981;
+      color: #0f172a;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    button:hover {
+      background: #059669;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="card"&gt;
+    &lt;h2&gt;স্বাগতম CodeQuest প্লেগ্রাউন্ডে!&lt;/h2&gt;
+    &lt;p&gt;এখানে স্বাধীনভাবে কোড লিখে সরাসরি ফলাফল পরীক্ষা করুন।&lt;/p&gt;
+    &lt;button onclick="handleClick()"&gt;ক্লিক করুন&lt;/button&gt;
+    &lt;p id="status" style="margin-top: 1rem; font-weight: bold; color: #10b981;"&gt;&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    let count = 0;
+    function handleClick() {
+      count++;
+      document.getElementById('status').textContent = 'ক্লিক সংখ্যা: ' + count;
+    }
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+    </div>
+
+    <!-- Live Preview Column -->
+    <div class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+      <div style="padding: 0.6rem 1rem; background: var(--surface-2); border-bottom: 1px solid var(--border-color); font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+        <span>🌐 Live Sandboxed Output</span>
+        <span id="previewTag" style="color: var(--accent); font-size: 0.75rem;">Real-time</span>
+      </div>
+      <iframe id="playgroundPreview" sandbox="allow-scripts" style="width: 100%; height: 480px; border: none; background: #ffffff;"></iframe>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  (function () {
+    const editor = document.getElementById('playgroundCode');
+    const iframe = document.getElementById('playgroundPreview');
+    const runBtn = document.getElementById('runPlaygroundBtn');
+    const resetBtn = document.getElementById('resetPlaygroundBtn');
+
+    const defaultCode = editor.value;
+
+    function renderPreview() {
+      iframe.srcdoc = editor.value;
+    }
+
+    runBtn.onclick = function () {
+      renderPreview();
+      if (window.CodeQuest) window.CodeQuest.playTone('click');
+    };
+
+    resetBtn.onclick = function () {
+      if (confirm('আপনি কি ডিফল্ট কোডে রিসেট করতে চান?')) {
+        editor.value = defaultCode;
+        renderPreview();
+      }
+    };
+
+    editor.addEventListener('input', function () {
+      renderPreview();
+    });
+
+    renderPreview();
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}কোর্স ক্যাটালগ — CodeQuest{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2.5rem; padding-bottom: 5rem;">
+  
+  <!-- Header -->
+  <div style="margin-bottom: 3rem;">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+      লার্নিং রোডম্যাপ
+    </div>
+    <h1 style="font-size: 2.4rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.75rem;">
+      সকল কোর্স ও লার্নিং ট্র্যাক
+    </h1>
+    <p style="font-size: 1rem; color: var(--text-muted); max-width: 600px; line-height: 1.6;">
+      প্রতিটি কোর্স সাজানো হয়েছে ছোট ছোট ৩–৭ মিনিটের ইন্টারঅ্যাক্টিভ লেসনে। যেকোনো একটি ট্র্যাক পছন্দ করে এখনই অনুশীলন শুরু করুন।
+    </p>
+  </div>
+
+  <!-- Languages and Courses -->
+  <div style="display: flex; flex-direction: column; gap: 3.5rem;">
+    {% for lang in languages %}
+    <section>
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);">
+        <span style="font-size: 1.5rem;">{{ lang.icon }}</span>
+        <div>
+          <h2 style="font-size: 1.35rem; font-weight: 700; color: var(--text-primary);">{{ lang.name }}</h2>
+          <span style="font-size: 0.82rem; color: var(--text-muted);">{{ lang.short_description }}</span>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+        {% for course in lang.courses.all %}
+        <a href="{% url 'course_detail' course.slug %}" class="cq-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.75rem; font-family: var(--font-mono); padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); background: var(--surface-2); color: var(--accent); border: 1px solid var(--border-color);">
+                {{ course.level }}
+              </span>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">
+                {{ course.lessons.count }} টি লেসন
+              </span>
+            </div>
+
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+              {{ course.title }}
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.5rem;">
+              {{ course.description }}
+            </p>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.82rem;">
+            <span style="color: var(--text-muted);">⏱ আনুমানিক {{ course.estimated_time_minutes }} মিনিট</span>
+            <span style="color: var(--accent); font-weight: 600;">ট্র্যাক শুরু করুন →</span>
+          </div>
+        </a>
+        {% empty %}
+        <div style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem;">
+          এই ল্যাঙ্গুয়েজে শীঘ্রই নতুন কোর্স যুক্ত হচ্ছে।
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% empty %}
+    <div style="text-align: center; padding: 4rem; color: var(--text-muted);">
+      বর্তমানে কোনো ল্যাঙ্গুয়েজ সক্রিয় নেই।
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

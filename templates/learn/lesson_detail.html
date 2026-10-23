@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+{% load learn_extras %}
+
+{% block title %}{{ lesson.title }} — {{ course.title }} — CodeQuest{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 1.5rem; padding-bottom: 3rem;">
+
+  <!-- Lesson Navigation Header -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <a href="{% url 'course_detail' course.slug %}" class="btn btn-ghost" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">
+        ← {{ course.title }}
+      </a>
+      <div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; background: var(--surface-2); border: 1px solid var(--border-color); padding: 0.15rem 0.45rem; border-radius: var(--radius-sm); color: var(--accent);">
+            #{{ lesson.order }}
+          </span>
+          <h1 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin: 0;">
+            {{ lesson.title }}
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); font-weight: 600;">
+        +{{ lesson.xp }} XP
+      </span>
+
+      <div style="display: flex; gap: 0.35rem;">
+        {% if prev_lesson %}
+        <a href="{% url 'lesson_detail' course.slug prev_lesson.slug %}" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem;" title="পূর্ববর্তী লেসন">
+          ← পূর্ববর্তী
+        </a>
+        {% endif %}
+        {% if next_lesson %}
+        <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem;" title="পরবর্তী লেসন">
+          পরবর্তী →
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Split Screen Workspace -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; align-items: start;">
+    
+    <!-- Left Column: Mental Model & Instructions -->
+    <div class="cq-card" style="padding: 1.75rem; max-height: 82vh; overflow-y: auto;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">
+          মেন্টাল মডেল ও ধারণা (৩–৭ মিনিট)
+        </span>
+        <span style="font-size: 0.78rem; color: var(--text-muted);">
+          ⏱ {{ lesson.est_minutes }} মিনিট
+        </span>
+      </div>
+
+      <!-- Markdown body -->
+      <div class="prose" style="font-size: 0.92rem; line-height: 1.65; color: var(--text-primary); margin-bottom: 1.5rem;">
+        {{ lesson.body_md|render_md }}
+      </div>
+
+      <!-- Optional Diagram -->
+      {% if lesson.diagram_svg %}
+      <div style="margin: 1.5rem 0; padding: 1rem; background: var(--surface-2); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-align: center;">
+        {{ lesson.diagram_svg|safe }}
+      </div>
+      {% endif %}
+
+      <!-- Actionable Challenge / Task -->
+      <div style="margin-top: 1.5rem; padding: 1.25rem; background: var(--surface-2); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 0.35rem;">
+          🎯 আপনার করণীয় (Task)
+        </div>
+        <div style="font-size: 0.88rem; color: var(--text-primary); line-height: 1.5;">
+          {{ lesson.task_prompt }}
+        </div>
+      </div>
+
+      <!-- Hint Ladder Box -->
+      <div style="margin-top: 1.5rem;">
+        <button id="revealHintBtn" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.4rem 0.8rem; color: var(--text-muted);">
+          💡 হিন্ট প্রয়োজন?
+        </button>
+        <div id="hintDisplayBox" style="display: none; margin-top: 0.75rem; padding: 0.85rem 1rem; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: var(--radius-sm); font-size: 0.84rem; color: var(--text-primary); line-height: 1.5;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Interactive Editor & Verification Runner -->
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      
+      <!-- Code Editor Panel -->
+      <div class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 1rem; background: var(--surface-2); border-bottom: 1px solid var(--border-color);">
+          <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted);">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent);"></span>
+            <span>editor.{{ course.language.slug|default:'code' }}</span>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="runCodeBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+              ▶ রান প্রিভিউ
+            </button>
+            <button id="checkSolutionBtn" class="btn btn-primary" style="padding: 0.35rem 0.9rem; font-size: 0.8rem;">
+              ✔ যাচাই ও জমা দিন
+            </button>
+          </div>
+        </div>
+
+        <textarea id="codeEditor" class="code-editor" style="min-height: 220px; border: none; border-radius: 0; font-size: 0.88rem; outline: none; background: transparent; color: var(--text-primary); padding: 1rem;" spellcheck="false">{{ lesson.starter_code }}</textarea>
+      </div>
+
+      <!-- Live Sandboxed Preview -->
+      <div class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="padding: 0.5rem 1rem; background: var(--surface-2); border-bottom: 1px solid var(--border-color); font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+          <span>🌐 Live Sandboxed Preview</span>
+          <span id="runnerStatusMessage" style="font-weight: 600;"></span>
+        </div>
+        <iframe id="previewIframe" sandbox="allow-scripts" style="width: 100%; height: 180px; border: none; background: #ffffff;"></iframe>
+      </div>
+
+      <!-- Test Checklist Card -->
+      <div class="cq-card" style="padding: 1rem 1.25rem;">
+        <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">
+          অটোমেটেড টেস্ট চেকলিস্ট
+        </div>
+        <div id="testChecklist" style="display: flex; flex-direction: column; gap: 0.35rem;">
+          <!-- Dynamically populated by web_runner.js -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/runners/web_runner.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.CodeQuestLessonRunner) {
+      window.CodeQuestLessonRunner.init({
+        lessonId: {{ lesson.id }},
+        tests: JSON.parse('{{ tests_json_str|escapejs }}'),
+        hints: JSON.parse('{{ hints_json_str|escapejs }}'),
+        solution: `{{ lesson.solution|escapejs }}`,
+        xpReward: {{ lesson.xp }}
+      });
+    }
+  });
+</script>
+{% endblock %}

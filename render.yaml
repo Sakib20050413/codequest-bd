@@ -1,22 +1,23 @@
 services:
   - type: web
-    name: codequest-bd
+    name: codequest
     env: python
+    region: singapore
+    plan: free
     buildCommand: "./build.sh"
-    startCommand: "gunicorn codequest_cms.wsgi:application"
+    startCommand: "gunicorn config.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.8
-      - key: DJANGO_DEBUG
+        value: 3.11.9
+      - key: DEBUG
         value: "False"
-      - key: DJANGO_SECRET_KEY
+      - key: ADMIN_URL
+        value: "manage-hq-cms"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com,localhost,127.0.0.1"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://*.onrender.com"
+      - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        fromDatabase:
-          name: codequest-db
-          property: connectionString
-
-databases:
-  - name: codequest-db
-    databaseName: codequest_prod
-    user: codequest_admin
+        sync: false

@@ -15,3 +15,6 @@ ENV/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Static collection
+staticfiles/

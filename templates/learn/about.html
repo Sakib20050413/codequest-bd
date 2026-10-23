@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}আমাদের মূলনীতি ও দর্শন — CodeQuest{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 3rem; padding-bottom: 5rem; max-width: 800px;">
+
+  <div style="margin-bottom: 2.5rem;">
+    <div style="font-size: 0.8rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+      মূলনীতি ও দর্শন
+    </div>
+    <h1 style="font-size: 2.4rem; font-weight: 800; color: var(--text-primary); margin-bottom: 1rem;">
+      কেন CodeQuest?
+    </h1>
+    <p style="font-size: 1.05rem; color: var(--text-muted); line-height: 1.65;">
+      প্রোগ্রামিং শেখার সবচেয়ে বড় বাধা দীর্ঘ ২ ঘণ্টার ভিডিও দেখা নয়, বরং নিজে কোড না লিখে পরোক্ষভাবে দেখে যাওয়া। CodeQuest এই সমস্যার একটি ন্যূনতম ও কার্যকর সমাধান।
+    </p>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 2rem;">
+    
+    <div class="cq-card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+        ১. ৩–৭ মিনিটের বাইট-সাইজড লেসন
+      </h2>
+      <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">
+        প্রতিটি লেসন একটি একক মেন্টাল মডেলকে কেন্দ্র করে তৈরি। কোনো অপ্রয়োজনীয় ভূমিকা ছাড়া সরাসরি কোডের অভ্যন্তরীণ ক্রিয়াকলাপ তুলে ধরা হয় এবং সাথে সাথেই একটি চ্যালেঞ্জ সমাধান করতে হয়।
+      </p>
+    </div>
+
+    <div class="cq-card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+        ২. ১০০% ক্লায়েন্ট-সাইড সুরক্ষিত এক্সিকিউশন
+      </h2>
+      <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">
+        সার্ভারে ব্যবহারকারীর কোড চালানোর নিরাপত্তা ঝুঁকি এড়াতে আমাদের সমস্ত রানার ব্রাউজারে চালিত হয়। HTML/CSS/JS চালিত হয় Sandboxed Iframe-এ, Python চলে Pyodide (WebAssembly)-তে এবং SQL কোড যাচাই হয় sql.js (WASM)-এর মাধ্যমে। কোনো ডেটা ফাঁস হওয়ার ভয় নেই।
+      </p>
+    </div>
+
+    <div class="cq-card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+        ৩. হিস্ট্রি ও স্ট্রিক সংরক্ষণ (Local-first & Cloud Sync)
+      </h2>
+      <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">
+        লগইন না করেও আপনি তাৎক্ষণিকভাবে লেসন সম্পন্ন করতে পারেন যা ব্রাউজারের LocalStorage-এ সুরক্ষিত থাকে। পরবর্তীতে অ্যাকাউন্ট তৈরি করলে সেই অগ্রগতি স্বয়ংক্রিয়ভাবে ক্লাউড প্রোফাইলের সাথে সিঙ্ক হয়ে যায়।
+      </p>
+    </div>
+
+    <div class="cq-card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+        ৪. নান্দনিক মিনিমালিজম ও অ্যাক্সেসিবিলিটি
+      </h2>
+      <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">
+        আমরা কোনো অযথা অ্যানিমেশন বা চমকপ্রদ রঙের সমাহার ব্যবহার করি না। Obsidian ডার্ক এবং Warm Paper লাইট থিমের সমন্বয়ে কঠোর WCAG 2.1 AA কনট্রাস্ট নিশ্চিত করা হয়েছে যাতে চোখে কোনো ক্লান্তি না আসে।
+      </p>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

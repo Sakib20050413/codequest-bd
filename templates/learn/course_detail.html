@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.title }} — CodeQuest{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 860px;">
+  
+  <!-- Breadcrumb -->
+  <div style="margin-bottom: 1.5rem;">
+    <a href="{% url 'catalogue' %}" style="font-size: 0.85rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
+      ← কোর্স ক্যাটালগে ফিরে যান
+    </a>
+  </div>
+
+  <!-- Course Header Card -->
+  <div class="cq-card" style="margin-bottom: 2.5rem; padding: 2rem;">
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1rem;">
+      <span style="font-size: 0.75rem; font-family: var(--font-mono); background: var(--surface-2); border: 1px solid var(--border-color); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); color: var(--accent);">
+        {{ course.language.name }}
+      </span>
+      <span style="font-size: 0.75rem; font-family: var(--font-mono); background: var(--surface-2); border: 1px solid var(--border-color); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); color: var(--text-muted);">
+        {{ course.level }}
+      </span>
+      <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: auto;">
+        ⏱ মোট {{ course.estimated_time_minutes }} মিনিট • {{ lessons|length }} টি লেসন
+      </span>
+    </div>
+
+    <h1 style="font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.75rem;">
+      {{ course.title }}
+    </h1>
+    <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
+      {{ course.description }}
+    </p>
+
+    <!-- Progress indicator -->
+    <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.5rem;">
+      <span style="color: var(--text-muted);">আপনার অগ্রগতি</span>
+      <span style="font-family: var(--font-mono); color: var(--accent); font-weight: 600;">
+        {{ completed_ids|length }} / {{ lessons|length }} সম্পন্ন
+      </span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" style="width: {% if lessons|length > 0 %}{% widthratio completed_ids|length lessons|length 100 %}{% else %}0{% endif %}%;"></div>
+    </div>
+  </div>
+
+  <!-- Lesson List -->
+  <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem;">
+    লেসন সূচিপত্র
+  </h2>
+
+  <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+    {% for lesson in lessons %}
+    <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="cq-card" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.5rem; transition: background 0.15s ease, border-color 0.15s ease;">
+      <div style="display: flex; align-items: center; gap: 1.25rem;">
+        <div style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: {% if lesson.id in completed_ids %}var(--accent){% else %}var(--text-muted){% endif %}; width: 28px;">
+          {% if lesson.id in completed_ids %}
+            ✔
+          {% else %}
+            {{ forloop.counter|stringformat:"02d" }}
+          {% endif %}
+        </div>
+        <div>
+          <h3 style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.2rem;">
+            {{ lesson.title }}
+          </h3>
+          <span style="font-size: 0.78rem; color: var(--text-muted);">
+            {{ lesson.estimated_minutes }} মিনিট • +{{ lesson.xp }} XP
+          </span>
+        </div>
+      </div>
+
+      <div>
+        {% if lesson.id in completed_ids %}
+          <span style="font-size: 0.75rem; font-weight: 600; color: var(--accent); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.25rem 0.6rem; border-radius: 9999px;">
+            সম্পন্ন
+          </span>
+        {% else %}
+          <span class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+            শুরু করুন →
+          </span>
+        {% endif %}
+      </div>
+    </a>
+    {% empty %}
+    <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+      এই কোর্সে এখনো কোনো লেসন যোগ করা হয়নি।
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

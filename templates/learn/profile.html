@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }} এর প্রোফাইল — CodeQuest{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2.5rem; padding-bottom: 5rem; max-width: 900px;">
+  
+  <!-- Profile Summary Card -->
+  <div class="cq-card" style="padding: 2rem; margin-bottom: 2rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;">
+      <div style="display: flex; align-items: center; gap: 1.25rem;">
+        <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--surface-2); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; color: var(--accent);">
+          {{ user.username|make_list|first|upper }}
+        </div>
+        <div>
+          <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.25rem;">
+            {{ user.username }}
+          </h1>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">
+            সদস্য হয়েছেন: {{ user.date_joined|date:"d M Y" }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Sync Guest Progress Button -->
+      <div>
+        <button id="syncStorageBtn" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.45rem 0.9rem;">
+          🔄 লোকাল প্রগ্রেস সিঙ্ক করুন
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Stats Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+      <div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">মোট অর্জিত XP</div>
+        <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent); margin-top: 0.25rem;">⚡ {{ profile.xp }}</div>
+      </div>
+      <div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">লার্নিং স্ট্রিক</div>
+        <div style="font-size: 1.5rem; font-weight: 800; color: #f59e0b; margin-top: 0.25rem;">🔥 {{ profile.streak }} দিন</div>
+      </div>
+      <div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">সম্পন্ন লেসন</div>
+        <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem;">📚 {{ progress_list|length }} টি</div>
+      </div>
+      <div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">অর্জিত ব্যাজ</div>
+        <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem;">🏆 {{ badges|length }} টি</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Badges Section -->
+  <section style="margin-bottom: 2.5rem;">
+    <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem;">
+      অর্জিত ব্যাজসমূহ
+    </h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+      {% for badge in badges %}
+      <div class="cq-card" style="padding: 1.25rem; border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.03);">
+        <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">{{ badge.icon }}</div>
+        <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">{{ badge.name }}</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">{{ badge.description }}</p>
+      </div>
+      {% endfor %}
+
+      {% for badge in available_badges %}
+      <div class="cq-card" style="padding: 1.25rem; opacity: 0.5; filter: grayscale(1);">
+        <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🔒</div>
+        <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">{{ badge.name }}</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">{{ badge.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Completed Lessons History -->
+  <section>
+    <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem;">
+      সম্পন্ন করা লেসন হিস্ট্রি
+    </h2>
+
+    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+      {% for prog in progress_list %}
+      <div class="cq-card" style="padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-right: 0.5rem;">
+            {{ prog.lesson.course.language.name }}
+          </span>
+          <a href="{% url 'lesson_detail' prog.lesson.course.slug prog.lesson.slug %}" style="font-weight: 600; color: var(--text-primary); text-decoration: none; font-size: 0.92rem;">
+            {{ prog.lesson.title }}
+          </a>
+        </div>
+        <div style="font-size: 0.78rem; color: var(--text-muted);">
+          {{ prog.completed_at|date:"d M Y, h:i A" }}
+        </div>
+      </div>
+      {% empty %}
+      <div style="text-align: center; padding: 2.5rem; color: var(--text-muted); background: var(--surface-1); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        এখনো কোনো লেসন সম্পন্ন করেননি। কোর্স ক্যাটালগ থেকে আজই শেখা শুরু করুন!
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  document.getElementById('syncStorageBtn')?.addEventListener('click', function () {
+    if (window.CodeQuest && window.CodeQuest.syncGuestProgress) {
+      window.CodeQuest.syncGuestProgress().then(() => {
+        alert('লোকাল প্রগ্রেস সফলভাবে সিঙ্ক করা হয়েছে!');
+        location.reload();
+      }).catch(err => {
+        alert('সিঙ্ক সম্পন্ন হতে সমস্যা হয়েছে।');
+      });
+    }
+  });
+</script>
+{% endblock %}

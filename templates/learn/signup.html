@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}নতুন অ্যাকাউন্ট তৈরি করুন — CodeQuest{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 3.5rem; padding-bottom: 5rem; max-width: 420px;">
+  
+  <div class="cq-card" style="padding: 2.25rem;">
+    <div style="text-align: center; margin-bottom: 1.75rem;">
+      <div class="brand-badge" style="margin: 0 auto 0.75rem; width: 44px; height: 44px; font-size: 1.1rem;">CQ</div>
+      <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.35rem;">অ্যাকাউন্ট তৈরি করুন</h1>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">বিনামূল্যে শিখুন, স্ট্রিক ট্র্যাক করুন এবং ব্যাজ অর্জন করুন</p>
+    </div>
+
+    {% if error %}
+    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-sm); padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--danger); margin-bottom: 1.25rem;">
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST" action="{% url 'signup_view' %}" style="display: flex; flex-direction: column; gap: 1.1rem;">
+      {% csrf_token %}
+      
+      <div>
+        <label for="username" style="display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.35rem;">ইউজারনেম</label>
+        <input type="text" id="username" name="username" required autocomplete="username" class="form-input" style="width: 100%;" placeholder="আপনার ইউজারনেম" />
+      </div>
+
+      <div>
+        <label for="email" style="display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.35rem;">ইমেইল (ঐচ্ছিক)</label>
+        <input type="email" id="email" name="email" autocomplete="email" class="form-input" style="width: 100%;" placeholder="name@example.com" />
+      </div>
+
+      <div>
+        <label for="password" style="display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.35rem;">পাসওয়ার্ড</label>
+        <input type="password" id="password" name="password" required autocomplete="new-password" class="form-input" style="width: 100%;" placeholder="কমপক্ষে ৬টি অক্ষর" />
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-size: 0.92rem; margin-top: 0.5rem;">
+        নিবন্ধন সম্পন্ন করুন
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 1.75rem; font-size: 0.84rem; color: var(--text-muted);">
+      ইতিমধ্যেই অ্যাকাউন্ট আছে? <a href="{% url 'login_view' %}" style="color: var(--accent); font-weight: 600; text-decoration: none;">সাইন ইন করুন</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
