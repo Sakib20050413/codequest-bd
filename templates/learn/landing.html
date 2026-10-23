@@ -4,131 +4,184 @@
 {% block title %}CodeQuest BD — Modern Bite-Sized Programming Education{% endblock %}
 
 {% block content %}
-<div class="shell" style="padding-top: 2.5rem; padding-bottom: 5rem;">
+<div class="shell" style="padding-top: 3rem; padding-bottom: 6rem;">
 
   <!-- Hero Section -->
-  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 3.5rem; align-items: center; padding: 2.5rem 0 4.5rem;">
+  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 4rem; align-items: center; padding: 2.5rem 0 5rem;">
     <div>
-      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); border-radius: 999px; padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-bottom: 1.5rem;">
-        <span>✦</span> Structured 3–7 Minute Interactive Lessons
+      <!-- Shimmer Announcement Badge -->
+      <div class="pill-shimmer" style="margin-bottom: 1.75rem;">
+        <span class="pulse-dot"></span>
+        <span>Zero Passive Videos &bull; 100% Active Code Practice</span>
       </div>
 
-      <h1 style="font-size: clamp(2.3rem, 4.8vw, 3.6rem); font-weight: 800; line-height: 1.12; letter-spacing: -0.03em; margin-bottom: 1.25rem; color: var(--text-primary);">
-        Master programming through <span style="color: var(--accent);">structured practice</span>.
+      <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.035em; margin-bottom: 1.5rem;" class="headline-gradient">
+        Learn to code by <span class="accent-gradient">actually building</span>.
       </h1>
 
-      <p style="font-size: 1.08rem; line-height: 1.65; color: var(--text-muted); max-width: 540px; margin-bottom: 2rem;">
-        Skip passive two-hour tutorial videos. Learn HTML, CSS, JavaScript, Python, and SQL with concise mental models, an in-browser code editor, and automated test-driven feedback.
+      <p style="font-size: 1.12rem; line-height: 1.7; color: var(--text-muted); max-width: 540px; margin-bottom: 2.25rem;">
+        Master HTML, CSS, JavaScript, Python, and SQL through 3–7 minute interactive micro-lessons, live browser sandboxes, and automated test feedback.
       </p>
 
       <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
-        <a href="{% url 'catalogue' %}" class="btn btn-primary" style="padding: 0.75rem 1.6rem; font-size: 0.95rem;">
-          Explore Courses
+        <a href="{% url 'catalogue' %}" class="btn btn-primary" style="padding: 0.82rem 1.85rem; font-size: 0.96rem;">
+          Start Learning Free &rarr;
         </a>
-        <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.75rem 1.5rem; font-size: 0.95rem;">
+        <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.82rem 1.65rem; font-size: 0.96rem;">
           Open Playground ↗
         </a>
       </div>
 
       {% if recent_lesson %}
-      <div style="margin-top: 2.25rem; padding: 0.85rem 1.25rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-shadow: var(--shadow-sm);">
+      <div class="cq-card" style="margin-top: 2.5rem; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
         <div>
-          <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em;">Continue Learning</div>
-          <div style="font-weight: 600; font-size: 0.92rem; color: var(--text-primary); margin-top: 0.15rem;">{{ recent_lesson.title }}</div>
+          <div style="font-size: 0.72rem; color: var(--accent-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">Resume Progress</div>
+          <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary); margin-top: 0.15rem;">{{ recent_lesson.title }}</div>
         </div>
-        <a href="{% url 'lesson_detail' recent_lesson.course.slug recent_lesson.slug %}" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
-          Resume &rarr;
+        <a href="{% url 'lesson_detail' recent_lesson.course.slug recent_lesson.slug %}" class="btn btn-primary" style="font-size: 0.82rem; padding: 0.45rem 1rem;">
+          Continue &rarr;
         </a>
       </div>
       {% endif %}
     </div>
 
-    <!-- Authentic Live Product Preview -->
+    <!-- Authentic Live Product Preview (VS Code / Fleet Inspired Studio Window) -->
     <div>
-      <div class="cq-card" style="padding: 0; overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--border-strong);">
+      <div class="ide-window">
         
-        <!-- Editor Mock Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 1.15rem; background: var(--bg-panel); border-bottom: 1px solid var(--border-subtle); font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted);">
-          <div style="display: flex; align-items: center; gap: 0.6rem;">
-            <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; opacity: 0.85;"></span>
-            <span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; opacity: 0.85;"></span>
-            <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; opacity: 0.85;"></span>
-            <span style="margin-left: 0.4rem; color: var(--text-secondary); font-weight: 600;">interactive-demo.html</span>
+        <!-- IDE Titlebar -->
+        <div class="ide-titlebar">
+          <div class="ide-dots">
+            <span class="ide-dot ide-dot-red"></span>
+            <span class="ide-dot ide-dot-yellow"></span>
+            <span class="ide-dot ide-dot-green"></span>
+            <span style="margin-left: 0.6rem; color: var(--text-secondary); font-weight: 600; font-size: 0.78rem;">
+              app.interactive.jsx &bull; CodeQuest Sandboxed Runtime
+            </span>
           </div>
-          <button id="heroRunBtn" class="btn btn-primary" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 4px;">
-            ▶ Run Code
+          <button id="heroRunBtn" class="btn btn-primary" style="padding: 0.25rem 0.75rem; font-size: 0.75rem; border-radius: 6px;">
+            ▶ Run Tests
           </button>
         </div>
 
-        <!-- Editor Snippet -->
-        <div style="padding: 1.1rem 1.25rem; background: var(--bg-input); font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.6; color: var(--text-primary); border-bottom: 1px solid var(--border-subtle);">
-          <div style="color: var(--text-muted);">&lt;!-- Lesson: Dynamic State in DOM --&gt;</div>
-          <div>&lt;<span style="color: #0284c7;">div</span> <span style="color: #14b8a6;">class</span>=<span style="color: #f59e0b;">"card"</span>&gt;</div>
-          <div style="padding-left: 1rem;">&lt;<span style="color: #0284c7;">h3</span>&gt;Hello from CodeQuest&lt;/<span style="color: #0284c7;">h3</span>&gt;</div>
-          <div style="padding-left: 1rem;">&lt;<span style="color: #0284c7;">p</span>&gt;3-minute practical lessons with zero fluff.&lt;/<span style="color: #0284c7;">p</span>&gt;</div>
-          <div style="padding-left: 1rem;">&lt;<span style="color: #0284c7;">button</span> <span style="color: #14b8a6;">id</span>=<span style="color: #f59e0b;">"demoBtn"</span>&gt;Click Me&lt;/<span style="color: #0284c7;">button</span>&gt;</div>
-          <div>&lt;/<span style="color: #0284c7;">div</span>&gt;</div>
+        <!-- IDE Tabs Bar -->
+        <div class="ide-tabs">
+          <div class="ide-tab active">
+            <span style="color: #38bdf8;">⚛</span> App.jsx
+          </div>
+          <div class="ide-tab">
+            <span style="color: #facc15;">JS</span> state.js
+          </div>
+          <div class="ide-tab">
+            <span style="color: #38bdf8;">#</span> styles.css
+          </div>
         </div>
 
-        <!-- Live Sandbox Output -->
-        <div style="padding: 0.5rem 1rem; background: var(--bg-panel); border-bottom: 1px solid var(--border-subtle); font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
-          <span>Live Sandboxed Output</span>
-          <span style="color: var(--accent); font-weight: 600;">● Verified DOM</span>
+        <!-- IDE Code Body with Syntax Colors -->
+        <div class="code-editor-body">
+          <div style="color: #64748b; margin-bottom: 0.35rem;">// Lesson 04: Reactive State Counter</div>
+          <div><span style="color: #818cf8;">function</span> <span style="color: #38bdf8;">CounterComponent</span>() {</div>
+          <div style="padding-left: 1.25rem;"><span style="color: #818cf8;">const</span> [clicks, setClicks] = <span style="color: #38bdf8;">useState</span>(<span style="color: #f59e0b;">0</span>);</div>
+          <div style="padding-left: 1.25rem; color: #64748b;">// Increment state on click</div>
+          <div style="padding-left: 1.25rem;"><span style="color: #818cf8;">return</span> (</div>
+          <div style="padding-left: 2.25rem;">&lt;<span style="color: #38bdf8;">button</span> <span style="color: #c084fc;">onClick</span>={() =&gt; <span style="color: #38bdf8;">setClicks</span>(c =&gt; c + <span style="color: #f59e0b;">1</span>)}&gt;</div>
+          <div style="padding-left: 3.25rem;">Score: {clicks}</div>
+          <div style="padding-left: 2.25rem;">&lt;/<span style="color: #38bdf8;">button</span>&gt;</div>
+          <div style="padding-left: 1.25rem;">);</div>
+          <div>}</div>
         </div>
-        <div style="padding: 1.5rem; background: #ffffff; color: #0f172a; min-height: 140px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
-          <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.35rem; color: #0f172a;">Hello from CodeQuest</h4>
-          <p style="font-size: 0.86rem; color: #475569; margin-bottom: 1rem;">3-minute practical lessons with zero fluff.</p>
-          <button id="heroInteractiveBtn" style="background: #0d9488; color: #ffffff; border: none; padding: 0.45rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.15s ease;">
-            Clicked <span id="heroClickCount">0</span> times
+
+        <!-- Live Sandboxed Output Area -->
+        <div style="padding: 0.6rem 1.25rem; background: #0b0e16; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; font-family: var(--font-mono);">
+          <span style="color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+            localhost:3000/preview
+          </span>
+          <span id="heroTestBadge" style="color: #34d399; font-weight: 700; background: rgba(16, 185, 129, 0.12); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.25);">
+            ✓ 3/3 Tests Passed (9ms)
+          </span>
+        </div>
+
+        <!-- Sandboxed Live Interactive Container -->
+        <div style="padding: 1.75rem 1.5rem; background: #0d111b; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+          <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem;">Interactive Live Sandbox (Click to Test)</div>
+          <button id="heroInteractiveBtn" class="btn btn-primary" style="padding: 0.65rem 1.5rem; font-size: 0.92rem; border-radius: 8px; font-weight: 700;">
+            🔥 Interactive Score: <span id="heroClickCount" style="margin-left: 0.35rem; font-size: 1.1rem; color: #fbbf24;">0</span>
           </button>
+          <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.85rem; font-family: var(--font-mono);">
+            state re-renders reactively with zero DOM lag
+          </div>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- Educational Pillars -->
-  <section style="margin: 3.5rem 0; padding: 3rem 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
-    <div style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">
-      <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
-        Methodology
+  <!-- Bento Grid: Educational Pillars -->
+  <section style="margin: 4.5rem 0; padding: 3.5rem 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+    <div style="text-align: center; max-width: 640px; margin: 0 auto 3.5rem;">
+      <div style="font-size: 0.82rem; font-weight: 700; color: var(--accent-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.65rem;">
+        Pedagogy &amp; Philosophy
       </div>
-      <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em;">
+      <h2 style="font-size: clamp(2rem, 3.5vw, 2.6rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em;">
         Engineered for deep comprehension.
       </h2>
+      <p style="font-size: 1rem; color: var(--text-muted); margin-top: 0.75rem; line-height: 1.6;">
+        Built specifically to bridge the gap between syntax memorization and real-world problem solving.
+      </p>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.75rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.75rem;">
       
+      <!-- Card 1 -->
       <div class="cq-card">
-        <div style="font-size: 1.5rem; margin-bottom: 0.85rem; color: var(--accent);">⚡</div>
-        <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary);">3–7 Minute Micro-Lessons</h3>
-        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
-          Every lesson concentrates on a single mental model, followed immediately by an actionable code challenge to ensure retention.
+        <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1.25rem; color: #818cf8;">
+          ⚡
+        </div>
+        <h3 style="font-size: 1.12rem; font-weight: 700; margin-bottom: 0.65rem; color: var(--text-primary);">
+          3–7 Minute Micro-Lessons
+        </h3>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.65;">
+          Every module is atomic and focused on one specific mental model. Build continuous daily momentum without burnout.
         </p>
       </div>
 
+      <!-- Card 2 -->
       <div class="cq-card">
-        <div style="font-size: 1.5rem; margin-bottom: 0.85rem; color: var(--accent);">🛡️</div>
-        <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary);">Sandboxed In-Browser Execution</h3>
-        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
-          HTML, CSS, JavaScript, Python (via Pyodide WASM), and SQL (via sql.js) run directly inside your browser with zero latency and high security.
+        <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.3); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1.25rem; color: #06b6d4;">
+          🛡️
+        </div>
+        <h3 style="font-size: 1.12rem; font-weight: 700; margin-bottom: 0.65rem; color: var(--text-primary);">
+          In-Browser Sandboxing
+        </h3>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.65;">
+          HTML, CSS, JS, Python (Pyodide WebAssembly), and SQL (sql.js) execute entirely in client memory. Safe, fast, and instant.
         </p>
       </div>
 
+      <!-- Card 3 -->
       <div class="cq-card">
-        <div style="font-size: 1.5rem; margin-bottom: 0.85rem; color: var(--accent);">✔</div>
-        <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary);">Automated Test Checks</h3>
-        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
-          Continuous evaluation against concrete assertions with stepped hints to guide you forward when you encounter obstacles.
+        <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1.25rem; color: #10b981;">
+          ✓
+        </div>
+        <h3 style="font-size: 1.12rem; font-weight: 700; margin-bottom: 0.65rem; color: var(--text-primary);">
+          Automated Test Feedback
+        </h3>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.65;">
+          Automated test criteria assert your code correctness immediately with detailed explanations and stepped hint ladders.
         </p>
       </div>
 
+      <!-- Card 4 -->
       <div class="cq-card">
-        <div style="font-size: 1.5rem; margin-bottom: 0.85rem; color: var(--accent);">🎯</div>
-        <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary);">Targeted Syntax Drills</h3>
-        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
-          Reinforce muscle memory with 5 focused practice drills, including Flexbox alignment, bug hunting, and output prediction.
+        <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1.25rem; color: #fbbf24;">
+          🎯
+        </div>
+        <h3 style="font-size: 1.12rem; font-weight: 700; margin-bottom: 0.65rem; color: var(--text-primary);">
+          Muscle Memory Drills
+        </h3>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.65;">
+          Strengthen cognitive patterns with 5 interactive coding drills: Flexbox pond, syntax typer, bug hunt, and output prediction.
         </p>
       </div>
 
@@ -136,13 +189,13 @@
   </section>
 
   <!-- Featured Learning Tracks -->
-  <section style="margin: 4.5rem 0;">
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+  <section style="margin: 5rem 0;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
       <div>
-        <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;">
-          Curriculum
+        <div style="font-size: 0.82rem; font-weight: 700; color: var(--accent-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">
+          Verified Roadmap
         </div>
-        <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em;">
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.4rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em;">
           Featured Learning Tracks
         </h2>
       </div>
@@ -151,81 +204,89 @@
       </a>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem;">
       {% for course in featured_courses %}
       <a href="{% url 'course_detail' course.slug %}" class="cq-card cq-card-interactive" style="justify-content: space-between;">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 600; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); color: var(--accent);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.3); padding: 0.25rem 0.65rem; border-radius: 6px; color: #a5b4fc;">
               {{ course.language.name }}
             </span>
-            <span style="font-size: 0.8rem; color: var(--text-muted);">
+            <span style="font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono);">
               {{ course.lessons.count }} lessons
             </span>
           </div>
 
-          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+          <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.65rem; letter-spacing: -0.02em;">
             {{ course.title }}
           </h3>
-          <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 1.5rem;">
-            {{ course.description|truncatewords:20 }}
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem;">
+            {{ course.description|truncatewords:22 }}
           </p>
         </div>
 
-        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
-          <span style="color: var(--text-muted);">⏱ ~{{ course.estimated_time_minutes }} mins</span>
-          <span style="color: var(--accent); font-weight: 600;">Start Track &rarr;</span>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); font-size: 0.86rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">⏱ ~{{ course.estimated_time_minutes }} mins</span>
+          <span style="color: var(--accent-secondary); font-weight: 700;">Start Track &rarr;</span>
         </div>
       </a>
       {% empty %}
       <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
-        No courses available. Run database seed to populate curriculum.
+        No courses available. Curriculum initializing.
       </div>
       {% endfor %}
     </div>
   </section>
 
   <!-- Interactive Playground Callout -->
-  <section style="margin: 4.5rem 0;">
-    <div class="cq-card" style="padding: 2.5rem; background: var(--bg-surface); border: 1px solid var(--border-strong); display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; align-items: center;">
+  <section style="margin: 5.5rem 0;">
+    <div class="cq-card" style="padding: 3rem 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 3rem; align-items: center;">
       <div>
-        <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
-          Browser IDE
+        <div style="font-size: 0.82rem; font-weight: 700; color: var(--accent-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.65rem;">
+          Full Browser IDE
         </div>
-        <h2 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin-bottom: 1rem;">
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.3rem); font-weight: 800; color: var(--text-primary); margin-bottom: 1.15rem; letter-spacing: -0.03em;">
           Experiment freely in the Live Coding Playground.
         </h2>
-        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem;">
-          Inspect real-time HTML, CSS, and JavaScript rendering with an integrated console drawer capturing logs and runtime warnings. No setup or build tools required.
+        <p style="font-size: 0.98rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 2rem;">
+          Write HTML5, CSS3, and modern JavaScript with real-time DOM rendering and an integrated developer console that logs warnings, errors, and output directly inside your browser.
         </p>
-        <div style="display: flex; gap: 1rem;">
-          <a href="{% url 'playground' %}" class="btn btn-primary" style="padding: 0.65rem 1.4rem; font-size: 0.9rem;">
+        <div>
+          <a href="{% url 'playground' %}" class="btn btn-primary" style="padding: 0.75rem 1.65rem; font-size: 0.94rem;">
             Launch Playground &rarr;
           </a>
         </div>
       </div>
 
-      <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-secondary);">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-subtle); color: var(--text-muted);">
-          <span>Tabs: HTML &bull; CSS &bull; JS</span>
-          <span style="color: var(--accent);">Live Preview</span>
+      <div class="ide-window" style="padding: 0;">
+        <div class="ide-titlebar">
+          <div class="ide-dots">
+            <span class="ide-dot ide-dot-red"></span>
+            <span class="ide-dot ide-dot-yellow"></span>
+            <span class="ide-dot ide-dot-green"></span>
+            <span style="margin-left: 0.5rem; color: var(--text-muted);">playground.js</span>
+          </div>
+          <span style="color: #34d399; font-size: 0.75rem; font-family: var(--font-mono);">● Console Active</span>
         </div>
-        <pre style="margin: 0; line-height: 1.6; color: var(--text-primary);"><code>// Live console capture enabled
-console.log("Welcome to CodeQuest Playground");
-const element = document.createElement("div");
-element.textContent = "Instant evaluation";</code></pre>
+        <div class="code-editor-body" style="font-size: 0.82rem; line-height: 1.6;">
+          <div style="color: #64748b;">// Real-time console capture</div>
+          <div><span style="color: #818cf8;">console</span>.<span style="color: #38bdf8;">log</span>(<span style="color: #34d399;">"Welcome to CodeQuest IDE"</span>);</div>
+          <div><span style="color: #818cf8;">const</span> canvas = document.<span style="color: #38bdf8;">createElement</span>(<span style="color: #34d399;">"canvas"</span>);</div>
+          <div>canvas.<span style="color: #c084fc;">className</span> = <span style="color: #34d399;">"live-viewport"</span>;</div>
+          <div style="color: #fbbf24; margin-top: 0.5rem;">&gt; [Console] 200 OK — Ready for input</div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Practice Drills & Challenges -->
-  <section style="margin: 4.5rem 0;">
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+  <section style="margin: 5rem 0;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
       <div>
-        <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;">
-          Interactive Practice
+        <div style="font-size: 0.82rem; font-weight: 700; color: var(--accent-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">
+          Gamified Drills
         </div>
-        <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em;">
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.4rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em;">
           Targeted Coding Challenges
         </h2>
       </div>
@@ -234,15 +295,15 @@ element.textContent = "Instant evaluation";</code></pre>
       </a>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem;">
       {% for game in games %}
       <a href="{% url 'game_play' game.slug %}" class="cq-card cq-card-interactive" style="justify-content: space-between;">
         <div>
-          <div style="font-size: 2rem; margin-bottom: 0.75rem;">{{ game.icon_svg|default:'🎯' }}</div>
-          <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">{{ game.title }}</h3>
-          <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">{{ game.tagline }}</p>
+          <div style="font-size: 2.2rem; margin-bottom: 1rem;">{{ game.icon_svg|default:'🎯' }}</div>
+          <h3 style="font-size: 1.12rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.45rem;">{{ game.title }}</h3>
+          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.6;">{{ game.tagline }}</p>
         </div>
-        <div style="margin-top: 1.25rem; font-size: 0.82rem; color: var(--accent); font-weight: 600;">
+        <div style="margin-top: 1.5rem; font-size: 0.84rem; color: var(--accent-secondary); font-weight: 700; font-family: var(--font-mono);">
           +{{ game.xp_per_win }} XP &bull; Practice &rarr;
         </div>
       </a>
@@ -255,19 +316,21 @@ element.textContent = "Instant evaluation";</code></pre>
   </section>
 
   <!-- Final Call to Action -->
-  <section style="margin: 5rem 0 2rem; text-align: center; padding: 3.5rem 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-strong); border-radius: var(--radius-lg);">
-    <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 1rem;">
+  <section style="margin: 6rem 0 2rem; text-align: center; padding: 4.5rem 1.75rem; border-radius: var(--radius-xl); position: relative; overflow: hidden; background: linear-gradient(180deg, rgba(20, 24, 38, 0.8) 0%, rgba(13, 16, 26, 0.95) 100%); border: 1px solid var(--border-glow); box-shadow: var(--shadow-glow);">
+    <div style="position: absolute; top: -50%; left: 50%; transform: translateX(-50%); width: 600px; height: 300px; background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.3), transparent 70%); pointer-events: none;"></div>
+    
+    <h2 style="font-size: clamp(2.2rem, 4.2vw, 3.2rem); font-weight: 800; color: #ffffff; letter-spacing: -0.03em; margin-bottom: 1.25rem;">
       Ready to start coding?
     </h2>
-    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 520px; margin: 0 auto 2rem; line-height: 1.6;">
-      Begin with HTML5 Foundations or explore JavaScript DOM essentials. All lessons run directly in your browser.
+    <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7;">
+      Begin with HTML5 Foundations or explore JavaScript DOM essentials. All lessons run directly in your browser with zero tooling setup.
     </p>
-    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-      <a href="{% url 'catalogue' %}" class="btn btn-primary" style="padding: 0.75rem 1.75rem; font-size: 0.95rem;">
-        Get Started Now
+    <div style="display: flex; justify-content: center; gap: 1.25rem; flex-wrap: wrap;">
+      <a href="{% url 'catalogue' %}" class="btn btn-primary" style="padding: 0.85rem 2rem; font-size: 1rem;">
+        Get Started Now &rarr;
       </a>
-      <a href="{% url 'about_view' %}" class="btn btn-ghost" style="padding: 0.75rem 1.5rem; font-size: 0.95rem;">
-        Learn More
+      <a href="{% url 'about_view' %}" class="btn btn-ghost" style="padding: 0.85rem 1.75rem; font-size: 1rem;">
+        Explore Architecture
       </a>
     </div>
   </section>
@@ -281,12 +344,16 @@ element.textContent = "Instant evaluation";</code></pre>
     const demoBtn = document.getElementById('heroInteractiveBtn');
     const countEl = document.getElementById('heroClickCount');
     const runBtn = document.getElementById('heroRunBtn');
+    const testBadge = document.getElementById('heroTestBadge');
     let count = 0;
 
     if (demoBtn && countEl) {
       demoBtn.onclick = function () {
         count++;
         countEl.textContent = count;
+        if (testBadge) {
+          testBadge.textContent = '✓ State Updated: ' + count + ' clicks';
+        }
         if (window.CodeQuest) window.CodeQuest.playTone('click');
       };
     }
@@ -295,6 +362,9 @@ element.textContent = "Instant evaluation";</code></pre>
       runBtn.onclick = function () {
         count = 0;
         if (countEl) countEl.textContent = count;
+        if (testBadge) {
+          testBadge.textContent = '✓ 3/3 Tests Passed (9ms)';
+        }
         if (window.CodeQuest) window.CodeQuest.playTone('success');
       };
     }
