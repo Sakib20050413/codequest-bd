@@ -2,8 +2,22 @@
 
 {% block title %}Interactive Coding Playground — CodeQuest BD{% endblock %}
 
+{% block extra_head %}
+<!-- CodeMirror Professional Web IDE Engine -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+{% endblock %}
+
 {% block content %}
-<div class="shell" style="padding-top: 1.5rem; padding-bottom: 4rem;">
+<div class="shell shell-wide" style="padding-top: 1.5rem; padding-bottom: 4rem;">
   
   <!-- Toolbar Header -->
   <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
@@ -14,7 +28,7 @@
           Browser Coding Playground
         </h1>
         <div style="font-size: 0.8rem; color: var(--text-muted);">
-          Sandboxed HTML5, CSS3, &amp; JavaScript environment with live console capture
+          Sandboxed HTML5, CSS3, &amp; JavaScript studio with live console capture &bull; CodeMirror IDE
         </div>
       </div>
     </div>
@@ -30,9 +44,24 @@
         <option value="blank">Template: Blank Canvas</option>
       </select>
 
+      <!-- Visual Box Model Inspector Button -->
+      <button id="openBoxInspectorBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Open Visual Box Model Inspector">
+        📐 Box Inspector
+      </button>
+
+      <!-- Target Design Diff Comparison Button -->
+      <button id="toggleDiffBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Compare with Design Spec">
+        🎯 Design Diff
+      </button>
+
       <!-- Layout Toggle Button -->
       <button id="toggleLayoutBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Toggle Split Orientation">
         ⇄ Toggle Layout
+      </button>
+
+      <!-- Zen Fullscreen Toggle -->
+      <button id="zenPlaygroundBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Toggle Zen Fullscreen Mode">
+        ⛶ Zen Mode
       </button>
 
       <!-- Reset Button -->
@@ -48,7 +77,7 @@
   </div>
 
   <!-- Workspace Container (Adjustable Side-by-Side or Stacked) -->
-  <div id="playgroundWorkspace" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.25rem; align-items: stretch;">
+  <div id="playgroundWorkspace" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1.25rem; align-items: stretch;">
     
     <!-- Left Column: Code Editor & Tabs -->
     <div class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border-strong);">
@@ -66,10 +95,16 @@
       </div>
 
       <!-- Editor Textarea Panes -->
-      <div style="flex: 1; position: relative; min-height: 480px;">
-        <textarea id="editorHtml" class="code-editor pane-editor active" placeholder="<!-- Write HTML here -->" spellcheck="false"></textarea>
-        <textarea id="editorCss" class="code-editor pane-editor" placeholder="/* Write CSS styles here */" spellcheck="false"></textarea>
-        <textarea id="editorJs" class="code-editor pane-editor" placeholder="// Write JavaScript code here" spellcheck="false"></textarea>
+      <div style="flex: 1; position: relative; min-height: 520px;">
+        <div id="wrapHtml" class="cm-pane-wrapper active" style="height: 100%;">
+          <textarea id="editorHtml" class="code-editor pane-editor active" placeholder="<!-- Write HTML here -->" spellcheck="false"></textarea>
+        </div>
+        <div id="wrapCss" class="cm-pane-wrapper" style="height: 100%; display: none;">
+          <textarea id="editorCss" class="code-editor pane-editor" placeholder="/* Write CSS styles here */" spellcheck="false"></textarea>
+        </div>
+        <div id="wrapJs" class="cm-pane-wrapper" style="height: 100%; display: none;">
+          <textarea id="editorJs" class="code-editor pane-editor" placeholder="// Write JavaScript code here" spellcheck="false"></textarea>
+        </div>
       </div>
 
     </div>
@@ -77,13 +112,23 @@
     <!-- Right Column: Live Sandboxed Preview & Console Drawer -->
     <div style="display: flex; flex-direction: column; gap: 1rem;">
       
-      <!-- Live Preview Frame -->
-      <div class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; flex: 1; min-height: 280px; border: 1px solid var(--border-strong);">
+      <!-- Live Preview Frame Container with Design Diff Overlay -->
+      <div class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; flex: 1; min-height: 320px; border: 1px solid var(--border-strong); position: relative;">
         <div style="padding: 0.5rem 1rem; background: var(--bg-panel); border-bottom: 1px solid var(--border-subtle); font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
           <span>🌐 Sandboxed Live Preview</span>
           <span style="color: var(--accent); font-weight: 600;">● Active</span>
         </div>
-        <iframe id="playgroundPreviewFrame" sandbox="allow-scripts allow-modals" style="width: 100%; height: 100%; min-height: 280px; border: none; background: #ffffff;"></iframe>
+        
+        <div style="position: relative; flex: 1; min-height: 280px; width: 100%;">
+          <iframe id="playgroundPreviewFrame" sandbox="allow-scripts allow-modals" style="width: 100%; height: 100%; min-height: 280px; border: none; background: #ffffff;"></iframe>
+          
+          <!-- Design Diff Overlay Layer -->
+          <div id="diffOverlayLayer" style="display: none; position: absolute; inset: 0; pointer-events: none; opacity: 0.5; background: rgba(99, 102, 241, 0.08); border: 2px dashed var(--accent); justify-content: center; align-items: center;">
+            <div style="background: var(--bg-canvas); padding: 0.5rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--accent); color: var(--accent); font-size: 0.8rem; font-family: var(--font-mono);">
+              🎯 Design Diff Mode Active (Opacity: <span id="diffOpacityVal">50%</span>)
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Console / Output Panel -->
@@ -107,6 +152,85 @@
 
   </div>
 
+</div>
+
+<!-- Interactive Visual Box Model & Flexbox Manipulative Modal -->
+<div id="boxInspectorModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 10000; align-items: center; justify-content: center; padding: 1.5rem;">
+  <div class="cq-card" style="width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; padding: 2rem; border: 1px solid var(--border-strong);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
+      <div style="display: flex; align-items: center; gap: 0.65rem;">
+        <span style="font-size: 1.4rem;">📐</span>
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin: 0;">Visual CSS Box Model &amp; Flexbox Lab</h3>
+          <span style="font-size: 0.78rem; color: var(--text-muted);">Tactile direct manipulation &bull; Drag sliders to visualize layout mechanics</span>
+        </div>
+      </div>
+      <button id="closeBoxInspectorBtn" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 1rem;">✕</button>
+    </div>
+
+    <!-- Live Rendered Box Model Graphic -->
+    <div style="background: var(--bg-panel); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.75rem; border: 1px solid var(--border-subtle);">
+      <div class="box-model-preview">
+        <div id="bmMarginLayer" class="bm-layer bm-margin">
+          <span class="bm-label">Margin (<span id="valMargin">24</span>px)</span>
+          <div id="bmBorderLayer" class="bm-layer bm-border">
+            <span class="bm-label">Border (<span id="valBorder">2</span>px)</span>
+            <div id="bmPaddingLayer" class="bm-layer bm-padding">
+              <span class="bm-label">Padding (<span id="valPadding">20</span>px)</span>
+              <div id="bmContentLayer" class="bm-layer bm-content">
+                <span>Content (240 &times; 60px)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sliders and Controls -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+      <div>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: #f59e0b;">
+          <span>Margin</span>
+          <span id="labelMargin">24px</span>
+        </label>
+        <input type="range" id="inputMargin" min="0" max="48" value="24" style="width: 100%; accent-color: #f59e0b;" />
+      </div>
+
+      <div>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: #06b6d4;">
+          <span>Border Width</span>
+          <span id="labelBorder">2px</span>
+        </label>
+        <input type="range" id="inputBorder" min="0" max="12" value="2" style="width: 100%; accent-color: #06b6d4;" />
+      </div>
+
+      <div>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: #10b981;">
+          <span>Padding</span>
+          <span id="labelPadding">20px</span>
+        </label>
+        <input type="range" id="inputPadding" min="0" max="48" value="20" style="width: 100%; accent-color: #10b981;" />
+      </div>
+
+      <div>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: var(--accent);">
+          <span>Border Radius</span>
+          <span id="labelRadius">8px</span>
+        </label>
+        <input type="range" id="inputRadius" min="0" max="24" value="8" style="width: 100%; accent-color: var(--accent);" />
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+      <code id="boxModelCssOutput" style="font-family: var(--font-mono); font-size: 0.78rem; background: var(--bg-input); padding: 0.4rem 0.75rem; border-radius: var(--radius-sm); color: var(--text-secondary);">
+        margin: 24px; padding: 20px; border: 2px solid; border-radius: 8px;
+      </code>
+      <button id="copyBoxCssBtn" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.82rem;">
+        Copy CSS Rules
+      </button>
+    </div>
+  </div>
 </div>
 {% endblock %}
 
@@ -133,9 +257,6 @@
     background: var(--bg-surface);
   }
   .pane-editor {
-    display: none;
-    position: absolute;
-    inset: 0;
     width: 100%;
     height: 100%;
     border: none;
@@ -146,30 +267,78 @@
     font-size: 0.9rem;
     resize: none;
   }
-  .pane-editor.active {
-    display: block;
-  }
 </style>
 
 <script>
   (function () {
-    const editorHtml = document.getElementById('editorHtml');
-    const editorCss = document.getElementById('editorCss');
-    const editorJs = document.getElementById('editorJs');
+    const rawHtml = document.getElementById('editorHtml');
+    const rawCss = document.getElementById('editorCss');
+    const rawJs = document.getElementById('editorJs');
     const iframe = document.getElementById('playgroundPreviewFrame');
     const runBtn = document.getElementById('runPlaygroundBtn');
     const resetBtn = document.getElementById('resetPlaygroundBtn');
     const layoutBtn = document.getElementById('toggleLayoutBtn');
+    const zenBtn = document.getElementById('zenPlaygroundBtn');
     const templateSelect = document.getElementById('templateSelector');
     const workspace = document.getElementById('playgroundWorkspace');
     const tabs = document.querySelectorAll('.editor-tab-btn');
-    const panes = document.querySelectorAll('.pane-editor');
+    const wrapHtml = document.getElementById('wrapHtml');
+    const wrapCss = document.getElementById('wrapCss');
+    const wrapJs = document.getElementById('wrapJs');
     const consoleLogs = document.getElementById('consoleLogsArea');
     const consoleBadge = document.getElementById('consoleCountBadge');
     const clearConsoleBtn = document.getElementById('clearConsoleBtn');
 
+    let cmHtml, cmCss, cmJs;
     let logCount = 0;
     let isStacked = false;
+
+    // Initialize CodeMirror for HTML, CSS, JS
+    if (window.CodeMirror) {
+      cmHtml = CodeMirror.fromTextArea(rawHtml, {
+        mode: 'htmlmixed',
+        theme: 'codequest',
+        lineNumbers: true,
+        matchBrackets: true,
+        autoCloseTags: true,
+        autoCloseBrackets: true,
+        tabSize: 2,
+        indentUnit: 2
+      });
+
+      cmCss = CodeMirror.fromTextArea(rawCss, {
+        mode: 'css',
+        theme: 'codequest',
+        lineNumbers: true,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        tabSize: 2,
+        indentUnit: 2
+      });
+
+      cmJs = CodeMirror.fromTextArea(rawJs, {
+        mode: 'javascript',
+        theme: 'codequest',
+        lineNumbers: true,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        tabSize: 2,
+        indentUnit: 2
+      });
+
+      [cmHtml, cmCss, cmJs].forEach(function (cm) {
+        cm.on('change', function () {
+          cm.save();
+          if (window.CodeQuest && window.CodeQuest.playMechanicalClick) {
+            window.CodeQuest.playMechanicalClick();
+          }
+        });
+        cm.setOption('extraKeys', {
+          'Ctrl-Enter': function () { runBtn.click(); },
+          'Cmd-Enter': function () { runBtn.click(); }
+        });
+      });
+    }
 
     const TEMPLATES = {
       counter: {
@@ -196,9 +365,15 @@
 
     function loadTemplate(key) {
       const tmpl = TEMPLATES[key] || TEMPLATES.counter;
-      editorHtml.value = tmpl.html;
-      editorCss.value = tmpl.css;
-      editorJs.value = tmpl.js;
+      if (cmHtml) {
+        cmHtml.setValue(tmpl.html);
+        cmCss.setValue(tmpl.css);
+        cmJs.setValue(tmpl.js);
+      } else {
+        rawHtml.value = tmpl.html;
+        rawCss.value = tmpl.css;
+        rawJs.value = tmpl.js;
+      }
       renderSandbox();
     }
 
@@ -219,9 +394,9 @@
     }
 
     function renderSandbox() {
-      const html = editorHtml.value;
-      const css = editorCss.value;
-      const js = editorJs.value;
+      const html = cmHtml ? cmHtml.getValue() : rawHtml.value;
+      const css = cmCss ? cmCss.getValue() : rawCss.value;
+      const js = cmJs ? cmJs.getValue() : rawJs.value;
 
       const consoleCaptureShim = `
         <script>
@@ -281,32 +456,100 @@
     tabs.forEach(function (tab) {
       tab.onclick = function () {
         tabs.forEach(t => t.classList.remove('active'));
-        panes.forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
 
         const target = tab.getAttribute('data-tab');
-        if (target === 'html') editorHtml.classList.add('active');
-        else if (target === 'css') editorCss.classList.add('active');
-        else if (target === 'js') editorJs.classList.add('active');
+        wrapHtml.style.display = target === 'html' ? 'block' : 'none';
+        wrapCss.style.display = target === 'css' ? 'block' : 'none';
+        wrapJs.style.display = target === 'js' ? 'block' : 'none';
+
+        if (target === 'html' && cmHtml) cmHtml.refresh();
+        else if (target === 'css' && cmCss) cmCss.refresh();
+        else if (target === 'js' && cmJs) cmJs.refresh();
       };
     });
 
-    // Indentation and shortcuts in textareas
-    [editorHtml, editorCss, editorJs].forEach(function (ed) {
-      ed.addEventListener('keydown', function (e) {
-        if (e.key === 'Tab') {
-          e.preventDefault();
-          const start = this.selectionStart;
-          const end = this.selectionEnd;
-          this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
-          this.selectionStart = this.selectionEnd = start + 2;
-        } else if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-          e.preventDefault();
-          renderSandbox();
-          if (window.CodeQuest) window.CodeQuest.playTone('click');
-        }
-      });
-    });
+    // Zen Mode Fullscreen Toggle
+    if (zenBtn && workspace) {
+      zenBtn.onclick = function () {
+        const isZen = workspace.classList.toggle('zen-active');
+        zenBtn.textContent = isZen ? '✕ Exit Zen' : '⛶ Zen Mode';
+        zenBtn.style.borderColor = isZen ? 'var(--accent)' : '';
+        if (cmHtml) cmHtml.refresh();
+        if (cmCss) cmCss.refresh();
+        if (cmJs) cmJs.refresh();
+      };
+    }
+
+    // Design Diff Mode
+    const diffBtn = document.getElementById('toggleDiffBtn');
+    const diffOverlay = document.getElementById('diffOverlayLayer');
+    if (diffBtn && diffOverlay) {
+      let diffActive = false;
+      diffBtn.onclick = function () {
+        diffActive = !diffActive;
+        diffOverlay.style.display = diffActive ? 'flex' : 'none';
+        diffBtn.style.color = diffActive ? 'var(--accent)' : '';
+        diffBtn.style.borderColor = diffActive ? 'var(--accent)' : '';
+      };
+    }
+
+    // Interactive Box Model & Flexbox Modal Logic
+    const boxModal = document.getElementById('boxInspectorModal');
+    const openBoxBtn = document.getElementById('openBoxInspectorBtn');
+    const closeBoxBtn = document.getElementById('closeBoxInspectorBtn');
+    const inMargin = document.getElementById('inputMargin');
+    const inBorder = document.getElementById('inputBorder');
+    const inPadding = document.getElementById('inputPadding');
+    const inRadius = document.getElementById('inputRadius');
+    const copyBoxBtn = document.getElementById('copyBoxCssBtn');
+    const cssOutput = document.getElementById('boxModelCssOutput');
+
+    function updateBoxGraphic() {
+      const m = inMargin.value;
+      const b = inBorder.value;
+      const p = inPadding.value;
+      const r = inRadius.value;
+
+      document.getElementById('valMargin').textContent = m;
+      document.getElementById('valBorder').textContent = b;
+      document.getElementById('valPadding').textContent = p;
+      document.getElementById('labelMargin').textContent = m + 'px';
+      document.getElementById('labelBorder').textContent = b + 'px';
+      document.getElementById('labelPadding').textContent = p + 'px';
+      document.getElementById('labelRadius').textContent = r + 'px';
+
+      const bmMargin = document.getElementById('bmMarginLayer');
+      const bmBorder = document.getElementById('bmBorderLayer');
+      const bmPadding = document.getElementById('bmPaddingLayer');
+
+      bmMargin.style.padding = `${m}px`;
+      bmMargin.style.borderRadius = `${r}px`;
+      bmBorder.style.borderWidth = `${b}px`;
+      bmBorder.style.borderRadius = `${Math.max(0, r - 2)}px`;
+      bmPadding.style.padding = `${p}px`;
+      bmPadding.style.borderRadius = `${Math.max(0, r - 4)}px`;
+
+      const rule = `margin: ${m}px; padding: ${p}px; border: ${b}px solid #06b6d4; border-radius: ${r}px;`;
+      cssOutput.textContent = rule;
+    }
+
+    if (openBoxBtn && boxModal) {
+      openBoxBtn.onclick = function () {
+        boxModal.style.display = 'flex';
+        updateBoxGraphic();
+      };
+      closeBoxBtn.onclick = function () {
+        boxModal.style.display = 'none';
+      };
+      [inMargin, inBorder, inPadding, inRadius].forEach(inp => inp.addEventListener('input', updateBoxGraphic));
+      
+      copyBoxBtn.onclick = function () {
+        navigator.clipboard.writeText(cssOutput.textContent.trim());
+        copyBoxBtn.textContent = '✓ Copied!';
+        setTimeout(() => { copyBoxBtn.textContent = 'Copy CSS Rules'; }, 1500);
+      };
+    }
 
     runBtn.onclick = function () {
       renderSandbox();
@@ -336,7 +579,10 @@
 
     layoutBtn.onclick = function () {
       isStacked = !isStacked;
-      workspace.style.gridTemplateColumns = isStacked ? '1fr' : 'repeat(auto-fit, minmax(360px, 1fr))';
+      workspace.style.gridTemplateColumns = isStacked ? '1fr' : 'repeat(auto-fit, minmax(380px, 1fr))';
+      if (cmHtml) cmHtml.refresh();
+      if (cmCss) cmCss.refresh();
+      if (cmJs) cmJs.refresh();
     };
 
     // Initial load

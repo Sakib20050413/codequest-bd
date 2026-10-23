@@ -167,6 +167,7 @@
         if (allPass && tests.length > 0) {
           if (global.CodeQuest) {
             global.CodeQuest.playTone('success');
+            global.CodeQuest.fireConfetti();
             global.CodeQuest.recordGuestCompleted(lessonId, config.xpReward || 50);
           }
           if (statusMsg) {

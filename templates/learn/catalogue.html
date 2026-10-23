@@ -18,6 +18,119 @@
     </p>
   </div>
 
+  <!-- Interactive RPG Skill Tree & Knowledge DAG Roadmap -->
+  <div class="cq-card" style="padding: 2rem; margin-bottom: 2.75rem; border: 1px solid var(--border-strong); background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.08), var(--bg-surface) 70%);">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">
+          Gamified Tech-Tree
+        </div>
+        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.01em;">
+          Mastery Road &bull; Directed Skill Graph
+        </h2>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
+        <span style="display: inline-flex; align-items: center; gap: 0.35rem;"><span style="width:8px; height:8px; border-radius:50%; background:var(--accent);"></span> Core Track</span>
+        <span style="display: inline-flex; align-items: center; gap: 0.35rem;"><span style="width:8px; height:8px; border-radius:50%; background:var(--success);"></span> Unlocked</span>
+      </div>
+    </div>
+
+    <!-- Visual Graph Nodes Flow -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; position: relative;">
+      
+      <!-- Node 1: HTML Core -->
+      <a href="{% url 'course_detail' 'html-core' %}" class="skill-node unlocked" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 1.35rem;">🌐</span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--lang-html); background: rgba(249, 115, 22, 0.12); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Stage 1</span>
+          </div>
+          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">HTML5 Core</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Semantic Skeleton</div>
+        </div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-top: 0.75rem; font-weight: 600;">
+          Launch Track &rarr;
+        </div>
+      </a>
+
+      <!-- Node 2: CSS Core -->
+      <a href="{% url 'course_detail' 'css-core' %}" class="skill-node unlocked" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 1.35rem;">🎨</span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--lang-css); background: rgba(56, 189, 248, 0.12); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Stage 2</span>
+          </div>
+          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">CSS Layouts</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Flexbox &amp; Grid</div>
+        </div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-top: 0.75rem; font-weight: 600;">
+          Launch Track &rarr;
+        </div>
+      </a>
+
+      <!-- Node 3: JavaScript Core -->
+      <a href="{% url 'course_detail' 'javascript-core' %}" class="skill-node unlocked" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 1.35rem;">⚡</span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--lang-js); background: rgba(250, 204, 21, 0.12); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Stage 3</span>
+          </div>
+          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">JavaScript</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">DOM &amp; State Loops</div>
+        </div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-top: 0.75rem; font-weight: 600;">
+          Launch Track &rarr;
+        </div>
+      </a>
+
+      <!-- Node 4: Python Core -->
+      <a href="{% url 'course_detail' 'python-core' %}" class="skill-node unlocked" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 1.35rem;">🐍</span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--lang-py); background: rgba(52, 211, 153, 0.12); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Stage 4</span>
+          </div>
+          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">Python Logic</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Data &amp; Automation</div>
+        </div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-top: 0.75rem; font-weight: 600;">
+          Launch Track &rarr;
+        </div>
+      </a>
+
+      <!-- Node 5: SQL Core -->
+      <a href="{% url 'course_detail' 'sql-core' %}" class="skill-node unlocked" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 1.35rem;">🗄️</span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--lang-sql); background: rgba(192, 132, 252, 0.12); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Stage 5</span>
+          </div>
+          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">SQL Schemas</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Relational Tables</div>
+        </div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-top: 0.75rem; font-weight: 600;">
+          Launch Track &rarr;
+        </div>
+      </a>
+
+      <!-- Node 6: Fullstack Capstone -->
+      <div class="skill-node mastered" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 140px; border-color: rgba(16, 185, 129, 0.4);">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 1.35rem;">🚀</span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--success); background: var(--success-subtle); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Capstone</span>
+          </div>
+          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">Fullstack Mastery</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Arena &amp; Practice</div>
+        </div>
+        <a href="{% url 'games_hub' %}" style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--success); text-decoration: none; font-weight: 600; margin-top: 0.75rem;">
+          Enter Arena &rarr;
+        </a>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Search & Filter Controls -->
   <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle);">
     

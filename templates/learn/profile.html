@@ -3,21 +3,26 @@
 {% block title %}{{ user.username }} — Learner Profile — CodeQuest BD{% endblock %}
 
 {% block content %}
-<div class="shell" style="padding-top: 2.5rem; padding-bottom: 5rem; max-width: 920px;">
+<div class="shell shell-wide" style="padding-top: 2.5rem; padding-bottom: 5rem;">
   
   <!-- Profile Summary Card -->
-  <div class="cq-card" style="padding: 2.25rem; margin-bottom: 2rem; border: 1px solid var(--border-strong);">
+  <div class="cq-card" style="padding: 2.25rem; margin-bottom: 2rem; border: 1px solid var(--border-strong); background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.08), var(--bg-surface) 70%);">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;">
       <div style="display: flex; align-items: center; gap: 1.25rem;">
-        <div style="width: 58px; height: 58px; border-radius: 50%; background: var(--bg-panel); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 800; color: var(--accent); font-family: var(--font-mono);">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--bg-panel); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: var(--accent); font-family: var(--font-mono); box-shadow: 0 0 15px var(--accent-glow);">
           {{ user.username|make_list|first|upper }}
         </div>
         <div>
-          <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.25rem; letter-spacing: -0.01em;">
-            {{ user.username }}
-          </h1>
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.01em;">
+              {{ user.username }}
+            </h1>
+            <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid rgba(99, 102, 241, 0.3);">
+              Engineer Level 1
+            </span>
+          </div>
           <span style="font-size: 0.85rem; color: var(--text-muted);">
-            Member since {{ user.date_joined|date:"F Y" }}
+            Member since {{ user.date_joined|date:"F Y" }} &bull; Active Learner
           </span>
         </div>
       </div>
@@ -31,89 +36,192 @@
     </div>
 
     <!-- Quick Stats Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle);">
-      <div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle);">
+      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel);">
         <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em;">Total Earned XP</div>
-        <div style="font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-top: 0.25rem; font-family: var(--font-mono);">⚡ {{ profile.xp }}</div>
+        <div style="font-size: 1.7rem; font-weight: 800; color: var(--accent); margin-top: 0.25rem; font-family: var(--font-mono);">⚡ {{ profile.xp }}</div>
       </div>
-      <div>
+      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel);">
         <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em;">Learning Streak</div>
-        <div style="font-size: 1.6rem; font-weight: 800; color: var(--warning); margin-top: 0.25rem; font-family: var(--font-mono);">🔥 {{ profile.streak }}d</div>
+        <div style="font-size: 1.7rem; font-weight: 800; color: var(--warning); margin-top: 0.25rem; font-family: var(--font-mono);">🔥 {{ profile.streak }}d</div>
       </div>
-      <div>
+      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel);">
         <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em;">Completed Lessons</div>
-        <div style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem; font-family: var(--font-mono);">📚 {{ progress_list|length }}</div>
+        <div style="font-size: 1.7rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem; font-family: var(--font-mono);">📚 {{ progress_list|length }}</div>
       </div>
-      <div>
+      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel);">
         <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em;">Unlocked Badges</div>
-        <div style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem; font-family: var(--font-mono);">🏆 {{ badges|length }}</div>
+        <div style="font-size: 1.7rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem; font-family: var(--font-mono);">🏆 {{ badges|length }}</div>
       </div>
     </div>
   </div>
 
-  <!-- Badges & Achievements Section -->
-  <section style="margin-bottom: 2.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-      <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin: 0;">
-        Achievements &amp; Badges
-      </h2>
-      <span style="font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono);">
-        {{ badges|length }} / {{ badges|length|add:available_badges|length }} unlocked
-      </span>
-    </div>
+  <!-- Studio Dashboard 2-Column Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 2rem; align-items: start;">
+    
+    <!-- Left Column: Skill Competency Radar & Practice Quicklaunch -->
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+      
+      <!-- Skill Mastery Telemetry -->
+      <section class="cq-card" style="padding: 1.75rem;">
+        <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin-bottom: 1.25rem;">
+          Skill Competency Radar
+        </h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+          <!-- HTML5 Competency -->
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
+              <span style="font-weight: 600; color: var(--lang-html);">🌐 HTML5 Semantic Architecture</span>
+              <span style="font-family: var(--font-mono); color: var(--text-muted);">Active Track</span>
+            </div>
+            <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
+              <div style="width: 85%; height: 100%; background: var(--lang-html); border-radius: 999px;"></div>
+            </div>
+          </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
-      {% for badge in badges %}
-      <div class="cq-card" style="padding: 1.25rem; border-color: rgba(20, 184, 166, 0.4); background: var(--accent-subtle);">
-        <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">{{ badge.icon|default:'🏆' }}</div>
-        <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">{{ badge.name }}</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.45;">{{ badge.description }}</p>
-      </div>
-      {% endfor %}
+          <!-- CSS3 Competency -->
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
+              <span style="font-weight: 600; color: var(--lang-css);">🎨 CSS3 Modern Layouts &amp; Flexbox</span>
+              <span style="font-family: var(--font-mono); color: var(--text-muted);">Active Track</span>
+            </div>
+            <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
+              <div style="width: 70%; height: 100%; background: var(--lang-css); border-radius: 999px;"></div>
+            </div>
+          </div>
 
-      {% for badge in available_badges %}
-      <div class="cq-card" style="padding: 1.25rem; opacity: 0.55; filter: grayscale(1);">
-        <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🔒</div>
-        <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">{{ badge.name }}</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.45;">{{ badge.description }}</p>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
+          <!-- JavaScript Competency -->
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
+              <span style="font-weight: 600; color: var(--lang-js);">⚡ JavaScript DOM &amp; State Loops</span>
+              <span style="font-family: var(--font-mono); color: var(--text-muted);">Ready to Unlock</span>
+            </div>
+            <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
+              <div style="width: 45%; height: 100%; background: var(--lang-js); border-radius: 999px;"></div>
+            </div>
+          </div>
 
-  <!-- Completed Lessons History -->
-  <section>
-    <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin-bottom: 1.25rem;">
-      Completed Lessons History
-    </h2>
+          <!-- Python Competency -->
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
+              <span style="font-weight: 600; color: var(--lang-py);">🐍 Python 3 Data &amp; Automation</span>
+              <span style="font-family: var(--font-mono); color: var(--text-muted);">Ready to Unlock</span>
+            </div>
+            <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
+              <div style="width: 30%; height: 100%; background: var(--lang-py); border-radius: 999px;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-      {% for prog in progress_list %}
-      <div class="cq-card" style="padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
-        <div>
-          <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-right: 0.5rem; font-weight: 600;">
-            {{ prog.lesson.course.language.name }}
-          </span>
-          <a href="{% url 'lesson_detail' prog.lesson.course.slug prog.lesson.slug %}" style="font-weight: 600; color: var(--text-primary); text-decoration: none; font-size: 0.92rem;">
-            {{ prog.lesson.title }}
+      <!-- Practice Arena Recommendations -->
+      <section class="cq-card" style="padding: 1.75rem; background: var(--bg-panel); border: 1px solid var(--border-medium);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h2 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0;">
+            Next Practice Drills
+          </h2>
+          <a href="{% url 'games_hub' %}" style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--accent); text-decoration: none;">
+            View Arena &rarr;
           </a>
         </div>
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <span style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono);">
-            {{ prog.completed_at|date:"M d, Y" }}
-          </span>
-          <a href="{% url 'lesson_detail' prog.lesson.course.slug prog.lesson.slug %}" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.78rem;">
-            Review
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <a href="{% url 'game_play' 'code-typer' %}" class="cq-card cq-card-interactive" style="padding: 0.85rem 1.15rem; text-decoration: none; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 1.4rem;">🏎️</span>
+              <div>
+                <div style="font-weight: 700; font-size: 0.88rem; color: var(--text-primary);">Code TypeRacer 3D</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Race vs Bot Turing &amp; Ada</div>
+              </div>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);">+30 XP</span>
+          </a>
+
+          <a href="{% url 'game_play' 'rover-3d' %}" class="cq-card cq-card-interactive" style="padding: 0.85rem 1.15rem; text-decoration: none; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 1.4rem;">🤖</span>
+              <div>
+                <div style="font-weight: 700; font-size: 0.88rem; color: var(--text-primary);">Cyber Rover 3D</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">WebGL Space Gem Explorer</div>
+              </div>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);">+40 XP</span>
           </a>
         </div>
-      </div>
-      {% empty %}
-      <div style="text-align: center; padding: 3rem 1.5rem; color: var(--text-muted); background: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
-        No completed lessons yet. Explore our course catalogue to begin your learning journey!
-      </div>
-      {% endfor %}
+      </section>
+
     </div>
-  </section>
+
+    <!-- Right Column: Achievements & Completed Lessons -->
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+      
+      <!-- Badges & Achievements Section -->
+      <section class="cq-card" style="padding: 1.75rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin: 0;">
+            Achievements &amp; Badges
+          </h2>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
+            {{ badges|length }} / {{ badges|length|add:available_badges|length }} unlocked
+          </span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.85rem;">
+          {% for badge in badges %}
+          <div class="cq-card" style="padding: 1rem; border-color: rgba(99, 102, 241, 0.4); background: var(--accent-subtle); text-align: center;">
+            <div style="font-size: 1.6rem; margin-bottom: 0.35rem;">{{ badge.icon|default:'🏆' }}</div>
+            <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.15rem;">{{ badge.name }}</div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.35;">{{ badge.description }}</div>
+          </div>
+          {% endfor %}
+
+          {% for badge in available_badges %}
+          <div class="cq-card" style="padding: 1rem; opacity: 0.5; filter: grayscale(1); text-align: center; border-style: dashed;">
+            <div style="font-size: 1.6rem; margin-bottom: 0.35rem;">🔒</div>
+            <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.15rem;">{{ badge.name }}</div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.35;">{{ badge.description }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Completed Lessons History -->
+      <section class="cq-card" style="padding: 1.75rem;">
+        <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin-bottom: 1.25rem;">
+          Completed Lessons History
+        </h2>
+
+        <div style="display: flex; flex-direction: column; gap: 0.65rem; max-height: 380px; overflow-y: auto;">
+          {% for prog in progress_list %}
+          <div class="cq-card" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; background: var(--bg-panel);">
+            <div>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent); margin-right: 0.4rem; font-weight: 600;">
+                {{ prog.lesson.course.language.name }}
+              </span>
+              <a href="{% url 'lesson_detail' prog.lesson.course.slug prog.lesson.slug %}" style="font-weight: 600; color: var(--text-primary); text-decoration: none; font-size: 0.88rem;">
+                {{ prog.lesson.title }}
+              </a>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">
+                {{ prog.completed_at|date:"M d, Y" }}
+              </span>
+              <a href="{% url 'lesson_detail' prog.lesson.course.slug prog.lesson.slug %}" class="btn btn-ghost" style="padding: 0.2rem 0.55rem; font-size: 0.75rem;">
+                Review
+              </a>
+            </div>
+          </div>
+          {% empty %}
+          <div style="text-align: center; padding: 2rem 1rem; color: var(--text-muted); font-size: 0.85rem;">
+            No completed lessons yet. Explore courses to begin your journey.
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+    </div>
+
+  </div>
 
 </div>
 {% endblock %}
