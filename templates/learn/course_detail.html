@@ -3,104 +3,111 @@
 {% block title %}{{ course.title }} — Course Syllabus — CodeQuest BD{% endblock %}
 
 {% block content %}
-<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 920px;">
+<div class="shell" style="padding-top: 2.5rem; padding-bottom: 5rem;">
   
   <!-- Breadcrumb Navigation -->
   <nav aria-label="Breadcrumb" style="margin-bottom: 1.5rem;">
-    <a href="{% url 'catalogue' %}" style="font-size: 0.85rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
+    <a href="{% url 'catalogue' %}" style="font-size: 0.88rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;">
       &larr; Back to Course Catalogue
     </a>
   </nav>
 
-  <!-- Course Overview Card -->
-  <div class="cq-card" style="margin-bottom: 2.5rem; padding: 2.25rem; border: 1px solid var(--border-strong);">
-    <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 1rem;">
-      <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 600; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); color: var(--accent);">
-        {{ course.language.name }}
-      </span>
-      <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 600; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); color: var(--text-secondary);">
-        Level: {{ course.level }}
-      </span>
-      <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: auto; font-family: var(--font-mono);">
-        {{ lessons|length }} Lessons &bull; ~{{ course.estimated_time_minutes }} mins total
-      </span>
-    </div>
-
-    <h1 style="font-size: 2.1rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 0.75rem;">
-      {{ course.title }}
-    </h1>
-    <p style="font-size: 1rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem;">
-      {{ course.description }}
-    </p>
-
-    <!-- Progress Indicator -->
-    <div style="background: var(--bg-panel); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
-      <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.84rem; margin-bottom: 0.6rem;">
-        <span style="color: var(--text-secondary); font-weight: 600;">Course Completion</span>
-        <span style="font-family: var(--font-mono); color: var(--accent); font-weight: 700;">
-          {{ completed_ids|length }} of {{ lessons|length }} completed
+  <!-- Expanded 2-Column Grid (Eliminates Side Gaps) -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 2.5rem; align-items: start;">
+    
+    <!-- Left Column: Course Sticky Overview Card -->
+    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong); position: sticky; top: 90px;">
+      <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 1.25rem;">
+        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.25rem 0.65rem; border-radius: var(--radius-sm); color: var(--accent-secondary);">
+          {{ course.language.name }}
+        </span>
+        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.25rem 0.65rem; border-radius: var(--radius-sm); color: var(--text-secondary);">
+          Level: {{ course.level }}
+        </span>
+        <span style="font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono);">
+          ⏱ ~{{ course.estimated_time_minutes }} mins total
         </span>
       </div>
-      <div class="progress-bar-bg">
-        <div class="progress-bar-fill" style="width: {% if lessons|length > 0 %}{% widthratio completed_ids|length lessons|length 100 %}{% else %}0{% endif %}%;"></div>
+
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.025em; margin-bottom: 1rem;" class="headline-gradient">
+        {{ course.title }}
+      </h1>
+      <p style="font-size: 1.02rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 2rem;">
+        {{ course.description }}
+      </p>
+
+      <!-- Progress Indicator -->
+      <div style="background: var(--bg-panel); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; margin-bottom: 0.75rem;">
+          <span style="color: var(--text-secondary); font-weight: 700;">Track Completion</span>
+          <span style="font-family: var(--font-mono); color: var(--accent-secondary); font-weight: 800;">
+            {{ completed_ids|length }} / {{ lessons|length }} Completed
+          </span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: {% if lessons|length > 0 %}{% widthratio completed_ids|length lessons|length 100 %}{% else %}0{% endif %}%;"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Lesson Syllabus Section -->
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-    <h2 style="font-size: 1.35rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin: 0;">
-      Curriculum Syllabus
-    </h2>
-    <span style="font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono);">
-      3–7 min / lesson
-    </span>
-  </div>
+    <!-- Right Column: Interactive Lesson Syllabus -->
+    <div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.45rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin: 0;">
+          Curriculum Syllabus ({{ lessons|length }} Modules)
+        </h2>
+        <span style="font-size: 0.84rem; color: var(--text-muted); font-family: var(--font-mono);">
+          3–7 min / lesson
+        </span>
+      </div>
 
-  <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-    {% for lesson in lessons %}
-    <div class="cq-card" style="padding: 1.15rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; transition: border-color 0.15s ease;">
-      
-      <div style="display: flex; align-items: center; gap: 1.25rem;">
-        <!-- Status / Number Indicator -->
-        <div style="font-family: var(--font-mono); font-size: 0.88rem; font-weight: 700; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: {% if lesson.id in completed_ids %}var(--success-subtle){% else %}var(--bg-panel){% endif %}; color: {% if lesson.id in completed_ids %}var(--success){% else %}var(--text-muted){% endif %}; border: 1px solid {% if lesson.id in completed_ids %}rgba(16, 185, 129, 0.3){% else %}var(--border-subtle){% endif %};">
-          {% if lesson.id in completed_ids %}
-            ✓
-          {% else %}
-            {{ forloop.counter|stringformat:"02d" }}
-          {% endif %}
-        </div>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        {% for lesson in lessons %}
+        <div class="cq-card cq-card-interactive" style="padding: 1.25rem 1.65rem; display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 1rem;">
+          
+          <div style="display: flex; align-items: center; gap: 1.25rem;">
+            <!-- Status / Number Indicator -->
+            <div style="font-family: var(--font-mono); font-size: 0.9rem; font-weight: 800; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: {% if lesson.id in completed_ids %}var(--success-subtle){% else %}var(--bg-panel){% endif %}; color: {% if lesson.id in completed_ids %}var(--success){% else %}var(--text-muted){% endif %}; border: 1px solid {% if lesson.id in completed_ids %}rgba(16, 185, 129, 0.35){% else %}var(--border-subtle){% endif %};">
+              {% if lesson.id in completed_ids %}
+                ✓
+              {% else %}
+                {{ forloop.counter|stringformat:"02d" }}
+              {% endif %}
+            </div>
 
-        <div>
-          <h3 style="font-size: 0.98rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.2rem;">
-            <a href="{% url 'lesson_detail' course.slug lesson.slug %}" style="color: inherit; text-decoration: none;">
-              {{ lesson.title }}
-            </a>
-          </h3>
-          <div style="font-size: 0.8rem; color: var(--text-muted);">
-            ⏱ {{ lesson.est_minutes }} min practice &bull; +{{ lesson.xp }} XP
+            <div>
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">
+                <a href="{% url 'lesson_detail' course.slug lesson.slug %}" style="color: inherit; text-decoration: none;">
+                  {{ lesson.title }}
+                </a>
+              </h3>
+              <div style="font-size: 0.84rem; color: var(--text-muted);">
+                ⏱ {{ lesson.est_minutes }} min interactive practice &bull; +{{ lesson.xp }} XP
+              </div>
+            </div>
           </div>
+
+          <div>
+            {% if lesson.id in completed_ids %}
+              <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="btn btn-ghost" style="padding: 0.45rem 1rem; font-size: 0.84rem; color: var(--success); border-color: rgba(16, 185, 129, 0.35);">
+                Review &rarr;
+              </a>
+            {% else %}
+              <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.86rem;">
+                Start Lesson &rarr;
+              </a>
+            {% endif %}
+          </div>
+
         </div>
+        {% empty %}
+        <div style="text-align: center; padding: 3rem; color: var(--text-muted); background: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+          No lessons currently configured for this track.
+        </div>
+        {% endfor %}
       </div>
-
-      <div>
-        {% if lesson.id in completed_ids %}
-          <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="btn btn-ghost" style="padding: 0.35rem 0.8rem; font-size: 0.8rem; color: var(--success); border-color: rgba(16, 185, 129, 0.3);">
-            Review &rarr;
-          </a>
-        {% else %}
-          <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.82rem;">
-            Start Lesson &rarr;
-          </a>
-        {% endif %}
-      </div>
-
     </div>
-    {% empty %}
-    <div style="text-align: center; padding: 3rem; color: var(--text-muted); background: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
-      No lessons currently configured for this track.
-    </div>
-    {% endfor %}
+
   </div>
 
 </div>

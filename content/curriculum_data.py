@@ -145,6 +145,17 @@ GAMES = [
         "xp_per_win": 40,
         "order": 5,
     },
+    {
+        "slug": "rover-3d",
+        "title": "Cyber Rover 3D",
+        "tagline": "Autonomous 3D Martian rover navigation & spatial programming.",
+        "description": "Command an autonomous 3D WebGL rover across an alien planet grid. Collect energy cores using forward, turnLeft, turnRight, and collect functions.",
+        "category": "3D Spatial Robotics",
+        "difficulty": "2–3 minutes",
+        "icon": "🤖",
+        "xp_per_win": 50,
+        "order": 6,
+    },
 ]
 
 BADGES = [

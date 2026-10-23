@@ -16,7 +16,7 @@ def custom_admin_404(request):
 
 def landing(request):
     featured_courses = Course.objects.select_related("language").prefetch_related("lessons").all()[:6]
-    games = Game.objects.all()[:5]
+    games = Game.objects.all()[:6]
     total_lessons = Lesson.objects.count()
     languages = Language.objects.filter(is_active=True)
 
