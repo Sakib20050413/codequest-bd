@@ -18,3 +18,4 @@ Thumbs.db
 
 # Static collection
 staticfiles/
+staticfiles_build/
