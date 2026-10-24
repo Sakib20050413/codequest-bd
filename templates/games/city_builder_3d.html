@@ -391,7 +391,7 @@
       updateTelemetry();
     }
 
-    function placeVoxel(x, z, type, height) {
+    function placeVoxel(x, z, type, height, skipAnim) {
       const h = height || 1;
       const color = COLOR_MAP[type] || 0x8b5cf6;
       const isEmissive = type === 'neon' || type === 'spire';
@@ -400,15 +400,39 @@
       const material = new THREE.MeshStandardMaterial({
         color: color,
         roughness: isEmissive ? 0.2 : 0.4,
-        metalness: 0.1,
-        emissive: isEmissive ? color : 0x000000,
-        emissiveIntensity: isEmissive ? 0.6 : 0
+        metalness: 0.2,
+        emissive: isEmissive ? color : (type === 'hub' ? 0x0369a1 : 0x000000),
+        emissiveIntensity: isEmissive ? 0.8 : (type === 'hub' ? 0.3 : 0)
       });
 
       const mesh = new THREE.Mesh(geometry, material);
       mesh.position.set(x, h / 2, z);
       mesh.castShadow = true;
       mesh.receiveShadow = true;
+
+      // Add rooftop beacon for spires and hubs
+      if (type === 'spire' || type === 'hub') {
+        const beaconGeo = new THREE.SphereGeometry(0.18, 12, 12);
+        const beaconMat = new THREE.MeshBasicMaterial({ color: isEmissive ? 0xf43f5e : 0x38bdf8 });
+        const beacon = new THREE.Mesh(beaconGeo, beaconMat);
+        beacon.position.y = h / 2 + 0.15;
+        mesh.add(beacon);
+      }
+
+      if (!skipAnim) {
+        mesh.scale.y = 0.05;
+        mesh.position.y = (h * 0.05) / 2;
+        const start = performance.now();
+        function rise() {
+          const elapsed = performance.now() - start;
+          const progress = Math.min(elapsed / 260, 1);
+          const ease = 1 - Math.pow(1 - progress, 3);
+          mesh.scale.y = 0.05 + ease * 0.95;
+          mesh.position.y = (h * mesh.scale.y) / 2;
+          if (progress < 1) requestAnimationFrame(rise);
+        }
+        requestAnimationFrame(rise);
+      }
 
       scene.add(mesh);
       placedVoxels.push(mesh);
@@ -466,6 +490,12 @@
       feedback.textContent = '';
       clearVoxels();
       renderPills();
+
+      // Immediately build the baseline city with animated starter voxels so it is a vibrant 3D skyline on arrival
+      try {
+        const runFn = new Function('placeVoxel', p.code);
+        runFn(placeVoxel);
+      } catch (e) {}
     }
 
     runBtn.onclick = function () {

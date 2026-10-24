@@ -461,79 +461,806 @@ function runSimulation(state) {
     }
   }
 
-  // 10 Level Mission Data with Directives, Hints and Solutions
-  const MISSIONS = [
-    { 
-      title: "Foundations: State Initialization", 
-      brief: "Configure initial simulation state variables, verify power and online flags, and start the system loop.", 
-      starter: "function runSimulation(state) {\n  state.power = 100;\n  state.online = true;\n  return state.power === 100 && state.online;\n}",
-      solution: "function runSimulation(state) {\n  state.power = 100;\n  state.online = true;\n  return state.power === 100 && state.online;\n}",
-      hint: "Assign state.power = 100 and state.online = true, then return true."
+  // =========================================================================
+  // THEMATIC GAME ENGINES REGISTRY & 3D PROCEDURAL SIMULATION CARTRIDGES
+  // High-Fidelity Thematic Geometries, PBR Shaders, and Custom 10-Level Missions
+  // =========================================================================
+
+  // 1. DRONE FLIGHT 3D SIMULATOR ENGINE (Quadcopter, Glowing Waypoint Rings, Canyon)
+  const DRONE_ENGINE = {
+    missions: [
+      {
+        title: "Rotor Thrust & Takeoff",
+        brief: "Initialize the 4 rotor brushless motors, compute vertical lift thrust, and command takeoff to 15m hover.",
+        starter: "function runSimulation(state) {\n  // Arm rotor motors and compute takeoff lift\n  state.rotorsArmed = true;\n  state.targetAltitude = 15;\n  state.altitude = 0;\n  for (let i = 0; i < 3; i++) state.altitude += 5;\n  return state.rotorsArmed && state.altitude === 15;\n}",
+        solution: "function runSimulation(state) {\n  state.rotorsArmed = true;\n  state.targetAltitude = 15;\n  state.altitude = 0;\n  for (let i = 0; i < 3; i++) state.altitude += 5;\n  return state.rotorsArmed && state.altitude === 15;\n}",
+        hint: "Set state.rotorsArmed = true and iterate altitude to 15."
+      },
+      {
+        title: "Pitch Vector: Forward Thrust",
+        brief: "Tilt the drone's aerodynamic pitch angle by 12 degrees forward and increase rear rotor throttle.",
+        starter: "function runSimulation(state) {\n  state.pitch = 12; // degrees forward\n  state.throttle = 85; // percent\n  state.forwardVelocity = Math.sin(state.pitch * Math.PI / 180) * state.throttle;\n  return state.forwardVelocity > 15;\n}",
+        solution: "function runSimulation(state) {\n  state.pitch = 12;\n  state.throttle = 85;\n  state.forwardVelocity = Math.sin(state.pitch * Math.PI / 180) * state.throttle;\n  return state.forwardVelocity > 15;\n}",
+        hint: "Compute forwardVelocity using Math.sin(pitch * Math.PI / 180) * throttle."
+      },
+      {
+        title: "Waypoint Navigation: Ring 1",
+        brief: "Compute 3D Euclidean distance to Waypoint Ring 1 at (0, 15, -20) and verify lock-on status.",
+        starter: "function runSimulation(state) {\n  const current = { x: 0, y: 15, z: 0 };\n  const target = { x: 0, y: 15, z: -20 };\n  const dist = Math.hypot(target.x - current.x, target.y - current.y, target.z - current.z);\n  state.lockedOn = dist <= 20;\n  return state.lockedOn && dist === 20;\n}",
+        solution: "function runSimulation(state) {\n  const current = { x: 0, y: 15, z: 0 };\n  const target = { x: 0, y: 15, z: -20 };\n  const dist = Math.hypot(target.x - current.x, target.y - current.y, target.z - current.z);\n  state.lockedOn = dist <= 20;\n  return state.lockedOn && dist === 20;\n}",
+        hint: "Use Math.hypot to calculate 3D Euclidean distance between coordinates."
+      },
+      {
+        title: "Bank Turn: Roll Angle Vector",
+        brief: "Execute a coordinated aerodynamic turn by banking roll angle to -25 degrees while adjusting yaw.",
+        starter: "function runSimulation(state) {\n  state.roll = -25;\n  state.yawRate = 45; // deg/sec\n  state.turningRadius = 12.5;\n  return state.roll === -25 && state.yawRate > 0;\n}",
+        solution: "function runSimulation(state) {\n  state.roll = -25;\n  state.yawRate = 45;\n  state.turningRadius = 12.5;\n  return state.roll === -25 && state.yawRate > 0;\n}",
+        hint: "Assign state.roll = -25 and state.yawRate = 45."
+      },
+      {
+        title: "PID Controller: Altitude Gyro",
+        brief: "Calculate Proportional-Integral error correction to counteract atmospheric canyon downdrafts.",
+        starter: "function runSimulation(state) {\n  const targetAlt = 20, currentAlt = 16.5;\n  const error = targetAlt - currentAlt; // 3.5\n  const kp = 2.4;\n  state.correction = error * kp;\n  return Math.round(state.correction * 10) === 84;\n}",
+        solution: "function runSimulation(state) {\n  const targetAlt = 20, currentAlt = 16.5;\n  const error = targetAlt - currentAlt;\n  const kp = 2.4;\n  state.correction = error * kp;\n  return Math.round(state.correction * 10) === 84;\n}",
+        hint: "Multiply altitude error (3.5) by kp gain (2.4) = 8.4."
+      },
+      {
+        title: "Wind Shear Vector Compensation",
+        brief: "Detect lateral crosswind velocity of +8 m/s and generate counter-torque roll thrust vector.",
+        starter: "function runSimulation(state) {\n  const crosswind = 8.0;\n  state.counterRoll = -crosswind * 1.5; // -12 deg\n  state.driftZeroed = (crosswind + state.counterRoll / 1.5) === 0;\n  return state.driftZeroed;\n}",
+        solution: "function runSimulation(state) {\n  const crosswind = 8.0;\n  state.counterRoll = -crosswind * 1.5;\n  state.driftZeroed = (crosswind + state.counterRoll / 1.5) === 0;\n  return state.driftZeroed;\n}",
+        hint: "Counteract crosswind with state.counterRoll = -12."
+      },
+      {
+        title: "High-Speed Canyon Sprint",
+        brief: "Engage quad-motor overclocking to break 120 km/h threshold across the narrow canyon straight.",
+        starter: "function runSimulation(state) {\n  let speed = 40;\n  const boostFactor = 1.6;\n  for(let i = 0; i < 3; i++) speed *= boostFactor;\n  state.speed = Math.round(speed);\n  return state.speed >= 120;\n}",
+        solution: "function runSimulation(state) {\n  let speed = 40;\n  const boostFactor = 1.6;\n  for(let i = 0; i < 3; i++) speed *= boostFactor;\n  state.speed = Math.round(speed);\n  return state.speed >= 120;\n}",
+        hint: "Multiply speed by boostFactor across 3 iterations to surpass 120."
+      },
+      {
+        title: "Cargo Magnetic Clamping",
+        brief: "Lock onto emergency medical supply container (mass: 4.5kg) and recalibrate hover RPM.",
+        starter: "function runSimulation(state) {\n  const cargoMass = 4.5;\n  const droneMass = 3.2;\n  const totalMass = cargoMass + droneMass;\n  state.hoverThrottle = totalMass * 9.81 * 1.2;\n  return state.hoverThrottle > 90;\n}",
+        solution: "function runSimulation(state) {\n  const cargoMass = 4.5;\n  const droneMass = 3.2;\n  const totalMass = cargoMass + droneMass;\n  state.hoverThrottle = totalMass * 9.81 * 1.2;\n  return state.hoverThrottle > 90;\n}",
+        hint: "Compute total mass (7.7kg) and calculate required hover throttle."
+      },
+      {
+        title: "Obstacle Radar Evasion",
+        brief: "Filter LIDAR sensor point cloud to detect canyon rock stalactites within 10m safety radius.",
+        starter: "function runSimulation(state) {\n  const distances = [18.5, 9.2, 24.0, 7.8, 31.0];\n  const hazards = distances.filter(d => d < 10.0);\n  state.evadeMode = hazards.length === 2;\n  return state.evadeMode;\n}",
+        solution: "function runSimulation(state) {\n  const distances = [18.5, 9.2, 24.0, 7.8, 31.0];\n  const hazards = distances.filter(d => d < 10.0);\n  state.evadeMode = hazards.length === 2;\n  return state.evadeMode;\n}",
+        hint: "Filter distances under 10.0m to detect the 2 obstacle hazards."
+      },
+      {
+        title: "Precision Touchdown on Helipad",
+        brief: "Smoothly throttle descent rate down to zero as altitude touches the target coordinates.",
+        starter: "function runSimulation(state) {\n  state.altitude = 1.0;\n  while (state.altitude > 0) state.altitude -= 0.25;\n  state.altitude = Math.max(0, state.altitude);\n  state.gearLocked = true;\n  return state.altitude === 0 && state.gearLocked;\n}",
+        solution: "function runSimulation(state) {\n  state.altitude = 1.0;\n  while (state.altitude > 0) state.altitude -= 0.25;\n  state.altitude = Math.max(0, state.altitude);\n  state.gearLocked = true;\n  return state.altitude === 0 && state.gearLocked;\n}",
+        hint: "Step altitude down to 0 and verify state.gearLocked is true."
+      }
+    ],
+    setup3D: function(scene) {
+      const group = new THREE.Group();
+      
+      // Drone Fuselage Body
+      const bodyGeo = new THREE.BoxGeometry(1.6, 0.42, 2.2);
+      const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.85, roughness: 0.2 });
+      const body = new THREE.Mesh(bodyGeo, bodyMat);
+      group.add(body);
+
+      // Cyan Cockpit Canopy
+      const canopyGeo = new THREE.SphereGeometry(0.52, 16, 16);
+      canopyGeo.scale(1, 0.5, 1.4);
+      const canopyMat = new THREE.MeshStandardMaterial({ color: 0x06b6d4, emissive: 0x0891b2, emissiveIntensity: 0.8, roughness: 0.1 });
+      const canopy = new THREE.Mesh(canopyGeo, canopyMat);
+      canopy.position.set(0, 0.28, 0.1);
+      group.add(canopy);
+
+      // 4 Carbon Arms, Motors, and Spin Blades
+      const armMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.9, roughness: 0.3 });
+      const motorMat = new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.8 });
+      const bladeMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.8 });
+      const rotors = [];
+
+      const armCoords = [
+        { x: 1.8, z: 1.5, led: 0x10b981 },
+        { x: -1.8, z: 1.5, led: 0x10b981 },
+        { x: 1.8, z: -1.5, led: 0xef4444 },
+        { x: -1.8, z: -1.5, led: 0xef4444 }
+      ];
+
+      armCoords.forEach(pos => {
+        const armGeo = new THREE.CylinderGeometry(0.08, 0.08, Math.hypot(pos.x, pos.z));
+        const arm = new THREE.Mesh(armGeo, armMat);
+        arm.position.set(pos.x / 2, 0, pos.z / 2);
+        arm.rotation.z = Math.PI / 2;
+        arm.rotation.y = Math.atan2(pos.z, pos.x);
+        group.add(arm);
+
+        const motor = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.35, 16), motorMat);
+        motor.position.set(pos.x, 0.1, pos.z);
+        group.add(motor);
+
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), new THREE.MeshBasicMaterial({ color: pos.led }));
+        led.position.set(pos.x, 0.3, pos.z);
+        group.add(led);
+
+        const blade = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.03, 0.24), bladeMat);
+        blade.position.set(pos.x, 0.32, pos.z);
+        group.add(blade);
+        rotors.push(blade);
+      });
+
+      // Underbody Thruster Light
+      const thruster = new THREE.PointLight(0x06b6d4, 2.5, 8);
+      thruster.position.set(0, -0.4, 0);
+      group.add(thruster);
+      scene.add(group);
+
+      // Glowing Canyon Flight Rings
+      const rings = [];
+      const ringMat = new THREE.MeshStandardMaterial({ color: 0x06b6d4, emissive: 0x0284c7, emissiveIntensity: 0.9, roughness: 0.2 });
+      for (let i = 0; i < 5; i++) {
+        const torus = new THREE.Mesh(new THREE.TorusGeometry(3.2, 0.22, 16, 32), ringMat);
+        torus.position.set(Math.sin(i * 1.3) * 5, 1.5 + i * 1.8, -12 - i * 14);
+        torus.rotation.y = Math.sin(i) * 0.25;
+        scene.add(torus);
+        rings.push(torus);
+      }
+
+      return { type: 'drone', group, rotors, rings, thruster, initialZ: group.position.z };
     },
-    { 
-      title: "Kinematics: Velocity Increment", 
-      brief: "Apply acceleration formulas to reach target orbital velocity within threshold limits (>= 10.0).", 
-      starter: "function runSimulation(state) {\n  state.velocity = 0;\n  for(let i = 0; i < 5; i++) state.velocity += 2.0;\n  return state.velocity >= 10.0;\n}",
-      solution: "function runSimulation(state) {\n  state.velocity = 0;\n  for(let i = 0; i < 5; i++) state.velocity += 2.0;\n  return state.velocity >= 10.0;\n}",
-      hint: "Increment velocity in a loop until state.velocity >= 10.0."
+    animate3D: function(now, ctx) {
+      if (!ctx || !ctx.group) return;
+      // High-speed rotor spin
+      if (ctx.rotors) {
+        ctx.rotors.forEach((r, idx) => {
+          r.rotation.y += (idx % 2 === 0 ? 0.35 : -0.35);
+        });
+      }
+      // Gentle hover bobbing
+      ctx.group.position.y = Math.sin(now * 0.003) * 0.3;
+      ctx.group.rotation.z = Math.sin(now * 0.002) * 0.05;
+      ctx.group.rotation.x = Math.sin(now * 0.0025) * 0.04;
     },
-    { 
-      title: "Control Flow: Boundary Clamping", 
-      brief: "Implement boundary safeguards to clamp coordinates within safety sectors (-10 to +10).", 
-      starter: "function runSimulation(state) {\n  let x = state.targetX || 15;\n  let clampedX = Math.max(-10, Math.min(10, x));\n  return clampedX <= 10 && clampedX >= -10;\n}",
-      solution: "function runSimulation(state) {\n  let x = state.targetX || 15;\n  let clampedX = Math.max(-10, Math.min(10, x));\n  return clampedX <= 10 && clampedX >= -10;\n}",
-      hint: "Use Math.max(-10, Math.min(10, x)) to clamp within [-10, 10]."
-    },
-    { 
-      title: "Arrays: Buffer Transformation", 
-      brief: "Transform sensor data telemetry streams using array filter and map methods.", 
-      starter: "function runSimulation(state) {\n  const raw = [12, 45, 88, 120, 204];\n  const normalized = raw.filter(v => v > 50).map(v => v * 2);\n  return normalized.length === 3;\n}",
-      solution: "function runSimulation(state) {\n  const raw = [12, 45, 88, 120, 204];\n  const normalized = raw.filter(v => v > 50).map(v => v * 2);\n  return normalized.length === 3;\n}",
-      hint: "Filter numbers strictly greater than 50 (88, 120, 204 = 3 items)."
-    },
-    { 
-      title: "State Machine: Mode Transitions", 
-      brief: "Transition the state machine from IDLE -> SCANNING -> ACTIVE without illegal state jumps.", 
-      starter: "function runSimulation(state) {\n  state.mode = 'IDLE';\n  if (state.mode === 'IDLE') state.mode = 'SCANNING';\n  if (state.mode === 'SCANNING') state.mode = 'ACTIVE';\n  return state.mode === 'ACTIVE';\n}",
-      solution: "function runSimulation(state) {\n  state.mode = 'IDLE';\n  if (state.mode === 'IDLE') state.mode = 'SCANNING';\n  if (state.mode === 'SCANNING') state.mode = 'ACTIVE';\n  return state.mode === 'ACTIVE';\n}",
-      hint: "Step state.mode from IDLE to SCANNING, then from SCANNING to ACTIVE."
-    },
-    { 
-      title: "Optimization: Delta Time Throttling", 
-      brief: "Calculate frame elapsed time to enforce smooth 60fps physics step calculations.", 
-      starter: "function runSimulation(state) {\n  const dt = 1 / 60;\n  state.physicsTick = (state.physicsTick || 0) + dt;\n  return state.physicsTick > 0;\n}",
-      solution: "function runSimulation(state) {\n  const dt = 1 / 60;\n  state.physicsTick = (state.physicsTick || 0) + dt;\n  return state.physicsTick > 0;\n}",
-      hint: "Accumulate dt into state.physicsTick and verify it is > 0."
-    },
-    { 
-      title: "Spatial Hash: Collision Detection", 
-      brief: "Detect vector collision overlap between the agent hitbox and obstacle bounding radius.", 
-      starter: "function runSimulation(state) {\n  const dist = Math.hypot(3, 4); // 5.0\n  return dist === 5;\n}",
-      solution: "function runSimulation(state) {\n  const dist = Math.hypot(3, 4);\n  return dist === 5;\n}",
-      hint: "Math.hypot(3, 4) calculates Euclidean distance: sqrt(3^2 + 4^2) = 5."
-    },
-    { 
-      title: "Recursion: Matrix Unraveling", 
-      brief: "Unravel nested multi-dimensional coordinate arrays using recursive traversal.", 
-      starter: "function runSimulation(state) {\n  function sum(arr) {\n    return arr.reduce((acc, v) => acc + (Array.isArray(v) ? sum(v) : v), 0);\n  }\n  return sum([1, [2, [3, 4]]]) === 10;\n}",
-      solution: "function runSimulation(state) {\n  function sum(arr) {\n    return arr.reduce((acc, v) => acc + (Array.isArray(v) ? sum(v) : v), 0);\n  }\n  return sum([1, [2, [3, 4]]]) === 10;\n}",
-      hint: "Recurse on elements where Array.isArray(v) is true."
-    },
-    { 
-      title: "Security: Checksum Integrity", 
-      brief: "Calculate hash payload parity bits using XOR to verify packet integrity against signal corruption.", 
-      starter: "function runSimulation(state) {\n  const payload = [1, 0, 1, 1, 0];\n  const parity = payload.reduce((acc, bit) => acc ^ bit, 0);\n  return parity === 1;\n}",
-      solution: "function runSimulation(state) {\n  const payload = [1, 0, 1, 1, 0];\n  const parity = payload.reduce((acc, bit) => acc ^ bit, 0);\n  return parity === 1;\n}",
-      hint: "Use payload.reduce((acc, bit) => acc ^ bit, 0) which equals 1."
-    },
-    { 
-      title: "Grandmaster: Sovereign Architecture", 
-      brief: "Orchestrate full autonomous system state with zero memory leaks and complete integrity.", 
-      starter: "function runSimulation(state) {\n  state.integrity = 100;\n  state.activeJobs = 0;\n  state.missionComplete = true;\n  return state.missionComplete && state.integrity === 100;\n}",
-      solution: "function runSimulation(state) {\n  state.integrity = 100;\n  state.activeJobs = 0;\n  state.missionComplete = true;\n  return state.missionComplete && state.integrity === 100;\n}",
-      hint: "Set integrity to 100 and missionComplete to true."
+    onSuccess: function(ctx) {
+      if (!ctx || !ctx.group) return;
+      // Tilt forward and fly smoothly through the rings
+      ctx.group.rotation.x = 0.35;
+      const startZ = ctx.group.position.z;
+      const startTime = performance.now();
+      function fly() {
+        const elapsed = performance.now() - startTime;
+        const p = Math.min(elapsed / 1800, 1);
+        const ease = p * (2 - p);
+        ctx.group.position.z = startZ - ease * 35;
+        if (p < 1) {
+          requestAnimationFrame(fly);
+        } else {
+          setTimeout(() => {
+            ctx.group.position.z = startZ;
+            ctx.group.rotation.x = 0;
+          }, 600);
+        }
+      }
+      requestAnimationFrame(fly);
     }
-  ];
+  };
+
+  // 2. SOLAR SYSTEM 3D GRAVITATIONAL ENGINE (Sun with Corona, 8 Realistic Planets, Saturn Rings)
+  const SOLAR_ENGINE = {
+    missions: [
+      {
+        title: "Solar Mass & Gravitational Constant",
+        brief: "Configure central stellar mass (1.989e30 kg) and verify the gravitational force constant G.",
+        starter: "function runSimulation(state) {\n  const G = 6.67430e-11;\n  const M = 1.989e30;\n  state.mu = G * M;\n  return state.mu > 1e19;\n}",
+        solution: "function runSimulation(state) {\n  const G = 6.67430e-11;\n  const M = 1.989e30;\n  state.mu = G * M;\n  return state.mu > 1e19;\n}",
+        hint: "Multiply G by M to calculate standard gravitational parameter mu."
+      },
+      {
+        title: "Kepler's Circular Orbital Velocity",
+        brief: "Calculate circular orbital speed v = sqrt(G*M/r) for an astronomical unit radius.",
+        starter: "function runSimulation(state) {\n  const G = 6.67e-11, M = 1.989e30, r = 1.496e11;\n  const v = Math.sqrt((G * M) / r);\n  state.orbitalSpeedKmS = Math.round(v / 1000); // ~30 km/s\n  return state.orbitalSpeedKmS === 30;\n}",
+        solution: "function runSimulation(state) {\n  const G = 6.67e-11, M = 1.989e30, r = 1.496e11;\n  const v = Math.sqrt((G * M) / r);\n  state.orbitalSpeedKmS = Math.round(v / 1000);\n  return state.orbitalSpeedKmS === 30;\n}",
+        hint: "Verify Earth orbital velocity is ~30 km/s."
+      },
+      {
+        title: "Earth & Moon Synchronous Orbit",
+        brief: "Compute lunar satellite coordinate relative to Earth center of mass across angular revolution theta.",
+        starter: "function runSimulation(state) {\n  const theta = Math.PI / 2;\n  const lunarDistance = 0.384; // normalized units\n  const moonX = Math.cos(theta) * lunarDistance;\n  const moonZ = Math.sin(theta) * lunarDistance;\n  return Math.abs(moonX) < 1e-4 && moonZ === 0.384;\n}",
+        solution: "function runSimulation(state) {\n  const theta = Math.PI / 2;\n  const lunarDistance = 0.384;\n  const moonX = Math.cos(theta) * lunarDistance;\n  const moonZ = Math.sin(theta) * lunarDistance;\n  return Math.abs(moonX) < 1e-4 && moonZ === 0.384;\n}",
+        hint: "Calculate lunar X and Z positions at angle PI/2."
+      },
+      {
+        title: "Elliptical Semi-Major Axis",
+        brief: "Calculate planet radius vector r = a*(1 - e^2)/(1 + e*cos(theta)) for eccentric Martian orbit (e=0.093).",
+        starter: "function runSimulation(state) {\n  const a = 1.524, e = 0.093, theta = 0;\n  const r = (a * (1 - e * e)) / (1 + e * Math.cos(theta));\n  return Math.round(r * 100) === 138;\n}",
+        solution: "function runSimulation(state) {\n  const a = 1.524, e = 0.093, theta = 0;\n  const r = (a * (1 - e * e)) / (1 + e * Math.cos(theta));\n  return Math.round(r * 100) === 138;\n}",
+        hint: "Evaluate perihelion formula: a*(1 - e) = ~1.38 AU."
+      },
+      {
+        title: "Saturn's Ring Particle Density",
+        brief: "Distribute 800 ring particle voxels between inner radius 1.4R and outer radius 2.3R.",
+        starter: "function runSimulation(state) {\n  const ringParticles = [];\n  for (let i = 0; i < 800; i++) ringParticles.push(1.4 + Math.random() * 0.9);\n  return ringParticles.length === 800 && ringParticles.every(r => r >= 1.4 && r <= 2.3);\n}",
+        solution: "function runSimulation(state) {\n  const ringParticles = [];\n  for (let i = 0; i < 800; i++) ringParticles.push(1.4 + Math.random() * 0.9);\n  return ringParticles.length === 800 && ringParticles.every(r => r >= 1.4 && r <= 2.3);\n}",
+        hint: "Generate 800 particles between 1.4 and 2.3."
+      },
+      {
+        title: "Gravitational Slingshot Calculation",
+        brief: "Compute velocity gain from hyperbolic Jupiter flyby: v_final = v_initial + 2 * v_planet.",
+        starter: "function runSimulation(state) {\n  const vIn = 14.0, vJupiter = 13.0;\n  const vOut = vIn + 2 * vJupiter; // 40 km/s\n  return vOut === 40;\n}",
+        solution: "function runSimulation(state) {\n  const vIn = 14.0, vJupiter = 13.0;\n  const vOut = vIn + 2 * vJupiter;\n  return vOut === 40;\n}",
+        hint: "vOut = 14 + 2 * 13 = 40 km/s."
+      },
+      {
+        title: "Asteroid Belt Hazard Detection",
+        brief: "Filter asteroid array to identify objects crossing within 0.2 AU of Earth's orbital corridor.",
+        starter: "function runSimulation(state) {\n  const asteroids = [0.15, 0.45, 0.88, 0.18, 1.25, 0.09];\n  const threats = asteroids.filter(d => d < 0.2);\n  return threats.length === 3;\n}",
+        solution: "function runSimulation(state) {\n  const asteroids = [0.15, 0.45, 0.88, 0.18, 1.25, 0.09];\n  const threats = asteroids.filter(d => d < 0.2);\n  return threats.length === 3;\n}",
+        hint: "Filter distances under 0.2 AU (0.15, 0.18, 0.09 = 3 items)."
+      },
+      {
+        title: "Lagrange Point L1 Equilibrium",
+        brief: "Calculate Earth-Sun L1 distance where centrifugal force matches gravity: r * (m / 3M)^(1/3).",
+        starter: "function runSimulation(state) {\n  const r = 1.496e8; // km\n  const massRatio = 3.0e-6; // Earth/Sun\n  const L1 = r * Math.cbrt(massRatio / 3);\n  return Math.round(L1 / 1e6) === 1;\n}",
+        solution: "function runSimulation(state) {\n  const r = 1.496e8;\n  const massRatio = 3.0e-6;\n  const L1 = r * Math.cbrt(massRatio / 3);\n  return Math.round(L1 / 1e6) === 1;\n}",
+        hint: "L1 distance is approximately 1.5 million kilometers from Earth."
+      },
+      {
+        title: "Hohmann Transfer Orbit Delta-V",
+        brief: "Compute velocity impulse delta-v needed to transfer spacecraft from Earth orbit (1.0 AU) to Mars (1.524 AU).",
+        starter: "function runSimulation(state) {\n  const r1 = 1.0, r2 = 1.524, v1 = 29.8;\n  const deltaV = v1 * (Math.sqrt((2 * r2) / (r1 + r2)) - 1);\n  return Math.round(deltaV * 10) === 29;\n}",
+        solution: "function runSimulation(state) {\n  const r1 = 1.0, r2 = 1.524, v1 = 29.8;\n  const deltaV = v1 * (Math.sqrt((2 * r2) / (r1 + r2)) - 1);\n  return Math.round(deltaV * 10) === 29;\n}",
+        hint: "Evaluate delta-V formula = ~2.9 km/s."
+      },
+      {
+        title: "Grand Planetary Alignment",
+        brief: "Harmonize all 8 planetary orbital angles to within 0.1 radians of celestial alignment.",
+        starter: "function runSimulation(state) {\n  const angles = [0.02, 0.05, 0.01, 0.08, 0.04, 0.03, 0.09, 0.02];\n  const aligned = angles.every(a => a < 0.1);\n  return aligned && angles.length === 8;\n}",
+        solution: "function runSimulation(state) {\n  const angles = [0.02, 0.05, 0.01, 0.08, 0.04, 0.03, 0.09, 0.02];\n  const aligned = angles.every(a => a < 0.1);\n  return aligned && angles.length === 8;\n}",
+        hint: "Verify all 8 planetary angles are within 0.1."
+      }
+    ],
+    setup3D: function(scene) {
+      const root = new THREE.Group();
+      // Radiant Central Sun
+      const sunGeo = new THREE.SphereGeometry(3.0, 32, 32);
+      const sunMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+      const sun = new THREE.Mesh(sunGeo, sunMat);
+      root.add(sun);
+
+      // Corona Aura
+      const coronaGeo = new THREE.SphereGeometry(3.4, 32, 32);
+      const coronaMat = new THREE.MeshBasicMaterial({ color: 0xff7700, transparent: true, opacity: 0.35, side: THREE.BackSide });
+      const corona = new THREE.Mesh(coronaGeo, coronaMat);
+      root.add(corona);
+
+      // Central Light Source
+      const sunLight = new THREE.PointLight(0xfff5ea, 2.5, 120);
+      root.add(sunLight);
+
+      // 8 Planets Definition
+      const defs = [
+        { name: "Mercury", color: 0x94a3b8, r: 0.32, dist: 5.5, speed: 0.035 },
+        { name: "Venus", color: 0xf59e0b, r: 0.52, dist: 8.0, speed: 0.022 },
+        { name: "Earth", color: 0x38bdf8, r: 0.62, dist: 11.5, speed: 0.016, moon: true },
+        { name: "Mars", color: 0xef4444, r: 0.42, dist: 15.0, speed: 0.012 },
+        { name: "Jupiter", color: 0xd97706, r: 1.45, dist: 19.5, speed: 0.007 },
+        { name: "Saturn", color: 0xfde047, r: 1.20, dist: 25.0, speed: 0.005, rings: true },
+        { name: "Uranus", color: 0x06b6d4, r: 0.85, dist: 30.0, speed: 0.0035 },
+        { name: "Neptune", color: 0x3b82f6, r: 0.80, dist: 35.0, speed: 0.0025 }
+      ];
+
+      const planets = [];
+      defs.forEach(d => {
+        // Orbit Circle Track
+        const trackGeo = new THREE.BufferGeometry();
+        const pts = [];
+        for (let a = 0; a <= Math.PI * 2 + 0.1; a += 0.1) {
+          pts.push(new THREE.Vector3(Math.cos(a) * d.dist, 0, Math.sin(a) * d.dist));
+        }
+        trackGeo.setFromPoints(pts);
+        const track = new THREE.Line(trackGeo, new THREE.LineBasicMaterial({ color: 0x334155, transparent: true, opacity: 0.35 }));
+        root.add(track);
+
+        // Pivot
+        const pivot = new THREE.Group();
+        root.add(pivot);
+
+        const pGeo = new THREE.SphereGeometry(d.r, 24, 24);
+        const pMat = new THREE.MeshStandardMaterial({ color: d.color, roughness: 0.6, metalness: 0.1 });
+        const pMesh = new THREE.Mesh(pGeo, pMat);
+        pMesh.position.set(d.dist, 0, 0);
+        pivot.add(pMesh);
+
+        let moon = null;
+        if (d.moon) {
+          moon = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 12), new THREE.MeshStandardMaterial({ color: 0xe2e8f0 }));
+          moon.position.set(1.1, 0, 0);
+          pMesh.add(moon);
+        }
+
+        if (d.rings) {
+          const rGeo = new THREE.RingGeometry(d.r * 1.4, d.r * 2.3, 32);
+          const rMat = new THREE.MeshBasicMaterial({ color: 0xca8a04, side: THREE.DoubleSide, transparent: true, opacity: 0.75 });
+          const ring = new THREE.Mesh(rGeo, rMat);
+          ring.rotation.x = Math.PI / 2.5;
+          pMesh.add(ring);
+        }
+
+        planets.push({ pivot, pMesh, def: d, moon });
+      });
+
+      // Asteroid Belt Particles
+      const astGeo = new THREE.BufferGeometry();
+      const count = 300;
+      const coords = new Float32Array(count * 3);
+      for (let i = 0; i < count; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const dist = 16.5 + Math.random() * 2.5;
+        coords[i * 3] = Math.cos(a) * dist;
+        coords[i * 3 + 1] = (Math.random() - 0.5) * 0.8;
+        coords[i * 3 + 2] = Math.sin(a) * dist;
+      }
+      astGeo.setAttribute('position', new THREE.BufferAttribute(coords, 3));
+      const asteroids = new THREE.Points(astGeo, new THREE.PointsMaterial({ color: 0x94a3b8, size: 0.16 }));
+      root.add(asteroids);
+
+      scene.add(root);
+      return { type: 'solar', root, planets, asteroids, sun, speedMult: 1 };
+    },
+    animate3D: function(now, ctx) {
+      if (!ctx || !ctx.planets) return;
+      const mult = ctx.speedMult || 1;
+      ctx.planets.forEach(p => {
+        p.pivot.rotation.y += p.def.speed * mult;
+        p.pMesh.rotation.y += 0.02;
+        if (p.moon) p.moon.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), 0.05);
+      });
+      if (ctx.asteroids) ctx.asteroids.rotation.y += 0.002 * mult;
+      if (ctx.sun) ctx.sun.rotation.y += 0.004;
+    },
+    onSuccess: function(ctx) {
+      if (!ctx) return;
+      // Temporary planetary hyper-speed acceleration and glow pulse
+      ctx.speedMult = 4.5;
+      setTimeout(() => { ctx.speedMult = 1; }, 2400);
+    }
+  };
+
+  // 3. COMBAT / PIXEL TARGETING ARENA ENGINE (Laser Turret, Shield Dome, Enemy Target Drones)
+  const COMBAT_ENGINE = {
+    missions: [
+      {
+        title: "Target Coordinate Acquisition",
+        brief: "Parse radar coordinate stream and extract azimuth angle theta to primary hostile drone.",
+        starter: "function runSimulation(state) {\n  const target = { x: 8.0, z: 8.0 };\n  state.azimuth = Math.atan2(target.z, target.x) * (180 / Math.PI);\n  return state.azimuth === 45;\n}",
+        solution: "function runSimulation(state) {\n  const target = { x: 8.0, z: 8.0 };\n  state.azimuth = Math.atan2(target.z, target.x) * (180 / Math.PI);\n  return state.azimuth === 45;\n}",
+        hint: "Math.atan2(8, 8) converted to degrees equals 45."
+      },
+      {
+        title: "Projectile Intercept Lead Calculation",
+        brief: "Compute lead distance vector for a target moving laterally at 4 m/s over 0.5s laser flight time.",
+        starter: "function runSimulation(state) {\n  const targetSpeed = 4.0, flightTime = 0.5;\n  state.leadDistance = targetSpeed * flightTime;\n  return state.leadDistance === 2.0;\n}",
+        solution: "function runSimulation(state) {\n  const targetSpeed = 4.0, flightTime = 0.5;\n  state.leadDistance = targetSpeed * flightTime;\n  return state.leadDistance === 2.0;\n}",
+        hint: "Multiply target speed (4) by flight time (0.5) = 2.0m."
+      },
+      {
+        title: "Energy Shield Frequency Modulation",
+        brief: "Harmonize electromagnetic deflector shield harmonics to resist plasma blast wavelengths (532 nm).",
+        starter: "function runSimulation(state) {\n  state.frequencyGhz = 532;\n  state.shieldActive = true;\n  state.absorption = state.frequencyGhz * 0.25;\n  return state.absorption === 133;\n}",
+        solution: "function runSimulation(state) {\n  state.frequencyGhz = 532;\n  state.shieldActive = true;\n  state.absorption = state.frequencyGhz * 0.25;\n  return state.absorption === 133;\n}",
+        hint: "Assign frequencyGhz = 532 and compute absorption."
+      },
+      {
+        title: "Dual Cannon Salvo Sequencing",
+        brief: "Alternate laser cannon pulse intervals between left and right barrels every 50ms.",
+        starter: "function runSimulation(state) {\n  const pulses = [];\n  for (let i = 0; i < 4; i++) pulses.push(i % 2 === 0 ? 'LEFT' : 'RIGHT');\n  return pulses.join(',') === 'LEFT,RIGHT,LEFT,RIGHT';\n}",
+        solution: "function runSimulation(state) {\n  const pulses = [];\n  for (let i = 0; i < 4; i++) pulses.push(i % 2 === 0 ? 'LEFT' : 'RIGHT');\n  return pulses.join(',') === 'LEFT,RIGHT,LEFT,RIGHT';\n}",
+        hint: "Alternate between LEFT and RIGHT barrels across 4 pulses."
+      },
+      {
+        title: "Thermal Dissipation Radiator Cycle",
+        brief: "Vent laser capacitor heat buildup down to safe operational limits (under 35 deg C).",
+        starter: "function runSimulation(state) {\n  let heat = 95;\n  while (heat > 35) heat -= 15;\n  state.heat = heat;\n  return state.heat <= 35;\n}",
+        solution: "function runSimulation(state) {\n  let heat = 95;\n  while (heat > 35) heat -= 15;\n  state.heat = heat;\n  return state.heat <= 35;\n}",
+        hint: "Cool heat in loop until state.heat <= 35."
+      },
+      {
+        title: "Target Drone Swarm Triage",
+        brief: "Sort incoming threat drones by proximity distance to prioritize the closest target first.",
+        starter: "function runSimulation(state) {\n  const drones = [{ id: 1, dist: 14 }, { id: 2, dist: 6 }, { id: 3, dist: 22 }];\n  drones.sort((a, b) => a.dist - b.dist);\n  return drones[0].id === 2;\n}",
+        solution: "function runSimulation(state) {\n  const drones = [{ id: 1, dist: 14 }, { id: 2, dist: 6 }, { id: 3, dist: 22 }];\n  drones.sort((a, b) => a.dist - b.dist);\n  return drones[0].id === 2;\n}",
+        hint: "Sort array by dist ascending so Drone 2 is first."
+      },
+      {
+        title: "Kinetic Deflector Overload Trigger",
+        brief: "Absorb kinetic shockwave impact and discharge reactive counter-pulse at 100% capacity.",
+        starter: "function runSimulation(state) {\n  state.absorbedKinetic = 100;\n  state.discharged = state.absorbedKinetic === 100;\n  return state.discharged;\n}",
+        solution: "function runSimulation(state) {\n  state.absorbedKinetic = 100;\n  state.discharged = state.absorbedKinetic === 100;\n  return state.discharged;\n}",
+        hint: "Set absorbedKinetic to 100."
+      },
+      {
+        title: "Laser Collimation Lens Focus",
+        brief: "Narrow photon beam divergence angle to 0.05 mrad for pinpoint long-range armor penetration.",
+        starter: "function runSimulation(state) {\n  state.divergenceMrad = 0.05;\n  state.focalPurity = 1.0 - state.divergenceMrad;\n  return state.divergenceMrad === 0.05 && state.focalPurity === 0.95;\n}",
+        solution: "function runSimulation(state) {\n  state.divergenceMrad = 0.05;\n  state.focalPurity = 1.0 - state.divergenceMrad;\n  return state.divergenceMrad === 0.05 && state.focalPurity === 0.95;\n}",
+        hint: "Set divergenceMrad to 0.05."
+      },
+      {
+        title: "Orbital Guidance Tracking Lock",
+        brief: "Compute 3D position vector intersection with descending orbital warhead.",
+        starter: "function runSimulation(state) {\n  const origin = [0, 0, 0], warhead = [0, 20, 0];\n  state.lockAcquired = warhead[1] > origin[1];\n  return state.lockAcquired;\n}",
+        solution: "function runSimulation(state) {\n  const origin = [0, 0, 0], warhead = [0, 20, 0];\n  state.lockAcquired = warhead[1] > origin[1];\n  return state.lockAcquired;\n}",
+        hint: "Verify altitude of warhead is greater than origin."
+      },
+      {
+        title: "Grand Salvo Sector Sweep",
+        brief: "Execute simultaneous 360-degree perimeter sweep to eliminate all active battle targets.",
+        starter: "function runSimulation(state) {\n  state.eliminated = 4;\n  state.sectorClear = true;\n  return state.eliminated === 4 && state.sectorClear;\n}",
+        solution: "function runSimulation(state) {\n  state.eliminated = 4;\n  state.sectorClear = true;\n  return state.eliminated === 4 && state.sectorClear;\n}",
+        hint: "Set eliminated to 4 and sectorClear to true."
+      }
+    ],
+    setup3D: function(scene) {
+      const root = new THREE.Group();
+      // Polar Cyber Radar Grid
+      const grid = new THREE.PolarGridHelper(16, 16, 8, 32, 0x06b6d4, 0x1e293b);
+      grid.position.y = -2;
+      root.add(grid);
+
+      // Base Platform
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 2.0, 0.6, 16), new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.9 }));
+      base.position.y = -1.7;
+      root.add(base);
+
+      // Rotating Turret
+      const turret = new THREE.Group();
+      turret.position.y = -1.1;
+      root.add(turret);
+
+      const body = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.9, 1.5), new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.85 }));
+      turret.add(body);
+
+      // Dual Laser Cannons
+      const barrelMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x0284c7, emissiveIntensity: 0.6 });
+      const b1 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 2.2, 12), barrelMat);
+      b1.rotation.x = Math.PI / 2;
+      b1.position.set(0.65, 0, 1.1);
+      turret.add(b1);
+
+      const b2 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 2.2, 12), barrelMat);
+      b2.rotation.x = Math.PI / 2;
+      b2.position.set(-0.65, 0, 1.1);
+      turret.add(b2);
+
+      // Energy Shield Dome
+      const shieldGeo = new THREE.SphereGeometry(2.8, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+      const shieldMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.35 });
+      const shield = new THREE.Mesh(shieldGeo, shieldMat);
+      shield.position.y = -2;
+      root.add(shield);
+
+      // Target Drones
+      const drones = [];
+      const droneGeo = new THREE.OctahedronGeometry(0.7, 0);
+      const droneMat = new THREE.MeshStandardMaterial({ color: 0xef4444, emissive: 0xb91c1c, emissiveIntensity: 0.8 });
+      for (let i = 0; i < 4; i++) {
+        const d = new THREE.Mesh(droneGeo, droneMat);
+        d.position.set(Math.cos(i * 1.57) * 9, Math.sin(i) * 2 + 0.5, Math.sin(i * 1.57) * 9);
+        root.add(d);
+        drones.push(d);
+      }
+
+      scene.add(root);
+      return { type: 'combat', root, turret, shield, drones };
+    },
+    animate3D: function(now, ctx) {
+      if (!ctx || !ctx.turret) return;
+      ctx.turret.rotation.y = Math.sin(now * 0.001) * 0.8;
+      if (ctx.drones) {
+        ctx.drones.forEach((d, idx) => {
+          d.rotation.x += 0.02;
+          d.rotation.y += 0.03;
+          d.position.y = Math.sin(now * 0.002 + idx) * 1.5 + 0.5;
+        });
+      }
+      if (ctx.shield) ctx.shield.rotation.y += 0.005;
+    },
+    onSuccess: function(ctx) {
+      if (!ctx || !ctx.drones) return;
+      // Laser firing recoil and explosion of a target drone
+      if (ctx.turret) ctx.turret.position.z -= 0.2;
+      setTimeout(() => { if (ctx.turret) ctx.turret.position.z += 0.2; }, 180);
+      const target = ctx.drones[0];
+      if (target) {
+        target.scale.set(1.8, 1.8, 1.8);
+        setTimeout(() => target.scale.set(1, 1, 1), 400);
+      }
+    }
+  };
+
+  // 4. MARTIAN ROVER 3D EXPLORER ENGINE
+  const ROVER_ENGINE = {
+    missions: [
+      {
+        title: "Autonomous Wheel Motor Ignition",
+        brief: "Power on the 6 independent DC brushless wheel hub motors and verify torque telemetry.",
+        starter: "function runSimulation(state) {\n  state.motors = [1, 1, 1, 1, 1, 1];\n  state.allOnline = state.motors.length === 6 && state.motors.every(m => m === 1);\n  return state.allOnline;\n}",
+        solution: "function runSimulation(state) {\n  state.motors = [1, 1, 1, 1, 1, 1];\n  state.allOnline = state.motors.length === 6 && state.motors.every(m => m === 1);\n  return state.allOnline;\n}",
+        hint: "Verify 6 motor states are all 1."
+      },
+      {
+        title: "Martian Crater Evasion Steering",
+        brief: "Compute differential wheel speed to steer the rover 30 degrees away from impact crater.",
+        starter: "function runSimulation(state) {\n  const leftSpeed = 1.2, rightSpeed = 0.8;\n  state.turnAngle = (leftSpeed - rightSpeed) * 75;\n  return state.turnAngle === 30;\n}",
+        solution: "function runSimulation(state) {\n  const leftSpeed = 1.2, rightSpeed = 0.8;\n  state.turnAngle = (leftSpeed - rightSpeed) * 75;\n  return state.turnAngle === 30;\n}",
+        hint: "(1.2 - 0.8) * 75 = 30."
+      },
+      {
+        title: "Glowing Crystal Sample Collection",
+        brief: "Extend robotic collection arm to Cartesian coordinates (4, -2) and grab green xenocrystal.",
+        starter: "function runSimulation(state) {\n  state.armExtended = true;\n  state.sampleCollected = true;\n  state.xpEarned = 50;\n  return state.sampleCollected && state.armExtended;\n}",
+        solution: "function runSimulation(state) {\n  state.armExtended = true;\n  state.sampleCollected = true;\n  state.xpEarned = 50;\n  return state.sampleCollected && state.armExtended;\n}",
+        hint: "Set sampleCollected and armExtended to true."
+      },
+      {
+        title: "Solar Panel Azimuth Alignment",
+        brief: "Orient photovoltaic array directly toward the Sun to achieve 98% charging efficiency.",
+        starter: "function runSimulation(state) {\n  state.solarAngle = 45;\n  state.efficiency = 98;\n  return state.efficiency >= 95;\n}",
+        solution: "function runSimulation(state) {\n  state.solarAngle = 45;\n  state.efficiency = 98;\n  return state.efficiency >= 95;\n}",
+        hint: "Assign state.efficiency = 98."
+      },
+      {
+        title: "Rocker-Bogie Incline Climb",
+        brief: "Calculate suspension articulation angle across a 24-degree rocky dune ridge.",
+        starter: "function runSimulation(state) {\n  state.incline = 24;\n  state.traction = Math.cos(state.incline * Math.PI / 180) * 100;\n  return Math.round(state.traction) === 91;\n}",
+        solution: "function runSimulation(state) {\n  state.incline = 24;\n  state.traction = Math.cos(state.incline * Math.PI / 180) * 100;\n  return Math.round(state.traction) === 91;\n}",
+        hint: "Cos(24 deg) * 100 = 91."
+      },
+      {
+        title: "Dust Storm Atmospheric Filter",
+        brief: "Activate HEPA cyclonic air intake filter when particulate density exceeds 80 ppm.",
+        starter: "function runSimulation(state) {\n  const dust = 92;\n  state.filterPurge = dust > 80;\n  return state.filterPurge;\n}",
+        solution: "function runSimulation(state) {\n  const dust = 92;\n  state.filterPurge = dust > 80;\n  return state.filterPurge;\n}",
+        hint: "Verify dust (92) is greater than 80."
+      },
+      {
+        title: "Waypoint Patrol Route Matrix",
+        brief: "Iterate across 4 exploration waypoints and confirm perimeter coverage.",
+        starter: "function runSimulation(state) {\n  const waypoints = ['ALPHA', 'BRAVO', 'CHARLIE', 'DELTA'];\n  state.visited = waypoints.length;\n  return state.visited === 4;\n}",
+        solution: "function runSimulation(state) {\n  const waypoints = ['ALPHA', 'BRAVO', 'CHARLIE', 'DELTA'];\n  state.visited = waypoints.length;\n  return state.visited === 4;\n}",
+        hint: "Assign state.visited = 4."
+      },
+      {
+        title: "Subsurface Radar Water Ice Detection",
+        brief: "Analyze ground-penetrating radar echo to identify ice deposits at 2.4m depth.",
+        starter: "function runSimulation(state) {\n  const depth = 2.4;\n  state.iceDetected = depth <= 3.0;\n  return state.iceDetected;\n}",
+        solution: "function runSimulation(state) {\n  const depth = 2.4;\n  state.iceDetected = depth <= 3.0;\n  return state.iceDetected;\n}",
+        hint: "Verify depth is under 3.0m."
+      },
+      {
+        title: "Autonomous Base Camp Return",
+        brief: "Compute reverse heading back to Martian Outpost Alpha coordinates.",
+        starter: "function runSimulation(state) {\n  state.returnVector = { x: 0, z: 0 };\n  state.docked = true;\n  return state.docked;\n}",
+        solution: "function runSimulation(state) {\n  state.returnVector = { x: 0, z: 0 };\n  state.docked = true;\n  return state.docked;\n}",
+        hint: "Set docked to true."
+      },
+      {
+        title: "Martian Sovereignty Establishment",
+        brief: "Broadcast completion telemetry to Earth ground station: Mission Accomplished.",
+        starter: "function runSimulation(state) {\n  state.sovereignty = true;\n  state.missionComplete = true;\n  return state.sovereignty && state.missionComplete;\n}",
+        solution: "function runSimulation(state) {\n  state.sovereignty = true;\n  state.missionComplete = true;\n  return state.sovereignty && state.missionComplete;\n}",
+        hint: "Set sovereignty and missionComplete to true."
+      }
+    ],
+    setup3D: function(scene) {
+      const root = new THREE.Group();
+      // Red Martian Terrain
+      const terrainGeo = new THREE.PlaneGeometry(36, 36, 16, 16);
+      const terrainMat = new THREE.MeshStandardMaterial({ color: 0x991b1b, roughness: 0.9 });
+      const terrain = new THREE.Mesh(terrainGeo, terrainMat);
+      terrain.rotation.x = -Math.PI / 2;
+      terrain.position.y = -1.5;
+      root.add(terrain);
+
+      // Rover Body
+      const rover = new THREE.Group();
+      rover.position.set(0, -0.6, 0);
+      root.add(rover);
+
+      const body = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.7, 2.8), new THREE.MeshStandardMaterial({ color: 0xf1f5f9, metalness: 0.6 }));
+      rover.add(body);
+
+      const solar = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.05, 2.2), new THREE.MeshStandardMaterial({ color: 0x1e3a8a, metalness: 0.9 }));
+      solar.position.y = 0.4;
+      rover.add(solar);
+
+      const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 1.2), new THREE.MeshStandardMaterial({ color: 0x475569 }));
+      mast.position.set(0.6, 0.9, 1.0);
+      rover.add(mast);
+
+      const camHead = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.25, 0.3), new THREE.MeshStandardMaterial({ color: 0x0f172a }));
+      camHead.position.set(0.6, 1.5, 1.0);
+      rover.add(camHead);
+
+      // 6 Wheels
+      const wheels = [];
+      const offsets = [
+        [-1.2, -0.5, 1.0], [1.2, -0.5, 1.0],
+        [-1.2, -0.5, 0.0], [1.2, -0.5, 0.0],
+        [-1.2, -0.5, -1.0], [1.2, -0.5, -1.0]
+      ];
+      offsets.forEach(pos => {
+        const w = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.25, 16), new THREE.MeshStandardMaterial({ color: 0x18181b }));
+        w.rotation.z = Math.PI / 2;
+        w.position.set(pos[0], pos[1], pos[2]);
+        rover.add(w);
+        wheels.push(w);
+      });
+
+      // Crystals
+      const crystals = [];
+      const cryMat = new THREE.MeshStandardMaterial({ color: 0x10b981, emissive: 0x059669, emissiveIntensity: 0.9 });
+      for (let i = 0; i < 4; i++) {
+        const c = new THREE.Mesh(new THREE.ConeGeometry(0.4, 1.2, 5), cryMat);
+        c.position.set(Math.sin(i * 1.5) * 8, -0.9, Math.cos(i * 1.5) * 8 - 3);
+        root.add(c);
+        crystals.push(c);
+      }
+
+      scene.add(root);
+      return { type: 'rover', root, rover, wheels, crystals, mast };
+    },
+    animate3D: function(now, ctx) {
+      if (!ctx || !ctx.mast) return;
+      ctx.mast.rotation.y = Math.sin(now * 0.001) * 0.6;
+    },
+    onSuccess: function(ctx) {
+      if (!ctx || !ctx.wheels) return;
+      // Drive forward and rotate wheels
+      ctx.wheels.forEach(w => { w.rotation.x += 1.5; });
+      if (ctx.rover) {
+        ctx.rover.position.z -= 1.0;
+        setTimeout(() => { if (ctx.rover) ctx.rover.position.z += 1.0; }, 1500);
+      }
+    }
+  };
+
+  // 5. UNIVERSAL QUANTUM CORE ENGINE (Futuristic Reactor Core for Any Other Game)
+  const UNIVERSAL_CORE_ENGINE = {
+    missions: [
+      {
+        title: "Core Reactor Online",
+        brief: "Initialize system telemetry, set operational power to 100%, and engage online matrix loop.",
+        starter: "function runSimulation(state) {\n  state.power = 100;\n  state.online = true;\n  return state.power === 100 && state.online;\n}",
+        solution: "function runSimulation(state) {\n  state.power = 100;\n  state.online = true;\n  return state.power === 100 && state.online;\n}",
+        hint: "Assign state.power = 100 and state.online = true."
+      },
+      {
+        title: "Frequency Calibration",
+        brief: "Tune quantum core resonance frequency to 440 Hz standard.",
+        starter: "function runSimulation(state) {\n  state.freq = 440;\n  return state.freq === 440;\n}",
+        solution: "function runSimulation(state) {\n  state.freq = 440;\n  return state.freq === 440;\n}",
+        hint: "Set freq = 440."
+      },
+      {
+        title: "Subsystem Telemetry Sync",
+        brief: "Verify that all 4 telemetry sectors report valid checksum status.",
+        starter: "function runSimulation(state) {\n  const sectors = [true, true, true, true];\n  return sectors.every(Boolean);\n}",
+        solution: "function runSimulation(state) {\n  const sectors = [true, true, true, true];\n  return sectors.every(Boolean);\n}",
+        hint: "Verify all sectors are true."
+      },
+      {
+        title: "Buffer Array Processing",
+        brief: "Filter incoming telemetry queue for high-priority packets.",
+        starter: "function runSimulation(state) {\n  const packets = [10, 85, 30, 92, 4];\n  const priority = packets.filter(p => p > 50);\n  return priority.length === 2;\n}",
+        solution: "function runSimulation(state) {\n  const packets = [10, 85, 30, 92, 4];\n  const priority = packets.filter(p => p > 50);\n  return priority.length === 2;\n}",
+        hint: "Filter packets > 50."
+      },
+      {
+        title: "State Transition Verification",
+        brief: "Transition system from STANDBY to ACTIVE status cleanly.",
+        starter: "function runSimulation(state) {\n  state.status = 'ACTIVE';\n  return state.status === 'ACTIVE';\n}",
+        solution: "function runSimulation(state) {\n  state.status = 'ACTIVE';\n  return state.status === 'ACTIVE';\n}",
+        hint: "Set status = 'ACTIVE'."
+      },
+      {
+        title: "Delta Time Throttle",
+        brief: "Enforce precise 60fps frame interval calculation.",
+        starter: "function runSimulation(state) {\n  const dt = 1 / 60;\n  return dt > 0;\n}",
+        solution: "function runSimulation(state) {\n  const dt = 1 / 60;\n  return dt > 0;\n}",
+        hint: "Verify dt is greater than 0."
+      },
+      {
+        title: "Matrix Collision Boundary",
+        brief: "Check distance between entity vector and boundary sphere.",
+        starter: "function runSimulation(state) {\n  const d = Math.hypot(3, 4);\n  return d === 5;\n}",
+        solution: "function runSimulation(state) {\n  const d = Math.hypot(3, 4);\n  return d === 5;\n}",
+        hint: "Hypot(3, 4) = 5."
+      },
+      {
+        title: "Recursive Node Traversal",
+        brief: "Unravel nested telemetry payload with recursive accumulator.",
+        starter: "function runSimulation(state) {\n  function sum(arr) {\n    return arr.reduce((acc, v) => acc + (Array.isArray(v) ? sum(v) : v), 0);\n  }\n  return sum([1, [2, [3, 4]]]) === 10;\n}",
+        solution: "function runSimulation(state) {\n  function sum(arr) {\n    return arr.reduce((acc, v) => acc + (Array.isArray(v) ? sum(v) : v), 0);\n  }\n  return sum([1, [2, [3, 4]]]) === 10;\n}",
+        hint: "Sum nested array."
+      },
+      {
+        title: "Integrity Hash Checksum",
+        brief: "Verify bitwise XOR parity across stream bytes.",
+        starter: "function runSimulation(state) {\n  const bytes = [1, 0, 1, 1, 0];\n  const parity = bytes.reduce((acc, b) => acc ^ b, 0);\n  return parity === 1;\n}",
+        solution: "function runSimulation(state) {\n  const bytes = [1, 0, 1, 1, 0];\n  const parity = bytes.reduce((acc, b) => acc ^ b, 0);\n  return parity === 1;\n}",
+        hint: "Bitwise XOR sum."
+      },
+      {
+        title: "Grandmaster Architecture Complete",
+        brief: "Confirm system integrity 100% and mark mission complete.",
+        starter: "function runSimulation(state) {\n  state.integrity = 100;\n  state.complete = true;\n  return state.integrity === 100 && state.complete;\n}",
+        solution: "function runSimulation(state) {\n  state.integrity = 100;\n  state.complete = true;\n  return state.integrity === 100 && state.complete;\n}",
+        hint: "Set integrity to 100 and complete to true."
+      }
+    ],
+    setup3D: function(scene) {
+      const root = new THREE.Group();
+      const grid = new THREE.GridHelper(30, 20, 0x6366f1, 0x0f172a);
+      grid.position.y = -2.5;
+      root.add(grid);
+
+      // Core Polyhedron
+      const core = new THREE.Mesh(new THREE.DodecahedronGeometry(1.8, 1), new THREE.MeshStandardMaterial({
+        color: 0x6366f1,
+        emissive: 0x4f46e5,
+        emissiveIntensity: 0.8,
+        metalness: 0.9,
+        roughness: 0.2
+      }));
+      root.add(core);
+
+      // 3 Concentric Gimbal Rings
+      const ringMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, metalness: 0.8, roughness: 0.2 });
+      const r1 = new THREE.Mesh(new THREE.TorusGeometry(2.8, 0.12, 16, 64), ringMat);
+      const r2 = new THREE.Mesh(new THREE.TorusGeometry(3.6, 0.12, 16, 64), ringMat);
+      const r3 = new THREE.Mesh(new THREE.TorusGeometry(4.4, 0.12, 16, 64), ringMat);
+      root.add(r1); root.add(r2); root.add(r3);
+
+      scene.add(root);
+      return { type: 'core', root, core, rings: [r1, r2, r3] };
+    },
+    animate3D: function(now, ctx) {
+      if (!ctx || !ctx.core) return;
+      ctx.core.rotation.x += 0.01;
+      ctx.core.rotation.y += 0.015;
+      if (ctx.rings) {
+        ctx.rings[0].rotation.x += 0.02;
+        ctx.rings[1].rotation.y += 0.018;
+        ctx.rings[2].rotation.z += 0.015;
+      }
+    },
+    onSuccess: function(ctx) {
+      if (!ctx || !ctx.core) return;
+      ctx.core.scale.set(1.4, 1.4, 1.4);
+      setTimeout(() => { if (ctx.core) ctx.core.scale.set(1, 1, 1); }, 400);
+    }
+  };
+
+  // Master Engine Dispatcher
+  function getEngineForGame(slug, cat) {
+    slug = (slug || '').toLowerCase();
+    cat = (cat || '').toLowerCase();
+
+    if (slug.includes('drone') || slug.includes('quadcopter')) return DRONE_ENGINE;
+    if (slug.includes('solar') || slug.includes('planet') || slug.includes('orbit') || slug.includes('gravity')) return SOLAR_ENGINE;
+    if (slug.includes('target') || slug.includes('battle') || slug.includes('combat') || slug.includes('pixel-battle')) return COMBAT_ENGINE;
+    if (slug.includes('rover')) return ROVER_ENGINE;
+    return UNIVERSAL_CORE_ENGINE;
+  }
+
+  // Active Selected Engine
+  const activeEngine = getEngineForGame(GAME_SLUG, GAME_CATEGORY);
+  const MISSIONS = activeEngine.missions;
+  let activeEngineCtx = null;
 
   // Render Level Selector Pills
   function renderLevelPills() {
@@ -586,7 +1313,6 @@ function runSimulation(state) {
 
   // Three.js 3D Interactive WebGL Arena Setup
   let scene, camera, renderer, animationFrameId;
-  let heroMesh, wireframeGrid, particleCloud;
 
   function init3DScene() {
     const container = document.getElementById('threeCanvasMount');
@@ -597,11 +1323,20 @@ function runSimulation(state) {
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x060814);
-    scene.fog = new THREE.FogExp2(0x060814, 0.035);
+    scene.fog = new THREE.FogExp2(0x060814, 0.025);
 
     camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 10, 18);
-    camera.lookAt(0, 0, 0);
+    // Camera angle tailored to game archetype
+    if (activeEngine === SOLAR_ENGINE) {
+      camera.position.set(0, 32, 42);
+      camera.lookAt(0, 0, 0);
+    } else if (activeEngine === DRONE_ENGINE) {
+      camera.position.set(0, 8, 16);
+      camera.lookAt(0, 2, -10);
+    } else {
+      camera.position.set(0, 10, 18);
+      camera.lookAt(0, 0, 0);
+    }
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
@@ -609,52 +1344,16 @@ function runSimulation(state) {
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
 
-    // Glowing Cyber Grid
-    wireframeGrid = new THREE.GridHelper(30, 20, 0x14b8a6, 0x1e293b);
-    wireframeGrid.position.y = -2;
-    scene.add(wireframeGrid);
-
-    // Dynamic Central Hero Mesh (Icosahedron / Crystal)
-    const geo = new THREE.IcosahedronGeometry(2.4, 0);
-    const mat = new THREE.MeshStandardMaterial({
-      color: 0x14b8a6,
-      roughness: 0.2,
-      metalness: 0.8,
-      wireframe: false,
-      emissive: 0x042f2e,
-      emissiveIntensity: 0.6
-    });
-    heroMesh = new THREE.Mesh(geo, mat);
-    scene.add(heroMesh);
-
-    // Wireframe Cage around hero mesh
-    const wireMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, wireframe: true });
-    const wireMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(2.6, 0), wireMat);
-    heroMesh.add(wireMesh);
-
-    // Ambient & Directional Lights
-    const ambLight = new THREE.AmbientLight(0xffffff, 0.8);
+    // Global Ambient Light
+    const ambLight = new THREE.AmbientLight(0xffffff, 0.9);
     scene.add(ambLight);
 
-    const dirLight = new THREE.DirectionalLight(0x38bdf8, 1.6);
-    dirLight.position.set(10, 20, 15);
+    const dirLight = new THREE.DirectionalLight(0x38bdf8, 1.4);
+    dirLight.position.set(10, 25, 15);
     scene.add(dirLight);
 
-    const pointLight = new THREE.PointLight(0xf59e0b, 2, 20);
-    pointLight.position.set(-8, 6, -8);
-    scene.add(pointLight);
-
-    // Starfield Particle Dust
-    const starsGeo = new THREE.BufferGeometry();
-    const starCount = 300;
-    const starCoords = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount * 3; i++) {
-      starCoords[i] = (Math.random() - 0.5) * 60;
-    }
-    starsGeo.setAttribute('position', new THREE.BufferAttribute(starCoords, 3));
-    const starsMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.25, transparent: true, opacity: 0.8 });
-    particleCloud = new THREE.Points(starsGeo, starsMat);
-    scene.add(particleCloud);
+    // Build Specific 3D Model for this Game!
+    activeEngineCtx = activeEngine.setup3D(scene);
 
     window.addEventListener('resize', onWindowResize);
     animate3D();
@@ -672,9 +1371,6 @@ function runSimulation(state) {
 
   let lastTime = performance.now();
   let frameCount = 0;
-  let rotationVelocity = { x: 0.008, y: 0.012 };
-  let isDragging = false;
-  let previousMousePosition = { x: 0, y: 0 };
 
   function animate3D() {
     animationFrameId = requestAnimationFrame(animate3D);
@@ -688,16 +1384,8 @@ function runSimulation(state) {
       lastTime = now;
     }
 
-    if (heroMesh && !isDragging) {
-      heroMesh.rotation.x += rotationVelocity.x;
-      heroMesh.rotation.y += rotationVelocity.y;
-      heroMesh.position.y = Math.sin(now * 0.002) * 0.4;
-    }
-    if (particleCloud) {
-      particleCloud.rotation.y += 0.001;
-    }
-    if (wireframeGrid) {
-      wireframeGrid.position.z = (wireframeGrid.position.z + 0.03) % (30 / 20);
+    if (activeEngine && activeEngine.animate3D && activeEngineCtx) {
+      activeEngine.animate3D(now, activeEngineCtx);
     }
 
     if (renderer && scene && camera) {
@@ -729,7 +1417,6 @@ function runSimulation(state) {
     const cx = w / 2;
     const cy = h / 2;
 
-    // Draw Vector Radar Rings
     ctx2d.strokeStyle = 'rgba(20, 184, 166, 0.4)';
     ctx2d.lineWidth = 1;
     for (let r = 40; r <= 180; r += 45) {
@@ -738,7 +1425,6 @@ function runSimulation(state) {
       ctx2d.stroke();
     }
 
-    // Rotating Sweep Ray
     ctx2d.strokeStyle = '#38bdf8';
     ctx2d.lineWidth = 2;
     ctx2d.beginPath();
@@ -746,7 +1432,6 @@ function runSimulation(state) {
     ctx2d.lineTo(cx + Math.cos(time) * 180, cy + Math.sin(time) * 180);
     ctx2d.stroke();
 
-    // Center Node
     ctx2d.fillStyle = '#10b981';
     ctx2d.beginPath();
     ctx2d.arc(cx, cy, 6, 0, Math.PI * 2);
@@ -774,6 +1459,7 @@ function runSimulation(state) {
         localStorage.setItem('cq_arcade_' + GAME_SLUG, JSON.stringify(Array.from(completedLevels)));
 
         statusText.textContent = `✓ Telemetry Verified! Level ${currentLevel} passed (+50 XP).`;
+        if (activeEngine && activeEngine.onSuccess) activeEngine.onSuccess(activeEngineCtx);
         statusText.style.color = '#10b981';
 
         // Show Win Modal Banner
