@@ -83,8 +83,41 @@
     </button>
   </div>
 
-  <!-- Resizable Full-Bleed Workspace Container -->
-  <div id="workspaceContainer" style="display: flex; gap: 0; align-items: stretch; position: relative;">
+  <!-- Fullscreen Studio Root Container -->
+  <div id="lessonStudioRoot" class="lesson-studio-root">
+
+    <!-- Dedicated Zen Studio HUD for Lessons (Visible only in Fullscreen Zen Mode) -->
+    <div class="zen-hud-bar" id="lessonZenHud">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 800; color: #ffffff; background: var(--accent-gradient-btn); padding: 0.2rem 0.6rem; border-radius: 4px; letter-spacing: 0.04em;">
+          ZEN STUDY STUDIO
+        </span>
+        <span style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          {{ course.title }} &bull; {{ lesson.title }}
+        </span>
+        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; background: var(--accent-subtle); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid rgba(99, 102, 241, 0.25);">
+          ⚡ +{{ lesson.xp }} XP
+        </span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <button id="zenLessonRunBtn" class="btn btn-primary" style="padding: 0.35rem 1rem; font-size: 0.82rem; font-weight: 700;" title="Execute Tests (Ctrl+Enter)">
+          ▶ Run Code &amp; Test (Ctrl+Enter)
+        </button>
+        <button id="zenLessonAudioToggle" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem;" title="Toggle Mechanical Keystroke Audio">
+          ⌨ Mechanical SFX
+        </button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <button id="exitLessonZenBtn" class="btn" style="padding: 0.35rem 0.95rem; font-size: 0.82rem; font-weight: 700; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;" title="Exit Zen Fullscreen (Press Esc)">
+          ✕ Exit Zen <kbd style="background: rgba(0,0,0,0.35); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.72rem; color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3);">Esc</kbd>
+        </button>
+      </div>
+    </div>
+
+    <!-- Resizable Full-Bleed Workspace Container -->
+    <div id="workspaceContainer" class="zen-workspace-body" style="display: flex; gap: 0; align-items: stretch; position: relative;">
     
     <!-- Left Column: Study Hub & Interactive Learning Center -->
     <div id="panelInstructions" class="cq-card" style="flex: 0 0 38%; min-width: 320px; max-width: 60%; padding: 0; overflow: hidden; display: flex; flex-direction: column; max-height: calc(100vh - 120px);">
@@ -333,6 +366,8 @@
 
   </div>
 
+  </div> <!-- End #lessonStudioRoot -->
+
 </div>
 
 <!-- Interactive Visual Box Model & Flexbox Modal -->
@@ -487,17 +522,54 @@
       };
     }
 
-    // Zen Mode Toggle
+    // Zen Mode Fullscreen Toggle & Studio Management
+    const lessonStudioRoot = document.getElementById('lessonStudioRoot');
     const zenBtn = document.getElementById('zenModeBtn');
-    const wsContainer = document.getElementById('workspaceContainer');
-    if (zenBtn && wsContainer) {
-      zenBtn.onclick = function () {
-        const isZen = wsContainer.classList.toggle('zen-active');
-        zenBtn.textContent = isZen ? '✕ Exit Zen' : '⛶ Zen Mode';
+    const exitLessonZenBtn = document.getElementById('exitLessonZenBtn');
+
+    function toggleLessonZen() {
+      if (!lessonStudioRoot) return;
+      const isZen = lessonStudioRoot.classList.toggle('zen-fullscreen-root');
+      document.body.classList.toggle('zen-locked', isZen);
+
+      if (zenBtn) {
+        zenBtn.innerHTML = isZen ? '✕ Exit Zen' : '⛶ Zen Mode';
         zenBtn.style.borderColor = isZen ? 'var(--accent)' : '';
+      }
+
+      setTimeout(function () {
         if (cmInstance) cmInstance.refresh();
-      };
+      }, 50);
     }
+
+    if (zenBtn) {
+      zenBtn.onclick = toggleLessonZen;
+    }
+
+    if (exitLessonZenBtn) {
+      exitLessonZenBtn.onclick = toggleLessonZen;
+    }
+
+    const zenLessonRunBtn = document.getElementById('zenLessonRunBtn');
+    const mainRunBtn = document.getElementById('btnRunCode');
+    if (zenLessonRunBtn && mainRunBtn) {
+      zenLessonRunBtn.onclick = function () { mainRunBtn.click(); };
+    }
+
+    const zenLessonAudioToggle = document.getElementById('zenLessonAudioToggle');
+    const mainAudioToggle = document.getElementById('lessonAudioToggle');
+    if (zenLessonAudioToggle && mainAudioToggle) {
+      zenLessonAudioToggle.onclick = function () { mainAudioToggle.click(); };
+    }
+
+    // Global Escape Key to cleanly exit Zen Mode
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' || e.keyCode === 27) {
+        if (lessonStudioRoot && lessonStudioRoot.classList.contains('zen-fullscreen-root')) {
+          toggleLessonZen();
+        }
+      }
+    });
 
     // Draggable Workspace Splitter
     const splitter = document.getElementById('workspaceSplitter');

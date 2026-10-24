@@ -18,9 +18,56 @@
 
 {% block content %}
 <div class="shell shell-wide" style="padding-top: 1.5rem; padding-bottom: 4rem;">
-  
-  <!-- Toolbar Header -->
-  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
+
+  <!-- Fullscreen Studio Root Container -->
+  <div id="playgroundStudioRoot" class="playground-studio-root">
+
+    <!-- Dedicated Zen Studio HUD (Visible Only in Fullscreen Zen Mode) -->
+    <div class="zen-hud-bar" id="playgroundZenHud">
+      <!-- Left: Brand, Task, and Fast Tab Switcher -->
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 800; color: #ffffff; background: var(--accent-gradient-btn); padding: 0.2rem 0.6rem; border-radius: 4px; letter-spacing: 0.04em;">
+          ZEN STUDIO
+        </span>
+        <span id="zenTaskTitle" style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          {% if selected_task %}TASK: {{ selected_task.title }}{% else %}Browser Code IDE{% endif %}
+        </span>
+        <div style="display: flex; gap: 0.25rem; margin-left: 0.5rem; background: var(--bg-panel); padding: 0.15rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
+          <button class="editor-tab-btn active zen-tab-btn" data-tab="html" style="padding: 0.2rem 0.55rem; font-size: 0.75rem;">HTML</button>
+          <button class="editor-tab-btn zen-tab-btn" data-tab="css" style="padding: 0.2rem 0.55rem; font-size: 0.75rem;">CSS</button>
+          <button class="editor-tab-btn zen-tab-btn" data-tab="js" style="padding: 0.2rem 0.55rem; font-size: 0.75rem;">JS</button>
+        </div>
+      </div>
+
+      <!-- Center: Primary Execution and Studio Tools -->
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <button id="zenRunBtn" class="btn btn-primary" style="padding: 0.35rem 1rem; font-size: 0.82rem; font-weight: 700;" title="Execute Code (Ctrl+Enter)">
+          ▶ Run Code (Ctrl+Enter)
+        </button>
+        <button id="zenResetBtn" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem;" title="Reset Template to Default">
+          ↺ Reset
+        </button>
+        <button id="zenDiffBtn" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem;" title="Toggle Design Diff Comparison">
+          🎯 Design Diff
+        </button>
+        <button id="zenLayoutBtn" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem;" title="Toggle Split Orientation">
+          ⇄ Toggle Layout
+        </button>
+        <button id="zenBoxBtn" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem;" title="Open Box Model & Flexbox Lab">
+          📐 Box Model
+        </button>
+      </div>
+
+      <!-- Right: Exit Zen Button with Keyboard Esc Badge -->
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <button id="exitZenBtn" class="btn" style="padding: 0.35rem 0.95rem; font-size: 0.82rem; font-weight: 700; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;" title="Exit Zen Fullscreen (Press Esc)">
+          ✕ Exit Zen <kbd style="background: rgba(0,0,0,0.35); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.72rem; color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3);">Esc</kbd>
+        </button>
+      </div>
+    </div>
+
+    <!-- Standard Toolbar Header -->
+    <div class="standard-toolbar" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
     <div style="display: flex; align-items: center; gap: 0.75rem;">
       <div class="brand-badge">IDE</div>
       <div>
@@ -120,7 +167,7 @@
   {% endif %}
 
   <!-- Workspace Container (Adjustable Side-by-Side or Stacked) -->
-  <div id="playgroundWorkspace" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1.25rem; align-items: stretch;">
+  <div id="playgroundWorkspace" class="zen-workspace-body" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1.25rem; align-items: stretch;">
     
     <!-- Left Column: Code Editor & Tabs -->
     <div class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border-strong);">
@@ -194,6 +241,8 @@
     </div>
 
   </div>
+
+  </div> <!-- End #playgroundStudioRoot -->
 
 </div>
 
@@ -512,17 +561,82 @@
       };
     });
 
-    // Zen Mode Fullscreen Toggle
-    if (zenBtn && workspace) {
-      zenBtn.onclick = function () {
-        const isZen = workspace.classList.toggle('zen-active');
-        zenBtn.textContent = isZen ? '✕ Exit Zen' : '⛶ Zen Mode';
+    // Zen Mode Fullscreen Toggle & Studio Management
+    const studioRoot = document.getElementById('playgroundStudioRoot');
+    const exitZenBtn = document.getElementById('exitZenBtn');
+
+    function toggleZenMode() {
+      if (!studioRoot) return;
+      const isZen = studioRoot.classList.toggle('zen-fullscreen-root');
+      document.body.classList.toggle('zen-locked', isZen);
+
+      if (zenBtn) {
+        zenBtn.innerHTML = isZen ? '✕ Exit Zen' : '⛶ Zen Mode';
         zenBtn.style.borderColor = isZen ? 'var(--accent)' : '';
+      }
+
+      // Re-trigger layout engine on CodeMirror instances
+      setTimeout(function () {
         if (cmHtml) cmHtml.refresh();
         if (cmCss) cmCss.refresh();
         if (cmJs) cmJs.refresh();
-      };
+      }, 50);
     }
+
+    if (zenBtn) {
+      zenBtn.onclick = toggleZenMode;
+    }
+
+    if (exitZenBtn) {
+      exitZenBtn.onclick = toggleZenMode;
+    }
+
+    // Connect Zen HUD buttons to primary handlers
+    const zenRunBtn = document.getElementById('zenRunBtn');
+    if (zenRunBtn && runBtn) {
+      zenRunBtn.onclick = function () { runBtn.click(); };
+    }
+
+    const zenResetBtn = document.getElementById('zenResetBtn');
+    if (zenResetBtn && resetBtn) {
+      zenResetBtn.onclick = function () { resetBtn.click(); };
+    }
+
+    const zenDiffBtn = document.getElementById('zenDiffBtn');
+    if (zenDiffBtn && diffBtn) {
+      zenDiffBtn.onclick = function () { diffBtn.click(); };
+    }
+
+    const zenLayoutBtn = document.getElementById('zenLayoutBtn');
+    if (zenLayoutBtn && layoutBtn) {
+      zenLayoutBtn.onclick = function () { layoutBtn.click(); };
+    }
+
+    const zenBoxBtn = document.getElementById('zenBoxBtn');
+    const openBoxBtn = document.getElementById('openBoxInspectorBtn');
+    if (zenBoxBtn && openBoxBtn) {
+      zenBoxBtn.onclick = function () { openBoxBtn.click(); };
+    }
+
+    // Sync Zen tabs with standard tabs
+    document.querySelectorAll('.zen-tab-btn').forEach(function (zTab) {
+      zTab.onclick = function () {
+        const target = zTab.getAttribute('data-tab');
+        const mainTab = document.querySelector(`.editor-tab-btn[data-tab="${target}"]:not(.zen-tab-btn)`);
+        if (mainTab) mainTab.click();
+        document.querySelectorAll('.zen-tab-btn').forEach(t => t.classList.remove('active'));
+        zTab.classList.add('active');
+      };
+    });
+
+    // Global Escape Key to cleanly exit Zen Mode
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' || e.keyCode === 27) {
+        if (studioRoot && studioRoot.classList.contains('zen-fullscreen-root')) {
+          toggleZenMode();
+        }
+      }
+    });
 
     // Design Diff Mode
     const diffBtn = document.getElementById('toggleDiffBtn');
