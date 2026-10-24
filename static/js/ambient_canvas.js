@@ -59,7 +59,8 @@
     let isRunning = true;
     let animationFrameId = null;
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Always run living ambient canvas across all client platforms
+    const prefersReducedMotion = false;
 
     function isDarkTheme() {
       return document.documentElement.getAttribute('data-theme') !== 'light';
@@ -69,15 +70,15 @@
     const palettes = {
       dark: {
         orbs: [
-          { color: '6, 182, 212', alpha: 0.22 },   // Cyber Cyan
-          { color: '99, 102, 241', alpha: 0.24 },  // Electric Indigo
-          { color: '16, 185, 129', alpha: 0.16 },  // Emerald Glow
-          { color: '168, 85, 247', alpha: 0.18 }   // Royal Violet
+          { color: '6, 182, 212', alpha: 0.28 },   // Cyber Cyan
+          { color: '99, 102, 241', alpha: 0.30 },  // Electric Indigo
+          { color: '16, 185, 129', alpha: 0.20 },  // Emerald Glow
+          { color: '168, 85, 247', alpha: 0.22 }   // Royal Violet
         ],
-        dotBase: 'rgba(255, 255, 255, 0.055)',
-        dotActive: 'rgba(99, 102, 241, 0.38)',
-        node: '99, 102, 241',
-        line: '6, 182, 212'
+        dotBase: 'rgba(255, 255, 255, 0.075)',
+        dotActive: 'rgba(99, 102, 241, 0.45)',
+        node: '129, 140, 248',
+        line: '34, 211, 238'
       },
       light: {
         orbs: [
@@ -159,14 +160,9 @@
 
     // Multi-Window & Tab Visibility Management
     function resumeLoop() {
-      if (!isRunning) {
-        isRunning = true;
-        if (!prefersReducedMotion) {
-          if (animationFrameId) cancelAnimationFrame(animationFrameId);
-          animationFrameId = requestAnimationFrame(loop);
-        } else {
-          renderStaticPass();
-        }
+      isRunning = true;
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(loop);
       }
     }
 
@@ -178,16 +174,28 @@
 
     window.addEventListener('focus', resumeLoop);
     window.addEventListener('pageshow', resumeLoop);
+    window.addEventListener('scroll', resumeLoop, { passive: true });
+
+    // GPU Context Loss & Restore Resilience
+    canvas.addEventListener('contextlost', (e) => {
+      e.preventDefault();
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }, false);
+
+    canvas.addEventListener('contextrestored', () => {
+      calculateDimensions();
+      initParticles();
+      resumeLoop();
+    }, false);
 
     // Dynamic Theme Observer
     const themeObserver = new MutationObserver(() => {
-      if (prefersReducedMotion || !isRunning) {
-        renderStaticPass();
-      }
+      if (!isRunning) resumeLoop();
     });
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     window.addEventListener('cq:theme-changed', () => {
-      if (prefersReducedMotion || !isRunning) renderStaticPass();
+      if (!isRunning) resumeLoop();
     });
 
     function drawRadialOrb(x, y, r, rgb, maxAlpha) {
@@ -333,7 +341,10 @@
     }
 
     function loop(now) {
-      if (!isRunning) return;
+      if (!isRunning) {
+        animationFrameId = null;
+        return;
+      }
 
       ctx.clearRect(0, 0, width, height);
       const dark = isDarkTheme();
@@ -354,11 +365,16 @@
     // Initialize and start
     calculateDimensions();
     initParticles();
+    animationFrameId = requestAnimationFrame(loop);
 
-    if (prefersReducedMotion) {
-      renderStaticPass();
-    } else {
-      animationFrameId = requestAnimationFrame(loop);
-    }
+    // Global ambient controller
+    window.CodeQuestAmbient = {
+      resume: resumeLoop,
+      reinit: function () {
+        calculateDimensions();
+        initParticles();
+        resumeLoop();
+      }
+    };
   });
 })();
