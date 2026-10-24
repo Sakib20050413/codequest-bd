@@ -187,30 +187,90 @@
         </span>
       </div>
 
-      <!-- Course Cards Grid -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+      <!-- Course Cards & Interactive Labs Dual Grid (Eliminates Empty Space) -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 1.75rem; align-items: start;">
         {% for course in lang.courses.all %}
-        <div class="course-card-item cq-card cq-card-interactive" data-title="{{ course.title|lower }}" data-desc="{{ course.description|lower }}" data-lang="{{ lang.name|lower }}" style="justify-content: space-between; padding: 1.75rem; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); background: radial-gradient(ellipse at top right, rgba(99, 102, 241, 0.05), var(--bg-surface) 75%);">
+        <!-- Card 1: Comprehensive Interactive Curriculum Course -->
+        <div class="course-card-item course-card-enhanced" data-title="{{ course.title|lower }}" data-desc="{{ course.description|lower }}" data-lang="{{ lang.name|lower }}">
           <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: var(--bg-panel); color: var(--accent); border: 1px solid var(--border-subtle); font-weight: 700;">
-                {{ course.level }}
-              </span>
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
-                +{{ course.xp_reward }} XP
-              </span>
+            <!-- Top Metadata Strip -->
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+              <div style="display: flex; align-items: center; gap: 0.45rem;">
+                <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: var(--bg-panel); color: var(--accent); border: 1px solid var(--border-subtle); font-weight: 700;">
+                  {{ course.level }}
+                </span>
+                <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent-secondary); background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.25); padding: 0.15rem 0.45rem; border-radius: 4px;">
+                  ⚡ Auto-Graded Sandbox
+                </span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.45rem;">
+                <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
+                  +{{ course.xp_reward }} XP
+                </span>
+                <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 600; color: var(--text-muted);">
+                  ⏱ {{ course.total_minutes }} mins
+                </span>
+              </div>
             </div>
 
-            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
+            <!-- Title & Compelling Summary -->
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
               <a href="{% url 'course_detail' course.slug %}" style="color: inherit; text-decoration: none;">
                 {{ course.title }}
               </a>
             </h3>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
               {{ course.description }}
             </p>
 
-            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.5rem;">
+            <!-- Feature Badges Strip -->
+            <div class="course-features-strip">
+              <span class="feature-tag-pill">🖥️ 100% In-Browser Code Sandbox</span>
+              <span class="feature-tag-pill">🧪 Automated Tests on Submit</span>
+              <span class="feature-tag-pill">📜 Verified Certificate</span>
+            </div>
+
+            <!-- Curriculum Milestones Preview (Interactive Roadmap) -->
+            <div class="course-milestones-preview">
+              <div class="milestones-header">
+                <span>Course Modules ({{ course.lessons.count }} Lessons)</span>
+                <button type="button" class="btn btn-ghost" style="padding: 0.2rem 0.55rem; font-size: 0.72rem; height: auto;" onclick="toggleSyllabusDrawer('drawer-{{ course.id }}', this)">
+                  Peek Full Syllabus ▾
+                </button>
+              </div>
+              <div class="milestones-chips-list">
+                {% for lesson in course.lessons.all|slice:":4" %}
+                <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="milestone-item-row" title="Launch Lesson {{ lesson.order }}: {{ lesson.title }}">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; overflow: hidden;">
+                    <span class="milestone-idx">0{{ lesson.order }}</span>
+                    <span class="milestone-name">{{ lesson.title }}</span>
+                  </div>
+                  <span class="milestone-meta-pill">⏱ {{ lesson.est_minutes }}m &bull; +{{ lesson.xp }} XP</span>
+                </a>
+                {% endfor %}
+              </div>
+
+              <!-- Expandable Full Syllabus Drawer -->
+              <div id="drawer-{{ course.id }}" class="course-syllabus-drawer" style="display: none;">
+                <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--accent); margin-bottom: 0.5rem; font-weight: 700;">
+                  Complete {{ course.lessons.count }}-Module Roadmap:
+                </div>
+                <div class="drawer-lessons-grid">
+                  {% for lesson in course.lessons.all %}
+                  <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="drawer-lesson-card">
+                    <div style="display: flex; align-items: center; gap: 0.4rem; overflow: hidden;">
+                      <span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 0.7rem;">#{{ lesson.order }}</span>
+                      <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ lesson.title }}</span>
+                    </div>
+                    <span style="font-family: var(--font-mono); color: var(--text-muted); font-size: 0.7rem; white-space: nowrap;">{{ lesson.est_minutes }}m</span>
+                  </a>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+
+            <!-- Skill Tags -->
+            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
               {% for tag in course.tags_list %}
               <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">
                 #{{ tag }}
@@ -219,10 +279,11 @@
             </div>
           </div>
 
+          <!-- Bottom Action Bar -->
           <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
             <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">⏱ {{ course.total_minutes }} mins &bull; {{ course.lessons.count }} lessons</span>
-            <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.84rem;">
-              View Course &rarr;
+            <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+              Start Course &rarr;
             </a>
           </div>
         </div>
@@ -231,6 +292,329 @@
           New curriculum modules for this track are currently in preparation.
         </div>
         {% endfor %}
+
+        <!-- Card 2: Interactive Hands-on Arena & Lab Companion -->
+        {% if lang.slug == 'html' %}
+        <div class="track-companion-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(20, 184, 166, 0.12); color: var(--success); border: 1px solid rgba(20, 184, 166, 0.3); font-weight: 700;">
+                ⚡ Arena Drill
+              </span>
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
+                +100 XP Bounty
+              </span>
+            </div>
+
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
+              HTML5 Tag Match &amp; DOM Tree Drill
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+              Test rapid syntax recall and semantic element mapping under timed drill conditions. Match opening and closing tags and verify live DOM tree hierarchies.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--success);">✦</span> 10 Fast-Paced Recall Rounds
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--success);">✦</span> Visual DOM Tree Verification
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--success);">✦</span> Zero Setup &bull; Instant Feedback
+              </div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#FastRecall</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#DOMTree</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#SemanticHTML</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
+            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">🎮 Speed Challenge</span>
+            <a href="{% url 'game_play' 'tag-match' %}" class="btn btn-ghost" style="border-color: rgba(20, 184, 166, 0.4); color: var(--success); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+              Launch Arena Drill 🚀
+            </a>
+          </div>
+        </div>
+
+        {% elif lang.slug == 'css' %}
+        <div class="track-companion-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(56, 189, 248, 0.12); color: var(--lang-css); border: 1px solid rgba(56, 189, 248, 0.3); font-weight: 700;">
+                🎮 Visual Game Lab
+              </span>
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
+                +150 XP Bounty
+              </span>
+            </div>
+
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
+              Flexbox Alignment Pond &amp; Layout Lab
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+              Master flex-direction, justify-content, align-items, and CSS Grid algorithms through 24 interactive puzzle levels. Guide items into alignment with zero guesswork.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-css);">✦</span> 24 Progressive Puzzle Levels
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-css);">✦</span> Live CSS Property Evaluator
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-css);">✦</span> Visual Box Model Feedback
+              </div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#FlexboxPond</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#JustifyContent</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#AlignItems</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
+            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">🐸 24 Levels</span>
+            <a href="{% url 'game_play' 'flexbox-pond' %}" class="btn btn-ghost" style="border-color: rgba(56, 189, 248, 0.4); color: var(--lang-css); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+              Play Flexbox Lab 🐸
+            </a>
+          </div>
+        </div>
+
+        {% elif lang.slug == 'javascript' %}
+        <div class="track-companion-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(250, 204, 21, 0.12); color: var(--lang-js); border: 1px solid rgba(250, 204, 21, 0.3); font-weight: 700;">
+                🔍 Code Review Drill
+              </span>
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
+                +150 XP Bounty
+              </span>
+            </div>
+
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
+              JS Code Review Bug Hunt &amp; Debugging Lab
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+              Act as a senior engineer reviewing code pull requests. Locate scope errors, resolve broken async promises, and patch faulty event handlers against automated tests.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-js);">✦</span> 10 Realistic Broken Codebases
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-js);">✦</span> Async &amp; Event Loop Triage
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-js);">✦</span> Automated Test Assertions
+              </div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#ScopeDebugging</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#AsyncPromises</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#EventHandling</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
+            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">🐛 10 Bug Cases</span>
+            <a href="{% url 'game_play' 'bug-hunt' %}" class="btn btn-ghost" style="border-color: rgba(250, 204, 21, 0.4); color: var(--lang-js); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+              Start Bug Hunt 🐛
+            </a>
+          </div>
+        </div>
+
+        {% elif lang.slug == 'python' %}
+        <div class="track-companion-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(52, 211, 153, 0.12); color: var(--lang-py); border: 1px solid rgba(52, 211, 153, 0.3); font-weight: 700;">
+                🐍 In-Browser REPL
+              </span>
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
+                0ms Latency
+              </span>
+            </div>
+
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
+              Python 3 WebAssembly Sandbox &amp; REPL
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+              Write and execute Python data structures, algorithms, and list comprehensions directly in your browser with Pyodide WebAssembly. Zero install required.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-py);">✦</span> Full Python 3.11 Runtime in WebAssembly
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-py);">✦</span> Interactive Terminal REPL &amp; Stdout
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-py);">✦</span> Built-in Data Structure Visualizer
+              </div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#PyodideWasm</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#ListComprehensions</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#Algorithms</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
+            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">💻 Live REPL</span>
+            <a href="{% url 'playground' %}?lang=python" class="btn btn-ghost" style="border-color: rgba(52, 211, 153, 0.4); color: var(--lang-py); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+              Open Python REPL 💻
+            </a>
+          </div>
+        </div>
+
+        {% elif lang.slug == 'sql' %}
+        <div class="track-companion-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(192, 132, 252, 0.12); color: var(--lang-sql); border: 1px solid rgba(192, 132, 252, 0.3); font-weight: 700;">
+                🗄️ In-Memory Database
+              </span>
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
+                Instant Tables
+              </span>
+            </div>
+
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
+              In-Memory SQLite Database &amp; Query Studio
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+              Write complex SELECT, multi-table INNER/LEFT JOIN, and aggregate queries on seeded schemas with real-time tabular grid visualization and query validation.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-sql);">✦</span> Full SQLite Engine via WebAssembly
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-sql);">✦</span> Visual Tabular Output Grid
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--lang-sql);">✦</span> Relational Schema &amp; FK Visualizer
+              </div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#RelationalSchema</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#InnerJoins</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#AggregateQueries</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
+            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">📊 Query Sandbox</span>
+            <a href="{% url 'playground' %}?lang=sql" class="btn btn-ghost" style="border-color: rgba(192, 132, 252, 0.4); color: var(--lang-sql); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+              Open SQL Studio 📊
+            </a>
+          </div>
+        </div>
+
+        {% elif lang.slug == 'c-lang' %}
+        <div class="track-companion-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(99, 102, 241, 0.12); color: var(--accent); border: 1px solid rgba(99, 102, 241, 0.3); font-weight: 700;">
+                🧠 Memory Lab
+              </span>
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
+                Harvard CS50
+              </span>
+            </div>
+
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
+              CS50 Harvard Stack &amp; Heap Memory Visualizer
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+              Inspect pointer dereferencing, stack frames, heap allocations, and memory byte addresses in an interactive architectural diagram studio.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--accent);">✦</span> Pointer Address &amp; Dereference Diagrams
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--accent);">✦</span> Stack Frame &amp; Activation Trace
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--accent);">✦</span> Heap Allocation &amp; Buffer Inspection
+              </div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#PointerVisualizer</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#StackHeap</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#CS50Model</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
+            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">🏛️ Memory Model</span>
+            <a href="{% url 'playground' %}?lang=c" class="btn btn-ghost" style="border-color: rgba(99, 102, 241, 0.4); color: var(--accent); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+              Launch Memory Lab 🧠
+            </a>
+          </div>
+        </div>
+
+        {% else %}
+        <div class="track-companion-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: var(--bg-panel); color: var(--accent-secondary); border: 1px solid var(--border-subtle); font-weight: 700;">
+                🎯 Code Predictor
+              </span>
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
+                +100 XP
+              </span>
+            </div>
+
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
+              {{ lang.name }} Syntax Playground &amp; Drills
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+              Read code blocks, predict evaluation outcomes, test mental execution models, and verify syntax directly in the sandbox.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--accent-secondary);">✦</span> Syntax &amp; Execution Output Drills
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--accent-secondary);">✦</span> Instant Result Comparisons
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--accent-secondary);">✦</span> Zero Environment Overhead
+              </div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#SyntaxFluency</span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#MentalModels</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
+            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">⚡ Practice Drill</span>
+            <a href="{% url 'game_play' 'output-predictor' %}" class="btn btn-ghost" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+              Play Predictor 🎯
+            </a>
+          </div>
+        </div>
+        {% endif %}
       </div>
 
     </section>
@@ -252,6 +636,16 @@
 
 {% block extra_scripts %}
 <script>
+  window.toggleSyllabusDrawer = function (drawerId, btn) {
+    const drawer = document.getElementById(drawerId);
+    if (!drawer) return;
+    const isHidden = drawer.style.display === 'none' || !drawer.style.display;
+    drawer.style.display = isHidden ? 'block' : 'none';
+    if (btn) {
+      btn.textContent = isHidden ? 'Hide Syllabus ▴' : 'Peek Full Syllabus ▾';
+    }
+  };
+
   (function () {
     const searchInput = document.getElementById('courseSearchInput');
     const filterPills = document.querySelectorAll('.filter-pill');
