@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}404 — Page Not Found | CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="shell" style="min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 4rem 1.5rem; text-align: center;">
+  <div class="cq-card" style="max-width: 620px; width: 100%; padding: 3rem 2rem; border-color: rgba(99, 102, 241, 0.35); box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px var(--accent-glow);">
+    
+    <div style="font-size: 4rem; font-weight: 800; font-family: var(--font-mono); line-height: 1; margin-bottom: 1rem;" class="headline-gradient">
+      404
+    </div>
+
+    <div class="pill-shimmer" style="display: inline-flex; margin-bottom: 1.5rem;">
+      <span class="pulse-dot"></span>
+      <span>Mission Coordinates Unreachable &bull; পেজটি পাওয়া যায়নি</span>
+    </div>
+
+    <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.75rem;">
+      Looks like you wandered into unchartered space!
+    </h2>
+
+    <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 2rem;">
+      The lesson, game, or path you are looking for might have been moved, renamed, or updated. Don't worry, cadet! You can jump right back into learning below:
+    </p>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 0.85rem; justify-content: center; align-items: center;">
+      <a href="{% url 'catalogue' %}" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-weight: 700;">
+        📚 Browse All Courses (88 Lessons) &rarr;
+      </a>
+      <a href="{% url 'games_hub' %}" class="btn btn-ghost" style="padding: 0.75rem 1.35rem;">
+        🎮 Practice Arena (108 Games)
+      </a>
+      <a href="{% url 'landing' %}" class="btn btn-ghost" style="padding: 0.75rem 1.25rem;">
+        🏠 Return Home
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

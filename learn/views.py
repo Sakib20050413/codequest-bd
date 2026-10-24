@@ -231,7 +231,14 @@ def catalogue(request):
 
 
 def course_detail(request, course_slug):
-    course = get_object_or_404(Course.objects.select_related("language").prefetch_related("lessons"), slug=course_slug)
+    course = Course.objects.select_related("language").prefetch_related("lessons").filter(slug=course_slug).first()
+    if not course:
+        clean = course_slug.replace("-foundations", "").replace("-basics", "").replace("-core", "")
+        course = Course.objects.select_related("language").prefetch_related("lessons").filter(slug__icontains=clean).first()
+        if course:
+            return redirect("course_detail", course_slug=course.slug)
+        return redirect("catalogue")
+
     lessons = list(course.lessons.all())
     
     completed_ids = set()
@@ -252,8 +259,44 @@ def course_detail(request, course_slug):
 
 
 def lesson_detail(request, course_slug, lesson_slug):
-    course = get_object_or_404(Course.objects.select_related("language"), slug=course_slug)
-    lesson = get_object_or_404(Lesson.objects.select_related("course"), course=course, slug=lesson_slug)
+    course = Course.objects.select_related("language").filter(slug=course_slug).first()
+    if not course:
+        clean_c = course_slug.replace("-foundations", "").replace("-basics", "").replace("-core", "")
+        course = Course.objects.select_related("language").filter(slug__icontains=clean_c).first()
+    if not course:
+        return redirect("catalogue")
+
+    lesson = Lesson.objects.select_related("course").filter(course=course, slug=lesson_slug).first()
+    if not lesson:
+        # Smart prefix stripping (e.g. 'html-page-skeleton' -> 'page-skeleton')
+        clean_slug = lesson_slug
+        lang_slug = course.language.slug if course.language else ""
+        prefixes = [
+            f"{course.slug}-",
+            f"{lang_slug}-",
+            "html-", "css-", "js-", "javascript-", "python-", "sql-", "c-", "java-", "php-", "bash-"
+        ]
+        for p in prefixes:
+            if p and clean_slug.startswith(p):
+                clean_slug = clean_slug[len(p):]
+                break
+
+        lesson = Lesson.objects.select_related("course").filter(course=course, slug=clean_slug).first()
+
+        # If still not found, try substring matching
+        if not lesson:
+            lesson = Lesson.objects.select_related("course").filter(course=course, slug__icontains=clean_slug).first()
+
+        # If found via fuzzy match, redirect to canonical clean URL
+        if lesson:
+            return redirect("lesson_detail", course_slug=course.slug, lesson_slug=lesson.slug)
+
+        # Fallback: Redirect to first lesson of the course
+        first_lesson = course.lessons.first()
+        if first_lesson:
+            return redirect("lesson_detail", course_slug=course.slug, lesson_slug=first_lesson.slug)
+        return redirect("course_detail", course_slug=course.slug)
+
     all_lessons = list(course.lessons.all())
     
     curr_idx = -1

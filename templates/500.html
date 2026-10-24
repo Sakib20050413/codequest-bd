@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}500 — Server Anomaly | CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="shell" style="min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 4rem 1.5rem; text-align: center;">
+  <div class="cq-card" style="max-width: 620px; width: 100%; padding: 3rem 2rem; border-color: rgba(239, 68, 68, 0.35); box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(239, 68, 68, 0.2);">
+    
+    <div style="font-size: 4rem; font-weight: 800; font-family: var(--font-mono); line-height: 1; color: var(--danger); margin-bottom: 1rem;">
+      500
+    </div>
+
+    <div class="pill-shimmer" style="display: inline-flex; margin-bottom: 1.5rem; border-color: rgba(239, 68, 68, 0.3);">
+      <span class="pulse-dot" style="background: var(--danger);"></span>
+      <span style="color: #fca5a5;">Server Anomaly &bull; সার্ভার সমস্যা</span>
+    </div>
+
+    <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.75rem;">
+      Temporary Engine Turbulence
+    </h2>
+
+    <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 2rem;">
+      Our automated sandbox engine encountered an unexpected event. Our telemetry system has logged it. Please try refreshing or return to the courses hub.
+    </p>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 0.85rem; justify-content: center; align-items: center;">
+      <a href="{% url 'catalogue' %}" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-weight: 700;">
+        📚 Return to Courses &rarr;
+      </a>
+      <a href="{% url 'landing' %}" class="btn btn-ghost" style="padding: 0.75rem 1.25rem;">
+        🏠 Return Home
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
