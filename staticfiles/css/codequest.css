@@ -139,22 +139,21 @@ body {
   transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
 }
 
-/* Background Atmospheric Lighting */
+/* Background Atmospheric Lighting (Edge-to-Edge Fluid Coverage) */
 .ambient-glow-top {
   position: absolute;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
   width: 100%;
-  max-width: 1600px;
-  height: 560px;
-  background: radial-gradient(ellipse 75% 65% at 50% -10%, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.09) 50%, rgba(7, 8, 12, 0) 80%);
+  height: 720px;
+  background: radial-gradient(ellipse 85% 65% at 50% -5%, rgba(99, 102, 241, 0.22), rgba(6, 182, 212, 0.10) 45%, rgba(7, 8, 12, 0) 80%);
   pointer-events: none;
   z-index: 0;
 }
 
 [data-theme="light"] .ambient-glow-top {
-  background: radial-gradient(ellipse 75% 65% at 50% -10%, rgba(79, 70, 229, 0.12), rgba(2, 132, 199, 0.06) 50%, rgba(248, 250, 252, 0) 80%);
+  background: radial-gradient(ellipse 85% 65% at 50% -5%, rgba(79, 70, 229, 0.14), rgba(2, 132, 199, 0.08) 45%, rgba(248, 250, 252, 0) 80%);
 }
 
 .ambient-grid {
@@ -162,21 +161,21 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 700px;
+  height: 820px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 10%, black 25%, transparent 80%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 10%, black 25%, transparent 80%);
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 85% 65% at 50% 15%, black 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 15%, black 30%, transparent 85%);
   pointer-events: none;
   z-index: 0;
 }
 
 [data-theme="light"] .ambient-grid {
   background-image: 
-    linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
 }
 
 .font-mono {
@@ -189,27 +188,48 @@ body {
 
 .shell {
   width: 100%;
-  max-width: 1560px; /* Expansive wide container that fills modern desktop screens */
+  max-width: min(96vw, 1840px); /* Dynamically fills wide desktop displays */
   margin: 0 auto;
-  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  padding: 0 clamp(1.25rem, 3.5vw, 3.5rem);
   position: relative;
   z-index: 1;
+  transition: max-width 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .shell-wide {
   width: 100%;
-  max-width: 1720px;
+  max-width: min(98vw, 1920px);
   margin: 0 auto;
-  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  padding: 0 clamp(1.25rem, 3vw, 3rem);
   position: relative;
   z-index: 1;
+  transition: max-width 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .shell-fluid {
   width: 100%;
-  padding: 0 clamp(1.2rem, 3.5vw, 3rem);
+  padding: 0 clamp(1rem, 2.5vw, 2.5rem);
   position: relative;
   z-index: 1;
+}
+
+/* ==========================================================================
+   Edge-to-Edge Dynamic Fluid Full-Screen Viewport Mode
+   Eliminates side blank margins dynamically across all pages
+   ========================================================================== */
+
+body.is-fluid-layout .shell,
+body.is-fluid-layout .shell-wide {
+  max-width: 100% !important;
+  padding-left: clamp(1rem, 2.5vw, 2.5rem) !important;
+  padding-right: clamp(1rem, 2.5vw, 2.5rem) !important;
+}
+
+.btn-icon.is-active-fluid {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  background: var(--accent-subtle) !important;
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 /* ==========================================================================

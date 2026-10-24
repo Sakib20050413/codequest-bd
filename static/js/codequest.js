@@ -20,7 +20,45 @@
         localStorage.setItem('cq_theme', next);
         btn.textContent = next === 'light' ? '☾' : '☀';
         btn.setAttribute('aria-label', 'Switch to ' + (next === 'light' ? 'Dark' : 'Light') + ' mode');
+        window.dispatchEvent(new CustomEvent('cq:theme-changed', { detail: { theme: next } }));
       };
+    }
+  }
+
+
+  // 1b. Dynamic Fluid / Full-Width Layout Engine (Eliminates side blank margins)
+  function initFluidLayout() {
+    const saved = localStorage.getItem('cq_fluid_layout');
+    // Default to true (fluid edge-to-edge view)
+    const isFluid = saved === null ? true : saved === 'true';
+    if (isFluid) {
+      document.body.classList.add('is-fluid-layout');
+    } else {
+      document.body.classList.remove('is-fluid-layout');
+    }
+
+    const btn = document.getElementById('fluidToggleBtn');
+    if (btn) {
+      updateFluidBtn(btn, isFluid);
+      btn.onclick = function () {
+        const active = document.body.classList.toggle('is-fluid-layout');
+        localStorage.setItem('cq_fluid_layout', active ? 'true' : 'false');
+        updateFluidBtn(btn, active);
+        if (global.CodeQuest && global.CodeQuest.playMechanicalClick) {
+          global.CodeQuest.playMechanicalClick();
+        }
+      };
+    }
+  }
+
+  function updateFluidBtn(btn, isFluid) {
+    btn.innerHTML = isFluid ? '⛶' : '🗖';
+    btn.setAttribute('title', isFluid ? 'Switch to Contained Width' : 'Switch to Dynamic Full-Width Layout');
+    btn.setAttribute('aria-label', isFluid ? 'Contained Width' : 'Fluid Full-Width Layout');
+    if (isFluid) {
+      btn.classList.add('is-active-fluid');
+    } else {
+      btn.classList.remove('is-active-fluid');
     }
   }
 
@@ -267,6 +305,7 @@
 
   window.addEventListener('DOMContentLoaded', function () {
     initTheme();
+    initFluidLayout();
     initMobileMenu();
     initSoundToggle();
     initDailyQuests();
