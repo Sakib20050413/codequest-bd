@@ -145,3 +145,41 @@ When an autonomous AI agent enters this repository, it MUST adhere to these 10 n
 8. **Language Rule**: ALL user-facing explanatory text MUST be in standard Bengali script (বাংলা), with technical identifiers, code, and filenames in English.
 9. **Verification Gate (Gravitas Invariant 3)**: A task is only complete when verified by an executed test runner (`python manage.py test learn` or Playwright MCP) after the mutation.
 10. **Keep This Document Updated**: Any significant architectural change, new track, or database migration MUST be reflected in this file before concluding the turn.
+
+
+---
+
+## 6. TURN 17: SECTION TITLES, MODERN TYPOGRAPHY & SYMMETRICAL 3x2 GRID REFACTOR (2026-10-24)
+
+### 1. Problem Diagnosis & User Feedback
+The user provided screenshots showing two critical visual flaws on the homepage:
+1. **Contradictory & Robotic Practice Arena Titles**:
+   - The eyebrow read 🎮 108 Master Games • 1,080 Playable Levels.
+   - The headline read Practice Arena: 108 Coding Games & 28 Practical Tasks.
+   - The paragraph cited 175 active, playable challenges... across our 12 browser engines.
+   - The CTA buttons cited 🚀 175 Missions Launchpad and Explore All 175 Levels →.
+   - **Root Cause**: Fragmented inventory counts and mechanical colon-separated titles sounded like internal database dumps rather than an inspiring, polished developer education product.
+2. **Repetitive Course Descriptions & Orphan Card in Learning Tracks**:
+   - Every single course card displayed the exact same mechanical sentence: Master the core essentials of [X] through short 3�7 minute interactive lessons. with a corrupted en-dash (3�7).
+   - The CSS grid 
+epeat(auto-fit, minmax(340px, 1fr)) on desktop widths (~1800px) created 5 columns for 6 courses, leaving the 6th course (C Programming) isolated as an ugly orphan card on the second row.
+
+### 2. Architectural Benchmark & Design Solution (Brilliant.org & Linear Standards)
+- **Interactive Practice Arena**:
+  - Eyebrow: Sleek pill badge with glowing emerald pulse dot: 🟢 INTERACTIVE PRACTICE ARENA • 12 BROWSER ENGINES.
+  - Headline: High-impact typography with modern gradient accent: Build Instinctive Reflexes with In-Browser Code Games.
+  - Subtitle: Clear value proposition: Turn syntax into muscle memory through 175 interactive challenges across 12 game engines. Navigate 3D Martian rovers, solve relational SQL mysteries, align reactive Flexbox frogs, and defuse memory leaks.
+  - Responsive Grid: .practice-arena-grid enforcing 4 columns on ultra-wide (≥1650px), 3 columns on standard desktop (3x4 = 12 cards), 2 on tablet, and 1 on mobile.
+- **Guided Learning Tracks**:
+  - Eyebrow: Cyan pill badge with radiant dot: 🔵 CURRICULUM ROADMAP • BEGINNER TO ADVANCED.
+  - Headline: Dynamic gradient: Guided Learning Tracks: Zero to Production Builder.
+  - Subtitle: Bite-sized, interactive tracks designed for zero-friction mastery. Every concept pairs an intuitive visual mental model with an instant in-browser coding playground.
+  - Balanced 3x2 Matrix: .featured-tracks-grid strictly locks to 3 columns on desktop, forming a perfectly symmetrical 3x2 matrix for 6 courses (Zero orphan cards!).
+  - Bespoke Descriptions: Populated individual, engaging descriptions for all 6 core courses (HTML5, CSS3, JavaScript, Python 3, SQL, C Programming) both in SQLite and learn/management/commands/seed_lessons.py.
+
+### 3. Verification Evidence
+- **Playwright MCP Screen Audits**:
+  - live_practice_arena.png: Verified glowing pill, gradient text, and perfectly aligned 4x3 card grid.
+  - live_tracks_grid.png: Verified radiant headline, 3x2 symmetrical matrix, and individual course descriptions.
+  - debug_filter_web.png: Verified filtering tabs retain exact grid responsiveness when toggled.
+- **Test Suite**: python manage.py test learn executed with 14/14 tests passing.

@@ -66,6 +66,15 @@ class Command(BaseCommand):
             "c-lang": ("C Programming Architecture & Pointers", get_c_lessons()),
         }
 
+        course_descriptions = {
+            "html": "Build the structural backbone of the modern web. Master semantic tags, SEO-friendly document hierarchy, accessible forms, and living DOM trees.",
+            "css": "Transform raw markup into pixel-perfect interfaces. Master the Box Model, fluid responsive layouts, Flexbox alignment, and multi-track CSS Grid.",
+            "javascript": "Bring web pages to life with interactive logic. Master DOM manipulation, event listeners, asynchronous Promises, and modern ES6+ features.",
+            "python": "Write clean, readable code for automation and data. Master fundamental control flow, list comprehensions, dictionary pipelines, and algorithmic logic.",
+            "sql": "Harness the power of relational data. Master fast SELECT queries, multi-table JOINs, filtering conditions, aggregate metrics, and schema design.",
+            "c-lang": "Understand how computers truly execute code under the hood. Master manual memory management, pointer arithmetic, struct memory layouts, and stack vs heap.",
+        }
+
         for lang_spec in LANGUAGES:
             lang, _ = Language.objects.update_or_create(
                 slug=lang_spec["slug"],
@@ -83,12 +92,16 @@ class Command(BaseCommand):
             # Check if this language has full tracks or stubs
             if lang.slug in lesson_generators:
                 course_title, lessons = lesson_generators[lang.slug]
+                course_desc = course_descriptions.get(
+                    lang.slug,
+                    f"Master foundational concepts and hands-on coding skills in {lang.name} through interactive browser lessons."
+                )
                 course, _ = Course.objects.update_or_create(
                     slug=f"{lang.slug}-core",
                     defaults={
                         "language": lang,
                         "title": course_title,
-                        "description": f"Master the core essentials of {lang.name} through short 3–7 minute interactive lessons.",
+                        "description": course_desc,
                         "level": "Beginner",
                         "order": 1,
                         "xp_reward": 250,

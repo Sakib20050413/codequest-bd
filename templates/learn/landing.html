@@ -401,31 +401,32 @@ print("Welcome to CodeQuest BD — you are ready to build!")</textarea>
 
   <!-- Point 16: PROMINENT PRACTICE ARENA & CODING CHALLENGES SHOWCASE -->
   <section style="margin: 5.5rem 0;">
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem;">
       <div>
-        <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">
-          🎮 108 Master Games &bull; 1,080 Playable Levels
+        <div class="section-eyebrow-pill" style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25);">
+          <span class="pill-pulse-dot" style="background: #10b981; box-shadow: 0 0 10px #10b981;"></span>
+          <span style="color: #a5b4fc;">Interactive Practice Arena &bull; 12 Browser Engines</span>
         </div>
-        <h2 style="font-size: clamp(2rem, 3.8vw, 2.7rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em;">
-          Practice Arena: 108 Coding Games &amp; 28 Practical Tasks
+        <h2 style="font-size: clamp(2.1rem, 3.8vw, 2.9rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.035em; line-height: 1.15; margin: 0 0 0.85rem 0;">
+          Build Instinctive Reflexes with <span style="background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 40%, #2dd4bf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">In-Browser Code Games</span>
         </h2>
-        <p style="font-size: 1.05rem; color: var(--text-muted); margin-top: 0.4rem; max-width: 650px;">
-          Reinforce language syntax, memory mental models, and algorithmic reflexes through 175 active, playable challenges. Jump directly into any level across our 12 browser engines including 2D Canvas physics, 3D WebGL voxels, CSS Grid, SQL Crime mysteries, Regex, and API defense.
+        <p style="font-size: 1.05rem; line-height: 1.65; color: var(--text-muted); max-width: 680px; margin: 0;">
+          Turn syntax into muscle memory through 175 interactive challenges across 12 game engines. Navigate 3D Martian rovers, solve relational SQL mysteries, align reactive Flexbox frogs, and defuse memory leaks.
         </p>
       </div>
 
-      <div style="display: flex; gap: 0.75rem;">
-        <button id="openGamesTaxonomyBtn" class="btn btn-ghost" style="font-size: 0.88rem;">
-          🚀 175 Missions Launchpad
+      <div style="display: flex; gap: 0.85rem; align-items: center; flex-wrap: wrap;">
+        <button id="openGamesTaxonomyBtn" class="btn btn-ghost" style="font-size: 0.88rem; font-weight: 600; padding: 0.65rem 1.25rem; border-radius: var(--radius-md);">
+          🚀 Missions Launchpad
         </button>
-        <a href="{% url 'games_hub' %}" class="btn btn-primary" style="font-size: 0.88rem;">
-          Explore All 175 Levels &rarr;
+        <a href="{% url 'games_hub' %}" class="btn btn-primary" style="font-size: 0.88rem; font-weight: 700; padding: 0.65rem 1.45rem; border-radius: var(--radius-md);">
+          Explore All Games &rarr;
         </a>
       </div>
     </div>
 
-    <!-- 6 Live Playable Coding Games Cards -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem;">
+    <!-- 12 Live Playable Coding Games Cards in Balanced Grid -->
+    <div class="practice-arena-grid">
       
       <!-- Game 1: Cyber Rover 3D -->
       <a href="{% url 'game_play' 'rover-3d' %}" class="cq-card cq-card-interactive" style="justify-content: space-between;">
@@ -696,41 +697,42 @@ print("Welcome to CodeQuest BD — you are ready to build!")</textarea>
 
   <!-- Featured Learning Tracks Grid (Point 13: Comprehensive LMS Curriculum) -->
   <section style="margin: 5.5rem 0;">
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1.5rem;">
       <div>
-        <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">
-          🎯 Structured Learning Paths &bull; In-Browser Labs
+        <div class="section-eyebrow-pill" style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25);">
+          <span class="pill-pulse-dot" style="background: #38bdf8; box-shadow: 0 0 10px #38bdf8;"></span>
+          <span style="color: #7dd3fc;">Curriculum Roadmap &bull; Beginner to Advanced</span>
         </div>
-        <h2 style="font-size: clamp(2rem, 3.8vw, 2.7rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em;">
-          Featured Learning Tracks
+        <h2 style="font-size: clamp(2.1rem, 3.8vw, 2.9rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.035em; line-height: 1.15; margin: 0 0 0.85rem 0;">
+          Guided Learning Tracks: <span style="background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Zero to Production Builder</span>
         </h2>
-        <p style="font-size: 1.05rem; color: var(--text-muted); margin-top: 0.4rem; max-width: 700px;">
-          Master production-grade syntax and algorithmic mental models through structured, bite-sized interactive lessons with zero-setup browser execution.
+        <p style="font-size: 1.05rem; line-height: 1.65; color: var(--text-muted); max-width: 680px; margin: 0;">
+          Bite-sized, interactive tracks designed for zero-friction mastery. Every concept pairs an intuitive visual mental model with an instant in-browser coding playground.
         </p>
       </div>
-      <a href="{% url 'catalogue' %}" class="btn btn-primary" style="font-size: 0.88rem; padding: 0.65rem 1.45rem;">
+      <a href="{% url 'catalogue' %}" class="btn btn-primary" style="font-size: 0.88rem; font-weight: 700; padding: 0.65rem 1.45rem; border-radius: var(--radius-md);">
         View Full Roadmap (All Tracks) &rarr;
       </a>
     </div>
 
     <!-- Curriculum Filter Tabs -->
     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
-      <button class="btn featured-filter-tab active" data-track-cat="all" style="padding: 0.4rem 0.95rem; font-size: 0.8rem; border-radius: 999px;">
+      <button class="btn featured-filter-tab active" data-track-cat="all" style="padding: 0.45rem 1.1rem; font-size: 0.82rem; border-radius: 999px;">
         All Featured Tracks (6)
       </button>
-      <button class="btn btn-ghost featured-filter-tab" data-track-cat="web" style="padding: 0.4rem 0.95rem; font-size: 0.8rem; border-radius: 999px;">
+      <button class="btn btn-ghost featured-filter-tab" data-track-cat="web" style="padding: 0.45rem 1.1rem; font-size: 0.82rem; border-radius: 999px;">
         🌐 Web Foundations (HTML5, CSS3, JavaScript)
       </button>
-      <button class="btn btn-ghost featured-filter-tab" data-track-cat="data" style="padding: 0.4rem 0.95rem; font-size: 0.8rem; border-radius: 999px;">
+      <button class="btn btn-ghost featured-filter-tab" data-track-cat="data" style="padding: 0.45rem 1.1rem; font-size: 0.82rem; border-radius: 999px;">
         🐍 Scripting &amp; Data (Python 3, SQL)
       </button>
-      <button class="btn btn-ghost featured-filter-tab" data-track-cat="systems" style="padding: 0.4rem 0.95rem; font-size: 0.8rem; border-radius: 999px;">
+      <button class="btn btn-ghost featured-filter-tab" data-track-cat="systems" style="padding: 0.45rem 1.1rem; font-size: 0.82rem; border-radius: 999px;">
         ⚙️ Systems &amp; Memory (C Programming)
       </button>
     </div>
 
-    <!-- Rich LMS Course Cards Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem;">
+    <!-- Rich LMS Course Cards Grid (Symmetrical 3x2 Matrix, Zero Orphans) -->
+    <div class="featured-tracks-grid">
       {% for course in featured_courses %}
       <div class="cq-card cq-card-interactive featured-course-card" data-cat="{% if course.language.slug == 'html' or course.language.slug == 'css' or course.language.slug == 'javascript' %}web{% elif course.language.slug == 'python' or course.language.slug == 'sql' %}data{% else %}systems{% endif %}" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2rem; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); background: radial-gradient(ellipse at top right, rgba(99, 102, 241, 0.06), var(--bg-surface) 75%); position: relative; overflow: hidden;">
         
@@ -2379,6 +2381,68 @@ print("Welcome to CodeQuest BD — you are ready to build!")</textarea>
     border-color: var(--accent);
     color: var(--accent);
     font-weight: 700;
+  }
+
+  /* Sleek Section Eyebrow Pill Badge */
+  .section-eyebrow-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.85rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .pill-pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* Responsive Practice Arena Grid: 4 cols on ultra-wide, 3 on desktop, 2 on tablet, 1 on mobile */
+  .practice-arena-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+  @media (min-width: 1650px) {
+    .practice-arena-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  @media (max-width: 1180px) {
+    .practice-arena-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 720px) {
+    .practice-arena-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Responsive Featured Tracks Grid: Exactly 3 cols on desktop (3x2 = 6 cards, zero orphans!), 2 on tablet (2x3), 1 on mobile */
+  .featured-tracks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+  @media (max-width: 1200px) {
+    .featured-tracks-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 768px) {
+    .featured-tracks-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 {% endblock %}
