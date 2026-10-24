@@ -1,0 +1,502 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}API Traffic Tower Defense: 10 Backend Middleware Waves — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 1000px;">
+
+  <!-- Breadcrumb & Status -->
+  <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+    <a href="{% url 'games_hub' %}#arcade" style="font-size: 0.88rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;">
+      &larr; Back to Practice Arena
+    </a>
+    <span style="font-size: 0.82rem; font-family: var(--font-mono); color: #f59e0b; background: rgba(245, 158, 11, 0.12); padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid rgba(245, 158, 11, 0.3);">
+      10 Middleware Waves &bull; +50 XP / Wave
+    </span>
+  </div>
+
+  <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
+
+    <!-- Topbar HUD -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: #f59e0b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em;">
+          Practice Arena Engine 12 &bull; Backend Architecture & Traffic Siege
+        </div>
+        <h1 style="font-size: 1.65rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
+          🛡️ API Route & Traffic Tower Defense
+        </h1>
+      </div>
+      <div style="display: flex; gap: 0.75rem; align-items: center;">
+        <span id="serverHealthBadge" style="font-size: 0.82rem; font-family: var(--font-mono); color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.25);">
+          Server Health: 100%
+        </span>
+      </div>
+    </div>
+
+    <!-- 10-Wave Selector Bar -->
+    <div style="margin-bottom: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+        <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">
+          Select Traffic Siege Wave (1 – 10):
+        </span>
+        <span id="defenseWaveTitle" style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          Wave 1: HTTP 200 Route Dispatch
+        </span>
+      </div>
+      <div id="defenseWavePills" style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- Objective Box -->
+    <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+      <div id="defenseMissionPrompt" style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">
+        Objective: Configure backend middleware pipeline to withstand incoming HTTP request siege.
+      </div>
+      <div id="defenseMissionHint" style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5;">
+        Deploy Rate Limiters, JWT Auth, Redis Cache, and WAF middleware in your pipeline code below. Protect the origin DB from overloading!
+      </div>
+    </div>
+
+    <!-- Split Layout: Middleware Pipeline Visualizer & Backend Pipeline Code -->
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;" class="tower-grid-responsive">
+
+      <!-- Left: Interactive HTTP Pipeline Visualizer Canvas -->
+      <div style="background: #090d16; border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); overflow: hidden; position: relative; box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+        <div style="background: #0f172a; padding: 0.5rem 0.85rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
+          <span>TRAFFIC FLOW SIMULATOR (CLIENT &rarr; MIDDLEWARES &rarr; ORIGIN DB)</span>
+          <span id="trafficStats" style="color: #f59e0b; font-weight: 700;">Packets: 0/10</span>
+        </div>
+        <canvas id="pipelineCanvas" width="700" height="420" style="width: 100%; height: auto; display: block; background: #07090e;"></canvas>
+      </div>
+
+      <!-- Right: Backend Middleware Pipeline Code -->
+      <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem; flex: 1; display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.75rem; font-weight: 700; font-family: var(--font-mono); color: #f59e0b; text-transform: uppercase;">
+              // Express / Django Middleware Pipeline
+            </span>
+            <button id="towerResetCodeBtn" style="font-size: 0.75rem; color: var(--text-muted); background: none; border: none; cursor: pointer; text-decoration: underline;">
+              Reset Pipeline
+            </button>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; font-family: var(--font-mono);">
+            // Configure app.use(...) middlewares to filter & route traffic:
+          </div>
+          <textarea id="towerCodeInput" spellcheck="false" style="flex: 1; min-height: 200px; width: 100%; background: #07090e; border: 1px solid var(--border-strong); border-radius: 6px; padding: 0.75rem; font-family: var(--font-mono); font-size: 0.82rem; color: #fbbf24; line-height: 1.5; resize: vertical;"></textarea>
+
+          <!-- Action Buttons -->
+          <div style="display: flex; gap: 0.65rem; margin-top: 1rem; flex-wrap: wrap;">
+            <button id="towerRunBtn" class="cq-btn cq-btn-primary" style="flex: 1; padding: 0.65rem 1rem; font-size: 0.85rem; font-weight: 700; background: linear-gradient(135deg, #f59e0b, #ef4444); border: none;">
+              🛡️ Deploy Pipeline & Test Siege
+            </button>
+            <button id="towerHintBtn" class="cq-btn cq-btn-secondary" style="padding: 0.65rem 0.85rem; font-size: 0.85rem;">
+              💡 Hint
+            </button>
+          </div>
+          <div id="towerFeedback" style="margin-top: 0.65rem; font-size: 0.82rem; min-height: 1.4rem;"></div>
+        </div>
+
+        <!-- Telemetry Meters -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1rem; font-size: 0.78rem; font-family: var(--font-mono); display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; color: var(--text-muted);">
+          <div>Blocked: <span id="metricBlocked" style="color: #ef4444; font-weight: 700;">0</span></div>
+          <div>Cached: <span id="metricCached" style="color: #38bdf8; font-weight: 700;">0</span></div>
+          <div>Origin Hits: <span id="metricPassed" style="color: #10b981; font-weight: 700;">0</span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+@media (max-width: 820px) {
+  .tower-grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
+
+<script>
+  (function () {
+    const WAVES = [
+      {
+        id: 1,
+        title: "HTTP 200 OK Route Dispatch",
+        prompt: "Wave 1: Register a basic GET route handler for '/api/v1/health' returning HTTP 200.",
+        hint: "app.get('/api/v1/health', (req, res) => res.status(200).json({ status: 'ok' }));",
+        code: `// Wave 1: Healthcheck Route Dispatch\napp.get('/api/v1/health', (req, res) => {\n  return res.status(200).json({ status: 'ok' });\n});`,
+        validate: (code) => {
+          return code.includes("'/api/v1/health'") && code.includes('200');
+        },
+        packets: [
+          { type: 'HEALTH_CHECK', isSafe: true, color: '#10b981', label: 'GET /health' },
+          { type: 'HEALTH_CHECK', isSafe: true, color: '#10b981', label: 'GET /health' },
+          { type: 'HEALTH_CHECK', isSafe: true, color: '#10b981', label: 'GET /health' }
+        ]
+      },
+      {
+        id: 2,
+        title: "JWT Authentication Bearer Guard",
+        prompt: "Wave 2: Intercept unauthenticated requests with a JWT verification middleware returning HTTP 401.",
+        hint: "app.use(jwtAuthGuard({ secret: 'JWT_KEY' }));",
+        code: `// Wave 2: JWT Bearer Middleware Guard\napp.use((req, res, next) => {\n  const token = req.headers['authorization'];\n  if (!token || !token.startsWith('Bearer ')) {\n    return res.status(401).json({ error: 'Unauthorized' });\n  }\n  next();\n});`,
+        validate: (code) => {
+          return code.includes('authorization') && code.includes('401');
+        },
+        packets: [
+          { type: 'VALID_AUTH', isSafe: true, hasAuth: true, color: '#10b981', label: 'Bearer Token' },
+          { type: 'NO_AUTH', isSafe: false, hasAuth: false, color: '#ef4444', label: 'No Token' },
+          { type: 'VALID_AUTH', isSafe: true, hasAuth: true, color: '#10b981', label: 'Bearer Token' },
+          { type: 'NO_AUTH', isSafe: false, hasAuth: false, color: '#ef4444', label: 'No Token' }
+        ]
+      },
+      {
+        id: 3,
+        title: "Rate Limiter Leaky Bucket (HTTP 429)",
+        prompt: "Wave 3: Deploy a Rate Limiter middleware capping clients to 60 req/min (HTTP 429).",
+        hint: "app.use(rateLimiter({ windowMs: 60000, max: 60, statusCode: 429 }));",
+        code: `// Wave 3: Rate Limiter Middleware\napp.use(rateLimiter({\n  windowMs: 60 * 1000,\n  max: 60,\n  statusCode: 429,\n  message: 'Too Many Requests'\n}));`,
+        validate: (code) => {
+          return code.includes('rateLimiter') && (code.includes('429') || code.includes('max:'));
+        },
+        packets: [
+          { type: 'STANDARD_REQ', isSafe: true, color: '#10b981', label: 'Normal Req' },
+          { type: 'BURST_ATTACK', isSafe: false, isBurst: true, color: '#f59e0b', label: 'Burst Spike' },
+          { type: 'BURST_ATTACK', isSafe: false, isBurst: true, color: '#f59e0b', label: 'Burst Spike' },
+          { type: 'STANDARD_REQ', isSafe: true, color: '#10b981', label: 'Normal Req' }
+        ]
+      },
+      {
+        id: 4,
+        title: "Redis In-Memory Cache Proxy",
+        prompt: "Wave 4: Intercept repeated GET reads using a Redis cache middleware to reduce DB load.",
+        hint: "const cached = await redis.get(req.url); if (cached) return res.send(cached);",
+        code: `// Wave 4: Redis Cache Middleware\napp.use(async (req, res, next) => {\n  if (req.method === 'GET') {\n    const cached = await redis.get(req.originalUrl);\n    if (cached) return res.json(JSON.parse(cached));\n  }\n  next();\n});`,
+        validate: (code) => {
+          return code.includes('redis.get') && (code.includes('cached') || code.includes('GET'));
+        },
+        packets: [
+          { type: 'CACHE_READ', isSafe: true, isCacheHit: true, color: '#38bdf8', label: 'GET /items' },
+          { type: 'CACHE_READ', isSafe: true, isCacheHit: true, color: '#38bdf8', label: 'GET /items' },
+          { type: 'CACHE_MISS', isSafe: true, isCacheHit: false, color: '#10b981', label: 'GET /fresh' }
+        ]
+      },
+      {
+        id: 5,
+        title: "WAF SQL Injection & XSS Sanitizer",
+        prompt: "Wave 5: Defend against malicious payloads with a WAF sanitizer rejecting forbidden tokens.",
+        hint: "if (hasSqlInjection(req.body)) return res.status(403).json({ error: 'Blocked by WAF' });",
+        code: `// Wave 5: WAF Security Sanitizer\napp.use((req, res, next) => {\n  const payload = JSON.stringify(req.body || '');\n  if (/(' OR '1'='1|<script>)/i.test(payload)) {\n    return res.status(403).json({ error: 'Forbidden by WAF' });\n  }\n  next();\n});`,
+        validate: (code) => {
+          return code.includes('403') && (code.includes('payload') || code.includes('WAF') || code.includes('script'));
+        },
+        packets: [
+          { type: 'SQLI_ATTACK', isSafe: false, isWafBlock: true, color: '#ef4444', label: 'SQLi Exploit' },
+          { type: 'SAFE_POST', isSafe: true, isWafBlock: false, color: '#10b981', label: 'POST Valid' },
+          { type: 'XSS_ATTACK', isSafe: false, isWafBlock: true, color: '#ef4444', label: '<script> XSS' }
+        ]
+      },
+      {
+        id: 6,
+        title: "CORS Preflight & Origin Whitelist",
+        prompt: "Wave 6: Configure CORS middleware allowing requests strictly from https://codequest.bd.",
+        hint: "app.use(cors({ origin: 'https://codequest.bd', methods: ['GET', 'POST'] }));",
+        code: `// Wave 6: CORS Whitelist\napp.use(cors({\n  origin: 'https://codequest.bd',\n  methods: ['GET', 'POST', 'OPTIONS'],\n  credentials: true\n}));`,
+        validate: (code) => {
+          return code.includes('origin') && code.includes('codequest.bd');
+        },
+        packets: [
+          { type: 'VALID_ORIGIN', isSafe: true, color: '#10b981', label: 'Origin: codequest.bd' },
+          { type: 'ROGUE_ORIGIN', isSafe: false, color: '#ef4444', label: 'Origin: hacker-site.ru' }
+        ]
+      },
+      {
+        id: 7,
+        title: "Distributed DDoS Botnet Shield",
+        prompt: "Wave 7: Drop automated bot requests lacking valid User-Agent signatures with HTTP 400.",
+        hint: "if (!req.headers['user-agent'] || req.headers['user-agent'].includes('Bot')) return res.status(400)...",
+        code: `// Wave 7: Botnet User-Agent Shield\napp.use((req, res, next) => {\n  const ua = req.headers['user-agent'] || '';\n  if (!ua || ua.includes('EvilBot')) {\n    return res.status(400).json({ error: 'Bot Traffic Rejected' });\n  }\n  next();\n});`,
+        validate: (code) => {
+          return code.includes('user-agent') && (code.includes('400') || code.includes('Bot'));
+        },
+        packets: [
+          { type: 'NORMAL_BROWSER', isSafe: true, color: '#10b981', label: 'Chrome User-Agent' },
+          { type: 'BOT_ATTACK', isSafe: false, color: '#ef4444', label: 'EvilBot Scanner' },
+          { type: 'NORMAL_BROWSER', isSafe: true, color: '#10b981', label: 'Firefox User-Agent' }
+        ]
+      },
+      {
+        id: 8,
+        title: "Circuit Breaker Fallback (HTTP 503)",
+        prompt: "Wave 8: Implement Circuit Breaker tripping open when downstream database exceeds 3 failures.",
+        hint: "if (circuitBreaker.isOpen()) return res.status(503).json({ fallback: true });",
+        code: `// Wave 8: Circuit Breaker Pattern\napp.use((req, res, next) => {\n  if (circuitBreaker.isOpen()) {\n    return res.status(503).json({ error: 'Service Unavailable (Fallback)' });\n  }\n  next();\n});`,
+        validate: (code) => {
+          return code.includes('circuitBreaker') && code.includes('503');
+        },
+        packets: [
+          { type: 'HEALTHY_REQ', isSafe: true, color: '#10b981', label: 'Fast Query' },
+          { type: 'TIMEOUT_REQ', isSafe: false, color: '#f59e0b', label: 'Slow Query' }
+        ]
+      },
+      {
+        id: 9,
+        title: "GZIP / Brotli Payload Compression",
+        prompt: "Wave 9: Enable compression middleware with threshold of 1024 bytes to shrink bandwidth.",
+        hint: "app.use(compression({ threshold: 1024 }));",
+        code: `// Wave 9: Compression Pipeline\napp.use(compression({\n  threshold: 1024,\n  level: 6\n}));`,
+        validate: (code) => {
+          return code.includes('compression') && code.includes('threshold');
+        },
+        packets: [
+          { type: 'HEAVY_PAYLOAD', isSafe: true, isCompressed: true, color: '#8b5cf6', label: 'JSON 128KB' },
+          { type: 'TINY_PAYLOAD', isSafe: true, isCompressed: false, color: '#10b981', label: 'JSON 120B' }
+        ]
+      },
+      {
+        id: 10,
+        title: "Black Friday High-Concurrency Siege",
+        prompt: "Wave 10: Deploy the ultimate full-stack middleware stack (RateLimiter + JWT + Redis + WAF).",
+        hint: "Combine rateLimiter, jwtGuard, redisCache and wafShield into the final express app pipeline.",
+        code: `// Wave 10: Complete Full-Stack Defense\napp.use(rateLimiter({ max: 1000 }));\napp.use(jwtAuthGuard());\napp.use(redisCacheProxy());\napp.use(wafSecurityShield());`,
+        validate: (code) => {
+          return code.includes('rateLimiter') && code.includes('jwt') && code.includes('redis') && code.includes('waf');
+        },
+        packets: [
+          { type: 'VALID_AUTH', isSafe: true, hasAuth: true, color: '#10b981', label: 'Order #1' },
+          { type: 'BURST_ATTACK', isSafe: false, color: '#ef4444', label: 'DDoS Node' },
+          { type: 'CACHE_READ', isSafe: true, isCacheHit: true, color: '#38bdf8', label: 'Catalog #9' },
+          { type: 'SQLI_ATTACK', isSafe: false, color: '#ef4444', label: 'SQLi Attempt' }
+        ]
+      }
+    ];
+
+    let currentWaveIdx = 0;
+    const canvas = document.getElementById('pipelineCanvas');
+    const ctx = canvas.getContext('2d');
+    const pillsContainer = document.getElementById('defenseWavePills');
+    const waveTitle = document.getElementById('defenseWaveTitle');
+    const promptEl = document.getElementById('defenseMissionPrompt');
+    const hintEl = document.getElementById('defenseMissionHint');
+    const codeInput = document.getElementById('towerCodeInput');
+    const feedback = document.getElementById('towerFeedback');
+    const runBtn = document.getElementById('towerRunBtn');
+    const hintBtn = document.getElementById('towerHintBtn');
+    const resetBtn = document.getElementById('towerResetCodeBtn');
+    const trafficStats = document.getElementById('trafficStats');
+    const metricBlocked = document.getElementById('metricBlocked');
+    const metricCached = document.getElementById('metricCached');
+    const metricPassed = document.getElementById('metricPassed');
+    const healthBadge = document.getElementById('serverHealthBadge');
+
+    let metrics = { blocked: 0, cached: 0, passed: 0, health: 100 };
+    let livePackets = [];
+    let isSimulating = false;
+
+    function renderPills() {
+      pillsContainer.innerHTML = '';
+      WAVES.forEach((w, idx) => {
+        const pill = document.createElement('button');
+        const active = idx === currentWaveIdx;
+        pill.style.cssText = `border: 1px solid ${active ? '#f59e0b' : 'var(--border-subtle)'}; background: ${active ? 'rgba(245,158,11,0.2)' : 'var(--bg-panel)'}; color: ${active ? '#f59e0b' : 'var(--text-muted)'}; padding: 0.25rem 0.55rem; border-radius: 4px; font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; cursor: pointer;`;
+        pill.textContent = `W${idx + 1}`;
+        pill.onclick = () => loadWave(idx);
+        pillsContainer.appendChild(pill);
+      });
+    }
+
+    function loadWave(idx) {
+      currentWaveIdx = idx;
+      const w = WAVES[idx];
+      waveTitle.textContent = `Wave ${w.id}: ${w.title}`;
+      promptEl.textContent = w.prompt;
+      hintEl.textContent = w.hint;
+      codeInput.value = w.code;
+      feedback.textContent = '';
+      metrics = { blocked: 0, cached: 0, passed: 0, health: 100 };
+      livePackets = [];
+      isSimulating = false;
+      renderPills();
+      updateMeters();
+    }
+
+    function updateMeters() {
+      metricBlocked.textContent = metrics.blocked;
+      metricCached.textContent = metrics.cached;
+      metricPassed.textContent = metrics.passed;
+      healthBadge.textContent = `Server Health: ${metrics.health}%`;
+      healthBadge.style.color = metrics.health > 60 ? '#10b981' : '#ef4444';
+      trafficStats.textContent = `Blocked: ${metrics.blocked} | Passed: ${metrics.passed}`;
+    }
+
+    function startSimulation() {
+      const w = WAVES[currentWaveIdx];
+      const code = codeInput.value;
+      const isValid = w.validate(code);
+
+      isSimulating = true;
+      metrics = { blocked: 0, cached: 0, passed: 0, health: 100 };
+      livePackets = [];
+
+      // Spawn packets with horizontal progression
+      w.packets.forEach((p, index) => {
+        setTimeout(() => {
+          livePackets.push({
+            x: 40,
+            y: 190 + (index % 3) * 35,
+            targetX: 620,
+            speed: 3.2,
+            isSafe: p.isSafe,
+            isCacheHit: p.isCacheHit,
+            label: p.label,
+            color: p.color,
+            intercepted: false,
+            reachedDb: false
+          });
+        }, index * 450);
+      });
+
+      setTimeout(() => {
+        if (isValid) {
+          feedback.innerHTML = '<span style="color: var(--success); font-weight: 700;">✓ Middleware Defense Successful! Siege Thwarted. +50 XP</span>';
+          if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('success');
+          if (window.CodeQuest && window.CodeQuest.fireConfetti) window.CodeQuest.fireConfetti();
+
+          // Report score
+          fetch('/api/games/api-tower-defense/score/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrfToken() }
+          }).catch(() => {});
+
+          setTimeout(() => {
+            if (currentWaveIdx < WAVES.length - 1) {
+              loadWave(currentWaveIdx + 1);
+            } else {
+              alert('🛡️ Supreme Cloud Architect! You have mastered all 10 API Middleware Siege Waves!');
+            }
+          }, 1400);
+        } else {
+          metrics.health = 40;
+          updateMeters();
+          feedback.innerHTML = '<span style="color: var(--danger); font-weight: 700;">✕ Middleware leak detected! Attack packets reached the origin database.</span>';
+          if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('error');
+        }
+      }, (w.packets.length * 450) + 1200);
+    }
+
+    // Animation Loop
+    function renderPipeline() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Connection Pipeline Highway
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(80, 210);
+      ctx.lineTo(600, 210);
+      ctx.stroke();
+
+      // Nodes on the Pipeline
+      const NODES = [
+        { x: 80, y: 210, name: 'CLIENT', color: '#94a3b8' },
+        { x: 230, y: 210, name: 'MIDDLEWARES', color: '#f59e0b' },
+        { x: 420, y: 210, name: 'REDIS CACHE', color: '#38bdf8' },
+        { x: 600, y: 210, name: 'ORIGIN DB', color: '#10b981' }
+      ];
+
+      NODES.forEach(n => {
+        ctx.save();
+        ctx.fillStyle = n.color;
+        ctx.shadowColor = n.color;
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 16, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Node Label
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 10px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(n.name, n.x, n.y + 32);
+      });
+
+      // Update & Draw Packets
+      for (let i = livePackets.length - 1; i >= 0; i--) {
+        const p = livePackets[i];
+        p.x += p.speed;
+
+        // Check middleware gate (x = 230)
+        if (p.x >= 230 && p.x <= 245 && !p.isSafe && !p.intercepted) {
+          p.intercepted = true;
+          metrics.blocked++;
+          updateMeters();
+        }
+
+        // Check cache gate (x = 420)
+        if (p.x >= 420 && p.x <= 435 && p.isCacheHit && !p.intercepted) {
+          p.intercepted = true;
+          metrics.cached++;
+          updateMeters();
+        }
+
+        // Reached Origin DB (x = 600)
+        if (p.x >= 600 && !p.reachedDb && !p.intercepted) {
+          p.reachedDb = true;
+          metrics.passed++;
+          updateMeters();
+        }
+
+        // Draw Packet
+        ctx.save();
+        ctx.fillStyle = p.intercepted ? '#ef4444' : p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Packet Text Tag
+        ctx.fillStyle = '#e2e8f0';
+        ctx.font = '9px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(p.label, p.x, p.y - 12);
+
+        if (p.x > 660 || (p.intercepted && p.x > 320)) {
+          livePackets.splice(i, 1);
+        }
+      }
+
+      requestAnimationFrame(renderPipeline);
+    }
+
+    runBtn.onclick = function () {
+      startSimulation();
+    };
+
+    hintBtn.onclick = function () {
+      alert(`💡 API Architecture Clue (Wave ${WAVES[currentWaveIdx].id}):\n\n${WAVES[currentWaveIdx].hint}`);
+    };
+
+    resetBtn.onclick = function () {
+      codeInput.value = WAVES[currentWaveIdx].code;
+      feedback.textContent = '';
+    };
+
+    function getCsrfToken() {
+      const match = document.cookie.match(/csrftoken=([^;]+)/);
+      return match ? match[1] : '';
+    }
+
+    loadWave(0);
+    requestAnimationFrame(renderPipeline);
+  })();
+</script>
+{% endblock %}

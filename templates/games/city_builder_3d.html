@@ -1,0 +1,493 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}3D Voxel City Architect: 10 WebGL Spatial Geometry Missions — CodeQuest BD{% endblock %}
+
+{% block extra_head %}
+<!-- Three.js WebGL 3D Engine & OrbitControls -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 1000px;">
+
+  <!-- Breadcrumb & Status -->
+  <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+    <a href="{% url 'games_hub' %}#arcade" style="font-size: 0.88rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;">
+      &larr; Back to Practice Arena
+    </a>
+    <span style="font-size: 0.82rem; font-family: var(--font-mono); color: #8b5cf6; background: rgba(139, 92, 246, 0.12); padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid rgba(139, 92, 246, 0.3);">
+      10 WebGL 3D Phases &bull; +50 XP / Phase
+    </span>
+  </div>
+
+  <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
+
+    <!-- Topbar HUD -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: #8b5cf6; text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em;">
+          Practice Arena Engine 10 &bull; 3D WebGL & Spatial Coordinates
+        </div>
+        <h1 style="font-size: 1.65rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
+          🏙️ 3D Voxel City Architect
+        </h1>
+      </div>
+      <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+        <button id="cityDayNightBtn" style="background: var(--bg-panel); border: 1px solid var(--border-subtle); color: #fbbf24; padding: 0.3rem 0.65rem; border-radius: 6px; font-size: 0.8rem; font-family: var(--font-mono); cursor: pointer;">
+          ☀️ Day Mode
+        </button>
+        <div style="font-size: 0.82rem; color: #8b5cf6; font-family: var(--font-mono); font-weight: 600; background: rgba(139, 92, 246, 0.12); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(139, 92, 246, 0.25);">
+          Three.js WebGL
+        </div>
+      </div>
+    </div>
+
+    <!-- 10-Phase Selector Bar -->
+    <div style="margin-bottom: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+        <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">
+          Select City Planning Phase (1 – 10):
+        </span>
+        <span id="cityPhaseTitle" style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          Phase 1: Cartesian World Origin
+        </span>
+      </div>
+      <div id="cityPhasePills" style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- Objective Box -->
+    <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+      <div id="cityMissionPrompt" style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">
+        Objective: Place building voxels on the 3D spatial grid.
+      </div>
+      <div id="cityMissionHint" style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5;">
+        Rotate, pan and zoom the 3D viewport using mouse drag or touch. Execute the urban planning script to construct the voxel structures!
+      </div>
+    </div>
+
+    <!-- Split Layout: 3D WebGL Viewport & 3D Scripting Console -->
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;" class="city-grid-responsive">
+
+      <!-- Left: Three.js 3D Viewport -->
+      <div style="background: #090d16; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: var(--radius-md); overflow: hidden; position: relative; box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+        <div style="background: #0f172a; padding: 0.5rem 0.85rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
+          <span>THREE.JS 3D VIEWPORT</span>
+          <span id="cityStatsBadge" style="color: #8b5cf6; font-weight: 700;">Voxels: 0 &bull; Phase 1/10</span>
+        </div>
+        <div id="threeContainer" style="width: 100%; height: 420px; display: block; position: relative; background: #07090e; cursor: grab;"></div>
+        <div style="position: absolute; bottom: 8px; left: 10px; font-size: 0.72rem; font-family: var(--font-mono); color: rgba(255,255,255,0.4); pointer-events: none;">
+          Left-click: Orbit &bull; Right-click: Pan &bull; Scroll: Zoom
+        </div>
+      </div>
+
+      <!-- Right: JavaScript 3D Geometry Script Console -->
+      <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem; flex: 1; display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.75rem; font-weight: 700; font-family: var(--font-mono); color: #8b5cf6; text-transform: uppercase;">
+              // 3D Spatial Scripting API
+            </span>
+            <button id="cityResetCodeBtn" style="font-size: 0.75rem; color: var(--text-muted); background: none; border: none; cursor: pointer; text-decoration: underline;">
+              Reset Script
+            </button>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; font-family: var(--font-mono);">
+            // Invoke placeVoxel(x, z, type, height) to manifest 3D structures:
+          </div>
+          <textarea id="cityCodeInput" spellcheck="false" style="flex: 1; min-height: 200px; width: 100%; background: #07090e; border: 1px solid var(--border-strong); border-radius: 6px; padding: 0.75rem; font-family: var(--font-mono); font-size: 0.82rem; color: #a78bfa; line-height: 1.5; resize: vertical;"></textarea>
+
+          <!-- Action Buttons -->
+          <div style="display: flex; gap: 0.65rem; margin-top: 1rem; flex-wrap: wrap;">
+            <button id="cityRunScriptBtn" class="cq-btn cq-btn-primary" style="flex: 1; padding: 0.65rem 1rem; font-size: 0.85rem; font-weight: 700; background: linear-gradient(135deg, #8b5cf6, #06b6d4); border: none;">
+              🏗️ Construct 3D Voxels
+            </button>
+            <button id="cityHintBtn" class="cq-btn cq-btn-secondary" style="padding: 0.65rem 0.85rem; font-size: 0.85rem;">
+              💡 Hint
+            </button>
+          </div>
+          <div id="cityFeedback" style="margin-top: 0.65rem; font-size: 0.82rem; min-height: 1.4rem;"></div>
+        </div>
+
+        <!-- Coordinates & Geometry Telemetry -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1rem; font-size: 0.78rem; font-family: var(--font-mono); display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; color: var(--text-muted);">
+          <div>Grid: <span style="color: var(--text-primary); font-weight: 700;">14 &times; 14</span></div>
+          <div>Lighting: <span id="cityLightingState" style="color: #fbbf24; font-weight: 700;">Direct Sun</span></div>
+          <div>Voxels: <span id="cityVoxelCount" style="color: #8b5cf6; font-weight: 700;">0</span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+@media (max-width: 820px) {
+  .city-grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
+
+<script>
+  (function () {
+    const PHASES = [
+      {
+        id: 1,
+        title: "Cartesian World Origin & Ground Zero",
+        prompt: "Phase 1: Place a Central Hub at world origin coordinate (0, 0) with height 2.",
+        hint: "Call placeVoxel(0, 0, 'hub', 2); in the script to build at Cartesian center (0, 0).",
+        code: `// Phase 1: World Origin (0, 0)\nplaceVoxel(0, 0, 'hub', 2);`,
+        validate: (code) => {
+          return code.includes('placeVoxel(0, 0') && (code.includes('hub') || code.includes('2'));
+        },
+        targetCount: 1
+      },
+      {
+        id: 2,
+        title: "Isometric Camera Angles & Corner Markers",
+        prompt: "Phase 2: Establish the 4 diagonal boundaries of the urban grid at (-5,-5), (-5,5), (5,-5), (5,5).",
+        hint: "Use 4 placeVoxel calls at the four corners of the grid: placeVoxel(-5, -5, 'marker', 1); etc.",
+        code: `// Phase 2: Boundary Markers\nplaceVoxel(-5, -5, 'marker', 1);\nplaceVoxel(-5, 5, 'marker', 1);\nplaceVoxel(5, -5, 'marker', 1);\nplaceVoxel(5, 5, 'marker', 1);`,
+        validate: (code) => {
+          return code.includes('-5, -5') && code.includes('5, 5');
+        },
+        targetCount: 4
+      },
+      {
+        id: 3,
+        title: "Residential Block Cluster",
+        prompt: "Phase 3: Construct a 3-block residential housing row along X axis: (1, 1), (2, 1), (3, 1).",
+        hint: "Construct residential units: placeVoxel(1, 1, 'residential', 2); placeVoxel(2, 1, 'residential', 2); placeVoxel(3, 1, 'residential', 2);",
+        code: `// Phase 3: Residential Row\nfor (let x = 1; x <= 3; x++) {\n  placeVoxel(x, 1, 'residential', 2);\n}`,
+        validate: (code) => {
+          return (code.includes('for') && code.includes('x <= 3')) || (code.includes('(1, 1') && code.includes('(3, 1'));
+        },
+        targetCount: 3
+      },
+      {
+        id: 4,
+        title: "Downtown Boulevard Transit Road",
+        prompt: "Phase 4: Pave an East-West road corridor spanning from X = -4 to +4 along Z = 0.",
+        hint: "Use a loop or coordinate sequence: for (let x = -4; x <= 4; x++) placeVoxel(x, 0, 'road', 0.2);",
+        code: `// Phase 4: Downtown Transit Corridor\nfor (let x = -4; x <= 4; x++) {\n  placeVoxel(x, 0, 'road', 0.2);\n}`,
+        validate: (code) => {
+          return code.includes('road') && (code.includes('-4') || code.includes('for'));
+        },
+        targetCount: 9
+      },
+      {
+        id: 5,
+        title: "Commercial High-Rise Skyscrapers",
+        prompt: "Phase 5: Erect two towering corporate skyscrapers at (-2, -3) and (2, -3) with height 6.",
+        hint: "placeVoxel(-2, -3, 'commercial', 6); placeVoxel(2, -3, 'commercial', 6);",
+        code: `// Phase 5: High-Rise Skyscrapers\nplaceVoxel(-2, -3, 'commercial', 6);\nplaceVoxel(2, -3, 'commercial', 6);`,
+        validate: (code) => {
+          return code.includes('-2, -3') && code.includes('2, -3') && code.includes('6');
+        },
+        targetCount: 2
+      },
+      {
+        id: 6,
+        title: "Central Eco-Park & Bio-Sphere",
+        prompt: "Phase 6: Seed an ecological park zone spanning a 2x2 green footprint at (-3, 2), (-3, 3), (-2, 2), (-2, 3).",
+        hint: "Create 4 park voxels with type 'park': placeVoxel(-3, 2, 'park', 1); ...",
+        code: `// Phase 6: Eco-Park Reserve\nplaceVoxel(-3, 2, 'park', 1);\nplaceVoxel(-3, 3, 'park', 1);\nplaceVoxel(-2, 2, 'park', 1);\nplaceVoxel(-2, 3, 'park', 1);`,
+        validate: (code) => {
+          return code.includes('park') && code.includes('-3, 2');
+        },
+        targetCount: 4
+      },
+      {
+        id: 7,
+        title: "Cyberpunk Neon Power Grid",
+        prompt: "Phase 7: Install glowing neon energy towers at (-4, -4) and (4, -4) with emissive lighting.",
+        hint: "placeVoxel(-4, -4, 'neon', 4); placeVoxel(4, -4, 'neon', 4);",
+        code: `// Phase 7: Neon Power Beacons\nplaceVoxel(-4, -4, 'neon', 4);\nplaceVoxel(4, -4, 'neon', 4);`,
+        validate: (code) => {
+          return code.includes('neon') && code.includes('-4, -4');
+        },
+        targetCount: 2
+      },
+      {
+        id: 8,
+        title: "Aquatic Canal & River Waterway",
+        prompt: "Phase 8: Excavate a North-South blue waterway canal from Z = -5 to +5 along X = -1.",
+        hint: "Loop Z from -5 to 5: for (let z = -5; z <= 5; z++) placeVoxel(-1, z, 'water', 0.1);",
+        code: `// Phase 8: Canal Network\nfor (let z = -5; z <= 5; z++) {\n  placeVoxel(-1, z, 'water', 0.1);\n}`,
+        validate: (code) => {
+          return code.includes('water') && (code.includes('-5') || code.includes('for'));
+        },
+        targetCount: 11
+      },
+      {
+        id: 9,
+        title: "Industrial Tech Factory District",
+        prompt: "Phase 9: Deploy industrial server farm units at (3, -2), (4, -2), (3, -1), (4, -1).",
+        hint: "placeVoxel(3, -2, 'industrial', 3); placeVoxel(4, -2, 'industrial', 3); ...",
+        code: `// Phase 9: Server Farms & Tech Cluster\nplaceVoxel(3, -2, 'industrial', 3);\nplaceVoxel(4, -2, 'industrial', 3);\nplaceVoxel(3, -1, 'industrial', 3);\nplaceVoxel(4, -1, 'industrial', 3);`,
+        validate: (code) => {
+          return code.includes('industrial') && code.includes('3, -2');
+        },
+        targetCount: 4
+      },
+      {
+        id: 10,
+        title: "Megacity Apex Tower & Hologram Spire",
+        prompt: "Phase 10: Crown the city with an ultra-tall spire at (0, -4) with height 9 and pulsating apex light.",
+        hint: "placeVoxel(0, -4, 'spire', 9);",
+        code: `// Phase 10: Apex Spire\nplaceVoxel(0, -4, 'spire', 9);`,
+        validate: (code) => {
+          return code.includes('spire') && code.includes('9');
+        },
+        targetCount: 1
+      }
+    ];
+
+    let currentPhaseIdx = 0;
+    const pillsContainer = document.getElementById('cityPhasePills');
+    const phaseTitle = document.getElementById('cityPhaseTitle');
+    const promptEl = document.getElementById('cityMissionPrompt');
+    const hintEl = document.getElementById('cityMissionHint');
+    const codeInput = document.getElementById('cityCodeInput');
+    const feedback = document.getElementById('cityFeedback');
+    const runBtn = document.getElementById('cityRunScriptBtn');
+    const hintBtn = document.getElementById('cityHintBtn');
+    const resetBtn = document.getElementById('cityResetCodeBtn');
+    const dayNightBtn = document.getElementById('cityDayNightBtn');
+    const statsBadge = document.getElementById('cityStatsBadge');
+    const voxelCountEl = document.getElementById('cityVoxelCount');
+    const container = document.getElementById('threeContainer');
+
+    // Color Map for Voxel Types
+    const COLOR_MAP = {
+      hub: 0x38bdf8,
+      marker: 0xf59e0b,
+      residential: 0x10b981,
+      commercial: 0x6366f1,
+      road: 0x334155,
+      park: 0x22c55e,
+      neon: 0xec4899,
+      water: 0x0284c7,
+      industrial: 0xf97316,
+      spire: 0xa855f7
+    };
+
+    // Three.js State
+    let scene, camera, renderer, controls, dirLight, ambientLight;
+    let placedVoxels = [];
+    let isNight = false;
+
+    function initThree() {
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x07090e);
+
+      const width = container.clientWidth || 550;
+      const height = container.clientHeight || 420;
+
+      camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+      camera.position.set(16, 14, 16);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.maxPolarAngle = Math.PI / 2 - 0.05; // Don't go below ground
+
+      // Ground Grid Plane
+      const gridHelper = new THREE.GridHelper(14, 14, 0x8b5cf6, 0x1e293b);
+      gridHelper.position.y = 0;
+      scene.add(gridHelper);
+
+      // Floor Plane
+      const planeGeo = new THREE.PlaneGeometry(14, 14);
+      const planeMat = new THREE.MeshStandardMaterial({ color: 0x0a0f1d, roughness: 0.8 });
+      const plane = new THREE.Mesh(planeGeo, planeMat);
+      plane.rotation.x = -Math.PI / 2;
+      plane.position.y = -0.01;
+      plane.receiveShadow = true;
+      scene.add(plane);
+
+      // Lights
+      ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambientLight);
+
+      dirLight = new THREE.DirectionalLight(0xfffbeb, 1.2);
+      dirLight.position.set(12, 18, 10);
+      dirLight.castShadow = true;
+      dirLight.shadow.mapSize.width = 1024;
+      dirLight.shadow.mapSize.height = 1024;
+      scene.add(dirLight);
+
+      // Resize Listener
+      window.addEventListener('resize', onWindowResize);
+
+      // Animation Loop
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+      animate();
+    }
+
+    function onWindowResize() {
+      if (!container || !camera || !renderer) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+
+    function clearVoxels() {
+      placedVoxels.forEach(mesh => scene.remove(mesh));
+      placedVoxels = [];
+      updateTelemetry();
+    }
+
+    function placeVoxel(x, z, type, height) {
+      const h = height || 1;
+      const color = COLOR_MAP[type] || 0x8b5cf6;
+      const isEmissive = type === 'neon' || type === 'spire';
+
+      const geometry = new THREE.BoxGeometry(0.9, h, 0.9);
+      const material = new THREE.MeshStandardMaterial({
+        color: color,
+        roughness: isEmissive ? 0.2 : 0.4,
+        metalness: 0.1,
+        emissive: isEmissive ? color : 0x000000,
+        emissiveIntensity: isEmissive ? 0.6 : 0
+      });
+
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(x, h / 2, z);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+
+      scene.add(mesh);
+      placedVoxels.push(mesh);
+      updateTelemetry();
+    }
+
+    function updateTelemetry() {
+      statsBadge.textContent = `Voxels: ${placedVoxels.length} • Phase ${currentPhaseIdx + 1}/10`;
+      voxelCountEl.textContent = placedVoxels.length;
+    }
+
+    // Day / Night Toggle
+    dayNightBtn.onclick = function () {
+      isNight = !isNight;
+      if (isNight) {
+        scene.background = new THREE.Color(0x02040a);
+        ambientLight.intensity = 0.2;
+        dirLight.intensity = 0.3;
+        dirLight.color.setHex(0x38bdf8);
+        dayNightBtn.innerHTML = '🌙 Night Mode';
+        dayNightBtn.style.color = '#38bdf8';
+        document.getElementById('cityLightingState').textContent = 'Cyber Night';
+        document.getElementById('cityLightingState').style.color = '#38bdf8';
+      } else {
+        scene.background = new THREE.Color(0x07090e);
+        ambientLight.intensity = 0.6;
+        dirLight.intensity = 1.2;
+        dirLight.color.setHex(0xfffbeb);
+        dayNightBtn.innerHTML = '☀️ Day Mode';
+        dayNightBtn.style.color = '#fbbf24';
+        document.getElementById('cityLightingState').textContent = 'Direct Sun';
+        document.getElementById('cityLightingState').style.color = '#fbbf24';
+      }
+    };
+
+    function renderPills() {
+      pillsContainer.innerHTML = '';
+      PHASES.forEach((p, idx) => {
+        const pill = document.createElement('button');
+        const active = idx === currentPhaseIdx;
+        pill.style.cssText = `border: 1px solid ${active ? '#8b5cf6' : 'var(--border-subtle)'}; background: ${active ? 'rgba(139,92,246,0.2)' : 'var(--bg-panel)'}; color: ${active ? '#8b5cf6' : 'var(--text-muted)'}; padding: 0.25rem 0.55rem; border-radius: 4px; font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; cursor: pointer;`;
+        pill.textContent = `P${idx + 1}`;
+        pill.onclick = () => loadPhase(idx);
+        pillsContainer.appendChild(pill);
+      });
+    }
+
+    function loadPhase(idx) {
+      currentPhaseIdx = idx;
+      const p = PHASES[idx];
+      phaseTitle.textContent = `Phase ${p.id}: ${p.title}`;
+      promptEl.textContent = p.prompt;
+      hintEl.textContent = p.hint;
+      codeInput.value = p.code;
+      feedback.textContent = '';
+      clearVoxels();
+      renderPills();
+    }
+
+    runBtn.onclick = function () {
+      const p = PHASES[currentPhaseIdx];
+      const code = codeInput.value;
+
+      clearVoxels();
+
+      try {
+        // Safe evaluation with placeVoxel injected into scope
+        const runFn = new Function('placeVoxel', code);
+        runFn(placeVoxel);
+
+        if (p.validate(code) && placedVoxels.length >= p.targetCount) {
+          feedback.innerHTML = '<span style="color: var(--success); font-weight: 700;">✓ 3D Spatial Geometry Manifested! +50 XP Awarded</span>';
+          if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('success');
+          if (window.CodeQuest && window.CodeQuest.fireConfetti) window.CodeQuest.fireConfetti();
+
+          // Report score
+          fetch('/api/games/city-builder-3d/score/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrfToken() }
+          }).catch(() => {});
+
+          setTimeout(() => {
+            if (currentPhaseIdx < PHASES.length - 1) {
+              loadPhase(currentPhaseIdx + 1);
+            } else {
+              alert('🌟 Master Architect! You have manifested all 10 WebGL 3D Voxel City phases!');
+            }
+          }, 1400);
+        } else {
+          feedback.innerHTML = `<span style="color: var(--danger); font-weight: 700;">✕ Target criteria not met. Placed ${placedVoxels.length} / ${p.targetCount} required voxels.</span>`;
+          if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('error');
+        }
+      } catch (err) {
+        feedback.innerHTML = `<span style="color: var(--danger); font-weight: 700;">✕ Script Error: ${err.message}</span>`;
+      }
+    };
+
+    hintBtn.onclick = function () {
+      alert(`💡 3D Architecture Blueprint (Phase ${PHASES[currentPhaseIdx].id}):\n\n${PHASES[currentPhaseIdx].hint}`);
+    };
+
+    resetBtn.onclick = function () {
+      codeInput.value = PHASES[currentPhaseIdx].code;
+      feedback.textContent = '';
+    };
+
+    function getCsrfToken() {
+      const match = document.cookie.match(/csrftoken=([^;]+)/);
+      return match ? match[1] : '';
+    }
+
+    initThree();
+    loadPhase(0);
+  })();
+</script>
+{% endblock %}

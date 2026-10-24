@@ -1,0 +1,364 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Regex Matrix Decoder: 10 Cyber Pattern Recognition Sectors — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 980px;">
+
+  <!-- Breadcrumb & Status -->
+  <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+    <a href="{% url 'games_hub' %}#arcade" style="font-size: 0.88rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;">
+      &larr; Back to Practice Arena
+    </a>
+    <span style="font-size: 0.82rem; font-family: var(--font-mono); color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.3);">
+      10 Matrix Sectors &bull; +50 XP / Sector
+    </span>
+  </div>
+
+  <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
+
+    <!-- Topbar HUD -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: #10b981; text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em;">
+          Practice Arena Engine 11 &bull; Regular Expressions & Threat Filtering
+        </div>
+        <h1 style="font-size: 1.65rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
+          ⚡ Regex Matrix Decoder
+        </h1>
+      </div>
+      <div style="display: flex; gap: 0.75rem; align-items: center;">
+        <span id="matchStatsBadge" style="font-size: 0.82rem; font-family: var(--font-mono); color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.25);">
+          Matches: 0 / 0 Target
+        </span>
+      </div>
+    </div>
+
+    <!-- 10-Sector Selector Bar -->
+    <div style="margin-bottom: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+        <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">
+          Select Matrix Sector (1 – 10):
+        </span>
+        <span id="regexSectorTitle" style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          Sector 1: Character Classes & Digits
+        </span>
+      </div>
+      <div id="regexSectorPills" style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- Objective Box -->
+    <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+      <div id="regexMissionPrompt" style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">
+        Objective: Craft a regex pattern to extract all targeted data tokens.
+      </div>
+      <div id="regexMissionHint" style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5;">
+        Enter your Regular Expression pattern into the input below. Matches will highlight in luminous green in the real-time matrix packet buffer!
+      </div>
+    </div>
+
+    <!-- Regex Input Console -->
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
+        <span style="font-size: 0.75rem; font-weight: 700; font-family: var(--font-mono); color: #10b981; text-transform: uppercase;">
+          // REGEX PATTERN SPECIFICATION
+        </span>
+        <div style="display: flex; gap: 0.5rem; align-items: center; font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted);">
+          <span>Flags:</span>
+          <label style="display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer;">
+            <input type="checkbox" id="flagG" checked> <strong style="color: #10b981;">g</strong> (global)
+          </label>
+          <label style="display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer;">
+            <input type="checkbox" id="flagI"> <strong style="color: #38bdf8;">i</strong> (ignoreCase)
+          </label>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; background: #07090e; border: 1px solid var(--border-strong); border-radius: 6px; padding: 0.4rem 0.75rem; font-family: var(--font-mono); font-size: 1rem;">
+        <span style="color: #10b981; font-weight: 700; margin-right: 0.35rem;">/</span>
+        <input type="text" id="regexInput" spellcheck="false" placeholder="Write regex pattern..." style="flex: 1; background: transparent; border: none; outline: none; color: #10b981; font-family: var(--font-mono); font-size: 0.95rem; font-weight: 600;">
+        <span style="color: #10b981; font-weight: 700; margin-left: 0.35rem;">/</span>
+        <span id="activeFlags" style="color: var(--text-muted); font-size: 0.85rem; margin-left: 0.25rem;">g</span>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: 0.65rem; margin-top: 1rem; flex-wrap: wrap;">
+        <button id="regexSubmitBtn" class="cq-btn cq-btn-primary" style="flex: 1; padding: 0.65rem 1.25rem; font-size: 0.88rem; font-weight: 700; background: linear-gradient(135deg, #10b981, #06b6d4); border: none;">
+          ⚡ Validate Pattern Matches
+        </button>
+        <button id="regexHintBtn" class="cq-btn cq-btn-secondary" style="padding: 0.65rem 1rem; font-size: 0.85rem;">
+          💡 Hint
+        </button>
+      </div>
+      <div id="regexFeedback" style="margin-top: 0.65rem; font-size: 0.84rem; min-height: 1.4rem;"></div>
+    </div>
+
+    <!-- Packet Stream Highlighting Viewport -->
+    <div style="background: #090d16; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-md); overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+      <div style="background: #0f172a; padding: 0.5rem 0.85rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
+        <span>MATRIX DATA STREAM BUFFER (LIVE MATCH HIGHLIGHTING)</span>
+        <span id="streamStatus">STREAM READY</span>
+      </div>
+      <div id="packetDisplay" style="padding: 1.25rem; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.8; color: #94a3b8; white-space: pre-wrap; word-break: break-all; min-height: 160px; max-height: 280px; overflow-y: auto;">
+        <!-- Highlighting applied here -->
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+.regex-hit {
+  background: rgba(16, 185, 129, 0.28);
+  color: #34d399;
+  border-bottom: 2px solid #10b981;
+  padding: 0.1rem 0.25rem;
+  border-radius: 3px;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+</style>
+
+<script>
+  (function () {
+    const SECTORS = [
+      {
+        id: 1,
+        title: "Character Classes & Port Digits",
+        prompt: "Sector 1: Match all server port numbers (sequences of digits 1-5 digits long).",
+        hint: "Use \\d+ to match one or more continuous numeric digits.",
+        targetRegex: "\\d+",
+        defaultFlags: "g",
+        text: "Connected to gateway 192.168.1.1 on port 8080 and standby port 3000. Daemon PID is 4519 with 4 worker threads.",
+        targetMatches: 8 // "192", "168", "1", "1", "8080", "3000", "4519", "4"
+      },
+      {
+        id: 2,
+        title: "Word Boundary & Privileged Roles",
+        prompt: "Sector 2: Match only the exact standalone privileged words 'ADMIN' or 'ROOT'.",
+        hint: "Use word boundaries: \\b(ADMIN|ROOT)\\b",
+        targetRegex: "\\b(ADMIN|ROOT)\\b",
+        defaultFlags: "g",
+        text: "User ROOT granted access. Administered by system ADMIN. Beware of ROOTKIT or BADADMIN spoofing attacks.",
+        targetMatches: 2
+      },
+      {
+        id: 3,
+        title: "Hex Color Extraction",
+        prompt: "Sector 3: Extract valid 6-character hex color codes with leading # hash symbols.",
+        hint: "Use #[0-9a-fA-F]{6} or #[0-9a-f]{6} with 'i' flag.",
+        targetRegex: "#[0-9a-fA-F]{6}",
+        defaultFlags: "g",
+        text: "Palette theme loaded: primary #38bdf8, accent #ec4899, background #090d16. Invalid tokens: #1234, #xyz123, 123456.",
+        targetMatches: 3
+      },
+      {
+        id: 4,
+        title: "Email Address Sanitization",
+        prompt: "Sector 4: Match standard email addresses from the user registration logs.",
+        hint: "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
+        targetRegex: "[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}",
+        defaultFlags: "g",
+        text: "Contact cyber squad at sec-ops@codequest.bd or lead_hacker@bangladesh.org. Invalids: user@, @domain.com, test@.com.",
+        targetMatches: 2
+      },
+      {
+        id: 5,
+        title: "IPv4 Network Address Shield",
+        prompt: "Sector 5: Identify all 4 valid IPv4 addresses in the packet trace.",
+        hint: "\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b",
+        targetRegex: "\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b",
+        defaultFlags: "g",
+        text: "Inbound syn packets from 10.0.0.1, proxying via 172.16.254.1 to public node 103.205.180.2 and DNS 8.8.8.8.",
+        targetMatches: 4
+      },
+      {
+        id: 6,
+        title: "URL Query Parameter Key-Value Pairs",
+        prompt: "Sector 6: Extract all URL query parameter expressions (key=value).",
+        hint: "[a-zA-Z0-9_]+=[a-zA-Z0-9_]+",
+        targetRegex: "\\w+=\\w+",
+        defaultFlags: "g",
+        text: "GET /api/search?lang=python&level=advanced&limit=50&sort=desc HTTP/1.1",
+        targetMatches: 4
+      },
+      {
+        id: 7,
+        title: "Negative Lookahead Password Filter",
+        prompt: "Sector 7: Match passwords starting with 'pass' EXCEPT when followed by '123' or 'word'.",
+        hint: "pass(?!123|word)",
+        targetRegex: "pass(?!123|word)\\w*",
+        defaultFlags: "g",
+        text: "Audit candidates: pass99, pass123, passSecure, password, passCodeQuest.",
+        targetMatches: 3 // pass99, passSecure, passCodeQuest
+      },
+      {
+        id: 8,
+        title: "Semantic Versioning SemVer Tags",
+        prompt: "Sector 8: Capture all SemVer release tags matching 'vX.Y.Z'.",
+        hint: "v\\d+\\.\\d+\\.\\d+",
+        targetRegex: "v\\d+\\.\\d+\\.\\d+",
+        defaultFlags: "g",
+        text: "Deploying build v1.0.0 followed by hotfix v1.0.1 and experimental v2.4.12. Skipping draft 1.2 or alpha-v3.",
+        targetMatches: 3
+      },
+      {
+        id: 9,
+        title: "ISO 8601 UTC Timestamp Extractor",
+        prompt: "Sector 9: Extract all ISO 8601 UTC timestamps (YYYY-MM-DDTHH:MM:SSZ).",
+        hint: "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z",
+        targetRegex: "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z",
+        defaultFlags: "g",
+        text: "Audit Log:\n[2026-10-24T10:15:30Z] AUTH_OK\n[2026-10-24T10:15:45Z] READ_CACHE\n[2026-10-24T10:16:02Z] WRITE_COMMIT",
+        targetMatches: 3
+      },
+      {
+        id: 10,
+        title: "Zero-Day SQL Injection Token Neutralizer",
+        prompt: "Sector 10: Identify malicious SQL injection bypass operators (' OR '1'='1 or ; DROP TABLE).",
+        hint: "(' OR '1'='1|; DROP TABLE|-- )",
+        targetRegex: "(' OR '1'='1|; DROP TABLE|-- )",
+        defaultFlags: "gi",
+        text: "Payload detected: SELECT * FROM users WHERE name = 'admin' OR '1'='1'; Injected command: ; DROP TABLE logs; -- exploit",
+        targetMatches: 3
+      }
+    ];
+
+    let currentSectorIdx = 0;
+    const pillsContainer = document.getElementById('regexSectorPills');
+    const titleEl = document.getElementById('regexSectorTitle');
+    const promptEl = document.getElementById('regexMissionPrompt');
+    const hintEl = document.getElementById('regexMissionHint');
+    const regexInput = document.getElementById('regexInput');
+    const flagG = document.getElementById('flagG');
+    const flagI = document.getElementById('flagI');
+    const activeFlagsEl = document.getElementById('activeFlags');
+    const packetDisplay = document.getElementById('packetDisplay');
+    const feedback = document.getElementById('regexFeedback');
+    const statsBadge = document.getElementById('matchStatsBadge');
+    const submitBtn = document.getElementById('regexSubmitBtn');
+    const hintBtn = document.getElementById('regexHintBtn');
+
+    function renderPills() {
+      pillsContainer.innerHTML = '';
+      SECTORS.forEach((s, idx) => {
+        const pill = document.createElement('button');
+        const active = idx === currentSectorIdx;
+        pill.style.cssText = `border: 1px solid ${active ? '#10b981' : 'var(--border-subtle)'}; background: ${active ? 'rgba(16,185,129,0.2)' : 'var(--bg-panel)'}; color: ${active ? '#10b981' : 'var(--text-muted)'}; padding: 0.25rem 0.55rem; border-radius: 4px; font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; cursor: pointer;`;
+        pill.textContent = `S${idx + 1}`;
+        pill.onclick = () => loadSector(idx);
+        pillsContainer.appendChild(pill);
+      });
+    }
+
+    function loadSector(idx) {
+      currentSectorIdx = idx;
+      const s = SECTORS[idx];
+      titleEl.textContent = `Sector ${s.id}: ${s.title}`;
+      promptEl.textContent = s.prompt;
+      hintEl.textContent = s.hint;
+      regexInput.value = '';
+      feedback.textContent = '';
+      flagG.checked = s.defaultFlags.includes('g');
+      flagI.checked = s.defaultFlags.includes('i');
+      updateFlags();
+      renderPacketText(s.text);
+      renderPills();
+      updateMatchCount(0, s.targetMatches);
+    }
+
+    function updateFlags() {
+      let flags = '';
+      if (flagG.checked) flags += 'g';
+      if (flagI.checked) flags += 'i';
+      activeFlagsEl.textContent = flags;
+      return flags;
+    }
+
+    function renderPacketText(text) {
+      packetDisplay.textContent = text;
+    }
+
+    function updateMatchCount(count, target) {
+      statsBadge.textContent = `Matches: ${count} / ${target} Target`;
+    }
+
+    function highlightMatches() {
+      const s = SECTORS[currentSectorIdx];
+      const pattern = regexInput.value;
+      const flags = updateFlags();
+
+      if (!pattern) {
+        packetDisplay.textContent = s.text;
+        updateMatchCount(0, s.targetMatches);
+        return 0;
+      }
+
+      try {
+        const re = new RegExp(pattern, flags);
+        const matches = s.text.match(re);
+        const matchCount = matches ? matches.length : 0;
+        updateMatchCount(matchCount, s.targetMatches);
+
+        // Escape HTML before injecting spans
+        const safeText = s.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeRe = new RegExp(pattern, flags);
+        const highlighted = safeText.replace(safeRe, match => `<span class="regex-hit">${match}</span>`);
+        packetDisplay.innerHTML = highlighted;
+
+        return matchCount;
+      } catch (e) {
+        packetDisplay.textContent = s.text;
+        return 0;
+      }
+    }
+
+    regexInput.addEventListener('input', highlightMatches);
+    flagG.addEventListener('change', highlightMatches);
+    flagI.addEventListener('change', highlightMatches);
+
+    submitBtn.onclick = function () {
+      const s = SECTORS[currentSectorIdx];
+      const matchCount = highlightMatches();
+
+      if (matchCount === s.targetMatches) {
+        feedback.innerHTML = `<span style="color: var(--success); font-weight: 700;">✓ Sector Decoded! Captured all ${matchCount} target packets. +50 XP Awarded</span>`;
+        if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('success');
+        if (window.CodeQuest && window.CodeQuest.fireConfetti) window.CodeQuest.fireConfetti();
+
+        // Report score
+        fetch('/api/games/regex-matrix/score/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrfToken() }
+        }).catch(() => {});
+
+        setTimeout(() => {
+          if (currentSectorIdx < SECTORS.length - 1) {
+            loadSector(currentSectorIdx + 1);
+          } else {
+            alert('⚡ Cipher Matrix Neutralized! You have conquered all 10 Cyber Regex Sectors!');
+          }
+        }, 1300);
+      } else {
+        feedback.innerHTML = `<span style="color: var(--danger); font-weight: 700;">✕ Matched ${matchCount} tokens. Required target is exactly ${s.targetMatches}. Refine your regex!</span>`;
+        if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('error');
+      }
+    };
+
+    hintBtn.onclick = function () {
+      alert(`💡 Regex Decoder Clue (Sector ${SECTORS[currentSectorIdx].id}):\n\n${SECTORS[currentSectorIdx].hint}`);
+    };
+
+    function getCsrfToken() {
+      const match = document.cookie.match(/csrftoken=([^;]+)/);
+      return match ? match[1] : '';
+    }
+
+    loadSector(0);
+  })();
+</script>
+{% endblock %}

@@ -31,7 +31,7 @@
           Start Learning Free &rarr;
         </a>
         <a href="{% url 'games_hub' %}" class="btn btn-ghost" style="padding: 0.85rem 1.65rem; font-size: 0.98rem;">
-          🎮 Practice Arena (115 Games)
+          🎮 Practice Arena (175 Challenges)
         </a>
         <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.85rem 1.5rem; font-size: 0.98rem;">
           IDE Playground ↗
@@ -339,19 +339,19 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
           🎮 115 Active Playable Challenges &bull; 6 Flagship Engines
         </div>
         <h2 style="font-size: clamp(2rem, 3.8vw, 2.7rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em;">
-          Practice Arena: 115 Playable Coding Challenges
+          Practice Arena: 175 Playable Coding Challenges (12 Engines)
         </h2>
         <p style="font-size: 1.05rem; color: var(--text-muted); margin-top: 0.4rem; max-width: 650px;">
-          Reinforce language syntax, memory mental models, and algorithmic reflexes through 115 active, playable challenges. Jump directly into any level across our 6 browser engines.
+          Reinforce language syntax, memory mental models, and algorithmic reflexes through 175 active, playable challenges. Jump directly into any level across our 12 browser engines including 2D Canvas physics, 3D WebGL voxels, CSS Grid, SQL Crime mysteries, Regex, and API defense.
         </p>
       </div>
 
       <div style="display: flex; gap: 0.75rem;">
         <button id="openGamesTaxonomyBtn" class="btn btn-ghost" style="font-size: 0.88rem;">
-          🚀 115 Missions Launchpad
+          🚀 175 Missions Launchpad
         </button>
         <a href="{% url 'games_hub' %}" class="btn btn-primary" style="font-size: 0.88rem;">
-          Explore All 115 Levels &rarr;
+          Explore All 175 Levels &rarr;
         </a>
       </div>
     </div>
@@ -488,6 +488,138 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
         <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">JS Engine &bull; Mental Execution</span>
           <span style="color: #c084fc; font-weight: 700;">Predict Output &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Game 7: CSS Grid Builder Lab -->
+      <a href="{% url 'game_play' 'grid-builder' %}" class="cq-card cq-card-interactive" style="justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div style="font-size: 2.2rem;">📐</div>
+            <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4; background: rgba(6, 182, 212, 0.12); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(6, 182, 212, 0.3);">
+              2D Web Layout &bull; +50 XP
+            </span>
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            CSS Grid Builder Lab
+          </h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+            Snap real website wireframe components into place using modern CSS Grid columns, template areas, and auto-fit minmax responsive matrices.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">10 Wireframes &bull; Live Preview</span>
+          <span style="color: #06b6d4; font-weight: 700;">Build Grid &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Game 8: SQL Crime Detective -->
+      <a href="{% url 'game_play' 'sql-detective' %}" class="cq-card cq-card-interactive" style="justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div style="font-size: 2.2rem;">🔍</div>
+            <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b; background: rgba(245, 158, 11, 0.12); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(245, 158, 11, 0.3);">
+              Data Forensics &bull; +50 XP
+            </span>
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            SQL Crime Detective
+          </h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+            Solve 10 cyber crime mysteries using relational SQL queries. Cross-examine security logs, bank transactions, and employee records with multi-table JOINs.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">In-Memory DB &bull; 10 Cases</span>
+          <span style="color: #f59e0b; font-weight: 700;">Solve Case &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Game 9: HTML5 Canvas 2D Blaster -->
+      <a href="{% url 'game_play' 'canvas-blaster-2d' %}" class="cq-card cq-card-interactive" style="justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div style="font-size: 2.2rem;">🚀</div>
+            <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #ec4899; background: rgba(236, 72, 153, 0.12); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(236, 72, 153, 0.3);">
+              2D Physics &bull; +50 XP
+            </span>
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            HTML5 Canvas 2D Blaster
+          </h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+            Master the HTML5 Canvas game loop, velocity vectors, AABB bounding box collisions, gravity arcs, and particle explosions in a 60 FPS arcade environment.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">10 Arcade Waves &bull; 60 FPS</span>
+          <span style="color: #ec4899; font-weight: 700;">Play Blaster &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Game 10: 3D Voxel City Architect -->
+      <a href="{% url 'game_play' 'city-builder-3d' %}" class="cq-card cq-card-interactive" style="justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div style="font-size: 2.2rem;">🏙️</div>
+            <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #8b5cf6; background: rgba(139, 92, 246, 0.12); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(139, 92, 246, 0.3);">
+              WebGL 3D &bull; +50 XP
+            </span>
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            3D Voxel City Architect
+          </h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+            Construct a smart cyberpunk megacity with Three.js WebGL. Script 3D spatial voxel coordinates, directional shadows, neon lighting, and high-rise spires.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">OrbitControls &bull; Day/Night</span>
+          <span style="color: #8b5cf6; font-weight: 700;">Build City &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Game 11: Regex Matrix Decoder -->
+      <a href="{% url 'game_play' 'regex-matrix' %}" class="cq-card cq-card-interactive" style="justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div style="font-size: 2.2rem;">⚡</div>
+            <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(16, 185, 129, 0.3);">
+              Cyber Matrix &bull; +50 XP
+            </span>
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            Regex Matrix Decoder
+          </h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+            Decode glowing matrix packet streams with regular expressions. Neutralize SQL injection tokens, capture ISO timestamps, and parse email parameters in real time.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">10 Cyber Sectors &bull; Live Match</span>
+          <span style="color: #10b981; font-weight: 700;">Decode Stream &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Game 12: API Route & Traffic Tower Defense -->
+      <a href="{% url 'game_play' 'api-tower-defense' %}" class="cq-card cq-card-interactive" style="justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div style="font-size: 2.2rem;">🛡️</div>
+            <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b; background: rgba(245, 158, 11, 0.12); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(245, 158, 11, 0.3);">
+              Backend Siege &bull; +50 XP
+            </span>
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            API Traffic Tower Defense
+          </h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+            Defend backend cloud servers against DDoS sieges. Deploy Rate Limiters (429), JWT Auth Guards (401), Redis Cache Proxies, and WAF sanitizers along the request highway.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">10 Middleware Waves &bull; QPS Meter</span>
+          <span style="color: #f59e0b; font-weight: 700;">Defend Route &rarr;</span>
         </div>
       </a>
 
@@ -648,9 +780,9 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
 
       <div class="cq-card" style="padding: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);">
         <div style="font-size: 1.75rem; margin-bottom: 0.65rem;">🎮</div>
-        <div style="font-weight: 700; font-size: 1rem; color: var(--text-primary); margin-bottom: 0.35rem;">115 Interactive Challenges</div>
+        <div style="font-weight: 700; font-size: 1rem; color: var(--text-primary); margin-bottom: 0.35rem;">175 Interactive Challenges</div>
         <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
-          Deep practice arena integration: sharpen muscle memory with TypeRacer 3D, Flexbox Pond, Bug Hunt, and Cyber Rover simulations.
+          Deep practice arena integration: sharpen muscle memory with 12 engines including 3D Voxel City, 2D Canvas Blaster, SQL Detective, CSS Grid Builder, and TypeRacer.
         </p>
       </div>
     </div>
@@ -686,8 +818,8 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
       <div style="display: flex; align-items: center; gap: 0.75rem;">
         <span style="font-size: 1.75rem;">🚀</span>
         <div>
-          <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0;">CodeQuest 115 Playable Challenges Launchpad</h3>
-          <span style="font-size: 0.82rem; color: var(--text-muted);">Instant direct access to all 115 in-browser playable levels across 6 interactive engines</span>
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0;">CodeQuest 175 Playable Challenges Launchpad (12 Engines)</h3>
+          <span style="font-size: 0.82rem; color: var(--text-muted);">Instant direct access to all 175 in-browser playable levels across 12 interactive engines</span>
         </div>
       </div>
       <button id="closeGamesTaxonomyBtn" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 1.1rem; border-radius: 6px;">✕</button>
@@ -696,7 +828,7 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
     <!-- Quick Search & Tabs -->
     <div style="margin-bottom: 1.25rem;">
       <div style="position: relative; margin-bottom: 1rem;">
-        <input type="text" id="modalSearchInput" placeholder="Filter 115 missions by keyword (e.g. python, flexbox, async, sql)..." style="width: 100%; padding: 0.65rem 1rem 0.65rem 2.25rem; font-size: 0.88rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;">
+        <input type="text" id="modalSearchInput" placeholder="Filter 175 missions by keyword (e.g. python, flexbox, async, sql)..." style="width: 100%; padding: 0.65rem 1rem 0.65rem 2.25rem; font-size: 0.88rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;">
         <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--text-muted);">🔍</span>
       </div>
 
@@ -707,6 +839,12 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
         <button class="btn btn-ghost modal-engine-tab" data-tab="tab-predictor" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">🔮 Output Predictor (20)</button>
         <button class="btn btn-ghost modal-engine-tab" data-tab="tab-tag" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">⚡ Tag Matcher (20)</button>
         <button class="btn btn-ghost modal-engine-tab" data-tab="tab-rover" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">🤖 Cyber Rover (15)</button>
+        <button class="btn btn-ghost modal-engine-tab" data-tab="tab-grid" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">📐 Grid (10)</button>
+        <button class="btn btn-ghost modal-engine-tab" data-tab="tab-sql" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">🔍 SQL (10)</button>
+        <button class="btn btn-ghost modal-engine-tab" data-tab="tab-canvas" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">🚀 2D Blaster (10)</button>
+        <button class="btn btn-ghost modal-engine-tab" data-tab="tab-city" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">🏙️ 3D City (10)</button>
+        <button class="btn btn-ghost modal-engine-tab" data-tab="tab-regex" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">⚡ Regex (10)</button>
+        <button class="btn btn-ghost modal-engine-tab" data-tab="tab-api" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">🛡️ API Defense (10)</button>
       </div>
     </div>
 
@@ -1537,6 +1675,156 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
           </div>
           <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
         </a>
+    </div>
+
+    <!-- Tab 7: CSS Grid Builder Lab -->
+    <div id="tab-grid" class="modal-tab-content" style="display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+      {% for i in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'grid-builder' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="blueprint {{ forloop.counter }}: css grid responsive layout" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+        <div>
+          <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Blueprint {{ forloop.counter|stringformat:"02d" }}</div>
+          <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">
+            {% if forloop.counter == 1 %}Holy Grail Layout Matrix
+            {% elif forloop.counter == 2 %}12-Column Responsive Matrix
+            {% elif forloop.counter == 3 %}E-Commerce Product Catalog
+            {% elif forloop.counter == 4 %}SaaS Analytics Multi-Widget
+            {% elif forloop.counter == 5 %}Editorial Magazine Spread
+            {% elif forloop.counter == 6 %}Auto-Fit MinMax Gallery
+            {% elif forloop.counter == 7 %}Split-Hero Landing Page
+            {% elif forloop.counter == 8 %}Checkout Progress Stepper
+            {% elif forloop.counter == 9 %}Dynamic Portfolio Masonry
+            {% else %}Full LMS Learning Platform
+            {% endif %}
+          </div>
+        </div>
+        <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Snap (+50 XP)</span>
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Tab 8: SQL Crime Detective -->
+    <div id="tab-sql" class="modal-tab-content" style="display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+      {% for i in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'sql-detective' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="case {{ forloop.counter }}: sql relational crime investigation" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+        <div>
+          <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #f59e0b; font-weight: 700;">Case {{ forloop.counter|stringformat:"02d" }}</div>
+          <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">
+            {% if forloop.counter == 1 %}Midnight Vault Breach
+            {% elif forloop.counter == 2 %}Stolen Crypto Assets
+            {% elif forloop.counter == 3 %}Rogue Employee Query
+            {% elif forloop.counter == 4 %}Suspicious Wire Transfers
+            {% elif forloop.counter == 5 %}Phantom Warehouse Cargo
+            {% elif forloop.counter == 6 %}Double Agent Access Logs
+            {% elif forloop.counter == 7 %}Market Manipulation
+            {% elif forloop.counter == 8 %}Tampered Certificates
+            {% elif forloop.counter == 9 %}Corrupt Schema Backup
+            {% else %}The Mastermind: Multi-JOIN
+            {% endif %}
+          </div>
+        </div>
+        <span style="font-size: 0.75rem; color: #f59e0b; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Solve (+50 XP)</span>
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Tab 9: HTML5 Canvas 2D Blaster -->
+    <div id="tab-canvas" class="modal-tab-content" style="display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+      {% for i in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'canvas-blaster-2d' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="wave {{ forloop.counter }}: canvas 2d physics game loop" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+        <div>
+          <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ec4899; font-weight: 700;">Wave {{ forloop.counter|stringformat:"02d" }}</div>
+          <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">
+            {% if forloop.counter == 1 %}Velocity &amp; Delta Time
+            {% elif forloop.counter == 2 %}AABB Box Collision
+            {% elif forloop.counter == 3 %}Circle Radial Collision
+            {% elif forloop.counter == 4 %}Gravity &amp; Ballistic Arc
+            {% elif forloop.counter == 5 %}Friction &amp; Air Drag
+            {% elif forloop.counter == 6 %}Elastic Wall Bounce
+            {% elif forloop.counter == 7 %}Trigonometric Spread
+            {% elif forloop.counter == 8 %}Particle Explosion Burst
+            {% elif forloop.counter == 9 %}Spatial Grid Partition
+            {% else %}Boss Arcade Game Loop
+            {% endif %}
+          </div>
+        </div>
+        <span style="font-size: 0.75rem; color: #ec4899; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+50 XP)</span>
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Tab 10: 3D Voxel City Architect -->
+    <div id="tab-city" class="modal-tab-content" style="display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+      {% for i in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'city-builder-3d' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="phase {{ forloop.counter }}: threejs webgl 3d voxel city" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+        <div>
+          <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #8b5cf6; font-weight: 700;">Phase {{ forloop.counter|stringformat:"02d" }}</div>
+          <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">
+            {% if forloop.counter == 1 %}Cartesian World Origin
+            {% elif forloop.counter == 2 %}Isometric Camera Markers
+            {% elif forloop.counter == 3 %}Residential Block Cluster
+            {% elif forloop.counter == 4 %}Downtown Boulevard Road
+            {% elif forloop.counter == 5 %}High-Rise Skyscrapers
+            {% elif forloop.counter == 6 %}Eco-Park Green Reserve
+            {% elif forloop.counter == 7 %}Cyberpunk Neon Power
+            {% elif forloop.counter == 8 %}Waterway Canal Network
+            {% elif forloop.counter == 9 %}Industrial Tech District
+            {% else %}Megacity Apex Spire
+            {% endif %}
+          </div>
+        </div>
+        <span style="font-size: 0.75rem; color: #8b5cf6; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Build (+50 XP)</span>
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Tab 11: Regex Matrix Decoder -->
+    <div id="tab-regex" class="modal-tab-content" style="display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+      {% for i in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'regex-matrix' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="sector {{ forloop.counter }}: regex pattern recognition cyber matrix" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+        <div>
+          <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Sector {{ forloop.counter|stringformat:"02d" }}</div>
+          <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">
+            {% if forloop.counter == 1 %}Character Classes &amp; Ports
+            {% elif forloop.counter == 2 %}Word Boundary &amp; Roles
+            {% elif forloop.counter == 3 %}Hex Color Extraction
+            {% elif forloop.counter == 4 %}Email Sanitization
+            {% elif forloop.counter == 5 %}IPv4 Address Shield
+            {% elif forloop.counter == 6 %}URL Query Param Pairs
+            {% elif forloop.counter == 7 %}Negative Lookahead Filter
+            {% elif forloop.counter == 8 %}SemVer Release Tags
+            {% elif forloop.counter == 9 %}ISO 8601 Timestamps
+            {% else %}SQLi Token Neutralizer
+            {% endif %}
+          </div>
+        </div>
+        <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Decode (+50 XP)</span>
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Tab 12: API Route & Traffic Tower Defense -->
+    <div id="tab-api" class="modal-tab-content" style="display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+      {% for i in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'api-tower-defense' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="wave {{ forloop.counter }}: backend middleware api traffic defense" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+        <div>
+          <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #f59e0b; font-weight: 700;">Wave {{ forloop.counter|stringformat:"02d" }}</div>
+          <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">
+            {% if forloop.counter == 1 %}HTTP 200 OK Dispatch
+            {% elif forloop.counter == 2 %}JWT Bearer Auth Guard
+            {% elif forloop.counter == 3 %}Rate Limiter (HTTP 429)
+            {% elif forloop.counter == 4 %}Redis Cache Proxy
+            {% elif forloop.counter == 5 %}WAF SQLi &amp; XSS Filter
+            {% elif forloop.counter == 6 %}CORS Preflight Whitelist
+            {% elif forloop.counter == 7 %}DDoS Botnet Shield
+            {% elif forloop.counter == 8 %}Circuit Breaker (503)
+            {% elif forloop.counter == 9 %}Payload Compression
+            {% else %}Black Friday 10k QPS
+            {% endif %}
+          </div>
+        </div>
+        <span style="font-size: 0.75rem; color: #f59e0b; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Defend (+50 XP)</span>
+      </a>
+      {% endfor %}
     </div>
 
     <!-- Modal Footer -->

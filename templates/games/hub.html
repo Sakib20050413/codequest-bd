@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Practice Arena: 115 Playable Coding Challenges &amp; Drills — CodeQuest BD{% endblock %}
+{% block title %}Practice Arena: 175 Playable Coding Challenges, 2D/3D Games &amp; Drills — CodeQuest BD{% endblock %}
 
 {% block content %}
 <div class="shell" style="padding-top: 2.5rem; padding-bottom: 5rem;">
@@ -14,19 +14,19 @@
       </div>
       <div style="display: flex; gap: 0.65rem; align-items: center;">
         <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
-          ⚡ Earn 3,250 Total XP
+          ⚡ Earn 5,250 Total XP
         </span>
         <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
-          10+ Languages Tested
+          12 Flagship Game Engines
         </span>
       </div>
     </div>
 
     <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; margin-bottom: 0.75rem;">
-      Practice Arena: Coding Tasks &amp; 115 Challenges
+      Practice Arena: Coding Tasks &amp; 175 Challenges (12 Engines)
     </h1>
     <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
-      Master real-world engineering through 28 practical coding tasks and 115 fast-paced interactive challenges. Build accessible UI components, write optimized algorithms, execute SQL aggregations, and debug memory pointers with automated test verification.
+      Master real-world engineering through 28 practical coding tasks and 175 fast-paced interactive challenges across 12 flagship engines. Build responsive CSS Grid wireframes, solve SQL database crime mysteries, simulate 2D canvas physics loops, construct 3D WebGL voxel megacities, decode regex cipher streams, and defend backend APIs against DDoS sieges.
     </p>
   </div>
 
@@ -38,7 +38,7 @@
         ⚡ Practical Coding Tasks (28)
       </button>
       <button id="modeBtnArcade" class="arena-mode-btn {% if active_mode == 'arcade' %}active{% endif %}" onclick="switchArenaMode('arcade')">
-        🎮 Gamified Arcade &amp; Drills (115)
+        🎮 Gamified Arcade &amp; Drills (175)
       </button>
       <button id="modeBtnQuests" class="arena-mode-btn {% if active_mode == 'quests' %}active{% endif %}" onclick="switchArenaMode('quests')">
         🔥 Daily Quests &amp; Bounties
@@ -193,7 +193,7 @@
   </div>
 
   <!-- =====================================================================
-       SECTION 2: GAMIFIED ARCADE & 115 PLAYABLE LEVELS (Existing 6 Engines)
+       SECTION 2: GAMIFIED ARCADE & 175 PLAYABLE LEVELS (12 Flagship Engines)
        ===================================================================== -->
   <div id="arcadeArenaSection" style="display: {% if active_mode == 'arcade' %}block{% else %}none{% endif %};">
 
@@ -203,20 +203,20 @@
       <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
         <!-- Search Input -->
         <div style="flex: 1; min-width: 280px; position: relative;">
-          <input type="text" id="arenaSearchInput" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; font-size: 0.92rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;" placeholder="Search 115 challenges by language (python, js, css, sql, c) or concept...">
+          <input type="text" id="arenaSearchInput" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; font-size: 0.92rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;" placeholder="Search 175 challenges by language (python, js, css, sql, c) or concept...">
           <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted);">🔍</span>
         </div>
 
         <!-- Result Counter -->
         <div id="arenaFilterCount" style="font-size: 0.84rem; font-family: var(--font-mono); font-weight: 600; color: var(--accent);">
-          Showing 115 of 115 Playable Challenges
+          Showing 175 of 175 Playable Challenges
         </div>
       </div>
 
       <!-- Category Filter Tabs -->
       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
         <button class="btn arena-filter-tab active" data-filter="all" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          All (115)
+          All (175)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="code-typer" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
           🏎️ Keystroke Racing (20)
@@ -235,6 +235,24 @@
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="rover-3d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
           🤖 Cyber Rover 3D (15)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="grid-builder" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          📐 Grid Builder (10)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="sql-detective" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          🔍 SQL Detective (10)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="canvas-blaster-2d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          🚀 2D Blaster (10)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="city-builder-3d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          🏙️ 3D City (10)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="regex-matrix" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          ⚡ Regex Matrix (10)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="api-tower-defense" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          🛡️ API Defense (10)
         </button>
       </div>
 
@@ -615,6 +633,313 @@
 
     </div>
   </section>
+
+  <!-- ENGINE 7: CSS Grid Builder Lab (10 Wireframes) -->
+  <section class="arena-engine-section" data-engine="grid-builder" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4; text-transform: uppercase;">
+          Engine 07 &bull; 10 Responsive CSS Grid Wireframe Blueprints
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          📐 CSS Grid Builder Lab
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'grid-builder' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch Grid Builder &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      {% for track in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'grid-builder' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="css grid layout web wireframe frontend responsive" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4;">
+              Blueprint {{ forloop.counter|stringformat:"02d" }}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +50 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}Holy Grail Layout (Header, Nav, Main, Footer)
+            {% elif forloop.counter == 2 %}12-Column Responsive Desktop Grid Matrix
+            {% elif forloop.counter == 3 %}E-Commerce Product Card Catalog
+            {% elif forloop.counter == 4 %}SaaS Analytics Dashboard Multi-Widget Matrix
+            {% elif forloop.counter == 5 %}Magazine Editorial Hero &amp; Asymmetric Articles
+            {% elif forloop.counter == 6 %}Fluid Auto-Fit &amp; MinMax Photo Gallery
+            {% elif forloop.counter == 7 %}Split-Hero Landing Page with Form Dock
+            {% elif forloop.counter == 8 %}Multi-Step Checkout Progress Stepper
+            {% elif forloop.counter == 9 %}Dynamic Portfolio Masonry Layout
+            {% else %}Full LMS Learning Platform Layout Matrix
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">CSS Grid 2D Matrix</span>
+          <span style="color: #06b6d4; font-weight: 700;">▶ Snap Wireframe</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ENGINE 8: SQL Crime Detective (10 Mysteries) -->
+  <section class="arena-engine-section" data-engine="sql-detective" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b; text-transform: uppercase;">
+          Engine 08 &bull; 10 Relational Data Crime Mystery Cases
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          🔍 SQL Crime Detective
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'sql-detective' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch Detective Desk &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      {% for track in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'sql-detective' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="sql query database join select where detective crime forensic" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b;">
+              Case {{ forloop.counter|stringformat:"02d" }}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +50 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}Midnight Server Vault Security Breach
+            {% elif forloop.counter == 2 %}Stolen Crypto Assets: Following the Transaction Ledger
+            {% elif forloop.counter == 3 %}Rogue Employee Disloyalty Query
+            {% elif forloop.counter == 4 %}Suspicious Inbound Wire Transfers
+            {% elif forloop.counter == 5 %}Phantom Warehouse Cargo Inventory Discrepancy
+            {% elif forloop.counter == 6 %}Double Agent Cross-Department Access Logs
+            {% elif forloop.counter == 7 %}High-Frequency Trading Market Manipulation
+            {% elif forloop.counter == 8 %}Tampered Digital Signature Certificate Audit
+            {% elif forloop.counter == 9 %}Corrupt Database Schema Backup Reconstruction
+            {% else %}The Mastermind: Multi-Table Inner Join Revelation
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">In-Memory Relational Engine</span>
+          <span style="color: #f59e0b; font-weight: 700;">▶ Solve Mystery</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ENGINE 9: HTML5 Canvas 2D Blaster (10 Physics Waves) -->
+  <section class="arena-engine-section" data-engine="canvas-blaster-2d" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #ec4899; text-transform: uppercase;">
+          Engine 09 &bull; 10 HTML5 Canvas 2D Physics &amp; Game Loop Waves
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          🚀 HTML5 Canvas 2D Blaster Lab
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'canvas-blaster-2d' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch 2D Blaster &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      {% for track in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'canvas-blaster-2d' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="canvas 2d physics game loop velocity collision particle arcade" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #ec4899;">
+              Wave {{ forloop.counter|stringformat:"02d" }}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +50 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}Velocity Vectors &amp; Delta Time (dx, dy)
+            {% elif forloop.counter == 2 %}AABB Bounding Box Axis Collision
+            {% elif forloop.counter == 3 %}Circle Radial Distance Collision
+            {% elif forloop.counter == 4 %}Gravity Vector &amp; Ballistic Trajectory
+            {% elif forloop.counter == 5 %}Friction &amp; Air Resistance Drag Damping
+            {% elif forloop.counter == 6 %}Elastic Wall Bouncing &amp; Normal Reflection
+            {% elif forloop.counter == 7 %}Angle of Incidence &amp; Trigonometric Spread
+            {% elif forloop.counter == 8 %}Particle System Explosion Alpha Bursts
+            {% elif forloop.counter == 9 %}Spatial Grid Partitioning Optimization
+            {% else %}Boss Mothership: Complete 2D Arcade Game Loop
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">60 FPS Canvas Physics</span>
+          <span style="color: #ec4899; font-weight: 700;">▶ Play Wave</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ENGINE 10: 3D Voxel City Architect (10 Spatial Missions) -->
+  <section class="arena-engine-section" data-engine="city-builder-3d" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #8b5cf6; text-transform: uppercase;">
+          Engine 10 &bull; 10 WebGL 3D Spatial Geometry Missions
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          🏙️ 3D Voxel City Architect
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'city-builder-3d' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch 3D City &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      {% for track in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'city-builder-3d' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="3d webgl threejs voxel city spatial coordinates geometry camera" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #8b5cf6;">
+              Phase {{ forloop.counter|stringformat:"02d" }}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +50 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}Cartesian World Origin &amp; Ground Zero (0, 0)
+            {% elif forloop.counter == 2 %}Isometric Camera Angles &amp; Corner Markers
+            {% elif forloop.counter == 3 %}Residential Block Cluster Placement
+            {% elif forloop.counter == 4 %}Downtown Boulevard Transit Road Paving
+            {% elif forloop.counter == 5 %}Commercial High-Rise Skyscrapers
+            {% elif forloop.counter == 6 %}Central Eco-Park &amp; Bio-Sphere Reserve
+            {% elif forloop.counter == 7 %}Cyberpunk Neon Power Grid Beacons
+            {% elif forloop.counter == 8 %}Aquatic Canal &amp; River Waterway Excavation
+            {% elif forloop.counter == 9 %}Industrial Tech Factory District
+            {% else %}Megacity Apex Tower &amp; Hologram Spire
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">Three.js WebGL Engine</span>
+          <span style="color: #8b5cf6; font-weight: 700;">▶ Build Phase</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ENGINE 11: Regex Matrix Decoder (10 Cyber Sectors) -->
+  <section class="arena-engine-section" data-engine="regex-matrix" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; text-transform: uppercase;">
+          Engine 11 &bull; 10 Cyber Pattern Recognition Sectors
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          ⚡ Regex Matrix Decoder
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'regex-matrix' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch Regex Matrix &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      {% for track in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'regex-matrix' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="regex pattern regular expressions cybersecurity matrix packet token" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #10b981;">
+              Sector {{ forloop.counter|stringformat:"02d" }}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +50 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}Character Classes &amp; Port Digits (\d+)
+            {% elif forloop.counter == 2 %}Word Boundary &amp; Privileged Roles (\bADMIN\b)
+            {% elif forloop.counter == 3 %}Hex Color Extraction (#[0-9a-fA-F]{6})
+            {% elif forloop.counter == 4 %}Email Address Sanitization &amp; Validation
+            {% elif forloop.counter == 5 %}IPv4 Network Address Shield
+            {% elif forloop.counter == 6 %}URL Query Parameter Key-Value Pairs
+            {% elif forloop.counter == 7 %}Negative Lookahead Password Filter
+            {% elif forloop.counter == 8 %}Semantic Versioning SemVer Tags
+            {% elif forloop.counter == 9 %}ISO 8601 UTC Timestamp Extractor
+            {% else %}Zero-Day SQL Injection Token Neutralizer
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">Matrix Pattern Stream</span>
+          <span style="color: #10b981; font-weight: 700;">▶ Decode Sector</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ENGINE 12: API Route & Traffic Tower Defense (10 Waves) -->
+  <section class="arena-engine-section" data-engine="api-tower-defense" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b; text-transform: uppercase;">
+          Engine 12 &bull; 10 Backend Middleware Architecture Waves
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          🛡️ API Route &amp; Traffic Tower Defense
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'api-tower-defense' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch Tower Defense &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      {% for track in "1234567890"|make_list %}
+      <a href="{% url 'game_play' 'api-tower-defense' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="api backend middleware rate limit jwt auth redis cache waf ddos" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b;">
+              Wave {{ forloop.counter|stringformat:"02d" }}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +50 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}HTTP 200 OK Route Dispatch
+            {% elif forloop.counter == 2 %}JWT Authentication Bearer Guard (401)
+            {% elif forloop.counter == 3 %}Rate Limiter Leaky Bucket (HTTP 429)
+            {% elif forloop.counter == 4 %}Redis In-Memory Cache Proxy
+            {% elif forloop.counter == 5 %}WAF SQL Injection &amp; XSS Sanitizer
+            {% elif forloop.counter == 6 %}CORS Preflight &amp; Origin Whitelist
+            {% elif forloop.counter == 7 %}Distributed DDoS Botnet Shield
+            {% elif forloop.counter == 8 %}Circuit Breaker Fallback (HTTP 503)
+            {% elif forloop.counter == 9 %}GZIP / Brotli Payload Compression
+            {% else %}Black Friday High-Concurrency Siege
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">Backend Middleware Highway</span>
+          <span style="color: #f59e0b; font-weight: 700;">▶ Defend Route</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
   </div>
 
 
@@ -992,7 +1317,7 @@
       });
 
       if (countDisplay) {
-        countDisplay.textContent = `Showing ${visibleCount} of 115 Playable Challenges`;
+        countDisplay.textContent = `Showing ${visibleCount} of 175 Playable Challenges`;
       }
     }
 

@@ -1,0 +1,682 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}HTML5 Canvas 2D Blaster: 10 Game Loop & Physics Levels — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 1000px;">
+
+  <!-- Breadcrumb & Status -->
+  <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+    <a href="{% url 'games_hub' %}#arcade" style="font-size: 0.88rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;">
+      &larr; Back to Practice Arena
+    </a>
+    <span style="font-size: 0.82rem; font-family: var(--font-mono); color: #ec4899; background: rgba(236, 72, 153, 0.12); padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid rgba(236, 72, 153, 0.3);">
+      10 2D Physics Levels &bull; +50 XP / Level
+    </span>
+  </div>
+
+  <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
+
+    <!-- Topbar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: #ec4899; text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em;">
+          Practice Arena Engine 09 &bull; 2D Graphics, Physics & Game Loop
+        </div>
+        <h1 style="font-size: 1.65rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
+          🚀 HTML5 Canvas 2D Blaster Lab
+        </h1>
+      </div>
+      <div style="display: flex; gap: 0.75rem; align-items: center;">
+        <span id="fpsCounter" style="font-size: 0.78rem; font-family: var(--font-mono); color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 0.25rem 0.5rem; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.3);">
+          60 FPS
+        </span>
+        <div style="font-size: 0.82rem; color: #ec4899; font-family: var(--font-mono); font-weight: 600; background: rgba(236, 72, 153, 0.12); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(236, 72, 153, 0.25);">
+          HTML5 Canvas API
+        </div>
+      </div>
+    </div>
+
+    <!-- 10-Level Selector Bar -->
+    <div style="margin-bottom: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+        <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">
+          Select Physics Wave (1 – 10):
+        </span>
+        <span id="canvasLevelTitle" style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          Wave 1: Velocity Vectors & Delta Time
+        </span>
+      </div>
+      <div id="canvasLevelPills" style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- Objective Box -->
+    <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+      <div id="canvasMissionPrompt" style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">
+        Objective: Configure velocity vectors to reach the target coordinates.
+      </div>
+      <div id="canvasMissionHint" style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5;">
+        Set the proper physics parameters in JavaScript code below. Use [A] and [D] or Arrow keys to steer, [SPACE] to fire, or watch the simulation hit the physics target criteria!
+      </div>
+    </div>
+
+    <!-- Split Layout: Canvas Viewport & Physics Code Editor -->
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;" class="canvas-grid-responsive">
+
+      <!-- Left: Interactive HTML5 Canvas Screen -->
+      <div style="background: #090d16; border: 1px solid rgba(236, 72, 153, 0.3); border-radius: var(--radius-md); overflow: hidden; position: relative; box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+        <div style="background: #0f172a; padding: 0.5rem 0.85rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
+          <span>CANVAS 2D VIEWPORT (700 &times; 420)</span>
+          <span id="canvasScoreBadge" style="color: #ec4899; font-weight: 700;">Score: 0 &bull; Wave 1/10</span>
+        </div>
+        <canvas id="blasterCanvas" width="700" height="420" style="width: 100%; height: auto; display: block; background: radial-gradient(circle at center, #111827 0%, #030712 100%); cursor: crosshair;"></canvas>
+        <div style="position: absolute; bottom: 8px; left: 10px; font-size: 0.72rem; font-family: var(--font-mono); color: rgba(255,255,255,0.4); pointer-events: none;">
+          Controls: &larr; / &rarr; (Steer) &bull; Space (Fire) &bull; Mouse Click (Burst)
+        </div>
+      </div>
+
+      <!-- Right: JavaScript Physics Logic & Parameter Tweaker -->
+      <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem; flex: 1; display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.75rem; font-weight: 700; font-family: var(--font-mono); color: #ec4899; text-transform: uppercase;">
+              // Physics Script & Parameters
+            </span>
+            <button id="canvasResetCodeBtn" style="font-size: 0.75rem; color: var(--text-muted); background: none; border: none; cursor: pointer; text-decoration: underline;">
+              Reset Script
+            </button>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; font-family: var(--font-mono);">
+            // Modify physics engine rules to satisfy wave pass condition:
+          </div>
+          <textarea id="canvasCodeInput" spellcheck="false" style="flex: 1; min-height: 190px; width: 100%; background: #07090e; border: 1px solid var(--border-strong); border-radius: 6px; padding: 0.75rem; font-family: var(--font-mono); font-size: 0.82rem; color: #38bdf8; line-height: 1.5; resize: vertical;"></textarea>
+
+          <!-- Test / Action Buttons -->
+          <div style="display: flex; gap: 0.65rem; margin-top: 1rem; flex-wrap: wrap;">
+            <button id="canvasRunSimBtn" class="cq-btn cq-btn-primary" style="flex: 1; padding: 0.65rem 1rem; font-size: 0.85rem; font-weight: 700; background: linear-gradient(135deg, #ec4899, #8b5cf6); border: none;">
+              ▶ Apply & Test Simulation
+            </button>
+            <button id="canvasHintBtn" class="cq-btn cq-btn-secondary" style="padding: 0.65rem 0.85rem; font-size: 0.85rem;">
+              💡 Hint
+            </button>
+          </div>
+          <div id="canvasFeedback" style="margin-top: 0.65rem; font-size: 0.82rem; min-height: 1.4rem;"></div>
+        </div>
+
+        <!-- Live Metrics Card -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1rem; font-size: 0.78rem; font-family: var(--font-mono); display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; color: var(--text-muted);">
+          <div>Vel X/Y: <span id="metricVel" style="color: var(--text-primary); font-weight: 700;">0, 0</span></div>
+          <div>Gravity: <span id="metricGrav" style="color: var(--text-primary); font-weight: 700;">0.00</span></div>
+          <div>Hits/Req: <span id="metricHits" style="color: #ec4899; font-weight: 700;">0 / 3</span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+@media (max-width: 820px) {
+  .canvas-grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
+
+<script>
+  (function () {
+    const WAVES = [
+      {
+        id: 1,
+        title: "Velocity Vectors & Delta Time",
+        prompt: "Wave 1: Set player bullet velocity so it moves vertically upwards at high speed.",
+        hint: "In canvas 2D, moving up requires a negative Y velocity: bulletSpeed = 12; bulletVy = -12;",
+        code: `// Wave 1: Velocity Vector Config\nconst bulletSpeed = 12;\nconst bulletVy = -bulletSpeed;\nconst bulletVx = 0;\nconst requiredHits = 3;`,
+        validate: (code) => {
+          return /bulletVy\s*=\s*-\s*(bulletSpeed|1[0-9]|20)/.test(code) || /bulletVy\s*<\s*0/.test(code);
+        },
+        setup: (state) => {
+          state.enemies = [
+            { x: 150, y: 70, w: 40, h: 25, color: '#ec4899', hp: 1 },
+            { x: 330, y: 70, w: 40, h: 25, color: '#ec4899', hp: 1 },
+            { x: 520, y: 70, w: 40, h: 25, color: '#ec4899', hp: 1 }
+          ];
+          state.requiredHits = 3;
+          state.hits = 0;
+          state.gravity = 0;
+        }
+      },
+      {
+        id: 2,
+        title: "AABB Bounding Box Collision",
+        prompt: "Wave 2: Complete the Axis-Aligned Bounding Box (AABB) intersection check function.",
+        hint: "AABB formula checks 4 bounds: r1.x < r2.x + r2.w && r1.x + r1.w > r2.x && r1.y < r2.y + r2.h && r1.y + r1.h > r2.y",
+        code: `// Wave 2: AABB Collision Function\nfunction checkAABB(b, e) {\n  return (\n    b.x < e.x + e.w &&\n    b.x + b.w > e.x &&\n    b.y < e.y + e.h &&\n    b.y + b.h > e.y\n  );\n}`,
+        validate: (code) => {
+          return code.includes('b.x < e.x + e.w') && code.includes('b.y < e.y + e.h');
+        },
+        setup: (state) => {
+          state.enemies = [
+            { x: 200, y: 90, w: 45, h: 30, color: '#f59e0b', hp: 1 },
+            { x: 450, y: 90, w: 45, h: 30, color: '#f59e0b', hp: 1 }
+          ];
+          state.requiredHits = 2;
+          state.hits = 0;
+          state.gravity = 0;
+        }
+      },
+      {
+        id: 3,
+        title: "Circle vs Circle Radial Distance Collision",
+        prompt: "Wave 3: Compute radial distance using Pythagorean theorem: Math.hypot(dx, dy) < (r1 + r2).",
+        hint: "const dist = Math.hypot(b.x - e.x, b.y - e.y); return dist < (b.radius + e.radius);",
+        code: `// Wave 3: Circle Radial Collision\nfunction checkRadialCollision(b, e) {\n  const dx = b.x - e.x;\n  const dy = b.y - e.y;\n  const distance = Math.hypot(dx, dy);\n  return distance < (b.radius + e.radius);\n}`,
+        validate: (code) => {
+          return (code.includes('Math.hypot') || code.includes('Math.sqrt')) && code.includes('<');
+        },
+        setup: (state) => {
+          state.enemies = [
+            { x: 180, y: 100, radius: 24, w: 48, h: 48, color: '#8b5cf6', hp: 1, isCircle: true },
+            { x: 350, y: 80, radius: 28, w: 56, h: 56, color: '#8b5cf6', hp: 1, isCircle: true },
+            { x: 520, y: 100, radius: 24, w: 48, h: 48, color: '#8b5cf6', hp: 1, isCircle: true }
+          ];
+          state.requiredHits = 3;
+          state.hits = 0;
+          state.gravity = 0;
+        }
+      },
+      {
+        id: 4,
+        title: "Gravity Vector & Ballistic Arc",
+        prompt: "Wave 4: Apply gravitational acceleration downwards to project cannon shells in an arc.",
+        hint: "Gravity increases Y velocity over time: shell.vy += gravity; shell.x += shell.vx; shell.y += shell.vy;",
+        code: `// Wave 4: Ballistic Gravity Arc\nconst gravity = 0.35;\nconst shellSpeedX = 6;\nconst shellSpeedY = -9;\n// Every frame: vy += gravity;\nconst arcTrajectory = true;`,
+        validate: (code) => {
+          return /gravity\s*=\s*0\.[2-5]/.test(code) && /shellSpeedY\s*=\s*-[6-9]/.test(code);
+        },
+        setup: (state) => {
+          state.enemies = [
+            { x: 500, y: 220, w: 50, h: 35, color: '#06b6d4', hp: 1 }
+          ];
+          state.requiredHits = 1;
+          state.hits = 0;
+          state.gravity = 0.35;
+        }
+      },
+      {
+        id: 5,
+        title: "Friction & Air Drag Damping",
+        prompt: "Wave 5: Prevent infinite sliding by applying drag coefficient (friction = 0.92) per tick.",
+        hint: "velocity *= friction reduces speed smoothly towards zero: vx *= friction; vy *= friction;",
+        code: `// Wave 5: Friction & Air Resistance\nconst friction = 0.92;\nconst applyDrag = function(obj) {\n  obj.vx *= friction;\n  obj.vy *= friction;\n};`,
+        validate: (code) => {
+          return /friction\s*=\s*0\.(9[0-8]|8[5-9])/.test(code) && code.includes('friction');
+        },
+        setup: (state) => {
+          state.enemies = [
+            { x: 300, y: 60, w: 50, h: 30, color: '#10b981', hp: 1 },
+            { x: 450, y: 60, w: 50, h: 30, color: '#10b981', hp: 1 }
+          ];
+          state.requiredHits = 2;
+          state.hits = 0;
+          state.friction = 0.92;
+        }
+      },
+      {
+        id: 6,
+        title: "Elastic Wall Bounding & Normal Reflection",
+        prompt: "Wave 6: Reverse velocity when striking left/right screen walls with elasticity bounce coefficient.",
+        hint: "When hitting canvas borders: if (x <= 0 || x + w >= canvas.width) vx = -vx * elasticity;",
+        code: `// Wave 6: Elastic Wall Bouncing\nconst elasticity = 0.85;\nfunction handleWallBounce(ball, width) {\n  if (ball.x <= 0 || ball.x + ball.radius * 2 >= width) {\n    ball.vx = -ball.vx * elasticity;\n  }\n}`,
+        validate: (code) => {
+          return code.includes('ball.vx = -ball.vx') || code.includes('-vx');
+        },
+        setup: (state) => {
+          state.enemies = [
+            { x: 100, y: 150, w: 45, h: 30, color: '#f43f5e', hp: 1 },
+            { x: 600, y: 150, w: 45, h: 30, color: '#f43f5e', hp: 1 }
+          ];
+          state.requiredHits = 2;
+          state.hits = 0;
+        }
+      },
+      {
+        id: 7,
+        title: "Angle of Incidence & Trigonometric Spread",
+        prompt: "Wave 7: Fire a 3-way spread shot using Math.cos(angle) and Math.sin(angle) in radians.",
+        hint: "const vx = speed * Math.sin(angleSpread); const vy = -speed * Math.cos(angleSpread);",
+        code: `// Wave 7: 3-Way Radial Spread Angles\nconst spreadAngles = [-0.25, 0, 0.25]; // Radians\nconst spreadSpeed = 10;\nfunction calculateVector(angle) {\n  return {\n    vx: spreadSpeed * Math.sin(angle),\n    vy: -spreadSpeed * Math.cos(angle)\n  };\n}`,
+        validate: (code) => {
+          return code.includes('Math.sin') && code.includes('Math.cos');
+        },
+        setup: (state) => {
+          state.enemies = [
+            { x: 120, y: 80, w: 40, h: 25, color: '#a855f7', hp: 1 },
+            { x: 330, y: 60, w: 40, h: 25, color: '#a855f7', hp: 1 },
+            { x: 540, y: 80, w: 40, h: 25, color: '#a855f7', hp: 1 }
+          ];
+          state.requiredHits = 3;
+          state.hits = 0;
+        }
+      },
+      {
+        id: 8,
+        title: "Particle System Explosion Generator",
+        prompt: "Wave 8: Generate a burst of 16 glowing particles with fading alpha on entity destruction.",
+        hint: "Spawn particles with random angles (Math.random() * Math.PI * 2), speed, and alpha decrement.",
+        code: `// Wave 8: Particle Burst System\nconst particleCount = 16;\nfunction spawnExplosion(x, y) {\n  const particles = [];\n  for (let i = 0; i < particleCount; i++) {\n    const angle = (Math.PI * 2 / particleCount) * i;\n    particles.push({\n      x, y,\n      vx: Math.cos(angle) * 4,\n      vy: Math.sin(angle) * 4,\n      alpha: 1.0,\n      decay: 0.03\n    });\n  }\n  return particles;\n}`,
+        validate: (code) => {
+          return code.includes('particleCount') && code.includes('alpha') && code.includes('decay');
+        },
+        setup: (state) => {
+          state.enemies = [
+            { x: 260, y: 90, w: 50, h: 30, color: '#eab308', hp: 1 },
+            { x: 420, y: 90, w: 50, h: 30, color: '#eab308', hp: 1 }
+          ];
+          state.requiredHits = 2;
+          state.hits = 0;
+        }
+      },
+      {
+        id: 9,
+        title: "Broadphase Spatial Grid Partitioning",
+        prompt: "Wave 9: Optimize collision performance by filtering entities into screen spatial sectors.",
+        hint: "Divide screen into left sector (x < 350) and right sector (x >= 350) to halve collision checks.",
+        code: `// Wave 9: Spatial Grid Optimization\nfunction getSector(x, width) {\n  return x < (width / 2) ? 'WEST' : 'EAST';\n}\nconst filterChecks = (bullet, enemy) => {\n  return getSector(bullet.x, 700) === getSector(enemy.x, 700);\n};`,
+        validate: (code) => {
+          return code.includes('getSector') && code.includes('WEST');
+        },
+        setup: (state) => {
+          state.enemies = [
+            { x: 100, y: 80, w: 40, h: 25, color: '#38bdf8', hp: 1 },
+            { x: 250, y: 120, w: 40, h: 25, color: '#38bdf8', hp: 1 },
+            { x: 450, y: 80, w: 40, h: 25, color: '#38bdf8', hp: 1 },
+            { x: 580, y: 120, w: 40, h: 25, color: '#38bdf8', hp: 1 }
+          ];
+          state.requiredHits = 4;
+          state.hits = 0;
+        }
+      },
+      {
+        id: 10,
+        title: "Boss Mothership: Complete 2D Arcade Loop",
+        prompt: "Wave 10 Boss: Destroy the 5-HP mothership utilizing delta-time physics and defensive dodging.",
+        hint: "Boss health is 5. Target the mothership with sustained continuous fire to trigger win state!",
+        code: `// Wave 10: Boss Mothership Parameters\nconst bossHealth = 5;\nconst bulletPower = 1;\nconst playerFireRate = 180; // ms cooldown\nconst victoryCondition = 'DESTROY_BOSS';`,
+        validate: (code) => {
+          return code.includes('bossHealth') && code.includes('DESTROY_BOSS');
+        },
+        setup: (state) => {
+          state.enemies = [
+            { x: 280, y: 60, w: 140, h: 55, color: '#ef4444', hp: 5, maxHp: 5, isBoss: true }
+          ];
+          state.requiredHits = 5;
+          state.hits = 0;
+        }
+      }
+    ];
+
+    let currentWaveIdx = 0;
+    const canvas = document.getElementById('blasterCanvas');
+    const ctx = canvas.getContext('2d');
+    const pillsContainer = document.getElementById('canvasLevelPills');
+    const titleEl = document.getElementById('canvasLevelTitle');
+    const promptEl = document.getElementById('canvasMissionPrompt');
+    const hintEl = document.getElementById('canvasMissionHint');
+    const codeInput = document.getElementById('canvasCodeInput');
+    const feedback = document.getElementById('canvasFeedback');
+    const runBtn = document.getElementById('canvasRunSimBtn');
+    const hintBtn = document.getElementById('canvasHintBtn');
+    const resetBtn = document.getElementById('canvasResetCodeBtn');
+    const scoreBadge = document.getElementById('canvasScoreBadge');
+    const metricVel = document.getElementById('metricVel');
+    const metricGrav = document.getElementById('metricGrav');
+    const metricHits = document.getElementById('metricHits');
+    const fpsCounter = document.getElementById('fpsCounter');
+
+    // Game Loop State
+    const gameState = {
+      player: { x: 335, y: 360, w: 30, h: 30, speed: 6, vx: 0, color: '#38bdf8' },
+      bullets: [],
+      enemies: [],
+      particles: [],
+      keys: {},
+      hits: 0,
+      requiredHits: 3,
+      gravity: 0,
+      friction: 1,
+      lastShotTime: 0,
+      fps: 60,
+      lastFrameTime: performance.now(),
+      completed: false
+    };
+
+    // Render Pills
+    function renderPills() {
+      pillsContainer.innerHTML = '';
+      WAVES.forEach((w, idx) => {
+        const pill = document.createElement('button');
+        const active = idx === currentWaveIdx;
+        pill.style.cssText = `border: 1px solid ${active ? '#ec4899' : 'var(--border-subtle)'}; background: ${active ? 'rgba(236,72,153,0.2)' : 'var(--bg-panel)'}; color: ${active ? '#ec4899' : 'var(--text-muted)'}; padding: 0.25rem 0.55rem; border-radius: 4px; font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; cursor: pointer;`;
+        pill.textContent = `W${idx + 1}`;
+        pill.onclick = () => loadWave(idx);
+        pillsContainer.appendChild(pill);
+      });
+    }
+
+    function loadWave(idx) {
+      currentWaveIdx = idx;
+      const w = WAVES[idx];
+      titleEl.textContent = `Wave ${w.id}: ${w.title}`;
+      promptEl.textContent = w.prompt;
+      hintEl.textContent = w.hint;
+      codeInput.value = w.code;
+      feedback.textContent = '';
+      gameState.bullets = [];
+      gameState.particles = [];
+      gameState.completed = false;
+      w.setup(gameState);
+      renderPills();
+      updateMetrics();
+    }
+
+    function updateMetrics() {
+      scoreBadge.textContent = `Hits: ${gameState.hits}/${gameState.requiredHits} • Wave ${currentWaveIdx + 1}/10`;
+      metricHits.textContent = `${gameState.hits} / ${gameState.requiredHits}`;
+      metricGrav.textContent = gameState.gravity.toFixed(2);
+      metricVel.textContent = `${gameState.player.vx.toFixed(1)}, -12`;
+    }
+
+    // Input handlers
+    window.addEventListener('keydown', (e) => {
+      gameState.keys[e.code] = true;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        firePlayerBullet();
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      gameState.keys[e.code] = false;
+    });
+
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = (e.clientX - rect.left) * (canvas.width / rect.width);
+      const clickY = (e.clientY - rect.top) * (canvas.height / rect.height);
+      // Spawn blast particles
+      spawnBurst(clickX, clickY, '#ec4899');
+      firePlayerBullet(clickX, clickY);
+    });
+
+    function firePlayerBullet(targetX, targetY) {
+      const now = performance.now();
+      if (now - gameState.lastShotTime < 150) return;
+      gameState.lastShotTime = now;
+
+      const px = gameState.player.x + gameState.player.w / 2;
+      const py = gameState.player.y;
+
+      if (currentWaveIdx === 6) { // 3-way spread
+        [-0.25, 0, 0.25].forEach(ang => {
+          gameState.bullets.push({
+            x: px, y: py, radius: 4, w: 8, h: 8,
+            vx: Math.sin(ang) * 11,
+            vy: -Math.cos(ang) * 11,
+            color: '#38bdf8'
+          });
+        });
+      } else if (targetX !== undefined) {
+        const dx = targetX - px;
+        const dy = targetY - py;
+        const angle = Math.atan2(dy, dx);
+        gameState.bullets.push({
+          x: px, y: py, radius: 4, w: 8, h: 8,
+          vx: Math.cos(angle) * 12,
+          vy: Math.sin(angle) * 12,
+          color: '#ec4899'
+        });
+      } else {
+        gameState.bullets.push({
+          x: px - 3, y: py, radius: 4, w: 6, h: 12,
+          vx: 0,
+          vy: currentWaveIdx === 3 ? -9 : -12,
+          color: '#38bdf8'
+        });
+      }
+      if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('pop');
+    }
+
+    function spawnBurst(x, y, color) {
+      for (let i = 0; i < 16; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 4 + 2;
+        gameState.particles.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          alpha: 1,
+          color: color || '#ec4899'
+        });
+      }
+    }
+
+    // Main Game Loop
+    function updateGameLoop(now) {
+      const dt = (now - gameState.lastFrameTime) / 1000;
+      gameState.lastFrameTime = now;
+      if (dt > 0) gameState.fps = Math.round(1 / dt);
+
+      // Player Movement
+      if (gameState.keys['ArrowLeft'] || gameState.keys['KeyA']) {
+        gameState.player.vx = -gameState.player.speed;
+      } else if (gameState.keys['ArrowRight'] || gameState.keys['KeyD']) {
+        gameState.player.vx = gameState.player.speed;
+      } else {
+        gameState.player.vx *= (gameState.friction || 0.85);
+      }
+      gameState.player.x += gameState.player.vx;
+
+      // Bound Player inside Canvas
+      if (gameState.player.x < 10) gameState.player.x = 10;
+      if (gameState.player.x > canvas.width - gameState.player.w - 10) {
+        gameState.player.x = canvas.width - gameState.player.w - 10;
+      }
+
+      // Update Bullets
+      for (let i = gameState.bullets.length - 1; i >= 0; i--) {
+        const b = gameState.bullets[i];
+        if (gameState.gravity > 0) b.vy += gameState.gravity;
+        b.x += b.vx;
+        b.y += b.vy;
+
+        // Offscreen check
+        if (b.y < -20 || b.y > canvas.height + 20 || b.x < -20 || b.x > canvas.width + 20) {
+          gameState.bullets.splice(i, 1);
+          continue;
+        }
+
+        // Check collision with enemies
+        for (let j = gameState.enemies.length - 1; j >= 0; j--) {
+          const e = gameState.enemies[j];
+          let hit = false;
+
+          if (e.isCircle) {
+            const dist = Math.hypot(b.x - e.x, b.y - e.y);
+            hit = dist < (b.radius + e.radius);
+          } else {
+            hit = (b.x < e.x + e.w && b.x + b.w > e.x && b.y < e.y + e.h && b.y + b.h > e.y);
+          }
+
+          if (hit) {
+            spawnBurst(b.x, b.y, e.color);
+            gameState.bullets.splice(i, 1);
+            e.hp--;
+            gameState.hits++;
+            updateMetrics();
+            if (e.hp <= 0) {
+              gameState.enemies.splice(j, 1);
+            }
+            if (gameState.hits >= gameState.requiredHits && !gameState.completed) {
+              handleWavePass();
+            }
+            break;
+          }
+        }
+      }
+
+      // Update Particles
+      for (let i = gameState.particles.length - 1; i >= 0; i--) {
+        const p = gameState.particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.03;
+        if (p.alpha <= 0) gameState.particles.splice(i, 1);
+      }
+
+      // Clear & Draw
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Grid / Stars
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 35) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += 35) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+      }
+
+      // Draw Enemies
+      gameState.enemies.forEach(e => {
+        ctx.save();
+        if (e.isCircle) {
+          ctx.beginPath();
+          ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
+          ctx.fillStyle = e.color;
+          ctx.shadowColor = e.color;
+          ctx.shadowBlur = 15;
+          ctx.fill();
+        } else if (e.isBoss) {
+          // Boss Mothership
+          ctx.fillStyle = e.color;
+          ctx.shadowColor = e.color;
+          ctx.shadowBlur = 20;
+          ctx.fillRect(e.x, e.y, e.w, e.h);
+          // HP Bar
+          ctx.fillStyle = 'rgba(255,255,255,0.2)';
+          ctx.fillRect(e.x, e.y - 12, e.w, 6);
+          ctx.fillStyle = '#10b981';
+          ctx.fillRect(e.x, e.y - 12, e.w * (e.hp / e.maxHp), 6);
+        } else {
+          ctx.fillStyle = e.color;
+          ctx.shadowColor = e.color;
+          ctx.shadowBlur = 10;
+          ctx.fillRect(e.x, e.y, e.w, e.h);
+        }
+        ctx.restore();
+      });
+
+      // Draw Bullets
+      gameState.bullets.forEach(b => {
+        ctx.save();
+        ctx.fillStyle = b.color;
+        ctx.shadowColor = b.color;
+        ctx.shadowBlur = 8;
+        ctx.fillRect(b.x - b.w / 2, b.y, b.w, b.h);
+        ctx.restore();
+      });
+
+      // Draw Particles
+      gameState.particles.forEach(p => {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, 3, 3);
+        ctx.restore();
+      });
+
+      // Draw Player Ship (Cyan Jet)
+      ctx.save();
+      const px = gameState.player.x;
+      const py = gameState.player.y;
+      ctx.fillStyle = gameState.player.color;
+      ctx.shadowColor = '#38bdf8';
+      ctx.shadowBlur = 15;
+      ctx.beginPath();
+      ctx.moveTo(px + gameState.player.w / 2, py);
+      ctx.lineTo(px + gameState.player.w, py + gameState.player.h);
+      ctx.lineTo(px + gameState.player.w / 2, py + gameState.player.h - 8);
+      ctx.lineTo(px, py + gameState.player.h);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      requestAnimationFrame(updateGameLoop);
+    }
+
+    function handleWavePass() {
+      gameState.completed = true;
+      feedback.innerHTML = '<span style="color: var(--success); font-weight: 700;">✓ Physics Wave Cleared! +50 XP Awarded</span>';
+      if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('success');
+      if (window.CodeQuest && window.CodeQuest.fireConfetti) window.CodeQuest.fireConfetti();
+
+      // Report score
+      fetch('/api/games/canvas-blaster-2d/score/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrfToken() }
+      }).catch(() => {});
+
+      setTimeout(() => {
+        if (currentWaveIdx < WAVES.length - 1) {
+          loadWave(currentWaveIdx + 1);
+        } else {
+          alert('🏆 Incredible! You have conquered all 10 HTML5 Canvas 2D Physics & Game Loop Waves!');
+        }
+      }, 1400);
+    }
+
+    // Button Actions
+    runBtn.onclick = function () {
+      const w = WAVES[currentWaveIdx];
+      const code = codeInput.value;
+      if (w.validate(code)) {
+        feedback.innerHTML = '<span style="color: var(--success); font-weight: 700;">✓ Code Verified! Launching automated physics strike...</span>';
+        // Auto shoot 3 bullets to trigger wave pass if needed
+        let burstCount = 0;
+        const autoInterval = setInterval(() => {
+          firePlayerBullet();
+          burstCount++;
+          if (burstCount >= 4) clearInterval(autoInterval);
+        }, 120);
+      } else {
+        feedback.innerHTML = '<span style="color: var(--danger); font-weight: 700;">✕ Physics condition unmet. Check the formula & hint!</span>';
+        if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('error');
+      }
+    };
+
+    hintBtn.onclick = function () {
+      alert(`💡 Physics Clue (Wave ${WAVES[currentWaveIdx].id}):\n\n${WAVES[currentWaveIdx].hint}`);
+    };
+
+    resetBtn.onclick = function () {
+      codeInput.value = WAVES[currentWaveIdx].code;
+      feedback.textContent = '';
+    };
+
+    function getCsrfToken() {
+      const match = document.cookie.match(/csrftoken=([^;]+)/);
+      return match ? match[1] : '';
+    }
+
+    // Start Engine
+    loadWave(0);
+    requestAnimationFrame(updateGameLoop);
+  })();
+</script>
+{% endblock %}
