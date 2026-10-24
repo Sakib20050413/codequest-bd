@@ -253,6 +253,16 @@ def login_view(request):
         return redirect("profile_view")
     err = None
     if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "demo_login":
+            demo_user, _ = User.objects.get_or_create(
+                username="demo_learner",
+                defaults={"email": "demo@codequest-bd.com"}
+            )
+            login(request, demo_user)
+            next_url = request.GET.get("next", "catalogue")
+            return redirect(next_url)
+
         u = request.POST.get("username", "").strip()
         p = request.POST.get("password", "").strip()
         user = authenticate(request, username=u, password=p)
@@ -269,6 +279,15 @@ def signup_view(request):
         return redirect("profile_view")
     err = None
     if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "demo_login":
+            demo_user, _ = User.objects.get_or_create(
+                username="demo_learner",
+                defaults={"email": "demo@codequest-bd.com"}
+            )
+            login(request, demo_user)
+            return redirect("catalogue")
+
         u = request.POST.get("username", "").strip()
         e = request.POST.get("email", "").strip()
         p = request.POST.get("password", "").strip()
