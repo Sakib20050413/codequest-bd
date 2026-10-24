@@ -81,6 +81,16 @@ class CodeQuestCoreTests(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertContains(res, "HTML5")
 
+    def test_catalogue_alias_route(self):
+        res = self.client.get("/catalogue/")
+        self.assertEqual(res.status_code, 200)
+        self.assertContains(res, "HTML5")
+
+    def test_landing_page_track_links_valid(self):
+        res = self.client.get(reverse("landing"))
+        self.assertEqual(res.status_code, 200)
+        self.assertNotContains(res, "link: '/catalogue/'")
+
     def test_course_detail(self):
         res = self.client.get(reverse("course_detail", args=[self.course.slug]))
         self.assertEqual(res.status_code, 200)
