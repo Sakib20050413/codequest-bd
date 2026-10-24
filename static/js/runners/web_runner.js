@@ -1,9 +1,28 @@
 /**
- * CodeQuest Web Runner & Test Evaluation Engine
- * Sandboxed iframe preview + Client-side DOM & Assertion checks + Stepped Hint Ladder
+ * CodeQuest Web Runner & Modern Test Evaluation Engine
+ * Sandboxed iframe preview + Live DOM Visualizer Tree + Assertion checks + Stepped Hint Ladder
  */
 (function (global) {
   'use strict';
+
+  function escapeHtml(str) {
+    return (str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function formatTestDescription(rawDesc) {
+    if (!rawDesc) return '';
+    let safe = escapeHtml(rawDesc);
+    // Transform &lt;tagname&gt; into crisp code badge pills
+    safe = safe.replace(/&lt;([a-zA-Z0-9_\-\.\#]+)&gt;/g, function (match, tagName) {
+      return `<code class="cq-code-pill">&lt;${tagName}&gt;</code>`;
+    });
+    return safe;
+  }
 
   function initLessonRunner(config) {
     const editor = document.getElementById('codeEditor');
@@ -16,6 +35,9 @@
     const hintBox = document.getElementById('hintDisplayBox');
     const statusMsg = document.getElementById('runnerStatusMessage');
     const completionBanner = document.getElementById('lessonCompletionBanner');
+    const testBadgeCount = document.getElementById('testBadgeCount');
+    const domTreeContainer = document.getElementById('liveDomTreeContainer');
+    const consoleLogsContainer = document.getElementById('studioConsoleLogs');
 
     const tests = config.tests || [];
     const hints = config.hints || [];
@@ -23,37 +45,159 @@
     const initialStarterCode = editor ? editor.value : '';
     let hintIndex = 0;
 
-    // Render test list
+    // Listen for sandboxed iframe console messages
+    window.addEventListener('message', function (e) {
+      if (e.data && e.data.type === 'cq_console' && consoleLogsContainer) {
+        const line = document.createElement('div');
+        line.style.fontSize = '0.78rem';
+        line.style.fontFamily = 'var(--font-mono)';
+        line.style.padding = '0.3rem 0.6rem';
+        line.style.borderRadius = 'var(--radius-xs)';
+        line.style.marginBottom = '0.3rem';
+        line.style.display = 'flex';
+        line.style.alignItems = 'center';
+        line.style.gap = '0.5rem';
+
+        if (e.data.level === 'error') {
+          line.style.color = '#ef4444';
+          line.style.background = 'rgba(239, 68, 68, 0.12)';
+          line.style.border = '1px solid rgba(239, 68, 68, 0.25)';
+          line.innerHTML = `<span>✕</span> <span>${escapeHtml(e.data.msg)}</span>`;
+        } else {
+          line.style.color = '#38bdf8';
+          line.style.background = 'rgba(56, 189, 248, 0.08)';
+          line.style.border = '1px solid rgba(56, 189, 248, 0.2)';
+          line.innerHTML = `<span>ℹ</span> <span>${escapeHtml(e.data.msg)}</span>`;
+        }
+        consoleLogsContainer.appendChild(line);
+        consoleLogsContainer.scrollTop = consoleLogsContainer.scrollHeight;
+      }
+    });
+
+    // Render test list with HTML-safe pills
     function renderTestList(passedMap) {
       if (!testListEl) return;
       testListEl.innerHTML = '';
+      let passCount = 0;
+
       tests.forEach(function (t) {
         const hasEvaluated = passedMap !== null && passedMap[t.id] !== undefined;
         const passed = hasEvaluated && passedMap[t.id];
+        if (passed) passCount++;
 
         const row = document.createElement('div');
         row.style.display = 'flex';
-        row.style.alignItems = 'flex-start';
-        row.style.gap = '0.65rem';
-        row.style.padding = '0.45rem 0.65rem';
+        row.style.alignItems = 'center';
+        row.style.gap = '0.75rem';
+        row.style.padding = '0.6rem 0.85rem';
         row.style.borderRadius = 'var(--radius-sm)';
         row.style.fontSize = '0.84rem';
-        row.style.fontFamily = 'var(--font-mono)';
-        row.style.background = passed ? 'var(--success-subtle)' : hasEvaluated ? 'var(--danger-subtle)' : 'var(--bg-panel)';
-        row.style.border = '1px solid ' + (passed ? 'rgba(16, 185, 129, 0.3)' : hasEvaluated ? 'rgba(244, 63, 94, 0.3)' : 'var(--border-subtle)');
+        row.style.fontFamily = 'var(--font-sans)';
+        row.style.background = passed
+          ? 'var(--success-subtle)'
+          : hasEvaluated
+          ? 'var(--danger-subtle)'
+          : 'var(--bg-panel)';
+        row.style.border =
+          '1px solid ' +
+          (passed
+            ? 'rgba(16, 185, 129, 0.35)'
+            : hasEvaluated
+            ? 'rgba(239, 68, 68, 0.35)'
+            : 'var(--border-subtle)');
+        row.style.transition = 'all 0.2s ease';
 
         const icon = passed ? '✓' : hasEvaluated ? '✕' : '○';
-        const color = passed ? 'var(--success)' : hasEvaluated ? 'var(--danger)' : 'var(--text-muted)';
+        const iconColor = passed ? 'var(--success)' : hasEvaluated ? 'var(--danger)' : 'var(--text-muted)';
+        const descHtml = formatTestDescription(t.desc);
 
-        row.innerHTML = `<span style="font-weight:700; color:${color}; font-size:0.95rem;">${icon}</span>
-                         <span style="color:${passed ? 'var(--text-primary)' : 'var(--text-secondary)'}; line-height:1.4;">${t.desc}</span>`;
+        row.innerHTML = `<span style="font-weight:800; color:${iconColor}; font-size:1rem; flex-shrink: 0; line-height: 1;">${icon}</span>
+                         <span style="color:${passed ? 'var(--text-primary)' : 'var(--text-secondary)'}; line-height:1.45; font-size:0.84rem; flex: 1;">${descHtml}</span>`;
         testListEl.appendChild(row);
       });
+
+      if (testBadgeCount) {
+        testBadgeCount.textContent = `${passCount}/${tests.length}`;
+        testBadgeCount.style.color = passCount === tests.length && tests.length > 0 ? 'var(--success)' : 'var(--accent)';
+      }
     }
 
     renderTestList(null);
 
-    // Render iframe live preview with adaptive comfortable background
+    // Live Visual DOM Tree Generator
+    function updateDomTree() {
+      if (!domTreeContainer || !previewFrame) return;
+      try {
+        const doc = previewFrame.contentDocument || (previewFrame.contentWindow && previewFrame.contentWindow.document);
+        if (!doc || !doc.body) return;
+
+        function traverseNode(node) {
+          if (node.nodeType !== Node.ELEMENT_NODE) return '';
+          const tag = node.tagName.toLowerCase();
+          if (['script', 'style', 'meta', 'link'].includes(tag)) return '';
+
+          let textSample = '';
+          for (let i = 0; i < node.childNodes.length; i++) {
+            const child = node.childNodes[i];
+            if (child.nodeType === Node.TEXT_NODE && child.textContent.trim()) {
+              textSample = child.textContent.trim();
+              if (textSample.length > 20) textSample = textSample.substring(0, 20) + '…';
+              break;
+            }
+          }
+
+          let childHtml = '';
+          for (let i = 0; i < node.children.length; i++) {
+            childHtml += traverseNode(node.children[i]);
+          }
+
+          const tagColor =
+            tag === 'header'
+              ? '#38bdf8'
+              : tag === 'main'
+              ? '#818cf8'
+              : tag === 'h1' || tag === 'h2' || tag === 'h3'
+              ? '#f59e0b'
+              : tag === 'p'
+              ? '#34d399'
+              : tag === 'a'
+              ? '#ec4899'
+              : '#c084fc';
+
+          return `
+            <div class="dom-tree-node">
+              <span class="dom-tag" style="border-color: ${tagColor}50; color: ${tagColor};">
+                &lt;${tag}&gt;
+              </span>
+              ${
+                textSample
+                  ? `<span style="font-size: 0.75rem; color: var(--text-muted); margin-left: 0.4rem; font-family: var(--font-mono);">&quot;${escapeHtml(
+                      textSample
+                    )}&quot;</span>`
+                  : ''
+              }
+              ${childHtml}
+            </div>
+          `;
+        }
+
+        let fullTreeHtml = '';
+        for (let i = 0; i < doc.body.children.length; i++) {
+          fullTreeHtml += traverseNode(doc.body.children[i]);
+        }
+
+        if (!fullTreeHtml.trim()) {
+          domTreeContainer.innerHTML =
+            '<div style="color: var(--text-muted); font-size: 0.8rem; padding: 1rem 0; font-style: italic;">No semantic HTML landmarks detected yet. Type &lt;header&gt; or &lt;main&gt; in the editor to grow your live DOM tree!</div>';
+        } else {
+          domTreeContainer.innerHTML = fullTreeHtml;
+        }
+      } catch (err) {
+        // Sandboxed security boundary catch
+      }
+    }
+
+    // Render iframe live preview
     function updatePreview() {
       if (!previewFrame || !editor) return;
       const code = editor.value;
@@ -67,6 +211,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    window.onerror = function(msg, url, line) {
+      window.parent.postMessage({ type: 'cq_console', level: 'error', msg: msg + ' (Line ' + line + ')' }, '*');
+    };
+    const _origLog = console.log;
+    console.log = function(...args) {
+      _origLog.apply(console, args);
+      window.parent.postMessage({ type: 'cq_console', level: 'log', msg: args.join(' ') }, '*');
+    };
+  <\/script>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -82,6 +236,8 @@
   ${code}
 </body>
 </html>`;
+
+      setTimeout(updateDomTree, 60);
     }
 
     if (runBtn) {
@@ -92,6 +248,9 @@
           statusMsg.textContent = 'Preview updated.';
           statusMsg.style.color = 'var(--text-muted)';
         }
+        // Activate Preview Studio tab
+        const pTab = document.querySelector('[data-studio-tab="preview"]');
+        if (pTab) pTab.click();
       };
     }
 
@@ -107,22 +266,6 @@
       };
     }
 
-    // Tab key indentation support inside textarea
-    if (editor) {
-      editor.addEventListener('keydown', function (e) {
-        if (e.key === 'Tab') {
-          e.preventDefault();
-          const start = this.selectionStart;
-          const end = this.selectionEnd;
-          this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
-          this.selectionStart = this.selectionEnd = start + 2;
-        } else if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-          e.preventDefault();
-          runTests();
-        }
-      });
-    }
-
     // Auto-checking tests against iframe DOM
     function runTests() {
       updatePreview();
@@ -130,7 +273,10 @@
       const passedMap = {};
       let allPass = true;
 
-      // Allow iframe DOM to parse
+      // Ensure Test Studio tab is active so learner sees feedback
+      const tTab = document.querySelector('[data-studio-tab="tests"]');
+      if (tTab) tTab.click();
+
       setTimeout(function () {
         const doc = previewFrame.contentDocument || (previewFrame.contentWindow && previewFrame.contentWindow.document);
         if (!doc) return;
@@ -227,7 +373,7 @@
           hintBox.textContent = hints[hintIndex];
           hintBox.style.display = 'block';
           hintIndex++;
-          hintBtn.textContent = hintIndex < hints.length ? `💡 Hint ${hintIndex + 1}` : '✨ Show Solution';
+          hintBtn.textContent = hintIndex < hints.length ? `💡 Next Hint (${hintIndex + 1}/${hints.length})` : '✨ Apply Solution';
         } else {
           if (editor) {
             editor.value = config.solution || '';
@@ -249,5 +395,7 @@
 
   global.CodeQuestLessonRunner = {
     init: initLessonRunner,
+    escapeHtml: escapeHtml,
+    formatTestDescription: formatTestDescription,
   };
 })(typeof window !== 'undefined' ? window : this);

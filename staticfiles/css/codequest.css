@@ -1142,3 +1142,116 @@ body {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 0 15px var(--accent-glow);
 }
 
+
+
+/* ==========================================================================
+   Modern IDE Learning Studio & Workspace (LeetCode / Codecademy Grade)
+   ========================================================================== */
+
+.cq-learning-shell {
+  width: 100%;
+  max-width: 1780px;
+  margin: 0 auto;
+  padding: 0.85rem 1.5rem 3rem 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .cq-learning-shell {
+    padding: 0.5rem 0.85rem 2rem 0.85rem;
+  }
+}
+
+.study-tabs-nav, .studio-tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  background: var(--bg-surface-elevated);
+  border-bottom: 1px solid var(--border-subtle);
+  overflow-x: auto;
+}
+
+.study-tab-btn, .studio-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.18s var(--ease);
+  white-space: nowrap;
+}
+
+.study-tab-btn:hover, .studio-tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.study-tab-btn.active, .studio-tab-btn.active {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-subtle);
+}
+
+[data-theme="light"] .study-tab-btn.active, 
+[data-theme="light"] .studio-tab-btn.active {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.cq-code-pill {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.28);
+  color: #38bdf8;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+[data-theme="light"] .cq-code-pill {
+  background: rgba(79, 70, 229, 0.08);
+  border-color: rgba(79, 70, 229, 0.22);
+  color: #4338ca;
+}
+
+.dom-tree-node {
+  margin-left: 0.85rem;
+  border-left: 2px dashed rgba(255, 255, 255, 0.12);
+  padding-left: 0.65rem;
+  margin-top: 0.35rem;
+  transition: border-color 0.2s ease;
+}
+
+[data-theme="light"] .dom-tree-node {
+  border-left-color: rgba(15, 23, 42, 0.15);
+}
+
+.dom-tree-node:hover {
+  border-left-color: var(--accent);
+}
+
+.dom-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="light"] .dom-tag {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}

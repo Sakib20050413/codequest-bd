@@ -21,36 +21,37 @@
 {% endblock %}
 
 {% block content %}
-<div class="shell shell-wide" style="padding-top: 1.5rem; padding-bottom: 3.5rem;">
+<div class="cq-learning-shell">
 
-  <!-- Lesson Navigation Header Bar -->
-  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
-    <div style="display: flex; align-items: center; gap: 0.85rem;">
+  <!-- Ergonomic Top Navigation Header -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--border-subtle);">
+    <div style="display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap;">
       <a href="{% url 'course_detail' course.slug %}" class="btn btn-ghost" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">
         &larr; {{ course.title }}
       </a>
       <div style="display: flex; align-items: center; gap: 0.5rem;">
-        <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.5rem; border-radius: var(--radius-sm); color: var(--accent);">
+        <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); color: var(--accent);">
           #{{ lesson.order }}
         </span>
-        <h1 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0; letter-spacing: -0.01em;">
+        <h1 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.015em;">
           {{ lesson.title }}
         </h1>
       </div>
     </div>
 
-    <div style="display: flex; align-items: center; gap: 0.85rem;">
-      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); font-weight: 600; background: var(--accent-subtle); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(20, 184, 166, 0.25);">
-        +{{ lesson.xp }} XP
+    <!-- Quick Action Controls -->
+    <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; background: var(--accent-subtle); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(99, 102, 241, 0.25);">
+        ⚡ +{{ lesson.xp }} XP
       </span>
 
-      <!-- Tactile Sound Toggle -->
+      <!-- Mechanical SFX Switch -->
       <button id="lessonAudioToggle" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;" title="Toggle Mechanical Keystroke Audio">
         ⌨ Mechanical SFX
       </button>
 
-      <!-- Zen Fullscreen Toggle -->
-      <button id="zenModeBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Toggle Distraction-Free Zen Workspace">
+      <!-- Zen Workspace Mode -->
+      <button id="zenModeBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Toggle Distraction-Free Fullscreen Studio">
         ⛶ Zen Mode
       </button>
 
@@ -61,7 +62,7 @@
         </a>
         {% endif %}
         {% if next_lesson %}
-        <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Next Lesson">
+        <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="btn btn-primary" style="padding: 0.35rem 0.95rem; font-size: 0.82rem;" title="Next Lesson">
           Next &rarr;
         </a>
         {% endif %}
@@ -69,140 +70,260 @@
     </div>
   </div>
 
-  <!-- Mobile View Switcher (Only visible under 860px) -->
+  <!-- Mobile View Switcher (Under 860px) -->
   <div id="mobileLessonTabs" style="display: none; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem; gap: 0.5rem;">
     <button class="btn btn-ghost mobile-tab-btn active" data-tab="instructions" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
-      Instructions
+      📖 Instructions
     </button>
     <button class="btn btn-ghost mobile-tab-btn" data-tab="editor" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
-      Code Editor
+      💻 Code Studio
     </button>
     <button class="btn btn-ghost mobile-tab-btn" data-tab="preview" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
-      Preview &amp; Tests
+      🌐 Preview &amp; Tests
     </button>
   </div>
 
-  <!-- Resizable Workspace Container -->
+  <!-- Resizable Full-Bleed Workspace Container -->
   <div id="workspaceContainer" style="display: flex; gap: 0; align-items: stretch; position: relative;">
     
-    <!-- Left Column: Mental Model & Instructions -->
-    <div id="panelInstructions" class="cq-card" style="flex: 0 0 42%; min-width: 280px; max-width: 65%; padding: 2rem; max-height: 85vh; overflow-y: auto;">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
-        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em;">
-          Mental Model &bull; 3–7 Minutes
-        </span>
-        <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
-          ⏱ {{ lesson.est_minutes }} mins
-        </span>
-      </div>
-
-      <!-- Conceptual Explanation Markdown -->
-      <div class="prose" style="font-size: 0.95rem; line-height: 1.65; color: var(--text-primary); margin-bottom: 1.75rem;">
-        {{ lesson.body_md|render_md }}
-      </div>
-
-      <!-- Optional Diagram -->
-      {% if lesson.diagram_svg %}
-      <div style="margin: 1.5rem 0; padding: 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); text-align: center;">
-        {{ lesson.diagram_svg|safe }}
-      </div>
-      {% endif %}
-
-      <!-- Guided Task Challenge -->
-      <div style="margin-top: 1.5rem; padding: 1.25rem; background: var(--bg-panel); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
-        <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.4rem;">
-          🎯 Your Task
-        </div>
-        <div style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.55;">
-          {{ lesson.task_prompt }}
-        </div>
-      </div>
-
-      <!-- Stepped Hint Ladder -->
-      <div style="margin-top: 1.75rem;">
-        <button id="revealHintBtn" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.4rem 0.85rem; color: var(--text-muted);">
-          💡 Need a hint?
+    <!-- Left Column: Study Hub & Interactive Learning Center -->
+    <div id="panelInstructions" class="cq-card" style="flex: 0 0 38%; min-width: 320px; max-width: 60%; padding: 0; overflow: hidden; display: flex; flex-direction: column; max-height: calc(100vh - 120px);">
+      
+      <!-- Study Tabs Bar -->
+      <div class="study-tabs-nav">
+        <button class="study-tab-btn active" data-study-tab="concept">
+          📖 Concept
         </button>
-        <div id="hintDisplayBox" style="display: none; margin-top: 0.75rem; padding: 0.9rem 1.15rem; background: var(--warning-subtle); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: var(--radius-sm); font-size: 0.86rem; color: var(--text-primary); line-height: 1.55;">
+        <button class="study-tab-btn" data-study-tab="task">
+          🎯 Task
+        </button>
+        <button class="study-tab-btn" data-study-tab="domtree">
+          🌲 Live DOM Tree
+        </button>
+        <button class="study-tab-btn" data-study-tab="hints">
+          💡 AI Hints
+        </button>
+      </div>
+
+      <!-- Scrollable Study Content -->
+      <div style="padding: 1.5rem 1.75rem; overflow-y: auto; flex: 1;">
+        
+        <!-- Tab 1: Concept & Theory -->
+        <div id="studyTabConcept" class="study-tab-content">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+            <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em;">
+              Mental Model &bull; Bite-Sized Learning
+            </span>
+            <span style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); background: var(--bg-panel); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
+              ⏱ {{ lesson.est_minutes }} mins
+            </span>
+          </div>
+
+          <!-- Conceptual Markdown -->
+          <div class="prose" style="font-size: 0.94rem; line-height: 1.68; color: var(--text-primary); margin-bottom: 1.5rem;">
+            {{ lesson.body_md|render_md }}
+          </div>
+
+          <!-- Optional Diagram SVG -->
+          {% if lesson.diagram_svg %}
+          <div style="margin: 1.5rem 0; padding: 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); text-align: center;">
+            {{ lesson.diagram_svg|safe }}
+          </div>
+          {% endif %}
+
+          <!-- Key Takeaways Box -->
+          <div style="margin-top: 1.25rem; padding: 1rem 1.25rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);">
+            <div style="font-size: 0.76rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem;">
+              ⚡ Pro Developer Tip
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+              Clean semantic markup improves both SEO indexing and screen reader accessibility for visually impaired learners.
+            </div>
+          </div>
         </div>
+
+        <!-- Tab 2: Task & Objective -->
+        <div id="studyTabTask" class="study-tab-content" style="display: none;">
+          <div style="padding: 1.25rem; background: var(--bg-panel); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 1.5rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.4rem;">
+              🎯 Target Objective
+            </div>
+            <div style="font-size: 0.92rem; color: var(--text-primary); line-height: 1.6;">
+              {{ lesson.task_prompt }}
+            </div>
+          </div>
+
+          <div style="padding: 1rem 1.25rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 1.25rem;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">
+              Verification Rules
+            </div>
+            <div style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55;">
+              • Match all opening and closing tags.<br/>
+              • Maintain proper hierarchical parent-child nesting.<br/>
+              • Press <kbd style="background: var(--bg-panel); padding: 0.1rem 0.4rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; border: 1px solid var(--border-medium);">Ctrl+Enter</kbd> to run automated validation tests.
+            </div>
+          </div>
+
+          <button id="openBoxInspectorBtnFromTask" class="btn btn-ghost" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 0.5rem; border: 1px dashed var(--border-medium);">
+            📐 Launch Visual CSS Box Model Lab
+          </button>
+        </div>
+
+        <!-- Tab 3: Live DOM Tree Visualizer -->
+        <div id="studyTabDomtree" class="study-tab-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+            <div style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+              Live DOM Node Hierarchy
+            </div>
+            <span style="font-size: 0.72rem; color: var(--success); font-family: var(--font-mono);">
+              ● Real-Time Sync
+            </span>
+          </div>
+
+          <div id="liveDomTreeContainer" style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1.15rem; min-height: 200px; max-height: 400px; overflow-y: auto;">
+            <div style="color: var(--text-muted); font-size: 0.8rem; font-style: italic;">
+              Initializing DOM tree inspector...
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem; font-size: 0.78rem; color: var(--text-muted); line-height: 1.45;">
+            💡 As you type HTML in the code editor, this visual tree outlines your document structure in real time.
+          </div>
+        </div>
+
+        <!-- Tab 4: Progressive AI Hints -->
+        <div id="studyTabHints" class="study-tab-content" style="display: none;">
+          <div style="margin-bottom: 1rem; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+            Stuck on a syntax rule? Unlock progressive hints step-by-step without spoiling the whole answer.
+          </div>
+
+          <button id="revealHintBtn" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 0.55rem; margin-bottom: 1rem;">
+            💡 Unlock Hint
+          </button>
+
+          <div id="hintDisplayBox" style="display: none; padding: 1rem 1.25rem; background: var(--warning-subtle); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-sm); font-size: 0.88rem; color: var(--text-primary); line-height: 1.6;">
+          </div>
+        </div>
+
       </div>
     </div>
 
     <!-- Draggable Splitter Divider -->
     <div id="workspaceSplitter" class="cq-splitter-v" title="Drag to resize panels (Double-click to reset)"></div>
 
-    <!-- Right Column: Interactive Editor & Verification Runner -->
-    <div id="panelEditorWrapper" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 1rem;">
+    <!-- Right Column: Interactive Code Studio & Verification Deck -->
+    <div id="panelEditorWrapper" style="flex: 1; min-width: 360px; display: flex; flex-direction: column; gap: 0.85rem;">
       
-      <!-- Code Editor Panel -->
+      <!-- Upper Pane: Professional Code Editor -->
       <div id="panelCodeEditor" class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border-strong);">
-        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 0.65rem 1.15rem; background: var(--bg-panel); border-bottom: 1px solid var(--border-subtle); gap: 0.5rem;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 0.55rem 1rem; background: var(--bg-surface-elevated); border-bottom: 1px solid var(--border-subtle); gap: 0.5rem;">
           <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted);">
             <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent);"></span>
-            <span>editor.{{ course.language.slug|default:'code' }}</span>
-            <span style="font-size: 0.72rem; color: var(--text-muted); margin-left: 0.5rem;">(Ctrl+Enter to check)</span>
+            <span style="font-weight: 600; color: var(--text-primary);">editor.{{ course.language.slug|default:'html' }}</span>
+            <span style="font-size: 0.72rem; color: var(--text-dim); margin-left: 0.4rem;">(Ctrl+Enter to check)</span>
           </div>
 
-          <div style="display: flex; flex-wrap: wrap; gap: 0.45rem;">
-            <!-- Interactive Box Model Inspector Toggle -->
-            <button id="openBoxInspectorBtn" class="btn btn-ghost" style="padding: 0.3rem 0.65rem; font-size: 0.78rem;" title="Open Visual Box Model &amp; Flexbox Inspector">
+          <!-- Studio Toolbar Actions -->
+          <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center;">
+            <button id="formatCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.76rem;" title="Auto-indent and format code">
+              ⇥ Format
+            </button>
+            <button id="openBoxInspectorBtn" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.76rem;" title="Open Visual Box Model &amp; Flexbox Inspector">
               📐 Box Inspector
             </button>
-            <button id="resetCodeBtn" class="btn btn-ghost" style="padding: 0.3rem 0.65rem; font-size: 0.78rem;" title="Reset Starter Code">
+            <button id="resetCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.76rem;" title="Reset Starter Code">
               ↺ Reset
             </button>
-            <button id="runCodeBtn" class="btn btn-ghost" style="padding: 0.3rem 0.75rem; font-size: 0.78rem;">
+            <button id="runCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.75rem; font-size: 0.76rem;" title="Run live sandboxed preview">
               ▶ Preview
             </button>
-            <button id="checkSolutionBtn" class="btn btn-primary" style="padding: 0.3rem 0.95rem; font-size: 0.78rem;">
+            <button id="checkSolutionBtn" class="btn btn-primary" style="padding: 0.3rem 0.95rem; font-size: 0.78rem; font-weight: 700;">
               ✔ Check Solution
             </button>
           </div>
         </div>
 
-        <textarea id="codeEditor" class="code-editor" style="min-height: 250px; border: none; border-radius: 0; font-size: 0.9rem; outline: none; background: var(--bg-input); color: var(--text-primary); padding: 1.25rem;" spellcheck="false">{{ lesson.starter_code }}</textarea>
+        <textarea id="codeEditor" class="code-editor" style="min-height: 240px; border: none; border-radius: 0; font-size: 0.9rem; outline: none; background: var(--bg-input); color: var(--text-primary); padding: 1.25rem;" spellcheck="false">{{ lesson.starter_code }}</textarea>
       </div>
 
-      <!-- Live Sandboxed Preview -->
-      <div id="panelLivePreview" class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
-        <div style="padding: 0.5rem 1rem; background: var(--bg-panel); border-bottom: 1px solid var(--border-subtle); font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span>🌐 Live Sandboxed Preview</span>
-            <button id="togglePreviewCanvasBtn" class="btn btn-ghost" style="padding: 0.15rem 0.5rem; font-size: 0.7rem; height: auto;" title="Switch Preview Canvas Dark/Light">
-              🌓 Toggle Canvas
+      <!-- Lower Pane: Tabbed Studio Deck (Preview, Test Suite, Console) -->
+      <div id="panelStudioDeck" class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+        
+        <!-- Studio Deck Tabs Header -->
+        <div class="studio-tabs-nav" style="justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 0.35rem;">
+            <button class="studio-tab-btn active" data-studio-tab="preview">
+              🌐 Live Preview
+            </button>
+            <button class="studio-tab-btn" data-studio-tab="tests">
+              🧪 Test Suite <span id="testBadgeCount" style="margin-left: 0.3rem; padding: 0.1rem 0.35rem; border-radius: 999px; background: rgba(99, 102, 241, 0.15); font-size: 0.7rem; font-family: var(--font-mono);">0/{{ lesson.tests_json|length|default:3 }}</span>
+            </button>
+            <button class="studio-tab-btn" data-studio-tab="console">
+              🖥️ Console
             </button>
           </div>
-          <span id="runnerStatusMessage" style="font-weight: 600;"></span>
+
+          <!-- Canvas Controls & Status -->
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <span id="runnerStatusMessage" style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 600;"></span>
+            <button id="togglePreviewCanvasBtn" class="btn btn-ghost" style="padding: 0.15rem 0.5rem; font-size: 0.7rem; height: auto;" title="Switch Preview Canvas Dark/Light">
+              🌓 Canvas
+            </button>
+          </div>
         </div>
-        <iframe id="previewIframe" sandbox="allow-scripts" style="width: 100%; height: 210px; border: none; background: var(--bg-input);"></iframe>
+
+        <!-- Studio Tab Content: 1. Live Preview -->
+        <div id="studioTabPreview" class="studio-tab-pane">
+          <div id="iframeWrapper" style="width: 100%; transition: max-width 0.2s ease; margin: 0 auto;">
+            <iframe id="previewIframe" sandbox="allow-scripts" style="width: 100%; height: 230px; border: none; background: var(--bg-input); display: block;"></iframe>
+          </div>
+        </div>
+
+        <!-- Studio Tab Content: 2. Test Verification Suite -->
+        <div id="studioTabTests" class="studio-tab-pane" style="display: none; padding: 1.15rem; min-height: 230px; overflow-y: auto;">
+          <div style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.65rem;">
+            Automated Acceptance Criteria
+          </div>
+          <div id="testChecklist" style="display: flex; flex-direction: column; gap: 0.45rem;">
+            <!-- Dynamically populated by web_runner.js with safe pills -->
+          </div>
+        </div>
+
+        <!-- Studio Tab Content: 3. Console Logs -->
+        <div id="studioTabConsole" class="studio-tab-pane" style="display: none; padding: 1rem; min-height: 230px; background: #080a0f;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 0.4rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">
+              JavaScript &bull; Sandboxed Console Stream
+            </span>
+            <button id="clearConsoleBtn" class="btn btn-ghost" style="padding: 0.15rem 0.5rem; font-size: 0.7rem; height: auto;">
+              Clear
+            </button>
+          </div>
+          <div id="studioConsoleLogs" style="font-family: var(--font-mono); font-size: 0.78rem; min-height: 160px; max-height: 200px; overflow-y: auto;">
+            <div style="color: var(--text-dim); font-style: italic; padding: 0.5rem 0;">
+              Console ready. Use console.log() inside scripts to stream outputs.
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <!-- Test Checklist Card -->
-      <div id="panelTestChecklist" class="cq-card" style="padding: 1.25rem;">
-        <div style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.65rem;">
-          Automated Test Criteria
-        </div>
-        <div id="testChecklist" style="display: flex; flex-direction: column; gap: 0.45rem;">
-          <!-- Dynamically populated by web_runner.js -->
-        </div>
-      </div>
-
-      <!-- Lesson Completion Banner -->
-      <div id="lessonCompletionBanner" class="cq-card" style="display: none; padding: 1.25rem 1.5rem; background: var(--success-subtle); border-color: rgba(16, 185, 129, 0.4); justify-content: space-between; align-items: center; gap: 1rem;">
+      <!-- Lesson Completion Celebration Banner -->
+      <div id="lessonCompletionBanner" class="cq-card" style="display: none; padding: 1.25rem 1.5rem; background: var(--success-subtle); border-color: rgba(16, 185, 129, 0.4); justify-content: space-between; align-items: center; gap: 1rem; animation: slideDown 0.3s var(--ease);">
         <div>
-          <div style="font-weight: 700; color: var(--success); font-size: 0.95rem; margin-bottom: 0.2rem;">
+          <div style="font-weight: 800; color: var(--success); font-size: 1rem; margin-bottom: 0.2rem;">
             ✓ Lesson Complete!
           </div>
-          <div style="font-size: 0.82rem; color: var(--text-secondary);">
-            +{{ lesson.xp }} XP awarded. You are ready for the next concept.
+          <div style="font-size: 0.84rem; color: var(--text-secondary);">
+            +{{ lesson.xp }} XP awarded. You have mastered this concept!
           </div>
         </div>
         {% if next_lesson %}
-        <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="btn btn-primary" style="padding: 0.5rem 1.15rem; font-size: 0.85rem;">
+        <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.86rem; font-weight: 700;">
           Next Lesson &rarr;
         </a>
         {% else %}
-        <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary" style="padding: 0.5rem 1.15rem; font-size: 0.85rem;">
+        <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.86rem; font-weight: 700;">
           Complete Track &rarr;
         </a>
         {% endif %}
@@ -214,15 +335,15 @@
 
 </div>
 
-<!-- Interactive Visual Box Model & Flexbox Manipulative Modal -->
-<div id="boxInspectorModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 10000; align-items: center; justify-content: center; padding: 1.5rem;">
+<!-- Interactive Visual Box Model & Flexbox Modal -->
+<div id="boxInspectorModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 10000; align-items: center; justify-content: center; padding: 1.5rem;">
   <div class="cq-card" style="width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; padding: 2rem; border: 1px solid var(--border-strong);">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
       <div style="display: flex; align-items: center; gap: 0.65rem;">
         <span style="font-size: 1.4rem;">📐</span>
         <div>
           <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin: 0;">Visual CSS Box Model &amp; Flexbox Lab</h3>
-          <span style="font-size: 0.78rem; color: var(--text-muted);">Tactile direct manipulation &bull; Drag sliders to visualize layout mechanics</span>
+          <span style="font-size: 0.78rem; color: var(--text-muted);">Direct manipulation &bull; Drag sliders to visualize layout mechanics</span>
         </div>
       </div>
       <button id="closeBoxInspectorBtn" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 1rem;">✕</button>
@@ -324,7 +445,7 @@
         lineWrapping: true
       });
 
-      // Synchronize changes to textarea & mechanical sound
+      // Synchronize changes to textarea & mechanical click audio
       cmInstance.on('change', function () {
         cmInstance.save();
         if (sfxEnabled && window.CodeQuest && window.CodeQuest.playMechanicalClick) {
@@ -341,6 +462,19 @@
           document.getElementById('checkSolutionBtn').click();
         }
       });
+    }
+
+    // Auto-Format Code Button
+    const formatBtn = document.getElementById('formatCodeBtn');
+    if (formatBtn && cmInstance) {
+      formatBtn.onclick = function () {
+        const total = cmInstance.lineCount();
+        for (let i = 0; i < total; i++) {
+          cmInstance.indentLine(i);
+        }
+        formatBtn.textContent = '✓ Formatted';
+        setTimeout(() => { formatBtn.textContent = '⇥ Format'; }, 1200);
+      };
     }
 
     // Audio SFX Toggle
@@ -368,7 +502,6 @@
     // Draggable Workspace Splitter
     const splitter = document.getElementById('workspaceSplitter');
     const panelInst = document.getElementById('panelInstructions');
-    const panelEditWrap = document.getElementById('panelEditorWrapper');
 
     if (splitter && panelInst && wsContainer) {
       let isDragging = false;
@@ -386,7 +519,7 @@
         const pointerX = e.clientX - containerRect.left;
         const percentage = (pointerX / containerRect.width) * 100;
 
-        if (percentage >= 25 && percentage <= 70) {
+        if (percentage >= 25 && percentage <= 65) {
           panelInst.style.flex = `0 0 ${percentage}%`;
           if (cmInstance) cmInstance.refresh();
         }
@@ -402,16 +535,71 @@
         }
       });
 
-      // Double-click to reset to 42%
+      // Double-click to reset to 38%
       splitter.addEventListener('dblclick', function () {
-        panelInst.style.flex = '0 0 42%';
+        panelInst.style.flex = '0 0 38%';
         if (cmInstance) cmInstance.refresh();
       });
     }
 
-    // Interactive Box Model & Flexbox Manipulative Modal Logic
+    // Study Tabs (Left Pane: Concept / Task / DOM Tree / Hints)
+    const studyTabBtns = document.querySelectorAll('.study-tab-btn');
+    const studyContents = {
+      concept: document.getElementById('studyTabConcept'),
+      task: document.getElementById('studyTabTask'),
+      domtree: document.getElementById('studyTabDomtree'),
+      hints: document.getElementById('studyTabHints'),
+    };
+
+    studyTabBtns.forEach(btn => {
+      btn.addEventListener('click', function () {
+        const tabKey = btn.getAttribute('data-study-tab');
+        studyTabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        Object.keys(studyContents).forEach(k => {
+          if (studyContents[k]) {
+            studyContents[k].style.display = k === tabKey ? 'block' : 'none';
+          }
+        });
+      });
+    });
+
+    // Studio Deck Tabs (Right Pane: Preview / Test Suite / Console)
+    const studioTabBtns = document.querySelectorAll('.studio-tab-btn');
+    const studioPanes = {
+      preview: document.getElementById('studioTabPreview'),
+      tests: document.getElementById('studioTabTests'),
+      console: document.getElementById('studioTabConsole'),
+    };
+
+    studioTabBtns.forEach(btn => {
+      btn.addEventListener('click', function () {
+        const tabKey = btn.getAttribute('data-studio-tab');
+        studioTabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        Object.keys(studioPanes).forEach(k => {
+          if (studioPanes[k]) {
+            studioPanes[k].style.display = k === tabKey ? 'block' : 'none';
+          }
+        });
+      });
+    });
+
+    // Clear Console
+    const clearConsoleBtn = document.getElementById('clearConsoleBtn');
+    const studioConsoleLogs = document.getElementById('studioConsoleLogs');
+    if (clearConsoleBtn && studioConsoleLogs) {
+      clearConsoleBtn.onclick = function () {
+        studioConsoleLogs.innerHTML = '<div style="color: var(--text-dim); font-style: italic; padding: 0.5rem 0;">Console cleared.</div>';
+      };
+    }
+
+    // Interactive Box Model Modal
     const boxModal = document.getElementById('boxInspectorModal');
     const openBoxBtn = document.getElementById('openBoxInspectorBtn');
+    const openBoxBtnTask = document.getElementById('openBoxInspectorBtnFromTask');
     const closeBoxBtn = document.getElementById('closeBoxInspectorBtn');
     const inMargin = document.getElementById('inputMargin');
     const inBorder = document.getElementById('inputBorder');
@@ -449,16 +637,23 @@
       cssOutput.textContent = rule;
     }
 
-    if (openBoxBtn && boxModal) {
-      openBoxBtn.onclick = function () {
+    function openBox() {
+      if (boxModal) {
         boxModal.style.display = 'flex';
         updateBoxGraphic();
-      };
+      }
+    }
+
+    if (openBoxBtn) openBoxBtn.onclick = openBox;
+    if (openBoxBtnTask) openBoxBtnTask.onclick = openBox;
+    if (closeBoxBtn) {
       closeBoxBtn.onclick = function () {
         boxModal.style.display = 'none';
       };
-      [inMargin, inBorder, inPadding, inRadius].forEach(inp => inp.addEventListener('input', updateBoxGraphic));
-      
+    }
+    [inMargin, inBorder, inPadding, inRadius].forEach(inp => inp && inp.addEventListener('input', updateBoxGraphic));
+    
+    if (copyBoxBtn) {
       copyBoxBtn.onclick = function () {
         navigator.clipboard.writeText(cssOutput.textContent.trim());
         copyBoxBtn.textContent = '✓ Copied!';
@@ -477,7 +672,7 @@
       });
     }
 
-    // Reset starter code in CodeMirror if reset clicked
+    // Reset starter code in CodeMirror
     const resetBtn = document.getElementById('resetCodeBtn');
     if (resetBtn && cmInstance) {
       resetBtn.addEventListener('click', function () {
@@ -491,8 +686,7 @@
     const tabs = document.querySelectorAll('.mobile-tab-btn');
     const pInst = document.getElementById('panelInstructions');
     const pEdit = document.getElementById('panelCodeEditor');
-    const pPrev = document.getElementById('panelLivePreview');
-    const pTest = document.getElementById('panelTestChecklist');
+    const pDeck = document.getElementById('panelStudioDeck');
 
     function checkResponsiveView() {
       const isMobile = window.innerWidth <= 860;
@@ -500,14 +694,13 @@
       if (tabGroup) tabGroup.style.display = isMobile ? 'flex' : 'none';
 
       if (!isMobile) {
-        if (pInst) pInst.style.display = 'block';
+        if (pInst) pInst.style.display = 'flex';
         if (pEdit) pEdit.style.display = 'flex';
-        if (pPrev) pPrev.style.display = 'flex';
-        if (pTest) pTest.style.display = 'block';
+        if (pDeck) pDeck.style.display = 'flex';
         if (splitter) splitter.style.display = 'flex';
       } else {
         if (splitter) splitter.style.display = 'none';
-        if (panelInst) panelInst.style.flex = '1 1 100%';
+        if (pInst) pInst.style.flex = '1 1 100%';
       }
       if (cmInstance) cmInstance.refresh();
     }
@@ -519,21 +712,18 @@
         const target = btn.getAttribute('data-tab');
 
         if (target === 'instructions') {
-          if (pInst) pInst.style.display = 'block';
+          if (pInst) pInst.style.display = 'flex';
           if (pEdit) pEdit.style.display = 'none';
-          if (pPrev) pPrev.style.display = 'none';
-          if (pTest) pTest.style.display = 'none';
+          if (pDeck) pDeck.style.display = 'none';
         } else if (target === 'editor') {
           if (pInst) pInst.style.display = 'none';
           if (pEdit) pEdit.style.display = 'flex';
-          if (pPrev) pPrev.style.display = 'none';
-          if (pTest) pTest.style.display = 'none';
+          if (pDeck) pDeck.style.display = 'none';
           if (cmInstance) cmInstance.refresh();
         } else if (target === 'preview') {
           if (pInst) pInst.style.display = 'none';
           if (pEdit) pEdit.style.display = 'none';
-          if (pPrev) pPrev.style.display = 'flex';
-          if (pTest) pTest.style.display = 'block';
+          if (pDeck) pDeck.style.display = 'flex';
         }
       };
     });
