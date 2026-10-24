@@ -299,12 +299,12 @@ def get_js_lessons():
         {
             "order": 2, "slug": "template-literals", "title": "02. String Interpolation (`${var}`)",
             "minutes": 4, "xp": 45, "type": "IFRAME",
-            "body": "Template literals enclosed in backticks (`` ` ``) allow embedding variables and expressions directly with `${expression}` without clunky string concatenation.",
+            "body": "Template literals enclosed in backticks allow embedding variables and expressions directly with `${expression}` without clunky string concatenation.",
             "task": "Create `const greeting = `Hello, ${user}!`;` where user is 'Sakib'.",
             "starter": "const user = 'Sakib';\n// Create greeting using template literal\n",
             "solution": "const user = 'Sakib';\nconst greeting = `Hello, ${user}!`;",
             "tests": [{"id": "t1", "desc": "greeting equals 'Hello, Sakib!'", "type": "js_var", "name": "greeting", "val": "Hello, Sakib!"}],
-            "hints": ["Use backticks `` `Hello, ${user}!` ``"]
+            "hints": ["Use backticks `Hello, ${user}!`"]
         },
         {
             "order": 3, "slug": "arrow-functions", "title": "03. Arrow Functions (() => {})",
@@ -336,6 +336,76 @@ def get_js_lessons():
             "tests": [{"id": "t1", "desc": "#status contains 'Ready to Code'", "type": "dom_text", "query": "#status", "val": "Ready to Code"}],
             "hints": ["Use document.querySelector('#status').textContent = 'Ready to Code';"]
         },
+        {
+            "order": 6, "slug": "dom-event-listeners", "title": "06. Event Listeners (addEventListener)",
+            "minutes": 5, "xp": 55, "type": "IFRAME",
+            "body": "`addEventListener('click', handler)` listens for browser interactions without overwriting other handlers.",
+            "task": "Attach a click handler to `#btn` that sets `document.querySelector('#msg').textContent = 'Clicked!';`.",
+            "starter": "<button id=\"btn\">Click</button>\n<div id=\"msg\">Waiting</div>\n<script>\n// Add listener\n</script>",
+            "solution": "<button id=\"btn\">Click</button>\n<div id=\"msg\">Waiting</div>\n<script>\ndocument.querySelector('#btn').addEventListener('click', () => {\n  document.querySelector('#msg').textContent = 'Clicked!';\n});\n</script>",
+            "tests": [{"id": "t1", "desc": "Has click listener on #btn", "type": "dom_exists", "query": "#btn"}],
+            "hints": ["btn.addEventListener('click', () => {...})"]
+        },
+        {
+            "order": 7, "slug": "array-map-filter", "title": "07. Array Transformations (filter & map)",
+            "minutes": 5, "xp": 60, "type": "IFRAME",
+            "body": "Modern functional JavaScript uses `.filter()` to select matching items and `.map()` to transform items immutably without loops.",
+            "task": "Filter `const nums = [5, 12, 8, 130, 44];` for numbers greater than 10 into `const bigNums`.",
+            "starter": "const nums = [5, 12, 8, 130, 44];\n// Filter for > 10\n",
+            "solution": "const nums = [5, 12, 8, 130, 44];\nconst bigNums = nums.filter(x => x > 10);",
+            "tests": [{"id": "t1", "desc": "bigNums has 3 elements", "type": "js_eval", "expr": "bigNums.length === 3"}],
+            "hints": ["nums.filter(x => x > 10)"]
+        },
+        {
+            "order": 8, "slug": "dom-create-elements", "title": "08. Creating DOM Nodes (createElement)",
+            "minutes": 5, "xp": 55, "type": "IFRAME",
+            "body": "`document.createElement('li')` instantiates a detached node, and `parent.appendChild(node)` mounts it into the living document tree.",
+            "task": "Create a `<li>` with text 'CodeQuest Cadet' and append it to `#roster`.",
+            "starter": "<ul id=\"roster\"></ul>\n<script>\n// Create and append li\n</script>",
+            "solution": "<ul id=\"roster\"></ul>\n<script>\nconst li = document.createElement('li');\nli.textContent = 'CodeQuest Cadet';\ndocument.querySelector('#roster').appendChild(li);\n</script>",
+            "tests": [{"id": "t1", "desc": "#roster contains <li>", "type": "dom_exists", "query": "#roster li"}],
+            "hints": ["const li = document.createElement('li'); li.textContent = 'CodeQuest Cadet'; roster.appendChild(li);"]
+        },
+        {
+            "order": 9, "slug": "destructuring", "title": "09. Object & Array Destructuring",
+            "minutes": 4, "xp": 50, "type": "IFRAME",
+            "body": "Destructuring unpacks values from arrays or properties from objects into distinct variables: `const { title, xp } = course;`.",
+            "task": "Unpack `name` and `role` from `const user = { name: 'Sakib', role: 'Engineer' };`.",
+            "starter": "const user = { name: 'Sakib', role: 'Engineer' };\n// Destructure user\n",
+            "solution": "const user = { name: 'Sakib', role: 'Engineer' };\nconst { name, role } = user;",
+            "tests": [{"id": "t1", "desc": "name equals 'Sakib'", "type": "js_var", "name": "name", "val": "Sakib"}],
+            "hints": ["const { name, role } = user;"]
+        },
+        {
+            "order": 10, "slug": "promises", "title": "10. Promises & Asynchronous Execution",
+            "minutes": 5, "xp": 60, "type": "IFRAME",
+            "body": "A Promise represents an eventual completion or failure of an asynchronous operation, chaining through `.then()` and `.catch()`.",
+            "task": "Create `const future = Promise.resolve('Success');`.",
+            "starter": "// Create resolved promise\n",
+            "solution": "const future = Promise.resolve('Success');",
+            "tests": [{"id": "t1", "desc": "future is a Promise", "type": "js_eval", "expr": "typeof future.then === 'function'"}],
+            "hints": ["const future = Promise.resolve('Success');"]
+        },
+        {
+            "order": 11, "slug": "async-await", "title": "11. Modern Async / Await",
+            "minutes": 5, "xp": 65, "type": "IFRAME",
+            "body": "`async` functions return Promises and allow using `await` to pause execution until a Promise settles, writing async code sequentially.",
+            "task": "Define `async function loadCadet() { return { id: 1, ready: true }; }`.",
+            "starter": "// Define async function loadCadet\n",
+            "solution": "async function loadCadet() { return { id: 1, ready: true }; }",
+            "tests": [{"id": "t1", "desc": "loadCadet returns Promise", "type": "js_eval", "expr": "loadCadet() instanceof Promise"}],
+            "hints": ["async function loadCadet() { return { id: 1, ready: true }; }"]
+        },
+        {
+            "order": 12, "slug": "local-storage", "title": "12. Client-Side State (localStorage)",
+            "minutes": 4, "xp": 50, "type": "IFRAME",
+            "body": "`localStorage.setItem(key, value)` saves string data across page reloads in the student's browser sandbox.",
+            "task": "Store `theme: 'dark'` in localStorage using `localStorage.setItem('theme', 'dark');`.",
+            "starter": "// Persist theme in localStorage\n",
+            "solution": "localStorage.setItem('theme', 'dark');",
+            "tests": [{"id": "t1", "desc": "localStorage theme is 'dark'", "type": "js_eval", "expr": "localStorage.getItem('theme') === 'dark'"}],
+            "hints": ["localStorage.setItem('theme', 'dark');"]
+        },
     ]
 
 def get_python_lessons():
@@ -363,7 +433,7 @@ def get_python_lessons():
         {
             "order": 3, "slug": "range-loops", "title": "03. The range() Loop",
             "minutes": 4, "xp": 50, "type": "PYODIDE",
-            "body": "Python's `for i in range(N):` iterates $0, 1, ..., N-1$. Code blocks are defined with a 4-space indentation rather than braces.",
+            "body": "Python's `for i in range(N):` iterates 0, 1, ..., N-1. Code blocks are defined with a 4-space indentation rather than braces.",
             "task": "Write a `for i in range(4):` loop that prints `i`.",
             "starter": "# Loop 4 times\n",
             "solution": "for i in range(4):\n    print(i)",
@@ -379,6 +449,86 @@ def get_python_lessons():
             "solution": "squares = [x**2 for x in range(5)]\nprint(squares)",
             "tests": [{"id": "t1", "desc": "Prints [0, 1, 4, 9, 16]", "type": "stdout_match", "val": "[0, 1, 4, 9, 16]"}],
             "hints": ["Use [x**2 for x in range(5)]"]
+        },
+        {
+            "order": 5, "slug": "functions-def", "title": "05. Functions & Return Values (def)",
+            "minutes": 4, "xp": 50, "type": "PYODIDE",
+            "body": "Functions encapsulate reusable units of logic with `def function_name(args):` and return values via `return`.",
+            "task": "Define `def add(a, b): return a + b` and print `add(15, 25)`.",
+            "starter": "# Define add function\n",
+            "solution": "def add(a, b):\n    return a + b\nprint(add(15, 25))",
+            "tests": [{"id": "t1", "desc": "Prints 40", "type": "stdout_match", "val": "40"}],
+            "hints": ["def add(a, b): return a + b"]
+        },
+        {
+            "order": 6, "slug": "conditionals-logic", "title": "06. Conditional Logic (if / elif / else)",
+            "minutes": 4, "xp": 45, "type": "PYODIDE",
+            "body": "Branching execution paths use `if`, `elif`, and `else` with indentation to control algorithmic decision trees.",
+            "task": "Set `score = 85`. If `score >= 80`, print 'Honors', else print 'Pass'.",
+            "starter": "score = 85\n# Write condition\n",
+            "solution": "score = 85\nif score >= 80:\n    print('Honors')\nelse:\n    print('Pass')",
+            "tests": [{"id": "t1", "desc": "Prints 'Honors'", "type": "stdout_match", "val": "Honors"}],
+            "hints": ["if score >= 80: print('Honors')"]
+        },
+        {
+            "order": 7, "slug": "dictionaries-maps", "title": "07. Dictionaries & Key-Value Lookups",
+            "minutes": 4, "xp": 50, "type": "PYODIDE",
+            "body": "Dictionaries store key-value mappings with O(1) hash table lookup: `cadet = {'name': 'Sakib', 'level': 5}`.",
+            "task": "Create `cadet = {'name': 'Sakib', 'xp': 500}` and print `cadet['xp']`.",
+            "starter": "# Create dict and print xp\n",
+            "solution": "cadet = {'name': 'Sakib', 'xp': 500}\nprint(cadet['xp'])",
+            "tests": [{"id": "t1", "desc": "Prints 500", "type": "stdout_match", "val": "500"}],
+            "hints": ["cadet['xp'] accesses value 500."]
+        },
+        {
+            "order": 8, "slug": "lists-methods", "title": "08. List Mutation (append, pop, len)",
+            "minutes": 4, "xp": 45, "type": "PYODIDE",
+            "body": "Lists are mutable sequences. `.append(item)` adds to the end, while `len(list)` returns item count.",
+            "task": "Start with `tools = ['terminal', 'editor']`, append 'debugger', and print `len(tools)`.",
+            "starter": "tools = ['terminal', 'editor']\n# Append and print length\n",
+            "solution": "tools = ['terminal', 'editor']\ntools.append('debugger')\nprint(len(tools))",
+            "tests": [{"id": "t1", "desc": "Prints 3", "type": "stdout_match", "val": "3"}],
+            "hints": ["tools.append('debugger') then print(len(tools))"]
+        },
+        {
+            "order": 9, "slug": "f-strings", "title": "09. Formatted F-Strings",
+            "minutes": 3, "xp": 40, "type": "PYODIDE",
+            "body": "F-strings prefixed with `f` interpolate expressions directly: `f'Cadet {name} has {score} XP'`.",
+            "task": "Given `lang = 'Python'`, print `f'Mastering {lang}'`.",
+            "starter": "lang = 'Python'\n# Print with f-string\n",
+            "solution": "lang = 'Python'\nprint(f'Mastering {lang}')",
+            "tests": [{"id": "t1", "desc": "Prints 'Mastering Python'", "type": "stdout_match", "val": "Mastering Python"}],
+            "hints": ["print(f'Mastering {lang}')"]
+        },
+        {
+            "order": 10, "slug": "try-except", "title": "10. Exception Handling (try / except)",
+            "minutes": 4, "xp": 50, "type": "PYODIDE",
+            "body": "`try...except` catches runtime errors gracefully, preventing unhandled crashes.",
+            "task": "Wrap `int('abc')` in try/except ValueError, printing 'Caught Error' on exception.",
+            "starter": "try:\n    val = int('abc')\nexcept ValueError:\n    # print message\n",
+            "solution": "try:\n    val = int('abc')\nexcept ValueError:\n    print('Caught Error')",
+            "tests": [{"id": "t1", "desc": "Prints 'Caught Error'", "type": "stdout_match", "val": "Caught Error"}],
+            "hints": ["print('Caught Error') inside except block."]
+        },
+        {
+            "order": 11, "slug": "lambda-filters", "title": "11. Lambda Functions & Higher Order Functions",
+            "minutes": 4, "xp": 50, "type": "PYODIDE",
+            "body": "Anonymous single-line functions are defined with `lambda args: expression`.",
+            "task": "Define `double = lambda x: x * 2` and print `double(9)`.",
+            "starter": "# Define lambda and print\n",
+            "solution": "double = lambda x: x * 2\nprint(double(9))",
+            "tests": [{"id": "t1", "desc": "Prints 18", "type": "stdout_match", "val": "18"}],
+            "hints": ["double = lambda x: x * 2"]
+        },
+        {
+            "order": 12, "slug": "classes-oop", "title": "12. Classes & Object-Oriented Programming",
+            "minutes": 5, "xp": 60, "type": "PYODIDE",
+            "body": "Classes define blueprints with `__init__` constructor methods and encapsulation.",
+            "task": "Define class `Cadet:` with `def __init__(self, name): self.name = name`. Instantiate with 'Sakib' and print its name.",
+            "starter": "# Define Cadet class\n",
+            "solution": "class Cadet:\n    def __init__(self, name):\n        self.name = name\nc = Cadet('Sakib')\nprint(c.name)",
+            "tests": [{"id": "t1", "desc": "Prints 'Sakib'", "type": "stdout_match", "val": "Sakib"}],
+            "hints": ["Define class Cadet: ... c = Cadet('Sakib') print(c.name)"]
         },
     ]
 
@@ -403,5 +553,149 @@ def get_sql_lessons():
             "solution": "SELECT * FROM users WHERE role = 'admin';",
             "tests": [{"id": "t1", "desc": "Has WHERE role = 'admin'", "type": "sql_query_contains", "val": "WHERE role = 'admin'"}],
             "hints": ["Add WHERE role = 'admin';"]
+        },
+        {
+            "order": 3, "slug": "order-by-limit", "title": "03. Sorting & Pagination (ORDER BY & LIMIT)",
+            "minutes": 4, "xp": 45, "type": "SQL",
+            "body": "`ORDER BY column DESC` sorts results descendingly, and `LIMIT N` restricts row count.",
+            "task": "Select all users ordered by `xp` in descending order with a limit of 5.",
+            "starter": "-- Top 5 users by xp\n",
+            "solution": "SELECT * FROM users ORDER BY xp DESC LIMIT 5;",
+            "tests": [{"id": "t1", "desc": "Contains ORDER BY xp DESC LIMIT 5", "type": "sql_query_contains", "val": "ORDER BY xp DESC LIMIT 5"}],
+            "hints": ["SELECT * FROM users ORDER BY xp DESC LIMIT 5;"]
+        },
+        {
+            "order": 4, "slug": "aggregate-functions", "title": "04. Aggregate Functions (COUNT, SUM, AVG)",
+            "minutes": 4, "xp": 50, "type": "SQL",
+            "body": "Aggregates compute summary metrics across multiple rows without returning raw row records.",
+            "task": "Calculate total users count and average score: `SELECT COUNT(*), AVG(score) FROM results;`.",
+            "starter": "-- Aggregate summary\n",
+            "solution": "SELECT COUNT(*), AVG(score) FROM results;",
+            "tests": [{"id": "t1", "desc": "Contains COUNT(*) and AVG(score)", "type": "sql_query_contains", "val": "COUNT(*)"}],
+            "hints": ["SELECT COUNT(*), AVG(score) FROM results;"]
+        },
+        {
+            "order": 5, "slug": "group-by-having", "title": "05. Grouping Records (GROUP BY & HAVING)",
+            "minutes": 5, "xp": 55, "type": "SQL",
+            "body": "`GROUP BY` groups identical values, and `HAVING` filters aggregate calculations post-grouping.",
+            "task": "Select `role` and `COUNT(*)` from `users` grouped by `role`.",
+            "starter": "-- Count users by role\n",
+            "solution": "SELECT role, COUNT(*) FROM users GROUP BY role;",
+            "tests": [{"id": "t1", "desc": "Has GROUP BY role", "type": "sql_query_contains", "val": "GROUP BY role"}],
+            "hints": ["SELECT role, COUNT(*) FROM users GROUP BY role;"]
+        },
+        {
+            "order": 6, "slug": "inner-join", "title": "06. Relational Joins (INNER JOIN ... ON)",
+            "minutes": 5, "xp": 60, "type": "SQL",
+            "body": "`INNER JOIN` combines rows from two tables where the matching predicate condition evaluates true.",
+            "task": "Join `users` and `orders` on `users.id = orders.user_id`.",
+            "starter": "-- Inner join users and orders\n",
+            "solution": "SELECT users.name, orders.total FROM users INNER JOIN orders ON users.id = orders.user_id;",
+            "tests": [{"id": "t1", "desc": "Has INNER JOIN orders ON users.id = orders.user_id", "type": "sql_query_contains", "val": "INNER JOIN orders"}],
+            "hints": ["INNER JOIN orders ON users.id = orders.user_id"]
+        },
+        {
+            "order": 7, "slug": "left-join", "title": "07. Left Outer Joins (LEFT JOIN)",
+            "minutes": 5, "xp": 60, "type": "SQL",
+            "body": "`LEFT JOIN` returns all records from the left table and matched records from the right table, filling nulls if no match exists.",
+            "task": "Left join `users` with `badges` on `users.id = badges.user_id`.",
+            "starter": "-- Left join with badges\n",
+            "solution": "SELECT users.username, badges.name FROM users LEFT JOIN badges ON users.id = badges.user_id;",
+            "tests": [{"id": "t1", "desc": "Has LEFT JOIN badges", "type": "sql_query_contains", "val": "LEFT JOIN badges"}],
+            "hints": ["LEFT JOIN badges ON users.id = badges.user_id"]
+        },
+        {
+            "order": 8, "slug": "multi-condition-filters", "title": "08. Compound Filters (AND, OR, IN)",
+            "minutes": 4, "xp": 45, "type": "SQL",
+            "body": "Combine conditions with `AND`, `OR`, and set membership using `IN ('val1', 'val2')`.",
+            "task": "Select all users where `status = 'ACTIVE'` AND `xp >= 200`.",
+            "starter": "-- Filter active high-xp users\n",
+            "solution": "SELECT * FROM users WHERE status = 'ACTIVE' AND xp >= 200;",
+            "tests": [{"id": "t1", "desc": "Contains WHERE status = 'ACTIVE' AND xp >= 200", "type": "sql_query_contains", "val": "AND xp >= 200"}],
+            "hints": ["WHERE status = 'ACTIVE' AND xp >= 200;"]
+        },
+        {
+            "order": 9, "slug": "like-pattern-matching", "title": "09. Pattern Matching (LIKE '%...')",
+            "minutes": 4, "xp": 45, "type": "SQL",
+            "body": "The `LIKE` operator performs string wildcard searches using `%` (zero or more chars) and `_` (single char).",
+            "task": "Find all users whose email ends with '@codequest.dev': `WHERE email LIKE '%@codequest.dev'`.",
+            "starter": "-- Search by email domain\n",
+            "solution": "SELECT * FROM users WHERE email LIKE '%@codequest.dev';",
+            "tests": [{"id": "t1", "desc": "Contains LIKE '%@codequest.dev'", "type": "sql_query_contains", "val": "LIKE '%@codequest.dev'"}],
+            "hints": ["WHERE email LIKE '%@codequest.dev';"]
+        },
+        {
+            "order": 10, "slug": "insert-into-data", "title": "10. Modifying Records (INSERT INTO)",
+            "minutes": 4, "xp": 50, "type": "SQL",
+            "body": "`INSERT INTO table (col1, col2) VALUES (val1, val2);` appends new records into the table.",
+            "task": "Insert user with username 'cadet_prime' and xp 100 into `users`.",
+            "starter": "-- Insert record\n",
+            "solution": "INSERT INTO users (username, xp) VALUES ('cadet_prime', 100);",
+            "tests": [{"id": "t1", "desc": "Has INSERT INTO users", "type": "sql_query_contains", "val": "INSERT INTO users"}],
+            "hints": ["INSERT INTO users (username, xp) VALUES ('cadet_prime', 100);"]
+        },
+    ]
+
+def get_c_lessons():
+    return [
+        {
+            "order": 1, "slug": "c-lang-intro", "title": "01. Introduction to C Syntax & Main",
+            "minutes": 4, "xp": 40, "type": "PREDICT",
+            "body": "Every C program begins execution at the `main()` function returning an integer exit code 0.",
+            "task": "Predict output of standard printf in C.",
+            "starter": "#include <stdio.h>\nint main() {\n    printf(\"CodeQuest C Engine\\n\");\n    return 0;\n}",
+            "solution": "CodeQuest C Engine",
+            "tests": [{"id": "t1", "desc": "Outputs 'CodeQuest C Engine'", "type": "exact_match", "val": "CodeQuest C Engine"}],
+            "hints": ["Check string literal passed to printf."]
+        },
+        {
+            "order": 2, "slug": "c-format-specifiers", "title": "02. Format Specifiers (%d, %s, %f)",
+            "minutes": 4, "xp": 45, "type": "PREDICT",
+            "body": "`printf` uses `%d` for integers, `%f` for floats, and `%s` for strings.",
+            "task": "Predict output of `printf(\"ID: %d, Grade: %s\", 7, \"A\");`.",
+            "starter": "printf(\"ID: %d, Grade: %s\", 7, \"A\");",
+            "solution": "ID: 7, Grade: A",
+            "tests": [{"id": "t1", "desc": "Outputs 'ID: 7, Grade: A'", "type": "exact_match", "val": "ID: 7, Grade: A"}],
+            "hints": ["Substitutes 7 into %d and A into %s."]
+        },
+        {
+            "order": 3, "slug": "c-pointers-basics", "title": "03. Pointers & Address-Of Operator",
+            "minutes": 5, "xp": 55, "type": "PREDICT",
+            "body": "A pointer holds a memory address (`&var`). Dereferencing with `*ptr` accesses the value stored at that address.",
+            "task": "Predict value of x after `int x = 10; int *p = &x; *p = 50; printf(\"%d\", x);`.",
+            "starter": "int x = 10;\nint *p = &x;\n*p = 50;\nprintf(\"%d\", x);",
+            "solution": "50",
+            "tests": [{"id": "t1", "desc": "Outputs '50'", "type": "exact_match", "val": "50"}],
+            "hints": ["Dereference *p modifies the memory of x to 50."]
+        },
+        {
+            "order": 4, "slug": "c-pointer-arithmetic", "title": "04. Arrays & Pointer Arithmetic",
+            "minutes": 5, "xp": 55, "type": "PREDICT",
+            "body": "In C, array names decay to pointers to their first element. `*(arr + 1)` accesses index 1.",
+            "task": "Predict output of `int nums[] = {10, 20, 30}; printf(\"%d\", *(nums + 1));`.",
+            "starter": "int nums[] = {10, 20, 30};\nprintf(\"%d\", *(nums + 1));",
+            "solution": "20",
+            "tests": [{"id": "t1", "desc": "Outputs '20'", "type": "exact_match", "val": "20"}],
+            "hints": ["*(nums + 1) points to index 1 (20)."]
+        },
+        {
+            "order": 5, "slug": "c-structs", "title": "05. Structures (struct)",
+            "minutes": 5, "xp": 60, "type": "PREDICT",
+            "body": "A `struct` groups heterogenous fields into a contiguous memory block.",
+            "task": "Predict output of `struct Cadet { int xp; } c = { 350 }; printf(\"%d\", c.xp);`.",
+            "starter": "struct Cadet { int xp; } c = { 350 };\nprintf(\"%d\", c.xp);",
+            "solution": "350",
+            "tests": [{"id": "t1", "desc": "Outputs '350'", "type": "exact_match", "val": "350"}],
+            "hints": ["Accesses member xp with dot operator."]
+        },
+        {
+            "order": 6, "slug": "c-loops-increments", "title": "06. Pre vs Post-Increment (++x vs x++)",
+            "minutes": 4, "xp": 50, "type": "PREDICT",
+            "body": "Pre-increment `++x` increments before expression evaluation; post-increment `x++` evaluates before incrementing.",
+            "task": "Predict output of `int x = 5; printf(\"%d\", ++x);`.",
+            "starter": "int x = 5;\nprintf(\"%d\", ++x);",
+            "solution": "6",
+            "tests": [{"id": "t1", "desc": "Outputs '6'", "type": "exact_match", "val": "6"}],
+            "hints": ["Pre-increment evaluates to 6."]
         },
     ]

@@ -494,54 +494,167 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
     </div>
   </section>
 
-  <!-- Featured Learning Tracks Grid (Point 13) -->
+  <!-- Featured Learning Tracks Grid (Point 13: Comprehensive LMS Curriculum) -->
   <section style="margin: 5.5rem 0;">
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
       <div>
-        <div style="font-size: 0.82rem; font-weight: 700; color: var(--accent-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">
-          Verified Learning Roadmap
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">
+          🎯 Structured Learning Paths &bull; In-Browser Labs
         </div>
-        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.4rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em;">
+        <h2 style="font-size: clamp(2rem, 3.8vw, 2.7rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em;">
           Featured Learning Tracks
         </h2>
+        <p style="font-size: 1.05rem; color: var(--text-muted); margin-top: 0.4rem; max-width: 700px;">
+          Master production-grade syntax and algorithmic mental models through structured, bite-sized interactive lessons with zero-setup browser execution.
+        </p>
       </div>
-      <a href="{% url 'catalogue' %}" class="btn btn-ghost" style="font-size: 0.88rem;">
-        View Full Roadmap &rarr;
+      <a href="{% url 'catalogue' %}" class="btn btn-primary" style="font-size: 0.88rem; padding: 0.65rem 1.45rem;">
+        View Full Roadmap (All Tracks) &rarr;
       </a>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem;">
+    <!-- Curriculum Filter Tabs -->
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
+      <button class="btn featured-filter-tab active" data-track-cat="all" style="padding: 0.4rem 0.95rem; font-size: 0.8rem; border-radius: 999px;">
+        All Featured Tracks (6)
+      </button>
+      <button class="btn btn-ghost featured-filter-tab" data-track-cat="web" style="padding: 0.4rem 0.95rem; font-size: 0.8rem; border-radius: 999px;">
+        🌐 Web Foundations (HTML5, CSS3, JavaScript)
+      </button>
+      <button class="btn btn-ghost featured-filter-tab" data-track-cat="data" style="padding: 0.4rem 0.95rem; font-size: 0.8rem; border-radius: 999px;">
+        🐍 Scripting &amp; Data (Python 3, SQL)
+      </button>
+      <button class="btn btn-ghost featured-filter-tab" data-track-cat="systems" style="padding: 0.4rem 0.95rem; font-size: 0.8rem; border-radius: 999px;">
+        ⚙️ Systems &amp; Memory (C Programming)
+      </button>
+    </div>
+
+    <!-- Rich LMS Course Cards Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem;">
       {% for course in featured_courses %}
-      <a href="{% url 'course_detail' course.slug %}" class="cq-card cq-card-interactive" style="justify-content: space-between;">
+      <div class="cq-card cq-card-interactive featured-course-card" data-cat="{% if course.language.slug == 'html' or course.language.slug == 'css' or course.language.slug == 'javascript' %}web{% elif course.language.slug == 'python' or course.language.slug == 'sql' %}data{% else %}systems{% endif %}" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2rem; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); background: radial-gradient(ellipse at top right, rgba(99, 102, 241, 0.06), var(--bg-surface) 75%); position: relative; overflow: hidden;">
+        
+        <!-- Glow accent badge -->
+        <div style="position: absolute; top: 0; right: 0; width: 120px; height: 120px; background: radial-gradient(circle, rgba(99, 102, 241, 0.12), transparent 70%); pointer-events: none;"></div>
+
         <div>
+          <!-- Header Row -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-            <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.3); padding: 0.25rem 0.65rem; border-radius: 6px; color: #a5b4fc;">
-              {{ course.language.name }}
-            </span>
-            <span style="font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono);">
-              {{ course.lessons.count }} lessons
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.3); padding: 0.25rem 0.65rem; border-radius: 6px; color: #a5b4fc;">
+                {{ course.language.name }}
+              </span>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 600; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); padding: 0.2rem 0.55rem; border-radius: 999px;">
+                {{ course.level }}
+              </span>
+            </div>
+            <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.2rem 0.55rem; border-radius: 6px;">
+              +{{ course.xp_reward }} XP
             </span>
           </div>
 
-          <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.65rem; letter-spacing: -0.02em;">
-            {{ course.title }}
+          <!-- Title -->
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.65rem; letter-spacing: -0.02em;">
+            <a href="{% url 'course_detail' course.slug %}" style="color: inherit; text-decoration: none;">
+              {{ course.title }}
+            </a>
           </h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem;">
-            {{ course.description|truncatewords:22 }}
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.4rem;">
+            {{ course.description }}
           </p>
+
+          <!-- Curriculum Highlights Tags -->
+          <div style="margin-bottom: 1.75rem;">
+            <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+              Curriculum Modules:
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+              {% for tag in course.tags_list %}
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.2rem 0.55rem; border-radius: 4px; color: var(--text-secondary);">
+                #{{ tag }}
+              </span>
+              {% endfor %}
+            </div>
+          </div>
         </div>
 
-        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); font-size: 0.86rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">⏱ ~{{ course.estimated_time_minutes }} mins</span>
-          <span style="color: var(--accent); font-weight: 700;">Start Track &rarr;</span>
+        <div>
+          <!-- LMS Telemetry Bar -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; background: var(--bg-panel); padding: 0.75rem 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); margin-bottom: 1.25rem; text-align: center;">
+            <div>
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Duration</div>
+              <div style="font-size: 0.92rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-primary);">
+                ⏱ {{ course.total_minutes }}m
+              </div>
+            </div>
+            <div>
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Lessons</div>
+              <div style="font-size: 0.92rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent);">
+                📚 {{ course.lessons.count }}
+              </div>
+            </div>
+            <div>
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Hands-on</div>
+              <div style="font-size: 0.92rem; font-weight: 800; font-family: var(--font-mono); color: #10b981;">
+                🎯 100%
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1.15rem; border-top: 1px solid var(--border-subtle);">
+            <a href="{% url 'course_detail' course.slug %}" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
+              Syllabus &rarr;
+            </a>
+            <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary" style="font-size: 0.84rem; padding: 0.45rem 1.15rem;">
+              Start Track &rarr;
+            </a>
+          </div>
         </div>
-      </a>
+
+      </div>
       {% empty %}
       <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
         No courses available.
       </div>
       {% endfor %}
     </div>
+
+    <!-- LMS Interactive Feature Pillar Showcase -->
+    <div style="margin-top: 3.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
+      <div class="cq-card" style="padding: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);">
+        <div style="font-size: 1.75rem; margin-bottom: 0.65rem;">⚡</div>
+        <div style="font-weight: 700; font-size: 1rem; color: var(--text-primary); margin-bottom: 0.35rem;">Zero-Tooling Sandbox</div>
+        <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
+          Code runs in real-time WebAssembly environments (Pyodide, sql.js, sandboxed DOM iframes) without installing external runtime tooling.
+        </p>
+      </div>
+
+      <div class="cq-card" style="padding: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);">
+        <div style="font-size: 1.75rem; margin-bottom: 0.65rem;">🧪</div>
+        <div style="font-weight: 700; font-size: 1rem; color: var(--text-primary); margin-bottom: 0.35rem;">Instant AST Unit Tests</div>
+        <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
+          Every keystroke is checked against rigorous test suites. Real-time feedback guides learners through multi-tiered hint ladders.
+        </p>
+      </div>
+
+      <div class="cq-card" style="padding: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);">
+        <div style="font-size: 1.75rem; margin-bottom: 0.65rem;">🏆</div>
+        <div style="font-weight: 700; font-size: 1rem; color: var(--text-primary); margin-bottom: 0.35rem;">Proof-of-Skill Badges</div>
+        <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
+          Earn cryptographic achievement badges and verified certificates on track completion to showcase in your engineering portfolio.
+        </p>
+      </div>
+
+      <div class="cq-card" style="padding: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);">
+        <div style="font-size: 1.75rem; margin-bottom: 0.65rem;">🎮</div>
+        <div style="font-weight: 700; font-size: 1rem; color: var(--text-primary); margin-bottom: 0.35rem;">115 Interactive Challenges</div>
+        <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
+          Deep practice arena integration: sharpen muscle memory with TypeRacer 3D, Flexbox Pond, Bug Hunt, and Cyber Rover simulations.
+        </p>
+      </div>
+    </div>
+
   </section>
 
   <!-- Final Call to Action -->
@@ -1834,6 +1947,27 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
 
     // Initial render of HTML visual stage
     setTech('html');
+
+    // 2.5 Featured Courses Track Filter Tabs
+    const trackFilterTabs = document.querySelectorAll('.featured-filter-tab');
+    const courseCards = document.querySelectorAll('.featured-course-card');
+
+    trackFilterTabs.forEach(function (tab) {
+      tab.onclick = function () {
+        trackFilterTabs.forEach(t => {
+          t.classList.remove('active');
+          t.classList.add('btn-ghost');
+        });
+        tab.classList.add('active');
+        tab.classList.remove('btn-ghost');
+
+        const cat = tab.getAttribute('data-track-cat');
+        courseCards.forEach(card => {
+          const cardCat = card.getAttribute('data-cat');
+          card.style.display = (cat === 'all' || cardCat === cat) ? 'flex' : 'none';
+        });
+      };
+    });
 
     // 3. 115 Playable Challenges Launchpad Modal Controls (Point 16)
     const taxonomyModal = document.getElementById('gamesTaxonomyModal');

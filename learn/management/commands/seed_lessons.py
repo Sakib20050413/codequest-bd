@@ -10,6 +10,7 @@ from content.seed_lessons_builder import (
     get_js_lessons,
     get_python_lessons,
     get_sql_lessons,
+    get_c_lessons,
 )
 
 
@@ -62,6 +63,7 @@ class Command(BaseCommand):
             "javascript": ("JavaScript ES6+ & DOM", get_js_lessons()),
             "python": ("Python 3 Algorithmic Core", get_python_lessons()),
             "sql": ("SQL Relational Queries", get_sql_lessons()),
+            "c-lang": ("C Programming Architecture & Pointers", get_c_lessons()),
         }
 
         for lang_spec in LANGUAGES:

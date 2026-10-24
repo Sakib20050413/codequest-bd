@@ -24,17 +24,29 @@
         <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.25rem 0.65rem; border-radius: var(--radius-sm); color: var(--text-secondary);">
           Level: {{ course.level }}
         </span>
+        <span style="font-size: 0.82rem; color: var(--accent); font-family: var(--font-mono); font-weight: 700; background: var(--accent-subtle); padding: 0.25rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid rgba(20, 184, 166, 0.25);">
+          +{{ course.xp_reward }} XP
+        </span>
         <span style="font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono);">
-          ⏱ ~{{ course.estimated_time_minutes }} mins total
+          ⏱ {{ course.total_minutes }} mins total
         </span>
       </div>
 
       <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.025em; margin-bottom: 1rem;" class="headline-gradient">
         {{ course.title }}
       </h1>
-      <p style="font-size: 1.02rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 2rem;">
+      <p style="font-size: 1.02rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.5rem;">
         {{ course.description }}
       </p>
+
+      <!-- Curriculum Tags -->
+      <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem;">
+        {% for tag in course.tags_list %}
+        <span style="font-size: 0.74rem; font-family: var(--font-mono); background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 0.2rem 0.55rem; border-radius: 4px; color: var(--text-secondary);">
+          #{{ tag }}
+        </span>
+        {% endfor %}
+      </div>
 
       <!-- Progress Indicator -->
       <div style="background: var(--bg-panel); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">

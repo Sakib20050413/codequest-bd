@@ -41,7 +41,32 @@ class Course(models.Model):
 
     @property
     def total_minutes(self):
-        return sum(l.est_minutes for l in self.lessons.all())
+        mins = sum(l.est_minutes for l in self.lessons.all())
+        return mins if mins > 0 else 30
+
+    @property
+    def estimated_time_minutes(self):
+        return self.total_minutes
+
+    @property
+    def interactive_task_count(self):
+        return self.lessons.count()
+
+    @property
+    def tags_list(self):
+        tag_map = {
+            "html-core": ["Semantic HTML5", "DOM Skeletons", "Forms & Input", "Accessible Web"],
+            "css-core": ["Box Model", "Flexbox Pond", "CSS Grid", "Responsive Layouts"],
+            "javascript-core": ["DOM Reactivity", "Event Listeners", "Async / Await", "ES6+ Modules"],
+            "python-core": ["Algorithmic Logic", "Comprehensions", "OOP & Dictionaries", "Data Pipelines"],
+            "sql-core": ["Relational Schemas", "JOIN Algorithms", "Aggregates & Filters", "Query Tuning"],
+            "c-lang-stubs": ["Memory & Pointers", "Format Strings", "Structs & Arrays", "Deterministic AST"],
+            "c-core": ["Memory & Pointers", "Format Strings", "Structs & Arrays", "Deterministic AST"],
+            "java-stubs": ["OOP Hierarchy", "Static Typing", "JVM Memory Model", "Exception Guard"],
+            "php-stubs": ["Server Request API", "CRUD Operations", "Header Routing", "Database Bridges"],
+            "bash-stubs": ["Linux Pipeline", "Regex & Grep", "Stream Redirection", "Shell Automation"],
+        }
+        return tag_map.get(self.slug, ["Core Fundamentals", "Syntax Fluency", "Hands-on Labs", "Verified Certificate"])
 
 
 class Lesson(models.Model):
