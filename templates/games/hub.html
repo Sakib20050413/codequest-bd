@@ -41,7 +41,7 @@
         🎮 108 Master Games (1,080 Levels)
       </button>
       <button id="modeBtnQuests" class="arena-mode-btn {% if active_mode == 'quests' %}active{% endif %}" onclick="switchArenaMode('quests')">
-        🔥 Daily Quests &amp; Bounties
+        🔥 Daily Quests &amp; Bounties (24)
       </button>
     </div>
 
@@ -1038,78 +1038,110 @@
 
 
   <!-- =====================================================================
-       SECTION 3: DAILY QUESTS & REPUTATION BOUNTIES
+       SECTION 3: DAILY QUESTS & REPUTATION BOUNTIES (24 Live Quests)
        ===================================================================== -->
   <div id="questsArenaSection" style="display: {% if active_mode == 'quests' %}block{% else %}none{% endif %}; margin-bottom: 4rem;">
     
-    <div style="margin-bottom: 2rem;">
-      <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
-        🔥 Daily Quests &amp; Streak Bounties
-      </h2>
-      <p style="font-size: 0.92rem; color: var(--text-muted); max-width: 640px; line-height: 1.6;">
-        Complete daily challenges to maintain your daily streak multiplier, earn bonus developer XP, and level up your engineering rank.
-      </p>
+    <!-- Quests Header & Telemetry -->
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle);">
+      <div>
+        <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem;">
+          Gamified Missions &bull; Streak Multipliers &bull; Level Bounties
+        </div>
+        <h2 style="font-size: clamp(1.6rem, 2.8vw, 2.2rem); font-weight: 800; color: var(--text-primary); margin: 0 0 0.4rem; letter-spacing: -0.02em;">
+          🎯 Daily Quests, Bounties &amp; Milestones (24 Quests)
+        </h2>
+        <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 720px; line-height: 1.6; margin: 0;">
+          Level up your developer rank through daily habit sprints, high-reward weekly architecture bounties, speed duels, and milestone career achievements.
+        </p>
+      </div>
+
+      <!-- Live Quest Telemetry Stats -->
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
+          <span style="color: var(--text-muted);">AVAILABLE REWARDS: </span>
+          <strong style="color: #fbbf24;">+{{ total_quests_xp|default:"2,700" }} XP</strong>
+        </div>
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
+          <span style="color: var(--text-muted);">CADENCE: </span>
+          <strong style="color: #10b981;">Daily at 00:00 UTC</strong>
+        </div>
+      </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
-      
-      <!-- Quest 1 -->
-      <div class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-medium); display: flex; flex-direction: column; justify-content: space-between;">
+    <!-- Category Filter Pills Bar -->
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 2rem;">
+      <button class="btn btn-ghost quest-filter-pill active" data-qcat="all" onclick="filterQuests('all', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
+        All Quests (24)
+      </button>
+      <button class="btn btn-ghost quest-filter-pill" data-qcat="daily" onclick="filterQuests('daily', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
+        ⚡ Daily Active (6)
+      </button>
+      <button class="btn btn-ghost quest-filter-pill" data-qcat="weekly" onclick="filterQuests('weekly', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
+        🎯 Weekly Bounties (6)
+      </button>
+      <button class="btn btn-ghost quest-filter-pill" data-qcat="milestones" onclick="filterQuests('milestones', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
+        🏆 Milestones (6)
+      </button>
+      <button class="btn btn-ghost quest-filter-pill" data-qcat="challenges" onclick="filterQuests('challenges', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
+        🔥 Speed Duels (6)
+      </button>
+    </div>
+
+    <!-- Responsive Grid of 24 Quest Cards -->
+    <div id="questsGridContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+      {% for q in quests %}
+      <div class="cq-card cq-card-interactive quest-card-item" data-qcat="{{ q.category }}" style="padding: 1.65rem; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); display: flex; flex-direction: column; justify-content: space-between; background: var(--bg-surface); position: relative; overflow: hidden;">
+        
         <div>
+          <!-- Header Badges -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); padding: 0.2rem 0.55rem; border-radius: 4px;">Daily Active</span>
-            <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24;">+50 XP</span>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: {{ q.category_color }}; background: rgba(99, 102, 241, 0.08); border: 1px solid {{ q.category_color }}40; padding: 0.2rem 0.55rem; border-radius: 4px;">
+                {{ q.category_label }}
+              </span>
+              <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted); background: var(--bg-panel); padding: 0.15rem 0.45rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
+                {{ q.difficulty }}
+              </span>
+            </div>
+            <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 800; color: #fbbf24; background: rgba(251, 191, 36, 0.1); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid rgba(251, 191, 36, 0.25);">
+              +{{ q.xp }} XP
+            </span>
           </div>
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
-            Sprint: Complete 1 Keystroke Race
+
+          <!-- Quest Title -->
+          <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.5rem; letter-spacing: -0.015em; line-height: 1.35;">
+            {{ q.title }}
           </h3>
-          <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-            Hit at least 45 Words Per Minute on any typing circuit without making more than 3 consecutive errors.
+
+          <!-- Description -->
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.55; margin: 0 0 1.25rem;">
+            {{ q.desc }}
           </p>
         </div>
-        <a href="{% url 'game_play' 'code-typer' %}" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.82rem; width: 100%; text-align: center;">
-          Launch TypeRacer &rarr;
-        </a>
-      </div>
 
-      <!-- Quest 2 -->
-      <div class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-medium); display: flex; flex-direction: column; justify-content: space-between;">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4; background: rgba(6, 182, 212, 0.1); padding: 0.2rem 0.55rem; border-radius: 4px;">Algorithm Bounty</span>
-            <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24;">+75 XP</span>
+          <!-- Progress Tracking Bar -->
+          <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.72rem; font-family: var(--font-mono); margin-bottom: 0.35rem;">
+              <span style="color: var(--text-muted);">Objective Progress</span>
+              <span style="font-weight: 700; color: {% if q.is_completed %}#10b981{% else %}var(--accent){% endif %};">
+                {% if q.is_completed %}✓ Completed{% else %}{{ q.progress_current }} / {{ q.progress_target }} {{ q.unit }}{% endif %}
+              </span>
+            </div>
+            <div class="lms-progress-track" style="height: 5px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden;">
+              <div style="height: 100%; width: {% if q.is_completed %}100%{% else %}{% widthratio q.progress_current q.progress_target 100 %}%{% endif %}; background: {% if q.is_completed %}#10b981{% else %}var(--accent-gradient-btn){% endif %}; border-radius: 999px;"></div>
+            </div>
           </div>
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
-            Logic: Solve Any Array / Stack Task
-          </h3>
-          <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-            Submit a passing solution for Two-Sum, Balanced Parentheses, or Anagram Grouping in the in-browser IDE.
-          </p>
-        </div>
-        <button type="button" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.82rem; width: 100%; text-align: center;" onclick="switchArenaMode('tasks')">
-          Browse Algorithm Tasks &rarr;
-        </button>
-      </div>
 
-      <!-- Quest 3 -->
-      <div class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-medium); display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b; background: rgba(245, 158, 11, 0.1); padding: 0.2rem 0.55rem; border-radius: 4px;">Consistency Bonus</span>
-            <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24;">+100 XP</span>
-          </div>
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
-            Habit: 3-Day Coding Streak
-          </h3>
-          <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-            Check in for 3 consecutive days to activate the Fire Streak Multiplier and lock in double XP rewards.
-          </p>
+          <!-- Action Button -->
+          <a href="{{ q.action_url }}" class="btn {% if q.is_completed %}btn-ghost{% else %}btn-primary{% endif %}" style="padding: 0.5rem 1rem; font-size: 0.84rem; font-weight: 700; width: 100%; text-align: center; justify-content: center;">
+            {{ q.action_label }}
+          </a>
         </div>
-        <a href="{% url 'catalogue' %}" class="btn btn-ghost" style="padding: 0.45rem 1rem; font-size: 0.82rem; width: 100%; text-align: center;">
-          Explore Course Roadmap &rarr;
-        </a>
-      </div>
 
+      </div>
+      {% endfor %}
     </div>
 
   </div>
@@ -1466,5 +1498,20 @@
     });
 
   })();
+
+  window.filterQuests = function(cat, btn) {
+    document.querySelectorAll('.quest-filter-pill').forEach(p => p.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    
+    const cards = document.querySelectorAll('.quest-card-item');
+    cards.forEach(card => {
+      const qcat = card.getAttribute('data-qcat') || '';
+      if (cat === 'all' || qcat === cat) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  };
 </script>
 {% endblock %}

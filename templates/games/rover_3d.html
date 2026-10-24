@@ -78,14 +78,48 @@
       </div>
     </div>
 
-    <!-- Mission Briefing -->
-    <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-      <div id="roverMissionBrief" style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 600;">
-        Collect 3 glowing energy crystals scattered near the landing pod.
+    <!-- Interactive Mission Briefing & How-to-Play Controls Guide -->
+    <div style="background: radial-gradient(ellipse at top left, rgba(56, 189, 248, 0.08), var(--bg-surface) 75%); border: 1px solid var(--border-medium); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 0.85rem;">
+        <div>
+          <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.25rem;">
+            🎯 Mission Directive &bull; Sector Objective
+          </div>
+          <div id="roverMissionBrief" style="font-size: 1rem; color: var(--text-primary); font-weight: 700; line-height: 1.4;">
+            Collect 3 glowing energy crystals scattered near the landing pod.
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <button id="btnAutoSolveRover" class="btn btn-ghost" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; font-family: var(--font-mono); color: #fbbf24; border-color: rgba(251, 191, 36, 0.3);" title="Auto-populate optimal autonomous route">
+            ⚡ Auto-Solve Route
+          </button>
+          <button id="btnResetMission" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;">
+            🔄 Reset Rover
+          </button>
+        </div>
       </div>
-      <button id="btnResetMission" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.76rem;">
-        ↺ Reset Rover
-      </button>
+
+      <!-- Quick How-To-Play Controls Dock -->
+      <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; padding-top: 0.75rem; border-top: 1px solid var(--border-subtle); font-size: 0.82rem; color: var(--text-secondary);">
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <span style="font-weight: 700; color: var(--text-primary);">🕹️ Drive:</span>
+          <kbd style="background: var(--bg-panel); border: 1px solid var(--border-medium); border-radius: 4px; padding: 0.15rem 0.4rem; font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8;">↑ / W</kbd>
+          <kbd style="background: var(--bg-panel); border: 1px solid var(--border-medium); border-radius: 4px; padding: 0.15rem 0.4rem; font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8;">← / A</kbd>
+          <kbd style="background: var(--bg-panel); border: 1px solid var(--border-medium); border-radius: 4px; padding: 0.15rem 0.4rem; font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8;">→ / D</kbd>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <span style="font-weight: 700; color: var(--text-primary);">💎 Extract:</span>
+          <kbd style="background: var(--bg-panel); border: 1px solid var(--border-medium); border-radius: 4px; padding: 0.15rem 0.5rem; font-family: var(--font-mono); font-size: 0.75rem; color: #10b981;">Spacebar</kbd> or <kbd style="background: var(--bg-panel); border: 1px solid var(--border-medium); border-radius: 4px; padding: 0.15rem 0.4rem; font-family: var(--font-mono); font-size: 0.75rem; color: #10b981;">E</kbd>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <span style="font-weight: 700; color: var(--text-primary);">⚡ Code API:</span>
+          <span style="font-family: var(--font-mono); font-size: 0.76rem; color: #a5b4fc;">rover.forward() &bull; rover.turnLeft() &bull; rover.collect()</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <span style="font-weight: 700; color: #fbbf24;">🏆 Reward:</span>
+          <span>+40 XP on Extraction</span>
+        </div>
+      </div>
     </div>
 
     <!-- 3D WORKSPACE (Grid: 3D Viewport on Left, Control Console on Right) -->

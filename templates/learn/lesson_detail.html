@@ -131,26 +131,20 @@
       <!-- Study Tabs Bar -->
       <div class="study-tabs-nav">
         <button class="study-tab-btn active" data-study-tab="concept">
-          📖 Concept
-        </button>
-        <button class="study-tab-btn" data-study-tab="task">
-          🎯 Task
+          📖 Lesson &amp; Task
         </button>
         <button class="study-tab-btn" data-study-tab="quiz">
-          🧠 Quick Quiz &amp; Cheat Sheet
+          🧠 Quiz &amp; Cheat Sheet
         </button>
         <button class="study-tab-btn" data-study-tab="models">
-          🏗️ Software Models
-        </button>
-        <button class="study-tab-btn" data-study-tab="hints">
-          🔍 Guided Hints
+          🏗️ Architecture Models
         </button>
       </div>
 
       <!-- Scrollable Study Content -->
       <div style="padding: 1.5rem 1.75rem; overflow-y: auto; flex: 1;">
         
-        <!-- Tab 1: Concept & Theory -->
+        <!-- Tab 1: Unified Concept & Coding Task -->
         <div id="studyTabConcept" class="study-tab-content">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
             <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em;">
@@ -180,6 +174,35 @@
             </div>
             <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
               Clean semantic markup improves both SEO indexing and screen reader accessibility for visually impaired learners.
+            </div>
+          </div>
+
+          <!-- Target Objective & Coding Task (Seamlessly visible together with lesson concept) -->
+          <div style="margin-top: 1.75rem; padding: 1.25rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-strong); border-left: 4px solid var(--accent); border-radius: var(--radius-md);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
+              <div style="font-size: 0.8rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
+                <span>🎯</span> <span>Target Objective &bull; What to Code</span>
+              </div>
+              <button id="inlineFillSolutionBtn" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.2rem 0.65rem; color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); font-weight: 700;" title="Click to auto-populate solution into code editor">
+                ⚡ Auto-Fill Solution
+              </button>
+            </div>
+            <div style="font-size: 0.94rem; color: var(--text-primary); font-weight: 600; line-height: 1.6; margin-bottom: 0.85rem;">
+              {{ lesson.task_prompt }}
+            </div>
+            <div style="padding: 0.75rem 1rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 0.85rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+              <div style="font-weight: 700; color: var(--text-muted); font-size: 0.74rem; text-transform: uppercase; margin-bottom: 0.3rem;">Verification Rules</div>
+              &bull; Type your code in the editor on the right.<br/>
+              &bull; Press <kbd style="background: var(--bg-surface); padding: 0.1rem 0.35rem; border-radius: 3px; font-family: var(--font-mono); font-size: 0.72rem; border: 1px solid var(--border-medium);">Ctrl+Enter</kbd> to run tests and earn +{{ lesson.xp }} XP!
+            </div>
+            <div style="display: flex; justify-content: flex-end; align-items: center;">
+              <button id="inlineShowHintBtn" style="background: none; border: none; color: #f59e0b; cursor: pointer; font-size: 0.78rem; font-weight: 700; text-decoration: underline;">
+                💡 Need a hint? Show solution snippet
+              </button>
+            </div>
+            <div id="inlineHintBox" style="display: none; margin-top: 0.65rem; padding: 0.75rem 1rem; background: var(--warning-subtle); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; font-size: 0.82rem; color: var(--text-primary);">
+              <div style="font-weight: 700; color: #f59e0b; margin-bottom: 0.3rem;">Solution Blueprint:</div>
+              <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem; color: #38bdf8; background: #060913; padding: 0.5rem; border-radius: 4px; overflow-x: auto;"><code>{{ lesson.solution }}</code></pre>
             </div>
           </div>
         </div>
@@ -461,6 +484,9 @@ margin: 24px; padding: 20px; border: 2px solid;
             <button id="resetCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.76rem;" title="Reset Starter Code">
               ↺ Reset
             </button>
+            <button id="fillSolutionBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.76rem; color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); font-weight: 700;" title="Auto-fill verified solution code">
+              ⚡ Fill Solution
+            </button>
             <button id="runCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.75rem; font-size: 0.76rem;" title="Run live sandboxed preview">
               ▶ Preview
             </button>
@@ -502,7 +528,7 @@ margin: 24px; padding: 20px; border: 2px solid;
         <!-- Studio Tab Content: 1. Live Preview -->
         <div id="studioTabPreview" class="studio-tab-pane">
           <div id="iframeWrapper" style="width: 100%; transition: max-width 0.2s ease; margin: 0 auto;">
-            <iframe id="previewIframe" sandbox="allow-scripts" style="width: 100%; height: 230px; border: none; background: var(--bg-input); display: block;"></iframe>
+            <iframe id="previewIframe" sandbox="allow-scripts allow-same-origin" style="width: 100%; height: 230px; border: none; background: var(--bg-input); display: block;"></iframe>
           </div>
         </div>
 
@@ -724,6 +750,43 @@ margin: 24px; padding: 20px; border: 2px solid;
         }
         formatBtn.textContent = '✓ Formatted';
         setTimeout(() => { formatBtn.textContent = '⇥ Format'; }, 1200);
+      };
+    }
+
+    // Auto-Fill Solution helper
+    function applySolution(andRun) {
+      const solutionText = `{{ lesson.solution|escapejs }}`;
+      if (rawEditor) {
+        rawEditor.value = solutionText;
+      }
+      if (cmInstance) {
+        cmInstance.setValue(solutionText);
+        cmInstance.save();
+      }
+      const previewBtn = document.getElementById('runCodeBtn');
+      if (previewBtn) previewBtn.click();
+      if (window.CodeQuest && window.CodeQuest.playTone) {
+        window.CodeQuest.playTone('success');
+      }
+      if (andRun) {
+        setTimeout(function() {
+          const checkBtn = document.getElementById('checkSolutionBtn');
+          if (checkBtn) checkBtn.click();
+        }, 300);
+      }
+    }
+
+    const fillBtn = document.getElementById('fillSolutionBtn');
+    if (fillBtn) fillBtn.onclick = function() { applySolution(false); };
+
+    const inlineFillBtn = document.getElementById('inlineFillSolutionBtn');
+    if (inlineFillBtn) inlineFillBtn.onclick = function() { applySolution(true); };
+
+    const inlineHintBtn = document.getElementById('inlineShowHintBtn');
+    const inlineHintBox = document.getElementById('inlineHintBox');
+    if (inlineHintBtn && inlineHintBox) {
+      inlineHintBtn.onclick = function () {
+        inlineHintBox.style.display = (inlineHintBox.style.display === 'none' || !inlineHintBox.style.display) ? 'block' : 'none';
       };
     }
 

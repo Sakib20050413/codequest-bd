@@ -136,7 +136,7 @@
     </div>
 
     <!-- Curriculum Bridge Connection Banner -->
-    <div style="background: rgba(20, 184, 166, 0.08); border: 1px solid rgba(20, 184, 166, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+    <div style="background: rgba(20, 184, 166, 0.08); border: 1px solid rgba(20, 184, 166, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 0.75rem;">
         <span style="font-size: 1.4rem;">🎓</span>
         <div>
@@ -147,6 +147,38 @@
       <a href="{% url 'catalogue' %}" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.35rem 0.85rem; border-color: rgba(20, 184, 166, 0.3); color: var(--accent);">
         View Related Course &rarr;
       </a>
+    </div>
+
+    <!-- Quick How to Play & Controls 3-Step Guide -->
+    <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
+          <span>🎮</span> <span>How to Play &amp; Scoring Rules</span>
+        </span>
+        <span style="font-size: 0.74rem; font-family: var(--font-mono); color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.25);">
+          Win Condition: Satisfy Mission Directive &bull; Return true
+        </span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem; font-size: 0.82rem;">
+        <div style="background: var(--bg-panel); padding: 0.75rem 0.95rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem;">
+            <span style="color: var(--accent);">1.</span> Read Mission Goal
+          </div>
+          <div style="color: var(--text-muted); line-height: 1.45;">Check the <strong>Mission Directive</strong> card below. Each level sets unique parameters and telemetry constraints.</div>
+        </div>
+        <div style="background: var(--bg-panel); padding: 0.75rem 0.95rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem;">
+            <span style="color: #38bdf8;">2.</span> Code or Auto-Solve
+          </div>
+          <div style="color: var(--text-muted); line-height: 1.45;">Edit the logic in the script console, or click <strong>⚡ Auto-Solve Mission</strong> to load the verified solution instantly.</div>
+        </div>
+        <div style="background: var(--bg-panel); padding: 0.75rem 0.95rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem;">
+            <span style="color: #10b981;">3.</span> Run &amp; Earn +50 XP
+          </div>
+          <div style="color: var(--text-muted); line-height: 1.45;">Press <strong>▶ Run &amp; Verify</strong> or hit <kbd style="font-family: var(--font-mono); font-size: 0.72rem; padding: 0.1rem 0.3rem; background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: 3px;">Ctrl+Enter</kbd> to execute simulation and unlock Level 2–10!</div>
+        </div>
+      </div>
     </div>
 
     <!-- 10-Level Mission Selector Bar -->
@@ -168,43 +200,63 @@
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; align-items: stretch;">
 
       <!-- Column 1: Interactive Visual Simulation Viewport (2D & 3D WebGL) -->
-      <div class="arcade-viewport" id="viewportContainer">
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <div class="arcade-viewport" id="viewportContainer">
 
-        <!-- Top Floating Mode Bar -->
-        <div style="position: absolute; top: 12px; left: 12px; z-index: 10; display: flex; gap: 0.4rem; background: rgba(7, 8, 14, 0.85); backdrop-filter: blur(12px); padding: 0.3rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-          <button id="viewMode3dBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 700;">
-            🌐 3D WebGL
-          </button>
-          <button id="viewMode2dBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 700;">
-            🚀 2D Vector
-          </button>
-          <button id="resetSimBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px;">
-            ↺ Reset
-          </button>
-        </div>
-
-        <!-- 3D WebGL Canvas Mount -->
-        <div id="threeCanvasMount" style="width: 100%; height: 100%; min-height: 440px;"></div>
-
-        <!-- 2D Canvas Fallback / Vector Mode -->
-        <canvas id="vectorCanvas2d" style="display: none; width: 100%; height: 100%; min-height: 440px; background: #070914;"></canvas>
-
-        <!-- Win Overlay Banner -->
-        <div id="winBannerModal" style="display: none; position: absolute; inset: 0; z-index: 20; background: rgba(7, 9, 18, 0.94); backdrop-filter: blur(8px); flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;">
-          <div style="font-size: 3.5rem; margin-bottom: 0.5rem; animation: bounce 1s infinite;">🏆</div>
-          <h2 style="font-size: 1.85rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">
-            Mission Complete!
-          </h2>
-          <p id="winBannerSubtitle" style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; max-width: 420px;">
-            Simulation parameters validated. +{{ game.xp_per_win }} XP awarded to your cadet profile.
-          </p>
-          <div style="display: flex; gap: 0.75rem;">
-            <button id="nextLevelActionBtn" class="btn btn-primary" style="padding: 0.65rem 1.75rem; font-size: 0.95rem; font-weight: 800;">
-              Next Mission &rarr;
+          <!-- Top Floating Mode Bar -->
+          <div style="position: absolute; top: 12px; left: 12px; z-index: 10; display: flex; gap: 0.4rem; background: rgba(7, 8, 14, 0.85); backdrop-filter: blur(12px); padding: 0.3rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+            <button id="viewMode3dBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 700;">
+              🌐 3D WebGL
+            </button>
+            <button id="viewMode2dBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 700;">
+              🚀 2D Vector
+            </button>
+            <button id="resetSimBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px;">
+              ↺ Reset
             </button>
           </div>
+
+          <!-- 3D WebGL Canvas Mount -->
+          <div id="threeCanvasMount" style="width: 100%; height: 100%; min-height: 440px; cursor: grab;"></div>
+
+          <!-- 2D Canvas Fallback / Vector Mode -->
+          <canvas id="vectorCanvas2d" style="display: none; width: 100%; height: 100%; min-height: 440px; background: #070914;"></canvas>
+
+          <!-- Win Overlay Banner -->
+          <div id="winBannerModal" style="display: none; position: absolute; inset: 0; z-index: 20; background: rgba(7, 9, 18, 0.94); backdrop-filter: blur(8px); flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;">
+            <div style="font-size: 3.5rem; margin-bottom: 0.5rem; animation: bounce 1s infinite;">🏆</div>
+            <h2 style="font-size: 1.85rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">
+              Mission Complete!
+            </h2>
+            <p id="winBannerSubtitle" style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; max-width: 420px;">
+              Simulation parameters validated. +{{ game.xp_per_win }} XP awarded to your cadet profile.
+            </p>
+            <div style="display: flex; gap: 0.75rem;">
+              <button id="nextLevelActionBtn" class="btn btn-primary" style="padding: 0.65rem 1.75rem; font-size: 0.95rem; font-weight: 800;">
+                Next Mission &rarr;
+              </button>
+            </div>
+          </div>
+
         </div>
 
+        <!-- 3D Interactive Controls & Telemetry Dock -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.75rem 1rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem;">
+          <div style="display: flex; gap: 0.45rem; flex-wrap: wrap; align-items: center;">
+            <button id="actBoostBtn" class="btn btn-ghost" style="padding: 0.3rem 0.75rem; font-size: 0.76rem; border-color: var(--border-medium);" title="Boost rotation and spin speed">
+              🚀 Boost Speed
+            </button>
+            <button id="actShieldBtn" class="btn btn-ghost" style="padding: 0.3rem 0.75rem; font-size: 0.76rem; border-color: var(--border-medium);" title="Toggle wireframe vector shield">
+              🛡️ Shield
+            </button>
+            <button id="actPulseBtn" class="btn btn-ghost" style="padding: 0.3rem 0.75rem; font-size: 0.76rem; border-color: var(--border-medium);" title="Emit bright energy shockwave">
+              ⚡ Energy Pulse
+            </button>
+          </div>
+          <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">
+            🖱️ Click &amp; drag canvas to orbit 3D view
+          </span>
+        </div>
       </div>
 
       <!-- Column 2: Mission Briefing, Code Editor & Execution Console -->
@@ -212,8 +264,11 @@
 
         <!-- Mission Objective Box -->
         <div class="cq-card" style="padding: 1.25rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);">
-          <div style="font-size: 0.76rem; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 0.35rem; letter-spacing: 0.05em;">
-            Mission Directive
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <div style="font-size: 0.76rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">
+              Mission Directive &bull; Expected Output
+            </div>
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8;">Return: Boolean true</span>
           </div>
           <div id="missionObjectiveText" style="font-size: 0.92rem; color: var(--text-primary); font-weight: 600; line-height: 1.5;">
             Initialize simulation parameters, configure loop conditions, and execute state transitions to pass telemetry checks.
@@ -239,12 +294,22 @@ function runSimulation(state) {
 
           <!-- Execution Controls -->
           <div style="margin-top: 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-            <span id="consoleStatusText" style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">
-              Ready. Press Execute to test logic.
-            </span>
-            <button id="btnExecuteScript" class="btn btn-primary" style="padding: 0.5rem 1.4rem; font-size: 0.86rem; font-weight: 800;">
-              ▶ Run &amp; Verify
-            </button>
+            <div style="display: flex; gap: 0.45rem; align-items: center;">
+              <button id="btnAutoSolveScript" class="btn btn-ghost" style="padding: 0.45rem 0.95rem; font-size: 0.8rem; font-weight: 700; color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08);" title="Auto-populate the verified winning algorithm">
+                ⚡ Auto-Solve Mission
+              </button>
+              <button id="btnHintScript" class="btn btn-ghost" style="padding: 0.45rem 0.75rem; font-size: 0.8rem; color: #f59e0b; border-color: rgba(245, 158, 11, 0.35);" title="View a hint for this level">
+                💡 Hint
+              </button>
+            </div>
+            <div style="display: flex; gap: 0.65rem; align-items: center;">
+              <span id="consoleStatusText" style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">
+                Ready. Press Run (Ctrl+Enter).
+              </span>
+              <button id="btnExecuteScript" class="btn btn-primary" style="padding: 0.5rem 1.4rem; font-size: 0.86rem; font-weight: 800;">
+                ▶ Run &amp; Verify
+              </button>
+            </div>
           </div>
         </div>
 
@@ -321,39 +386,51 @@ function runSimulation(state) {
     if (saved) completedLevels = new Set(JSON.parse(saved));
   } catch(e) {}
 
-  // Web Audio Synth for crisp arcade audio
-  const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
-  function playSound(type) {
-    if (!audioCtx) return;
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    const now = audioCtx.currentTime;
-
-    if (type === 'click') {
-      osc.frequency.setValueAtTime(440, now);
-      gain.gain.setValueAtTime(0.08, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-      osc.start(now);
-      osc.stop(now + 0.05);
-    } else if (type === 'success') {
-      osc.frequency.setValueAtTime(523.25, now);
-      osc.frequency.setValueAtTime(659.25, now + 0.08);
-      osc.frequency.setValueAtTime(783.99, now + 0.16);
-      gain.gain.setValueAtTime(0.12, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-      osc.start(now);
-      osc.stop(now + 0.35);
-    } else if (type === 'error') {
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(160, now);
-      gain.gain.setValueAtTime(0.1, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-      osc.start(now);
-      osc.stop(now + 0.2);
+  // Web Audio Synth for crisp arcade audio (lazy instantiation to prevent autoplay warning)
+  let audioCtx = null;
+  function getAudioContext() {
+    if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume().catch(() => {});
+    }
+    return audioCtx;
+  }
+
+  function playSound(type) {
+    try {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      const now = ctx.currentTime;
+
+      if (type === 'click') {
+        osc.frequency.setValueAtTime(440, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+        osc.start(now);
+        osc.stop(now + 0.05);
+      } else if (type === 'success') {
+        osc.frequency.setValueAtTime(523.25, now);
+        osc.frequency.setValueAtTime(659.25, now + 0.08);
+        osc.frequency.setValueAtTime(783.99, now + 0.16);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc.start(now);
+        osc.stop(now + 0.35);
+      } else if (type === 'error') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(160, now);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      }
+    } catch(e) {}
   }
 
   // Confetti Particle Burst
@@ -384,18 +461,78 @@ function runSimulation(state) {
     }
   }
 
-  // 10 Level Mission Data Generator
+  // 10 Level Mission Data with Directives, Hints and Solutions
   const MISSIONS = [
-    { title: "Foundations: State Initialization", brief: "Configure initial simulation state variables, verify flags, and start the system loop.", starter: "function runSimulation(state) {\n  state.power = 100;\n  state.online = true;\n  return state.power === 100 && state.online;\n}" },
-    { title: "Kinematics: Velocity Increment", brief: "Apply acceleration formulas to reach target orbital velocity within threshold limits.", starter: "function runSimulation(state) {\n  state.velocity = 0;\n  for(let i = 0; i < 5; i++) state.velocity += 2.0;\n  return state.velocity >= 10.0;\n}" },
-    { title: "Control Flow: Boundary Clamping", brief: "Implement boundary safeguards to clamp coordinates within safety sectors (-10 to +10).", starter: "function runSimulation(state) {\n  let x = state.targetX || 15;\n  let clampedX = Math.max(-10, Math.min(10, x));\n  return clampedX <= 10 && clampedX >= -10;\n}" },
-    { title: "Arrays: Buffer Transformation", brief: "Transform sensor data telemetry streams using array map and filter methods.", starter: "function runSimulation(state) {\n  const raw = [12, 45, 88, 120, 204];\n  const normalized = raw.filter(v => v > 50).map(v => v * 2);\n  return normalized.length === 3;\n}" },
-    { title: "State Machine: Mode Transitions", brief: "Transition the state machine from IDLE -> SCANNING -> ACTIVE without illegal state jumps.", starter: "function runSimulation(state) {\n  state.mode = 'IDLE';\n  if (state.mode === 'IDLE') state.mode = 'SCANNING';\n  if (state.mode === 'SCANNING') state.mode = 'ACTIVE';\n  return state.mode === 'ACTIVE';\n}" },
-    { title: "Optimization: Delta Time Throttling", brief: "Calculate frame elapsed time to enforce smooth 60fps physics step calculations.", starter: "function runSimulation(state) {\n  const dt = 1 / 60;\n  state.physicsTick = (state.physicsTick || 0) + dt;\n  return state.physicsTick > 0;\n}" },
-    { title: "Spatial Hash: Collision Detection", brief: "Detect vector collision overlap between the agent hitbox and obstacle bounding radius.", starter: "function runSimulation(state) {\n  const dist = Math.hypot(3, 4); // 5.0\n  return dist === 5;\n}" },
-    { title: "Recursion: Matrix Unraveling", brief: "Unravel nested multi-dimensional coordinate arrays using recursive traversal.", starter: "function runSimulation(state) {\n  function sum(arr) {\n    return arr.reduce((acc, v) => acc + (Array.isArray(v) ? sum(v) : v), 0);\n  }\n  return sum([1, [2, [3, 4]]]) === 10;\n}" },
-    { title: "Security: Checksum Integrity", brief: "Calculate hash payload parity bits to verify packet integrity against signal corruption.", starter: "function runSimulation(state) {\n  const payload = [1, 0, 1, 1, 0];\n  const parity = payload.reduce((acc, bit) => acc ^ bit, 0);\n  return parity === 1;\n}" },
-    { title: "Grandmaster: Sovereign Architecture", brief: "Orchestrate full autonomous system state with zero memory leaks and clean exit codes.", starter: "function runSimulation(state) {\n  state.integrity = 100;\n  state.activeJobs = 0;\n  state.missionComplete = true;\n  return state.missionComplete && state.integrity === 100;\n}" }
+    { 
+      title: "Foundations: State Initialization", 
+      brief: "Configure initial simulation state variables, verify power and online flags, and start the system loop.", 
+      starter: "function runSimulation(state) {\n  state.power = 100;\n  state.online = true;\n  return state.power === 100 && state.online;\n}",
+      solution: "function runSimulation(state) {\n  state.power = 100;\n  state.online = true;\n  return state.power === 100 && state.online;\n}",
+      hint: "Assign state.power = 100 and state.online = true, then return true."
+    },
+    { 
+      title: "Kinematics: Velocity Increment", 
+      brief: "Apply acceleration formulas to reach target orbital velocity within threshold limits (>= 10.0).", 
+      starter: "function runSimulation(state) {\n  state.velocity = 0;\n  for(let i = 0; i < 5; i++) state.velocity += 2.0;\n  return state.velocity >= 10.0;\n}",
+      solution: "function runSimulation(state) {\n  state.velocity = 0;\n  for(let i = 0; i < 5; i++) state.velocity += 2.0;\n  return state.velocity >= 10.0;\n}",
+      hint: "Increment velocity in a loop until state.velocity >= 10.0."
+    },
+    { 
+      title: "Control Flow: Boundary Clamping", 
+      brief: "Implement boundary safeguards to clamp coordinates within safety sectors (-10 to +10).", 
+      starter: "function runSimulation(state) {\n  let x = state.targetX || 15;\n  let clampedX = Math.max(-10, Math.min(10, x));\n  return clampedX <= 10 && clampedX >= -10;\n}",
+      solution: "function runSimulation(state) {\n  let x = state.targetX || 15;\n  let clampedX = Math.max(-10, Math.min(10, x));\n  return clampedX <= 10 && clampedX >= -10;\n}",
+      hint: "Use Math.max(-10, Math.min(10, x)) to clamp within [-10, 10]."
+    },
+    { 
+      title: "Arrays: Buffer Transformation", 
+      brief: "Transform sensor data telemetry streams using array filter and map methods.", 
+      starter: "function runSimulation(state) {\n  const raw = [12, 45, 88, 120, 204];\n  const normalized = raw.filter(v => v > 50).map(v => v * 2);\n  return normalized.length === 3;\n}",
+      solution: "function runSimulation(state) {\n  const raw = [12, 45, 88, 120, 204];\n  const normalized = raw.filter(v => v > 50).map(v => v * 2);\n  return normalized.length === 3;\n}",
+      hint: "Filter numbers strictly greater than 50 (88, 120, 204 = 3 items)."
+    },
+    { 
+      title: "State Machine: Mode Transitions", 
+      brief: "Transition the state machine from IDLE -> SCANNING -> ACTIVE without illegal state jumps.", 
+      starter: "function runSimulation(state) {\n  state.mode = 'IDLE';\n  if (state.mode === 'IDLE') state.mode = 'SCANNING';\n  if (state.mode === 'SCANNING') state.mode = 'ACTIVE';\n  return state.mode === 'ACTIVE';\n}",
+      solution: "function runSimulation(state) {\n  state.mode = 'IDLE';\n  if (state.mode === 'IDLE') state.mode = 'SCANNING';\n  if (state.mode === 'SCANNING') state.mode = 'ACTIVE';\n  return state.mode === 'ACTIVE';\n}",
+      hint: "Step state.mode from IDLE to SCANNING, then from SCANNING to ACTIVE."
+    },
+    { 
+      title: "Optimization: Delta Time Throttling", 
+      brief: "Calculate frame elapsed time to enforce smooth 60fps physics step calculations.", 
+      starter: "function runSimulation(state) {\n  const dt = 1 / 60;\n  state.physicsTick = (state.physicsTick || 0) + dt;\n  return state.physicsTick > 0;\n}",
+      solution: "function runSimulation(state) {\n  const dt = 1 / 60;\n  state.physicsTick = (state.physicsTick || 0) + dt;\n  return state.physicsTick > 0;\n}",
+      hint: "Accumulate dt into state.physicsTick and verify it is > 0."
+    },
+    { 
+      title: "Spatial Hash: Collision Detection", 
+      brief: "Detect vector collision overlap between the agent hitbox and obstacle bounding radius.", 
+      starter: "function runSimulation(state) {\n  const dist = Math.hypot(3, 4); // 5.0\n  return dist === 5;\n}",
+      solution: "function runSimulation(state) {\n  const dist = Math.hypot(3, 4);\n  return dist === 5;\n}",
+      hint: "Math.hypot(3, 4) calculates Euclidean distance: sqrt(3^2 + 4^2) = 5."
+    },
+    { 
+      title: "Recursion: Matrix Unraveling", 
+      brief: "Unravel nested multi-dimensional coordinate arrays using recursive traversal.", 
+      starter: "function runSimulation(state) {\n  function sum(arr) {\n    return arr.reduce((acc, v) => acc + (Array.isArray(v) ? sum(v) : v), 0);\n  }\n  return sum([1, [2, [3, 4]]]) === 10;\n}",
+      solution: "function runSimulation(state) {\n  function sum(arr) {\n    return arr.reduce((acc, v) => acc + (Array.isArray(v) ? sum(v) : v), 0);\n  }\n  return sum([1, [2, [3, 4]]]) === 10;\n}",
+      hint: "Recurse on elements where Array.isArray(v) is true."
+    },
+    { 
+      title: "Security: Checksum Integrity", 
+      brief: "Calculate hash payload parity bits using XOR to verify packet integrity against signal corruption.", 
+      starter: "function runSimulation(state) {\n  const payload = [1, 0, 1, 1, 0];\n  const parity = payload.reduce((acc, bit) => acc ^ bit, 0);\n  return parity === 1;\n}",
+      solution: "function runSimulation(state) {\n  const payload = [1, 0, 1, 1, 0];\n  const parity = payload.reduce((acc, bit) => acc ^ bit, 0);\n  return parity === 1;\n}",
+      hint: "Use payload.reduce((acc, bit) => acc ^ bit, 0) which equals 1."
+    },
+    { 
+      title: "Grandmaster: Sovereign Architecture", 
+      brief: "Orchestrate full autonomous system state with zero memory leaks and complete integrity.", 
+      starter: "function runSimulation(state) {\n  state.integrity = 100;\n  state.activeJobs = 0;\n  state.missionComplete = true;\n  return state.missionComplete && state.integrity === 100;\n}",
+      solution: "function runSimulation(state) {\n  state.integrity = 100;\n  state.activeJobs = 0;\n  state.missionComplete = true;\n  return state.missionComplete && state.integrity === 100;\n}",
+      hint: "Set integrity to 100 and missionComplete to true."
+    }
   ];
 
   // Render Level Selector Pills
@@ -535,6 +672,10 @@ function runSimulation(state) {
 
   let lastTime = performance.now();
   let frameCount = 0;
+  let rotationVelocity = { x: 0.008, y: 0.012 };
+  let isDragging = false;
+  let previousMousePosition = { x: 0, y: 0 };
+
   function animate3D() {
     animationFrameId = requestAnimationFrame(animate3D);
 
@@ -547,9 +688,9 @@ function runSimulation(state) {
       lastTime = now;
     }
 
-    if (heroMesh) {
-      heroMesh.rotation.x += 0.008;
-      heroMesh.rotation.y += 0.012;
+    if (heroMesh && !isDragging) {
+      heroMesh.rotation.x += rotationVelocity.x;
+      heroMesh.rotation.y += rotationVelocity.y;
       heroMesh.position.y = Math.sin(now * 0.002) * 0.4;
     }
     if (particleCloud) {
@@ -668,6 +809,136 @@ function runSimulation(state) {
     }
   }
 
+  // 1-Click Auto Solve Mission
+  function autoSolveMission() {
+    const mission = MISSIONS[currentLevel - 1];
+    const editor = document.getElementById('arcadeCodeEditor');
+    const statusText = document.getElementById('consoleStatusText');
+    if (!editor || !mission) return;
+    editor.value = mission.solution || mission.starter;
+    if (statusText) {
+      statusText.textContent = `⚡ Solution applied for Mission ${currentLevel}. Verifying...`;
+      statusText.style.color = '#38bdf8';
+    }
+    executeSimulation();
+  }
+
+  // Show Hint Helper
+  function showHint() {
+    const mission = MISSIONS[currentLevel - 1];
+    const statusText = document.getElementById('consoleStatusText');
+    if (!statusText || !mission) return;
+    statusText.textContent = `💡 Hint: ${mission.hint || 'Make sure runSimulation returns a truthy value.'}`;
+    statusText.style.color = '#f59e0b';
+    playSound('click');
+  }
+
+  // Interactive Orbit Controls & Action Dock Handlers
+  function setupOrbitInteraction() {
+    const mount = document.getElementById('threeCanvasMount');
+    if (!mount) return;
+
+    mount.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+      mount.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', function(e) {
+      if (!isDragging || !heroMesh) return;
+      const deltaX = e.clientX - previousMousePosition.x;
+      const deltaY = e.clientY - previousMousePosition.y;
+
+      heroMesh.rotation.y += deltaX * 0.01;
+      heroMesh.rotation.x += deltaY * 0.01;
+
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    });
+
+    window.addEventListener('mouseup', function() {
+      if (isDragging) {
+        isDragging = false;
+        if (mount) mount.style.cursor = 'grab';
+      }
+    });
+
+    // Touch Support for Mobile Dragging
+    mount.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', function(e) {
+      if (!isDragging || !heroMesh || e.touches.length !== 1) return;
+      const deltaX = e.touches[0].clientX - previousMousePosition.x;
+      const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+      heroMesh.rotation.y += deltaX * 0.01;
+      heroMesh.rotation.x += deltaY * 0.01;
+
+      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }, { passive: true });
+
+    window.addEventListener('touchend', function() {
+      isDragging = false;
+    });
+
+    // Action Dock Buttons
+    const boostBtn = document.getElementById('actBoostBtn');
+    const shieldBtn = document.getElementById('actShieldBtn');
+    const pulseBtn = document.getElementById('actPulseBtn');
+
+    if (boostBtn) {
+      boostBtn.onclick = function() {
+        playSound('click');
+        rotationVelocity.x = 0.05;
+        rotationVelocity.y = 0.07;
+        const statusText = document.getElementById('consoleStatusText');
+        if (statusText) {
+          statusText.textContent = '🚀 Velocity boost applied to 3D matrix!';
+          statusText.style.color = '#38bdf8';
+        }
+        setTimeout(() => {
+          rotationVelocity.x = 0.008;
+          rotationVelocity.y = 0.012;
+        }, 3000);
+      };
+    }
+
+    if (shieldBtn) {
+      shieldBtn.onclick = function() {
+        playSound('click');
+        if (heroMesh && heroMesh.children.length > 0) {
+          heroMesh.children[0].visible = !heroMesh.children[0].visible;
+          const isShieldOn = heroMesh.children[0].visible;
+          shieldBtn.classList.toggle('btn-primary', isShieldOn);
+          const statusText = document.getElementById('consoleStatusText');
+          if (statusText) {
+            statusText.textContent = isShieldOn ? '🛡️ Shield barrier engaged.' : '🛡️ Shield barrier lowered.';
+            statusText.style.color = isShieldOn ? '#10b981' : 'var(--text-muted)';
+          }
+        }
+      };
+    }
+
+    if (pulseBtn) {
+      pulseBtn.onclick = function() {
+        playSound('success');
+        if (heroMesh) {
+          heroMesh.scale.set(1.4, 1.4, 1.4);
+          setTimeout(() => heroMesh.scale.set(1, 1, 1), 400);
+        }
+        const statusText = document.getElementById('consoleStatusText');
+        if (statusText) {
+          statusText.textContent = '⚡ Energy pulse discharged across telemetry sectors!';
+          statusText.style.color = '#a855f7';
+        }
+      };
+    }
+  }
+
   // Drawer Toggles & Live Search
   function bindDrawerEvents() {
     const openBtn = document.getElementById('openCatalogDrawerBtn');
@@ -758,9 +1029,26 @@ function runSimulation(state) {
     init3DScene();
     bindDrawerEvents();
     bindViewportSwitchers();
+    setupOrbitInteraction();
 
     const runBtn = document.getElementById('btnExecuteScript');
     if (runBtn) runBtn.onclick = executeSimulation;
+
+    const autoSolveBtn = document.getElementById('btnAutoSolveScript');
+    if (autoSolveBtn) autoSolveBtn.onclick = autoSolveMission;
+
+    const hintBtn = document.getElementById('btnHintScript');
+    if (hintBtn) hintBtn.onclick = showHint;
+
+    const editor = document.getElementById('arcadeCodeEditor');
+    if (editor) {
+      editor.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          e.preventDefault();
+          executeSimulation();
+        }
+      });
+    }
 
     const nextBtn = document.getElementById('nextLevelActionBtn');
     if (nextBtn) {

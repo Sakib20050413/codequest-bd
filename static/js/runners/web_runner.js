@@ -322,7 +322,17 @@
       if (tTab) tTab.click();
 
       setTimeout(function () {
-        const doc = previewFrame.contentDocument || (previewFrame.contentWindow && previewFrame.contentWindow.document);
+        let doc = null;
+        try {
+          doc = previewFrame.contentDocument || (previewFrame.contentWindow && previewFrame.contentWindow.document);
+        } catch (e) {}
+
+        // Fallback to DOMParser if iframe is cross-origin or sandboxed
+        if (!doc || !doc.body || doc.body.children.length === 0) {
+          try {
+            doc = new DOMParser().parseFromString(code, 'text/html');
+          } catch (e) {}
+        }
         if (!doc) return;
 
         tests.forEach(function (t) {

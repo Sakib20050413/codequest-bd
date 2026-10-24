@@ -1,4 +1,5 @@
 from .tasks_data import CODING_TASKS
+from .quests_data import PRACTICE_QUESTS
 import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, Http404
@@ -466,6 +467,8 @@ def games_hub(request):
         "games": games,
         "tasks": CODING_TASKS,
         "active_mode": active_mode,
+        "quests": PRACTICE_QUESTS,
+        "total_quests_xp": sum(q["xp"] for q in PRACTICE_QUESTS),
         "total_tasks_xp": sum(t["xp"] for t in CODING_TASKS),
         "total_games_count": games.count(),
         "category_counts": category_counts,
