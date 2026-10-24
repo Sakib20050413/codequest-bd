@@ -1,57 +1,78 @@
-{% load static %}
-<header class="cq-navbar cq-shell">
-  <!-- Brand Logo & Identity (Req #1) -->
-  <a href="{% url 'landing' %}" style="display:flex; align-items:center; gap:0.75rem;">
-    <img src="{% static 'img/logo.svg' %}" alt="CodeQuest 3D Logo" style="width:42px; height:42px; border-radius:12px; flex-shrink:0;" />
-    <div>
-      <div style="display:flex; align-items:center; gap:0.45rem;">
-        <span class="font-display" style="font-weight:800; font-size:1.05rem;">CodeQuest BD</span>
-        <span class="font-mono" style="font-size:0.64rem; padding:0.12rem 0.45rem; border-radius:6px; background:rgba(16,185,129,0.15); color:var(--brand-primary); font-weight:700;">V10.0 STUDIO</span>
-      </div>
-      <div class="font-mono" style="font-size:0.66rem; color:var(--txt-3);">16 Languages • 108 3D/2D Games • CS50 Visual Stack</div>
+<nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <a href="{% url 'arena:home' %}" class="flex items-center gap-2 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-xl shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition transform">
+                        ⚡
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
+                            CodeQuest <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded font-mono">3D</span>
+                        </span>
+                        <span class="text-[10px] text-slate-400 block -mt-1 font-mono">BAIUST CSE 324 Final</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="hidden md:flex items-center space-x-1 lg:space-x-3 text-sm font-medium">
+                <a href="{% url 'arena:tracks' %}" class="text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-900 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-layer-group text-emerald-400"></i> Tracks
+                </a>
+                <a href="{% url 'arena:blitz' %}" class="text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-900 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-bolt text-amber-400"></i> Bug Blitz (60s)
+                </a>
+                <a href="{% url 'arena:leaderboard' %}" class="text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-900 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-trophy text-yellow-400"></i> Leaderboard
+                </a>
+                <a href="{% url 'arena:proposal' %}" class="text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-900 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-lines text-cyan-400"></i> Project Proposal
+                </a>
+                <a href="/php_sessional_crud/index.php" target="_blank" class="text-emerald-400 hover:text-emerald-300 px-3 py-2 rounded-lg bg-emerald-950/30 border border-emerald-500/30 transition flex items-center gap-1.5 text-xs font-mono">
+                    <i class="fa-brands fa-php"></i> PHP CRUD (iv)
+                </a>
+            </div>
+
+            <!-- User Status / Auth Actions -->
+            <div class="flex items-center space-x-3">
+                {% if user.is_authenticated %}
+                    <!-- Student XP Badge -->
+                    <div class="hidden sm:flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl">
+                        <span class="text-xs text-amber-400 font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-star"></i> <span id="nav-user-xp">{{ user.profile.xp }} XP</span>
+                        </span>
+                        <span class="text-[11px] px-2 py-0.5 rounded font-mono font-semibold {{ user.profile.rank_badge_color }}">
+                            Lvl {{ user.profile.level }}
+                        </span>
+                    </div>
+
+                    <!-- Instructor Panel Link (if staff or superuser) -->
+                    {% if user.is_staff or user.is_superuser %}
+                        <a href="{% url 'instructor_panel:dashboard' %}" class="bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-gauge-high"></i> Admin CMS
+                        </a>
+                    {% endif %}
+
+                    <!-- Profile Dropdown Button -->
+                    <a href="{% url 'accounts:profile' %}" class="flex items-center gap-2 text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-1.5 rounded-xl transition text-sm">
+                        <span class="text-base">{{ user.profile.get_avatar_display|slice:":2"|default:"🤖" }}</span>
+                        <span class="font-medium hidden sm:inline">{{ user.first_name|default:user.username }}</span>
+                    </a>
+
+                    <a href="{% url 'accounts:logout' %}" title="Logout" class="text-slate-400 hover:text-rose-400 p-2 rounded-lg hover:bg-slate-900 transition text-sm">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </a>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="text-slate-300 hover:text-white px-3 py-2 text-sm font-semibold transition">
+                        Log In
+                    </a>
+                    <a href="{% url 'accounts:register' %}" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-sm transition shadow-lg shadow-emerald-500/20">
+                        Join Quest
+                    </a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-  </a>
-
-  <!-- Desktop Navigation Links -->
-  <nav class="cq-nav-links font-mono">
-    <a href="{% url 'landing' %}" class="cq-btn {% if active_page == 'home' %}cq-btn-primary{% endif %}">🏠 Hub</a>
-    <a href="{% url 'catalogue' %}" class="cq-btn {% if active_page == 'courses' %}cq-btn-primary{% endif %}">📚 16 Courses</a>
-    <a href="{% url 'games_hub' %}" class="cq-btn {% if active_page == 'games' %}cq-btn-primary{% endif %}">🎮 108 Games Arena</a>
-    <a href="{% url 'playground' %}" class="cq-btn {% if active_page == 'playground' %}cq-btn-primary{% endif %}">⚡ 16-Lang IDE</a>
-    <a href="{% url 'profile_view' %}" class="cq-btn {% if active_page == 'student_dashboard' %}cq-btn-primary{% endif %}">🎓 Student Portal</a>
-    <a href="/instructor-panel/" class="cq-btn {% if active_page == 'admin_panel' %}cq-btn-primary{% endif %}">🛡️ Admin CMS</a>
-    <a href="{% url 'about_view' %}" class="cq-btn {% if active_page == 'about' %}cq-btn-primary{% endif %}">™ Charter</a>
-  </nav>
-
-  <!-- Right Dynamic Action Cluster (Never disappears on resize!) -->
-  <div class="cq-actions-group font-mono">
-    <a href="{% url 'profile_view' %}" class="cq-btn" title="Daily Streak & XP">
-      🔥 <span id="navStreakNum">12</span>d • ⚡ <span id="navXpNum">1,450</span> XP
-    </a>
-    <button type="button" id="liveEditPageBtn" onclick="toggleLivePageEdit()" class="cq-btn" title="Directly edit any text on this webpage (Req #5)">
-      ✏️ Edit Page: OFF
-    </button>
-    <button type="button" id="themeToggleBtn" onclick="toggleCqTheme()" class="cq-btn" title="Switch Dark / Crisp Daylight Theme (Req #3 & #6)">
-      ☀️/🌙 Theme
-    </button>
-    <a href="{% url 'login_view' %}" class="cq-btn cq-btn-primary">Sign In →</a>
-    <button type="button" class="cq-btn cq-mobile-toggle" style="display:none;" onclick="document.getElementById('cqMobileDrawer').classList.toggle('hidden-drawer')">
-      ☰ Menu
-    </button>
-  </div>
-</header>
-
-<!-- Responsive Mobile & Tablet Drawer (Fixes Req #2 so all buttons stay accessible on any screen size) -->
-<div id="cqMobileDrawer" class="cq-shell font-mono hidden-drawer" style="background:var(--bg-surface-solid); border-bottom:1px solid var(--border-subtle); padding-top:0.75rem; padding-bottom:0.75rem;">
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:0.5rem;">
-    <a href="{% url 'landing' %}" class="cq-btn">🏠 Home Hub</a>
-    <a href="{% url 'catalogue' %}" class="cq-btn">📚 16 Languages</a>
-    <a href="{% url 'games_hub' %}" class="cq-btn">🎮 108 Games</a>
-    <a href="{% url 'playground' %}" class="cq-btn">⚡ 16-Lang IDE</a>
-    <a href="{% url 'profile_view' %}" class="cq-btn">🎓 Student Dashboard</a>
-    <a href="/instructor-panel/" class="cq-btn">🛡️ Admin Panel</a>
-    <a href="{% url 'about_view' %}" class="cq-btn">™ About &amp; Trademark</a>
-    <a href="{% url 'login_view' %}" class="cq-btn cq-btn-primary">🔐 Sign In / Register</a>
-  </div>
-</div>
-<style>.hidden-drawer { display: none !important; }</style>
+</nav>

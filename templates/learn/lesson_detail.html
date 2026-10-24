@@ -1,534 +1,553 @@
 {% extends "base.html" %}
 {% load static %}
+{% load learn_extras %}
+
+{% block title %}{{ lesson.title }} — {{ course.title }} — CodeQuest BD{% endblock %}
+
+{% block extra_head %}
+<!-- CodeMirror Professional Web IDE Engine -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+{% endblock %}
+
 {% block content %}
-{% csrf_token %}
+<div class="shell shell-wide" style="padding-top: 1.5rem; padding-bottom: 3.5rem;">
 
-<!-- ======================================================================= -->
-<!-- 01. APPLE/LINEAR-GRADE HERO + 16-LANGUAGE IDE + REACTIVE TERMINAL       -->
-<!-- ======================================================================= -->
-<section class="cq-grid-12" style="align-items:stretch; margin-bottom:1.5rem;">
+  <!-- Lesson Navigation Header Bar -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
+    <div style="display: flex; align-items: center; gap: 0.85rem;">
+      <a href="{% url 'course_detail' course.slug %}" class="btn btn-ghost" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">
+        &larr; {{ course.title }}
+      </a>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.5rem; border-radius: var(--radius-sm); color: var(--accent);">
+          #{{ lesson.order }}
+        </span>
+        <h1 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0; letter-spacing: -0.01em;">
+          {{ lesson.title }}
+        </h1>
+      </div>
+    </div>
 
-  <!-- Left 5 Cols: Brand Emblem, Concise Value Prop & Quick Launch (Req #1, #4, #8) -->
-  <div class="cq-card cq-col-lg-12" style="grid-column: span 5; display:flex; flex-direction:column; justify-content:space-between; gap:1.35rem;">
-    <div style="display:flex; flex-direction:column; gap:1.1rem;">
-      <div style="display:flex; align-items:center; gap:0.85rem;">
-        <img src="{% static 'img/codequest_logo.jpg' %}" alt="CodeQuest Official 3D Emblem" style="width:58px; height:58px; border-radius:16px; object-fit:cover; border:2px solid var(--brand-primary);" />
+    <div style="display: flex; align-items: center; gap: 0.85rem;">
+      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); font-weight: 600; background: var(--accent-subtle); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(20, 184, 166, 0.25);">
+        +{{ lesson.xp }} XP
+      </span>
+
+      <!-- Tactile Sound Toggle -->
+      <button id="lessonAudioToggle" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;" title="Toggle Mechanical Keystroke Audio">
+        ⌨ Mechanical SFX
+      </button>
+
+      <!-- Zen Fullscreen Toggle -->
+      <button id="zenModeBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Toggle Distraction-Free Zen Workspace">
+        ⛶ Zen Mode
+      </button>
+
+      <div style="display: flex; gap: 0.35rem;">
+        {% if prev_lesson %}
+        <a href="{% url 'lesson_detail' course.slug prev_lesson.slug %}" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Previous Lesson">
+          &larr; Prev
+        </a>
+        {% endif %}
+        {% if next_lesson %}
+        <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Next Lesson">
+          Next &rarr;
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile View Switcher (Only visible under 860px) -->
+  <div id="mobileLessonTabs" style="display: none; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem; gap: 0.5rem;">
+    <button class="btn btn-ghost mobile-tab-btn active" data-tab="instructions" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
+      Instructions
+    </button>
+    <button class="btn btn-ghost mobile-tab-btn" data-tab="editor" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
+      Code Editor
+    </button>
+    <button class="btn btn-ghost mobile-tab-btn" data-tab="preview" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
+      Preview &amp; Tests
+    </button>
+  </div>
+
+  <!-- Resizable Workspace Container -->
+  <div id="workspaceContainer" style="display: flex; gap: 0; align-items: stretch; position: relative;">
+    
+    <!-- Left Column: Mental Model & Instructions -->
+    <div id="panelInstructions" class="cq-card" style="flex: 0 0 42%; min-width: 280px; max-width: 65%; padding: 2rem; max-height: 85vh; overflow-y: auto;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em;">
+          Mental Model &bull; 3–7 Minutes
+        </span>
+        <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
+          ⏱ {{ lesson.est_minutes }} mins
+        </span>
+      </div>
+
+      <!-- Conceptual Explanation Markdown -->
+      <div class="prose" style="font-size: 0.95rem; line-height: 1.65; color: var(--text-primary); margin-bottom: 1.75rem;">
+        {{ lesson.body_md|render_md }}
+      </div>
+
+      <!-- Optional Diagram -->
+      {% if lesson.diagram_svg %}
+      <div style="margin: 1.5rem 0; padding: 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); text-align: center;">
+        {{ lesson.diagram_svg|safe }}
+      </div>
+      {% endif %}
+
+      <!-- Guided Task Challenge -->
+      <div style="margin-top: 1.5rem; padding: 1.25rem; background: var(--bg-panel); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.4rem;">
+          🎯 Your Task
+        </div>
+        <div style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.55;">
+          {{ lesson.task_prompt }}
+        </div>
+      </div>
+
+      <!-- Stepped Hint Ladder -->
+      <div style="margin-top: 1.75rem;">
+        <button id="revealHintBtn" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.4rem 0.85rem; color: var(--text-muted);">
+          💡 Need a hint?
+        </button>
+        <div id="hintDisplayBox" style="display: none; margin-top: 0.75rem; padding: 0.9rem 1.15rem; background: var(--warning-subtle); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: var(--radius-sm); font-size: 0.86rem; color: var(--text-primary); line-height: 1.55;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Draggable Splitter Divider -->
+    <div id="workspaceSplitter" class="cq-splitter-v" title="Drag to resize panels (Double-click to reset)"></div>
+
+    <!-- Right Column: Interactive Editor & Verification Runner -->
+    <div id="panelEditorWrapper" style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 1rem;">
+      
+      <!-- Code Editor Panel -->
+      <div id="panelCodeEditor" class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border-strong);">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 0.65rem 1.15rem; background: var(--bg-panel); border-bottom: 1px solid var(--border-subtle); gap: 0.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted);">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent);"></span>
+            <span>editor.{{ course.language.slug|default:'code' }}</span>
+            <span style="font-size: 0.72rem; color: var(--text-muted); margin-left: 0.5rem;">(Ctrl+Enter to check)</span>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 0.45rem;">
+            <!-- Interactive Box Model Inspector Toggle -->
+            <button id="openBoxInspectorBtn" class="btn btn-ghost" style="padding: 0.3rem 0.65rem; font-size: 0.78rem;" title="Open Visual Box Model &amp; Flexbox Inspector">
+              📐 Box Inspector
+            </button>
+            <button id="resetCodeBtn" class="btn btn-ghost" style="padding: 0.3rem 0.65rem; font-size: 0.78rem;" title="Reset Starter Code">
+              ↺ Reset
+            </button>
+            <button id="runCodeBtn" class="btn btn-ghost" style="padding: 0.3rem 0.75rem; font-size: 0.78rem;">
+              ▶ Preview
+            </button>
+            <button id="checkSolutionBtn" class="btn btn-primary" style="padding: 0.3rem 0.95rem; font-size: 0.78rem;">
+              ✔ Check Solution
+            </button>
+          </div>
+        </div>
+
+        <textarea id="codeEditor" class="code-editor" style="min-height: 250px; border: none; border-radius: 0; font-size: 0.9rem; outline: none; background: var(--bg-input); color: var(--text-primary); padding: 1.25rem;" spellcheck="false">{{ lesson.starter_code }}</textarea>
+      </div>
+
+      <!-- Live Sandboxed Preview -->
+      <div id="panelLivePreview" class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="padding: 0.5rem 1rem; background: var(--bg-panel); border-bottom: 1px solid var(--border-subtle); font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span>🌐 Live Sandboxed Preview</span>
+            <button id="togglePreviewCanvasBtn" class="btn btn-ghost" style="padding: 0.15rem 0.5rem; font-size: 0.7rem; height: auto;" title="Switch Preview Canvas Dark/Light">
+              🌓 Toggle Canvas
+            </button>
+          </div>
+          <span id="runnerStatusMessage" style="font-weight: 600;"></span>
+        </div>
+        <iframe id="previewIframe" sandbox="allow-scripts" style="width: 100%; height: 210px; border: none; background: var(--bg-input);"></iframe>
+      </div>
+
+      <!-- Test Checklist Card -->
+      <div id="panelTestChecklist" class="cq-card" style="padding: 1.25rem;">
+        <div style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.65rem;">
+          Automated Test Criteria
+        </div>
+        <div id="testChecklist" style="display: flex; flex-direction: column; gap: 0.45rem;">
+          <!-- Dynamically populated by web_runner.js -->
+        </div>
+      </div>
+
+      <!-- Lesson Completion Banner -->
+      <div id="lessonCompletionBanner" class="cq-card" style="display: none; padding: 1.25rem 1.5rem; background: var(--success-subtle); border-color: rgba(16, 185, 129, 0.4); justify-content: space-between; align-items: center; gap: 1rem;">
         <div>
-          <span class="font-mono" style="font-size:0.68rem; color:var(--brand-primary); font-weight:800;">● CODEQUEST BD™ V10.0 STUDIO</span>
-          <div class="font-display" style="font-size:1.05rem; font-weight:800;">CS50 Visual Stack + 108 3D/2D Games</div>
+          <div style="font-weight: 700; color: var(--success); font-size: 0.95rem; margin-bottom: 0.2rem;">
+            ✓ Lesson Complete!
+          </div>
+          <div style="font-size: 0.82rem; color: var(--text-secondary);">
+            +{{ lesson.xp }} XP awarded. You are ready for the next concept.
+          </div>
         </div>
+        {% if next_lesson %}
+        <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="btn btn-primary" style="padding: 0.5rem 1.15rem; font-size: 0.85rem;">
+          Next Lesson &rarr;
+        </a>
+        {% else %}
+        <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary" style="padding: 0.5rem 1.15rem; font-size: 0.85rem;">
+          Complete Track &rarr;
+        </a>
+        {% endif %}
       </div>
 
-      <h1 class="font-display" style="font-size:clamp(2rem, 3.4vw, 3.25rem); font-weight:800; line-height:1.08;">
-        Learn 16 languages with <span style="color:var(--brand-primary);">AI visual classes</span>, memory models &amp; 3D games.
-      </h1>
-
-      <p style="font-size:0.94rem; color:var(--txt-2);">
-        Watch a 45-second animated classroom video, inspect live CS50 Stack &amp; Heap frames alongside the DOM tree, and command 5 non-blocky 3D worlds across 108 playable challenges.
-      </p>
-
-      <div style="display:flex; flex-wrap:wrap; gap:0.6rem;" class="font-mono">
-        <a href="#interactive-studio" class="cq-btn cq-btn-primary" style="padding:0.75rem 1.35rem; font-size:0.82rem;">▶ Launch 16-Lang Studio</a>
-        <a href="{% url 'games_hub' %}" class="cq-btn" style="padding:0.75rem 1.2rem; font-size:0.82rem;">🎮 Play 108 Coding Games</a>
-        <a href="{% url 'profile_view' %}" class="cq-btn" style="padding:0.75rem 1.1rem; font-size:0.82rem;">🎓 Student Dashboard</a>
-      </div>
     </div>
 
-    <!-- Reactive CLI Terminal + Direct Webpage DOM Editor (Fixes Req #5 & #6) -->
-    <div class="cq-terminal-window font-mono" style="margin-top:0.5rem;">
-      <div class="cq-terminal-bar">
-        <div style="display:flex; align-items:center; gap:0.4rem; font-size:0.7rem; font-weight:700;">
-          <span style="width:10px; height:10px; border-radius:99px; background:#ef4444;"></span>
-          <span style="width:10px; height:10px; border-radius:99px; background:#f59e0b;"></span>
-          <span style="width:10px; height:10px; border-radius:99px; background:#10b981;"></span>
-          <span style="margin-left:0.35rem;">codequest@terminal:~ (Theme-Adaptive CLI)</span>
-        </div>
-        <button type="button" onclick="toggleLivePageEdit()" class="cq-btn" style="padding:0.2rem 0.55rem; font-size:0.65rem;">✏️ Direct Page Edit</button>
-      </div>
-      <div id="reactiveTermLogs" style="padding:0.75rem 0.9rem; font-size:0.73rem; max-height:115px; overflow-y:auto; line-height:1.55;">
-        <div><span style="color:var(--brand-primary);">✔ Sandbox Ready:</span> Type <code>help</code>, <code>languages</code>, <code>stack</code>, <code>games</code>, <code>theme</code>, or <code>edit on</code>.</div>
-      </div>
-      <div style="display:flex; align-items:center; border-top:1px solid var(--term-border); padding:0.45rem 0.85rem; gap:0.5rem;">
-        <span style="color:var(--brand-primary); font-weight:800;">$</span>
-        <input id="reactiveTermInput" type="text" placeholder="Type command (e.g. help, stack, edit on, run) & press Enter..." style="flex:1; background:transparent; border:none; color:var(--term-txt); font-family:inherit; font-size:0.75rem; outline:none;" />
-        <button type="button" onclick="execTermCommand()" class="cq-btn cq-btn-primary" style="padding:0.25rem 0.65rem; font-size:0.68rem;">Exec</button>
-      </div>
-    </div>
   </div>
 
-  <!-- Right 7 Cols: 16-Language Interactive Studio + 3D World + CS50 Stack/Heap Visualizer (Req #10, #11, #15, #17, #18) -->
-  <div id="interactive-studio" class="cq-card cq-col-lg-12" style="grid-column: span 7; display:flex; flex-direction:column; justify-content:space-between; gap:0.9rem;">
-    <!-- Top Bar: 16 World-Class Languages Selector + 5 Organic 3D Worlds -->
-    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.6rem; padding-bottom:0.65rem; border-bottom:1px solid var(--border-subtle);" class="font-mono">
-      <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-        <span style="font-size:0.72rem; font-weight:800; color:var(--brand-primary);">LANGUAGE (16):</span>
-        <select id="studioLangSelect" onchange="selectStudioLang(this.value)" class="cq-btn" style="padding:0.4rem 0.75rem; font-size:0.75rem;"></select>
+</div>
+
+<!-- Interactive Visual Box Model & Flexbox Manipulative Modal -->
+<div id="boxInspectorModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 10000; align-items: center; justify-content: center; padding: 1.5rem;">
+  <div class="cq-card" style="width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; padding: 2rem; border: 1px solid var(--border-strong);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
+      <div style="display: flex; align-items: center; gap: 0.65rem;">
+        <span style="font-size: 1.4rem;">📐</span>
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin: 0;">Visual CSS Box Model &amp; Flexbox Lab</h3>
+          <span style="font-size: 0.78rem; color: var(--text-muted);">Tactile direct manipulation &bull; Drag sliders to visualize layout mechanics</span>
+        </div>
       </div>
-      <div style="display:flex; flex-wrap:wrap; gap:0.35rem;">
-        <button type="button" onclick="set3DWorld('TREE_3D')" class="cq-btn" style="padding:0.32rem 0.6rem; font-size:0.68rem;">🌳 3D Tree</button>
-        <button type="button" onclick="set3DWorld('SOLAR_3D')" class="cq-btn" style="padding:0.32rem 0.6rem; font-size:0.68rem;">🪐 3D Solar</button>
-        <button type="button" onclick="set3DWorld('ROVER_3D')" class="cq-btn" style="padding:0.32rem 0.6rem; font-size:0.68rem;">🌊 3D Wave Drone</button>
-        <button type="button" onclick="set3DWorld('SQL_HEIST')" class="cq-btn" style="padding:0.32rem 0.6rem; font-size:0.68rem;">🧬 3D SQL Helix</button>
-        <button type="button" onclick="set3DWorld('BOSS_BLITZ')" class="cq-btn" style="padding:0.32rem 0.6rem; font-size:0.68rem;">⚡ 3D Boss</button>
-      </div>
+      <button id="closeBoxInspectorBtn" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 1rem;">✕</button>
     </div>
 
-    <!-- Split Inside Studio: Code Editor & 3 Tasks (Left) + 3-Tab Visual Inspector (3D / CS50 Stack-Heap / 45s AI Video Class) (Right) -->
-    <div class="cq-grid-12" style="gap:0.9rem; align-items:stretch;">
-      <!-- Editor + 3 Progressive Tasks (Req #18) -->
-      <div class="cq-col-lg-12" style="grid-column: span 6; display:flex; flex-direction:column; justify-content:space-between; gap:0.65rem;">
-        <div style="padding:0.65rem 0.85rem; border-radius:12px; background:var(--bg-elevated); font-size:0.78rem;">
-          <div class="font-mono" style="display:flex; justify-content:space-between; font-size:0.68rem; color:var(--brand-primary); font-weight:800; margin-bottom:0.2rem;">
-            <span id="studioLessonTitle">Recursive Loops &amp; Memory Frames</span>
-            <span id="studioRuntimeBadge">WASM + AST</span>
-          </div>
-          <p id="studioMentalModel" style="font-size:0.76rem; color:var(--txt-2);"></p>
-        </div>
-
-        <!-- Theme-Adaptive Code Editor (Fixes Req #6: Light in Light Mode, Dark in Dark Mode!) -->
-        <div class="cq-terminal-window">
-          <div class="cq-terminal-bar font-mono" style="font-size:0.68rem;">
-            <span id="editorFileLabel">main.py</span>
-            <div style="display:flex; gap:0.35rem;">
-              <button type="button" onclick="showStudioHint()" class="cq-btn" style="padding:0.18rem 0.5rem; font-size:0.65rem;">💡 Hint</button>
-              <button type="button" onclick="loadStudioSolution()" class="cq-btn" style="padding:0.18rem 0.5rem; font-size:0.65rem; color:var(--brand-primary);">✨ Solution</button>
-            </div>
-          </div>
-          <textarea id="studioCodeInput" rows="5" spellcheck="false" class="cq-code-textarea"></textarea>
-        </div>
-
-        <!-- 3 Progressive Micro-Tasks Checklists (Req #18) -->
-        <div class="font-mono" style="display:flex; flex-direction:column; gap:0.3rem; font-size:0.69rem; padding:0.55rem 0.75rem; border-radius:10px; border:1px solid var(--border-subtle);">
-          <div id="taskCheck1">⬜ Task 1: Execute starter code in 60 FPS 3D &amp; Stack/Heap sandbox</div>
-          <div id="taskCheck2">⬜ Task 2: Inspect CS50 Memory Stack &amp; DOM Tree nodes</div>
-          <div id="taskCheck3">⬜ Task 3: Pass automated syntax verification (+100 XP)</div>
-        </div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;" class="font-mono">
-          <span id="studioStatusMsg" style="font-size:0.72rem; color:var(--txt-2);">Ready to execute.</span>
-          <button type="button" onclick="runStudioCode()" class="cq-btn cq-btn-primary" style="padding:0.65rem 1.25rem; font-size:0.78rem;">
-            ▶ Run Code &amp; Animate 3D
-          </button>
-        </div>
-      </div>
-
-      <!-- Right 6 Cols: 3-Tab Visual Inspector (Tab 1: 3D World | Tab 2: CS50 Stack/Heap & DOM | Tab 3: 45s AI Video Class) -->
-      <div class="cq-col-lg-12" style="grid-column: span 6; display:flex; flex-direction:column; justify-content:space-between; gap:0.65rem;">
-        <div style="display:flex; flex-wrap:wrap; gap:0.35rem;" class="font-mono">
-          <button type="button" id="tabBtn3D" onclick="switchInspectorTab('3d')" class="cq-btn cq-btn-primary" style="font-size:0.68rem; padding:0.32rem 0.65rem;">🎮 3D Simulation</button>
-          <button type="button" id="tabBtnStack" onclick="switchInspectorTab('stack')" class="cq-btn" style="font-size:0.68rem; padding:0.32rem 0.65rem;">🧠 CS50 Stack/Heap &amp; DOM</button>
-          <button type="button" id="tabBtnVideo" onclick="switchInspectorTab('video')" class="cq-btn" style="font-size:0.68rem; padding:0.32rem 0.65rem;">🎬 45s AI Video Class</button>
-        </div>
-
-        <!-- TAB 1: 60 FPS Non-Blocky 3D Simulation Canvas -->
-        <div id="inspectorPane3D" style="position:relative; width:100%; height:285px; border-radius:14px; overflow:hidden; background:#040811; border:1px solid var(--border-1);">
-          <canvas id="studio3dCanvas" style="width:100%; height:100%; display:block; cursor:grab;"></canvas>
-          <div class="font-mono" style="position:absolute; top:8px; left:10px; right:10px; display:flex; justify-content:space-between; pointer-events:none; font-size:0.64rem;">
-            <span id="hudWorldLabel" style="background:rgba(0,0,0,0.75); color:#34d399; padding:3px 8px; border-radius:6px;">WORLD: 3D FRACTAL TREE</span>
-            <span style="background:rgba(0,0,0,0.75); color:#38bdf8; padding:3px 8px; border-radius:6px;">DRAG TO ORBIT 3D</span>
-          </div>
-        </div>
-
-        <!-- TAB 2: Harvard CS50 Memory Stack, Heap & Live DOM Tree Visualizer (Fixes Req #11 & #15!) -->
-        <div id="inspectorPaneStack" style="display:none; width:100%; height:285px; border-radius:14px; padding:0.85rem; background:var(--preview-stage-bg); border:1px solid var(--border-1); overflow-y:auto;" class="font-mono">
-          <div style="font-size:0.7rem; font-weight:800; color:var(--brand-primary); margin-bottom:0.4rem;">[ HARVARD CS50 MEMORY STACK &amp; HEAP MODEL ]</div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; font-size:0.68rem; margin-bottom:0.75rem;">
-            <div style="padding:0.55rem; border-radius:8px; background:var(--bg-surface-solid); border:1px solid var(--border-subtle);">
-              <div style="color:var(--brand-secondary); font-weight:700;">CALL STACK (LIFO)</div>
-              <div id="cs50StackFrames" style="margin-top:0.3rem; line-height:1.6;">
-                • <code>0x7ffee0</code>: main() frame<br/>
-                • <code>0x7ffee4</code>: loop counter d = 5<br/>
-                • <code>0x7ffee8</code>: angle = 26°
-              </div>
-            </div>
-            <div style="padding:0.55rem; border-radius:8px; background:var(--bg-surface-solid); border:1px solid var(--border-subtle);">
-              <div style="color:var(--brand-primary); font-weight:700;">HEAP &amp; DOM TREE</div>
-              <div id="cs50HeapNodes" style="margin-top:0.3rem; line-height:1.6;">
-                • <code>0x104a00</code>: 64 3D Branch Meshes<br/>
-                • <code>DOM Root</code>: &lt;main&gt; → &lt;canvas&gt;<br/>
-                • <code>State</code>: 0 Memory Leaks
+    <!-- Live Rendered Box Model Graphic -->
+    <div style="background: var(--bg-panel); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.75rem; border: 1px solid var(--border-subtle);">
+      <div class="box-model-preview">
+        <div id="bmMarginLayer" class="bm-layer bm-margin">
+          <span class="bm-label">Margin (<span id="valMargin">24</span>px)</span>
+          <div id="bmBorderLayer" class="bm-layer bm-border">
+            <span class="bm-label">Border (<span id="valBorder">2</span>px)</span>
+            <div id="bmPaddingLayer" class="bm-layer bm-padding">
+              <span class="bm-label">Padding (<span id="valPadding">20</span>px)</span>
+              <div id="bmContentLayer" class="bm-layer bm-content">
+                <span>Content (240 &times; 60px)</span>
               </div>
             </div>
           </div>
-          <div style="font-size:0.7rem; font-weight:800; color:var(--brand-amber); margin-bottom:0.3rem;">[ THEME-ADAPTIVE LIVE DOM SANDBOX PREVIEW ]</div>
-          <div id="liveDomPreviewBox" style="padding:0.6rem; border-radius:8px; background:var(--bg-surface-solid); border:1px solid var(--border-subtle); font-size:0.72rem;">
-            ✔ Live DOM Node Tree &amp; CSS Flexbox/Grid Box-Model synced with active code.
-          </div>
-        </div>
-
-        <!-- TAB 3: 45-Second AI Animated Classroom Video Player (Fixes Req #17!) -->
-        <div id="inspectorPaneVideo" style="display:none; width:100%; height:285px; border-radius:14px; padding:0.85rem; background:#060b16; color:#f8fafc; border:1px solid var(--border-1); flex-direction:column; justify-content:space-between;" class="font-mono">
-          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.68rem;">
-            <span style="color:#34d399; font-weight:800;">🎬 AI ANIMATED CLASSROOM VIDEO (45s VISUAL BRIEF)</span>
-            <button type="button" onclick="playAiClassroomVideo()" class="cq-btn cq-btn-primary" style="padding:0.2rem 0.6rem; font-size:0.66rem;">🔊 Play Audio + Visual Class</button>
-          </div>
-          <canvas id="aiVideoClassCanvas" width="420" height="155" style="width:100%; height:155px; border-radius:10px; background:#03060c; border:1px solid rgba(56,189,248,0.2);"></canvas>
-          <div id="aiVideoCaptions" style="font-size:0.7rem; color:#99f6e4; background:rgba(16,185,129,0.1); padding:0.45rem 0.65rem; border-radius:8px;">
-            Click "Play Audio + Visual Class" to watch &amp; hear the 45-second visual explanation!
-          </div>
-        </div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.7rem;" class="font-mono">
-          <span>3D Angle / Parameter: <input id="studioAngleSlider" type="range" min="15" max="42" value="26" style="vertical-align:middle; accent-color:var(--brand-primary);" /></span>
-          <a href="{% url 'catalogue' %}" style="color:var(--brand-primary); font-weight:700;">Full Lesson View →</a>
         </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ======================================================================= -->
-<!-- 02. UPGRADED 0ms / 100% SANDBOXED TELEMETRY BAR (Fixes Req #9)          -->
-<!-- ======================================================================= -->
-<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1rem; margin-bottom:2.75rem;" class="font-mono">
-  <div class="cq-card" style="padding:1rem 1.25rem; display:flex; align-items:center; justify-content:space-between;">
-    <div>
-      <div style="font-size:0.66rem; color:var(--txt-3); font-weight:700;">EXECUTION LATENCY</div>
-      <div style="font-size:1.35rem; font-weight:800; color:var(--brand-primary);">0 ms Setup</div>
-      <div style="font-size:0.68rem; color:var(--txt-2);">Instant WASM &amp; AST Engine</div>
-    </div>
-    <span style="font-size:1.5rem;">⚡</span>
-  </div>
-  <div class="cq-card" style="padding:1rem 1.25rem; display:flex; align-items:center; justify-content:space-between;">
-    <div>
-      <div style="font-size:0.66rem; color:var(--txt-3); font-weight:700;">ISOLATION &amp; SECURITY</div>
-      <div style="font-size:1.35rem; font-weight:800; color:var(--brand-secondary);">100% Sandboxed</div>
-      <div style="font-size:0.68rem; color:var(--txt-2);">XSS/SQLi &amp; Loop Guarded</div>
-    </div>
-    <span style="font-size:1.5rem;">🛡️</span>
-  </div>
-  <div class="cq-card" style="padding:1rem 1.25rem; display:flex; align-items:center; justify-content:space-between;">
-    <div>
-      <div style="font-size:0.66rem; color:var(--txt-3); font-weight:700;">POLYGLOT CURRICULUM</div>
-      <div style="font-size:1.35rem; font-weight:800; color:var(--brand-indigo);">16 Languages</div>
-      <div style="font-size:0.68rem; color:var(--txt-2);">CS50 Stack/Heap + AI Video</div>
-    </div>
-    <span style="font-size:1.5rem;">🧠</span>
-  </div>
-  <div class="cq-card" style="padding:1rem 1.25rem; display:flex; align-items:center; justify-content:space-between;">
-    <div>
-      <div style="font-size:0.66rem; color:var(--txt-3); font-weight:700;">GAMIFIED PRACTICE ARENA</div>
-      <div style="font-size:1.35rem; font-weight:800; color:var(--brand-amber);">{{ total_games_count }} Games</div>
-      <div style="font-size:0.68rem; color:var(--txt-2);">6 AAA-Inspired 3D/2D Worlds</div>
-    </div>
-    <span style="font-size:1.5rem;">🎮</span>
-  </div>
-</section>
-
-<!-- ======================================================================= -->
-<!-- 03. WORLD-CLASS LEARNING ENGINEERING (CS50 + AI VIDEO + STACK) (Req #12)-->
-<!-- ======================================================================= -->
-<section style="margin-bottom:3rem;">
-  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:1rem; margin-bottom:1.25rem;">
-    <div>
-      <div class="font-mono" style="font-size:0.72rem; color:var(--brand-primary); font-weight:800;">01 // WORLD-CLASS LEARNING ENGINEERING</div>
-      <h2 class="font-display" style="font-size:1.85rem; font-weight:800;">Why Learners Master Code 4x Faster Here</h2>
-    </div>
-  </div>
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.1rem;">
-    <div class="cq-card">
-      <div class="font-mono" style="font-size:0.7rem; color:var(--brand-primary); font-weight:800; margin-bottom:0.4rem;">PILLAR 01 // HARVARD CS50 MEMORY MODEL</div>
-      <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:0.35rem;">Live Stack, Heap &amp; DOM Tree Visualizer</h3>
-      <p style="font-size:0.83rem; color:var(--txt-2);">Beginners don't just see text output—they see how variables, pointers (`0x7ffee0`), heap objects, and DOM nodes change on every line.</p>
-    </div>
-    <div class="cq-card">
-      <div class="font-mono" style="font-size:0.7rem; color:var(--brand-secondary); font-weight:800; margin-bottom:0.4rem;">PILLAR 02 // 45-SECOND AI ANIMATED CLASS</div>
-      <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:0.35rem;">Zero Fear of Long Text Walls</h3>
-      <p style="font-size:0.83rem; color:var(--txt-2);">Every module includes an interactive 45-second AI animated classroom board with voice narration so you grasp the concept before coding.</p>
-    </div>
-    <div class="cq-card">
-      <div class="font-mono" style="font-size:0.7rem; color:var(--brand-amber); font-weight:800; margin-bottom:0.4rem;">PILLAR 03 // PROGRAMMING-HERO RETENTION</div>
-      <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:0.35rem;">Daily XP Chests, Streak Shields &amp; Leagues</h3>
-      <p style="font-size:0.83rem; color:var(--txt-2);">Earn XP, protect your daily streak with Streak Freeze Shields, climb from Bronze to Grandmaster, and unlock verifiable certificates.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ======================================================================= -->
-<!-- 04. FEATURED 16 WORLD-CLASS LEARNING TRACKS (Fixes Req #10 & #13)       -->
-<!-- ======================================================================= -->
-<section style="margin-bottom:3rem;">
-  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:1rem; margin-bottom:1.25rem;">
-    <div>
-      <div class="font-mono" style="font-size:0.72rem; color:var(--brand-primary); font-weight:800;">02 // FEATURED LEARNING TRACKS (16 LANGUAGES)</div>
-      <h2 class="font-display" style="font-size:1.85rem; font-weight:800;">Select Any of the 16 World-Class Languages</h2>
-    </div>
-    <a href="{% url 'catalogue' %}" class="cq-btn cq-btn-primary font-mono">Explore All 16 Courses →</a>
-  </div>
-
-  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(255px, 1fr)); gap:1rem;">
-    {% for tr in tracks %}
-    <div class="cq-card" style="display:flex; flex-direction:column; justify-content:space-between; gap:0.85rem;">
+    <!-- Sliders and Controls -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
       <div>
-        <div class="font-mono" style="display:flex; justify-content:space-between; align-items:center; font-size:0.7rem; margin-bottom:0.45rem;">
-          <span style="padding:0.18rem 0.55rem; border-radius:6px; background:rgba(16,185,129,0.14); color:var(--brand-primary); font-weight:800;">{{ tr.short_code }}</span>
-          <span style="color:var(--txt-3);">{{ tr.engine_mode }}</span>
-        </div>
-        <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:0.3rem;">{{ tr.name }}</h3>
-        <p style="font-size:0.79rem; color:var(--txt-2);">{{ tr.summary }}</p>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: #f59e0b;">
+          <span>Margin</span>
+          <span id="labelMargin">24px</span>
+        </label>
+        <input type="range" id="inputMargin" min="0" max="48" value="24" style="width: 100%; accent-color: #f59e0b;" />
       </div>
-      <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.65rem; border-top:1px solid var(--border-subtle);" class="font-mono">
-        <span style="font-size:0.68rem; color:var(--txt-3);">{{ tr.compiler_runtime|truncatechars:24 }}</span>
-        <a href="{% url 'course_detail' tr.slug %}" class="cq-btn" style="padding:0.3rem 0.65rem; font-size:0.68rem;">Start Track →</a>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
 
-<!-- ======================================================================= -->
-<!-- 05. TARGETED CODING CHALLENGES — 108 PLAYABLE GAMES (Fixes Req #16!)    -->
-<!-- ======================================================================= -->
-<section style="margin-bottom:2.5rem;">
-  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:1rem; margin-bottom:1.25rem;">
-    <div>
-      <div class="font-mono" style="font-size:0.72rem; color:var(--brand-amber); font-weight:800;">03 // TARGETED CODING CHALLENGES ({{ total_games_count }} PLAYABLE GAMES)</div>
-      <h2 class="font-display" style="font-size:1.85rem; font-weight:800;">Play 108 AAA-Inspired 3D &amp; 2D Coding Missions</h2>
-      <p style="font-size:0.86rem; color:var(--txt-2);">Spanning 6 distinct game engines: CyberPunk 3D Rover, Bio-Genesis 3D Fractal Forest, Starfield 3D Gravity Fleet, Flexbox Hologram Defense, WatchDogs SQL Heist &amp; Boss Blitz.</p>
-    </div>
-    <a href="{% url 'games_hub' %}" class="cq-btn cq-btn-primary font-mono" style="padding:0.7rem 1.35rem;">🎮 Open All {{ total_games_count }} Coding Games →</a>
-  </div>
-
-  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(270px, 1fr)); gap:1rem;">
-    {% for g in games_featured %}
-    <div class="cq-card" style="display:flex; flex-direction:column; justify-content:space-between; gap:0.75rem;">
       <div>
-        <div class="font-mono" style="display:flex; justify-content:space-between; font-size:0.68rem; margin-bottom:0.4rem;">
-          <span style="color:var(--brand-primary); font-weight:800;">{{ g.engine_mode }}</span>
-          <span style="color:var(--brand-amber); font-weight:700;">+{{ g.xp_reward }} XP • {{ g.duration_Label }}</span>
-        </div>
-        <h3 style="font-size:1rem; font-weight:800; margin-bottom:0.3rem;">{{ g.title }}</h3>
-        <p style="font-size:0.78rem; color:var(--txt-2);">{{ g.mission_brief|truncatechars:105 }}</p>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: #06b6d4;">
+          <span>Border Width</span>
+          <span id="labelBorder">2px</span>
+        </label>
+        <input type="range" id="inputBorder" min="0" max="12" value="2" style="width: 100%; accent-color: #06b6d4;" />
       </div>
-      <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.6rem; border-top:1px solid var(--border-subtle);" class="font-mono">
-        <span style="font-size:0.68rem; color:var(--txt-3);">{{ g.language_tag }}</span>
-        <a href="{% url 'game_play' g.slug %}" class="cq-btn cq-btn-primary" style="padding:0.32rem 0.75rem; font-size:0.7rem;">▶ Play Game</a>
+
+      <div>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: #10b981;">
+          <span>Padding</span>
+          <span id="labelPadding">20px</span>
+        </label>
+        <input type="range" id="inputPadding" min="0" max="48" value="20" style="width: 100%; accent-color: #10b981;" />
+      </div>
+
+      <div>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: var(--accent);">
+          <span>Border Radius</span>
+          <span id="labelRadius">8px</span>
+        </label>
+        <input type="range" id="inputRadius" min="0" max="24" value="8" style="width: 100%; accent-color: var(--accent);" />
       </div>
     </div>
-    {% endfor %}
-  </div>
-</section>
 
+    <!-- Action Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+      <code id="boxModelCssOutput" style="font-family: var(--font-mono); font-size: 0.78rem; background: var(--bg-input); padding: 0.4rem 0.75rem; border-radius: var(--radius-sm); color: var(--text-secondary);">
+        margin: 24px; padding: 20px; border: 2px solid; border-radius: 8px;
+      </code>
+      <button id="copyBoxCssBtn" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.82rem;">
+        Copy CSS Rules
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/runners/web_runner.js' %}"></script>
 <script>
-  const STUDIO_LESSONS = {{ lessons_json|safe }};
-  let curStudioItem = STUDIO_LESSONS[0] || {};
-  let active3DWorld = "TREE_3D";
-  let worldAnimProg = 1.0;
+  document.addEventListener('DOMContentLoaded', function () {
+    const rawEditor = document.getElementById('codeEditor');
+    let cmInstance = null;
+    let sfxEnabled = true;
 
-  // Populate 16-Language Dropdown
-  (function initStudioDropdown() {
-    const sel = document.getElementById("studioLangSelect");
-    if (!sel) return;
-    STUDIO_LESSONS.forEach(function (it) {
-      const opt = document.createElement("option");
-      opt.value = it.trackSlug;
-      opt.textContent = it.trackCode + " — " + it.trackName;
-      sel.appendChild(opt);
-    });
-    if (STUDIO_LESSONS.length > 0) selectStudioLang(STUDIO_LESSONS[0].trackSlug);
-  })();
+    // Detect language mode for CodeMirror
+    const langSlug = '{{ course.language.slug|default:"html" }}';
+    let cmMode = 'htmlmixed';
+    if (langSlug.includes('css')) cmMode = 'css';
+    else if (langSlug.includes('js') || langSlug.includes('javascript')) cmMode = 'javascript';
+    else if (langSlug.includes('py') || langSlug.includes('python')) cmMode = 'python';
+    else if (langSlug.includes('sql')) cmMode = 'sql';
 
-  window.selectStudioLang = function (slug) {
-    const found = STUDIO_LESSONS.find(function (x) { return x.trackSlug === slug; }) || STUDIO_LESSONS[0];
-    if (!found) return;
-    curStudioItem = found;
-    document.getElementById("studioLessonTitle").textContent = found.trackName + ": " + found.title;
-    document.getElementById("studioRuntimeBadge").textContent = found.runtime;
-    document.getElementById("studioMentalModel").textContent = found.mentalModel;
-    document.getElementById("studioCodeInput").value = found.starterCode;
-    document.getElementById("editorFileLabel").textContent = "workspace." + found.trackSlug;
-    set3DWorld(found.engineMode || "TREE_3D");
-  };
+    // Mount CodeMirror
+    if (window.CodeMirror && rawEditor) {
+      cmInstance = CodeMirror.fromTextArea(rawEditor, {
+        mode: cmMode,
+        theme: 'codequest',
+        lineNumbers: true,
+        matchBrackets: true,
+        autoCloseTags: true,
+        autoCloseBrackets: true,
+        tabSize: 2,
+        indentUnit: 2,
+        lineWrapping: true
+      });
 
-  window.set3DWorld = function (wCode) {
-    active3DWorld = wCode;
-    worldAnimProg = 0.1;
-    const lbl = document.getElementById("hudWorldLabel");
-    if (lbl) lbl.textContent = "ACTIVE 3D ENGINE: " + wCode;
-  };
-
-  window.switchInspectorTab = function (tab) {
-    document.getElementById("inspectorPane3D").style.display = tab === "3d" ? "block" : "none";
-    document.getElementById("inspectorPaneStack").style.display = tab === "stack" ? "block" : "none";
-    document.getElementById("inspectorPaneVideo").style.display = tab === "video" ? "flex" : "none";
-    document.getElementById("tabBtn3D").className = tab === "3d" ? "cq-btn cq-btn-primary" : "cq-btn";
-    document.getElementById("tabBtnStack").className = tab === "stack" ? "cq-btn cq-btn-primary" : "cq-btn";
-    document.getElementById("tabBtnVideo").className = tab === "video" ? "cq-btn cq-btn-primary" : "cq-btn";
-  };
-
-  window.showStudioHint = function () {
-    document.getElementById("studioStatusMsg").textContent = "💡 Hint: " + (curStudioItem.hint || "");
-  };
-  window.loadStudioSolution = function () {
-    document.getElementById("studioCodeInput").value = curStudioItem.solutionCode || curStudioItem.starterCode;
-  };
-
-  window.runStudioCode = function () {
-    worldAnimProg = 0.05;
-    document.getElementById("taskCheck1").textContent = "✅ Task 1: Executed starter code in 60 FPS 3D & Stack/Heap sandbox";
-    document.getElementById("taskCheck2").textContent = "✅ Task 2: Inspected CS50 Memory Stack & DOM Tree nodes";
-    document.getElementById("taskCheck3").textContent = "✅ Task 3: Passed automated syntax verification (+100 XP)";
-    document.getElementById("studioStatusMsg").textContent = "🎉 Verified! +100 XP added to your Student Profile!";
-    const xpEl = document.getElementById("navXpNum");
-    if (xpEl) xpEl.textContent = (parseInt(xpEl.textContent.replace(/,/g, ""), 10) + 100).toLocaleString();
-  };
-
-  // Reactive Terminal Executor (Req #5)
-  window.execTermCommand = function () {
-    const inp = document.getElementById("reactiveTermInput");
-    const logs = document.getElementById("reactiveTermLogs");
-    const cmd = (inp.value || "").trim();
-    if (!cmd) return;
-    inp.value = "";
-    const row = document.createElement("div");
-    let reply = "Executed `" + cmd + "` in sandboxed runtime.";
-    if (cmd.toLowerCase() === "help") reply = "Commands: languages (list 16 tracks), games (108 games), stack (open CS50 memory inspector), theme (switch dark/light), edit on (direct webpage editing), run (execute IDE code).";
-    else if (cmd.toLowerCase() === "languages") reply = "16 Languages Active: Python, JS, TS, C, C++, Java, Rust, Go, SQL, PHP, HTML5, CSS3, C#, Swift, Kotlin, Bash.";
-    else if (cmd.toLowerCase() === "stack") { switchInspectorTab("stack"); reply = "Opened Harvard CS50 Memory Stack & Heap Inspector."; }
-    else if (cmd.toLowerCase() === "theme") { toggleCqTheme(); reply = "Switched Studio Theme & Terminal Color Palette."; }
-    else if (cmd.toLowerCase().indexOf("edit") !== -1) { toggleLivePageEdit(); reply = "Toggled Direct Live Webpage DOM Editing Mode."; }
-    else if (cmd.toLowerCase() === "run") { runStudioCode(); reply = "Executed IDE code & animated 3D world."; }
-    row.innerHTML = '<span style="color:var(--brand-secondary);">$ ' + cmd + '</span> → ' + reply;
-    logs.appendChild(row);
-    logs.scrollTop = logs.scrollHeight;
-  };
-  document.getElementById("reactiveTermInput").addEventListener("keydown", function (e) {
-    if (e.key === "Enter") execTermCommand();
-  });
-
-  // 45-Second AI Animated Classroom Video Player (Req #17)
-  let videoTimer = null;
-  window.playAiClassroomVideo = function () {
-    const c = document.getElementById("aiVideoClassCanvas");
-    if (!c) return;
-    const ctx = c.getContext("2d");
-    const scriptText = curStudioItem.videoScript || "Watch how each loop iteration updates stack memory and grows the 3D structure.";
-    document.getElementById("aiVideoCaptions").textContent = "🔊 AI Instructor: " + scriptText;
-
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance(scriptText);
-      utter.rate = 1.02;
-      window.speechSynthesis.speak(utter);
-    }
-
-    let frame = 0;
-    if (videoTimer) clearInterval(videoTimer);
-    videoTimer = setInterval(function () {
-      frame++;
-      ctx.fillStyle = "#03060c";
-      ctx.fillRect(0, 0, c.width, c.height);
-      ctx.fillStyle = "#10b981";
-      ctx.font = "700 12px 'JetBrains Mono', monospace";
-      ctx.fillText("AI CLASSROOM BOARD // " + (curStudioItem.trackName || "PYTHON 3"), 14, 24);
-      ctx.strokeStyle = "#06b6d4";
-      ctx.strokeRect(14, 38, 170, 95);
-      ctx.fillStyle = "#e2e8f0";
-      ctx.font = "11px 'JetBrains Mono', monospace";
-      ctx.fillText("STACK FRAME: main()", 24, 58);
-      ctx.fillText("iter = " + (frame % 6), 24, 78);
-      ctx.fillText("addr = 0x7ffee" + (frame % 9), 24, 98);
-
-      // Animated node graph on right of chalkboard
-      for (let n = 0; n < 5; n++) {
-        const nx = 230 + n * 34;
-        const ny = 85 + Math.sin(frame * 0.2 + n) * 22;
-        ctx.fillStyle = n <= (frame % 6) ? "#10b981" : "#334155";
-        ctx.beginPath();
-        ctx.arc(nx, ny, 10, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      if (frame > 90) clearInterval(videoTimer);
-    }, 80);
-  };
-
-  // 60 FPS 5-World 3D Canvas Engine (#studio3dCanvas)
-  (function initStudio3D() {
-    const canvas = document.getElementById("studio3dCanvas");
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    let cw = 460, ch = 285, yaw = 0.4, pitch = 0.25, dragging = false, lx = 0, ly = 0;
-
-    function resize() {
-      const r = canvas.parentElement.getBoundingClientRect();
-      cw = Math.max(260, r.width || 440);
-      ch = Math.max(240, r.height || 285);
-      canvas.width = cw; canvas.height = ch;
-    }
-    resize();
-    window.addEventListener("resize", resize);
-
-    canvas.addEventListener("pointerdown", function (e) { dragging = true; lx = e.clientX; ly = e.clientY; });
-    window.addEventListener("pointerup", function () { dragging = false; });
-    canvas.addEventListener("pointermove", function (e) {
-      if (!dragging) return;
-      yaw += (e.clientX - lx) * 0.01;
-      pitch = Math.max(-0.3, Math.min(0.85, pitch + (e.clientY - ly) * 0.008));
-      lx = e.clientX; ly = e.clientY;
-    });
-
-    function proj(x, y, z) {
-      const cy = Math.cos(yaw), sy = Math.sin(yaw);
-      const x1 = x * cy - z * sy, z1 = z * cy + x * sy;
-      const cp = Math.cos(pitch), sp = Math.sin(pitch);
-      const y2 = y * cp - z1 * sp, z2 = z1 * cp + y * sp;
-      const f = 340 / (340 + z2 + 140);
-      return { x: cw / 2 + x1 * f, y: ch / 2 + y2 * f, s: f };
-    }
-
-    function drawTree(x, y, z, len, az, ay, d, maxD, t, sp) {
-      if (d > maxD) return;
-      const nx = x + Math.sin(az) * Math.cos(ay) * len;
-      const ny = y - Math.cos(az) * len;
-      const nz = z + Math.sin(az) * Math.sin(ay) * len;
-      const p0 = proj(x, y, z), p1 = proj(nx, ny, nz);
-      ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y);
-      ctx.strokeStyle = d <= 2 ? "#a16207" : "#10b981";
-      ctx.lineWidth = Math.max(1.2, (6.5 - d) * p0.s);
-      ctx.stroke();
-      if (d === maxD) {
-        ctx.fillStyle = "#f472b6";
-        ctx.beginPath(); ctx.arc(p1.x, p1.y, 4.5 * p1.s, 0, Math.PI * 2); ctx.fill();
-      }
-      drawTree(nx, ny, nz, len * 0.73, az + sp, ay + 0.7, d + 1, maxD, t, sp);
-      drawTree(nx, ny, nz, len * 0.73, az - sp, ay - 0.7, d + 1, maxD, t, sp);
-    }
-
-    function loop() {
-      requestAnimationFrame(loop);
-      const t = Date.now() * 0.0018;
-      if (!dragging) yaw += 0.006;
-      if (worldAnimProg < 1.0) worldAnimProg = Math.min(1.0, worldAnimProg + 0.025);
-      const angDeg = parseInt(document.getElementById("studioAngleSlider").value, 10) || 26;
-
-      ctx.fillStyle = "#040811";
-      ctx.fillRect(0, 0, cw, ch);
-
-      if (active3DWorld === "TREE_3D") {
-        drawTree(0, 95, 0, 52, 0, 0, 1, Math.max(1, Math.round(worldAnimProg * 6)), t, (angDeg * Math.PI) / 180);
-      } else if (active3DWorld === "SOLAR_3D") {
-        const s0 = proj(0, 0, 0);
-        ctx.fillStyle = "#f59e0b";
-        ctx.beginPath(); ctx.arc(s0.x, s0.y, 22 * s0.s, 0, Math.PI * 2); ctx.fill();
-        [45, 75, 105, 135].forEach(function (r, idx) {
-          const a = t * (2 - idx * 0.35) + idx;
-          const p = proj(Math.cos(a) * r, 0, Math.sin(a) * r);
-          ctx.fillStyle = ["#38bdf8", "#10b981", "#a855f7", "#f43f5e"][idx];
-          ctx.beginPath(); ctx.arc(p.x, p.y, (6 + idx) * p.s, 0, Math.PI * 2); ctx.fill();
-        });
-      } else {
-        // Wave / Helix / Boss
-        for (let i = -5; i <= 5; i++) {
-          const pA = proj(i * 22, Math.sin(t * 2 + i * 0.5) * 32, -40);
-          const pB = proj(i * 22, Math.cos(t * 2 + i * 0.5) * 32, 40);
-          ctx.strokeStyle = "rgba(56, 189, 248, 0.55)";
-          ctx.beginPath(); ctx.moveTo(pA.x, pA.y); ctx.lineTo(pB.x, pB.y); ctx.stroke();
-          ctx.fillStyle = "#10b981";
-          ctx.beginPath(); ctx.arc(pA.x, pA.y, 4.5 * pA.s, 0, Math.PI * 2); ctx.fill();
+      // Synchronize changes to textarea & mechanical sound
+      cmInstance.on('change', function () {
+        cmInstance.save();
+        if (sfxEnabled && window.CodeQuest && window.CodeQuest.playMechanicalClick) {
+          window.CodeQuest.playMechanicalClick();
         }
-      }
+      });
+
+      // Bind Ctrl+Enter inside CodeMirror to run checks
+      cmInstance.setOption('extraKeys', {
+        'Ctrl-Enter': function () {
+          document.getElementById('checkSolutionBtn').click();
+        },
+        'Cmd-Enter': function () {
+          document.getElementById('checkSolutionBtn').click();
+        }
+      });
     }
-    loop();
-  })();
+
+    // Audio SFX Toggle
+    const sfxBtn = document.getElementById('lessonAudioToggle');
+    if (sfxBtn) {
+      sfxBtn.onclick = function () {
+        sfxEnabled = !sfxEnabled;
+        sfxBtn.textContent = sfxEnabled ? '⌨ Mechanical SFX' : '🔇 Muted SFX';
+        sfxBtn.style.color = sfxEnabled ? 'var(--accent)' : 'var(--text-muted)';
+      };
+    }
+
+    // Zen Mode Toggle
+    const zenBtn = document.getElementById('zenModeBtn');
+    const wsContainer = document.getElementById('workspaceContainer');
+    if (zenBtn && wsContainer) {
+      zenBtn.onclick = function () {
+        const isZen = wsContainer.classList.toggle('zen-active');
+        zenBtn.textContent = isZen ? '✕ Exit Zen' : '⛶ Zen Mode';
+        zenBtn.style.borderColor = isZen ? 'var(--accent)' : '';
+        if (cmInstance) cmInstance.refresh();
+      };
+    }
+
+    // Draggable Workspace Splitter
+    const splitter = document.getElementById('workspaceSplitter');
+    const panelInst = document.getElementById('panelInstructions');
+    const panelEditWrap = document.getElementById('panelEditorWrapper');
+
+    if (splitter && panelInst && wsContainer) {
+      let isDragging = false;
+
+      splitter.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        splitter.classList.add('dragging');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mousemove', function (e) {
+        if (!isDragging) return;
+        const containerRect = wsContainer.getBoundingClientRect();
+        const pointerX = e.clientX - containerRect.left;
+        const percentage = (pointerX / containerRect.width) * 100;
+
+        if (percentage >= 25 && percentage <= 70) {
+          panelInst.style.flex = `0 0 ${percentage}%`;
+          if (cmInstance) cmInstance.refresh();
+        }
+      });
+
+      document.addEventListener('mouseup', function () {
+        if (isDragging) {
+          isDragging = false;
+          splitter.classList.remove('dragging');
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+          if (cmInstance) cmInstance.refresh();
+        }
+      });
+
+      // Double-click to reset to 42%
+      splitter.addEventListener('dblclick', function () {
+        panelInst.style.flex = '0 0 42%';
+        if (cmInstance) cmInstance.refresh();
+      });
+    }
+
+    // Interactive Box Model & Flexbox Manipulative Modal Logic
+    const boxModal = document.getElementById('boxInspectorModal');
+    const openBoxBtn = document.getElementById('openBoxInspectorBtn');
+    const closeBoxBtn = document.getElementById('closeBoxInspectorBtn');
+    const inMargin = document.getElementById('inputMargin');
+    const inBorder = document.getElementById('inputBorder');
+    const inPadding = document.getElementById('inputPadding');
+    const inRadius = document.getElementById('inputRadius');
+    const copyBoxBtn = document.getElementById('copyBoxCssBtn');
+    const cssOutput = document.getElementById('boxModelCssOutput');
+
+    function updateBoxGraphic() {
+      const m = inMargin.value;
+      const b = inBorder.value;
+      const p = inPadding.value;
+      const r = inRadius.value;
+
+      document.getElementById('valMargin').textContent = m;
+      document.getElementById('valBorder').textContent = b;
+      document.getElementById('valPadding').textContent = p;
+      document.getElementById('labelMargin').textContent = m + 'px';
+      document.getElementById('labelBorder').textContent = b + 'px';
+      document.getElementById('labelPadding').textContent = p + 'px';
+      document.getElementById('labelRadius').textContent = r + 'px';
+
+      const bmMargin = document.getElementById('bmMarginLayer');
+      const bmBorder = document.getElementById('bmBorderLayer');
+      const bmPadding = document.getElementById('bmPaddingLayer');
+
+      bmMargin.style.padding = `${m}px`;
+      bmMargin.style.borderRadius = `${r}px`;
+      bmBorder.style.borderWidth = `${b}px`;
+      bmBorder.style.borderRadius = `${Math.max(0, r - 2)}px`;
+      bmPadding.style.padding = `${p}px`;
+      bmPadding.style.borderRadius = `${Math.max(0, r - 4)}px`;
+
+      const rule = `margin: ${m}px; padding: ${p}px; border: ${b}px solid #06b6d4; border-radius: ${r}px;`;
+      cssOutput.textContent = rule;
+    }
+
+    if (openBoxBtn && boxModal) {
+      openBoxBtn.onclick = function () {
+        boxModal.style.display = 'flex';
+        updateBoxGraphic();
+      };
+      closeBoxBtn.onclick = function () {
+        boxModal.style.display = 'none';
+      };
+      [inMargin, inBorder, inPadding, inRadius].forEach(inp => inp.addEventListener('input', updateBoxGraphic));
+      
+      copyBoxBtn.onclick = function () {
+        navigator.clipboard.writeText(cssOutput.textContent.trim());
+        copyBoxBtn.textContent = '✓ Copied!';
+        setTimeout(() => { copyBoxBtn.textContent = 'Copy CSS Rules'; }, 1500);
+      };
+    }
+
+    // Initialize Web Runner Engine
+    if (window.CodeQuestLessonRunner) {
+      window.CodeQuestLessonRunner.init({
+        lessonId: {{ lesson.id }},
+        tests: JSON.parse('{{ tests_json_str|escapejs }}'),
+        hints: JSON.parse('{{ hints_json_str|escapejs }}'),
+        solution: `{{ lesson.solution|escapejs }}`,
+        xpReward: {{ lesson.xp }}
+      });
+    }
+
+    // Reset starter code in CodeMirror if reset clicked
+    const resetBtn = document.getElementById('resetCodeBtn');
+    if (resetBtn && cmInstance) {
+      resetBtn.addEventListener('click', function () {
+        setTimeout(function () {
+          cmInstance.setValue(rawEditor.value);
+        }, 50);
+      });
+    }
+
+    // Responsive Mobile Tab Switcher
+    const tabs = document.querySelectorAll('.mobile-tab-btn');
+    const pInst = document.getElementById('panelInstructions');
+    const pEdit = document.getElementById('panelCodeEditor');
+    const pPrev = document.getElementById('panelLivePreview');
+    const pTest = document.getElementById('panelTestChecklist');
+
+    function checkResponsiveView() {
+      const isMobile = window.innerWidth <= 860;
+      const tabGroup = document.getElementById('mobileLessonTabs');
+      if (tabGroup) tabGroup.style.display = isMobile ? 'flex' : 'none';
+
+      if (!isMobile) {
+        if (pInst) pInst.style.display = 'block';
+        if (pEdit) pEdit.style.display = 'flex';
+        if (pPrev) pPrev.style.display = 'flex';
+        if (pTest) pTest.style.display = 'block';
+        if (splitter) splitter.style.display = 'flex';
+      } else {
+        if (splitter) splitter.style.display = 'none';
+        if (panelInst) panelInst.style.flex = '1 1 100%';
+      }
+      if (cmInstance) cmInstance.refresh();
+    }
+
+    tabs.forEach(function (btn) {
+      btn.onclick = function () {
+        tabs.forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.getAttribute('data-tab');
+
+        if (target === 'instructions') {
+          if (pInst) pInst.style.display = 'block';
+          if (pEdit) pEdit.style.display = 'none';
+          if (pPrev) pPrev.style.display = 'none';
+          if (pTest) pTest.style.display = 'none';
+        } else if (target === 'editor') {
+          if (pInst) pInst.style.display = 'none';
+          if (pEdit) pEdit.style.display = 'flex';
+          if (pPrev) pPrev.style.display = 'none';
+          if (pTest) pTest.style.display = 'none';
+          if (cmInstance) cmInstance.refresh();
+        } else if (target === 'preview') {
+          if (pInst) pInst.style.display = 'none';
+          if (pEdit) pEdit.style.display = 'none';
+          if (pPrev) pPrev.style.display = 'flex';
+          if (pTest) pTest.style.display = 'block';
+        }
+      };
+    });
+
+    window.addEventListener('resize', checkResponsiveView);
+    checkResponsiveView();
+  });
 </script>
+<style>
+  .mobile-tab-btn.active {
+    background: var(--bg-panel);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+</style>
 {% endblock %}

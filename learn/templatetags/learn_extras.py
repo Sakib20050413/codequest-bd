@@ -8,7 +8,6 @@ except ImportError:
 
 register = template.Library()
 
-
 @register.filter(name="render_md")
 def render_md(text):
     if not text:

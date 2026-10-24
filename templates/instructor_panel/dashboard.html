@@ -1,85 +1,173 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}Admin Power Control Center (/instructor-panel/) — CodeQuest BD™{% endblock %}
-{% block content %}
-<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border-subtle);">
-  <div style="display:flex; align-items:center; gap:0.85rem;">
-    <img src="{% static 'img/logo.svg' %}" alt="Admin Emblem" style="width:48px; height:48px; border-radius:12px;" />
-    <div>
-      <span class="font-mono" style="font-size:0.7rem; padding:0.15rem 0.55rem; border-radius:6px; background:rgba(245,158,11,0.18); color:var(--brand-amber); font-weight:800;">🛡️ ADMIN POWER CONTROL CENTER (RESTRICTED ROLE)</span>
-      <h1 class="font-display" style="font-size:1.85rem; font-weight:800; margin-top:0.2rem;">Platform Architect &amp; Instructor CMS</h1>
-    </div>
-  </div>
-  <div style="display:flex; flex-wrap:wrap; gap:0.5rem;" class="font-mono">
-    <a href="{% url 'api_export_telemetry_csv' %}" class="cq-btn cq-btn-primary">📊 Export IEEE CSV Dataset</a>
-    <a href="{% url 'api_export_telemetry_json' %}" target="_blank" class="cq-btn">📥 Export JSON ↗</a>
-    <a href="{% url 'profile_view' %}" class="cq-btn">Switch to Student View →</a>
-  </div>
-</div>
+{% extends 'instructor_panel/base_admin.html' %}
 
-{% if status_msg %}
-<div class="cq-card font-mono" style="margin-bottom:1.25rem; border-color:var(--brand-primary); color:var(--brand-primary); font-size:0.8rem; font-weight:700;">
-  ✔ {{ status_msg }}
-</div>
-{% endif %}
+{% block title %}Instructor Dashboard — CodeQuest BD{% endblock %}
 
-<div class="cq-grid-12" style="margin-bottom:2rem;">
-  <!-- Create New 3D Game Mission (CRUD) -->
-  <div class="cq-card cq-col-lg-12" style="grid-column: span 6; display:flex; flex-direction:column; gap:0.85rem;">
-    <div class="font-mono" style="font-size:0.74rem; color:var(--brand-primary); font-weight:800;">01 // CREATE NEW 3D/2D CODING GAME CHALLENGE (TOTAL: {{ total_games }})</div>
-    <form method="POST" style="display:flex; flex-direction:column; gap:0.65rem;" class="font-mono">
-      {% csrf_token %}
-      <input type="hidden" name="admin_action" value="create_game" />
-      <input type="text" name="title" required placeholder="Game Title (e.g. Quantum Dijkstra Path)" class="cq-btn" style="width:100%;" />
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-        <select name="engine_mode" class="cq-btn">
-          <option value="ROVER_3D">ROVER_3D (CyberPunk Rover)</option>
-          <option value="TREE_3D">TREE_3D (3D Fractal Forest)</option>
-          <option value="SOLAR_3D">SOLAR_3D (3D Solar Gravity)</option>
-          <option value="DOM_TOWER">DOM_TOWER (Flexbox Defense)</option>
-          <option value="SQL_HEIST">SQL_HEIST (WatchDogs SQL)</option>
-          <option value="BOSS_BLITZ">BOSS_BLITZ (Boss Reactor)</option>
-        </select>
-        <input type="text" name="language_tag" value="Python / C++ / JS" class="cq-btn" />
-      </div>
-      <textarea name="mission_brief" rows="2" placeholder="Mission Briefing *" required class="cq-btn" style="width:100%;"></textarea>
-      <textarea name="starter_code" rows="3" placeholder="Starter Code *" required class="cq-btn" style="width:100%;"></textarea>
-      <button type="submit" class="cq-btn cq-btn-primary" style="justify-content:center; padding:0.65rem;">+ Publish New Game to Arena</button>
-    </form>
-  </div>
+{% block admin_content %}
+<div class="space-y-8">
 
-  <!-- Student Cohort Management & Security Audit Log -->
-  <div class="cq-card cq-col-lg-12" style="grid-column: span 6; display:flex; flex-direction:column; justify-content:space-between; gap:1rem;">
-    <div>
-      <div class="font-mono" style="font-size:0.74rem; color:var(--brand-amber); font-weight:800; margin-bottom:0.6rem;">02 // STUDENT COHORT &amp; XP GRANT CONTROLLER</div>
-      <div style="display:flex; flex-direction:column; gap:0.5rem;">
-        {% for sp in students %}
-        <div style="padding:0.65rem 0.85rem; border-radius:10px; background:var(--bg-elevated); display:flex; justify-content:space-between; align-items:center;" class="font-mono">
-          <div style="font-size:0.75rem;">
-            <strong>{{ sp.user.username }}</strong> ({{ sp.role }}) • <span style="color:var(--brand-primary);">{{ sp.xp }} XP</span> • 🔥 {{ sp.streak_days }}d
-          </div>
-          <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="admin_action" value="boost_student_xp" />
-            <input type="hidden" name="profile_id" value="{{ sp.id }}" />
-            <button type="submit" class="cq-btn cq-btn-primary" style="padding:0.25rem 0.6rem; font-size:0.68rem;">+500 XP &amp; Shield</button>
-          </form>
+    <!-- Overview Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Tracks</span>
+            <p class="text-2xl font-black text-white mt-1">{{ total_tracks }}</p>
+            <span class="text-[10px] text-indigo-400 font-mono">6 Core Stacks</span>
         </div>
-        {% endfor %}
-      </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Levels</span>
+            <p class="text-2xl font-black text-emerald-400 mt-1">{{ total_levels }}</p>
+            <span class="text-[10px] text-emerald-400 font-mono">Playable</span>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Quiz Questions</span>
+            <p class="text-2xl font-black text-amber-400 mt-1">{{ total_quizzes }}</p>
+            <span class="text-[10px] text-amber-400 font-mono">Bug-Hunter Bank</span>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Students</span>
+            <p class="text-2xl font-black text-cyan-400 mt-1">{{ total_students }}</p>
+            <span class="text-[10px] text-cyan-400 font-mono">BAIUST CSE</span>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Submissions</span>
+            <p class="text-2xl font-black text-white mt-1">{{ total_submissions }}</p>
+            <span class="text-[10px] text-slate-400 font-mono">Logged Code</span>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Accepted Rate</span>
+            <p class="text-2xl font-black text-emerald-400 mt-1">{{ accepted_submissions }}</p>
+            <span class="text-[10px] text-emerald-400 font-mono">Successful Solves</span>
+        </div>
     </div>
 
-    <div>
-      <div class="font-mono" style="font-size:0.74rem; color:var(--brand-secondary); font-weight:800; margin-bottom:0.4rem;">03 // LIVE ANTI-HACK &amp; SANDBOX SECURITY AUDIT LOGS</div>
-      <div style="max-height:150px; overflow-y:auto; font-size:0.7rem;" class="font-mono">
-        {% for l in logs %}
-        <div style="padding:0.35rem 0; border-bottom:1px solid var(--border-subtle); display:flex; justify-content:space-between;">
-          <span>[{{ l.language_slug|upper }}] {{ l.module_title|truncatechars:28 }}</span>
-          <span style="color:var(--brand-primary); font-weight:700;">{{ l.security_status }} ({{ l.latency_ms }}ms)</span>
-        </div>
-        {% endfor %}
-      </div>
+    <!-- Quick Action Launchers -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <a href="{% url 'instructor_panel:levels' %}" class="bg-slate-900 border border-slate-800 hover:border-emerald-500/50 p-5 rounded-2xl flex items-center gap-4 transition group">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 text-2xl flex items-center justify-center group-hover:scale-105 transition">
+                <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-white text-sm">Add New Level</h3>
+                <p class="text-[11px] text-slate-400">Create Rover or Code Judge task</p>
+            </div>
+        </a>
+
+        <a href="{% url 'instructor_panel:quizzes' %}" class="bg-slate-900 border border-slate-800 hover:border-amber-500/50 p-5 rounded-2xl flex items-center gap-4 transition group">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 text-2xl flex items-center justify-center group-hover:scale-105 transition">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-white text-sm">Add Quiz Question</h3>
+                <p class="text-[11px] text-slate-400">Expand 60s Bug Blitz Bank</p>
+            </div>
+        </a>
+
+        <a href="{% url 'instructor_panel:announcements' %}" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 p-5 rounded-2xl flex items-center gap-4 transition group">
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 text-2xl flex items-center justify-center group-hover:scale-105 transition">
+                <i class="fa-solid fa-bullhorn"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-white text-sm">Post Announcement</h3>
+                <p class="text-[11px] text-slate-400">Notify students of lab evaluation</p>
+            </div>
+        </a>
+
+        <a href="/php_sessional_crud/index.php" target="_blank" class="bg-slate-900 border border-slate-800 hover:border-cyan-500/50 p-5 rounded-2xl flex items-center gap-4 transition group">
+            <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 text-2xl flex items-center justify-center group-hover:scale-105 transition font-mono">
+                🐘
+            </div>
+            <div>
+                <h3 class="font-bold text-white text-sm">PHP MySQLi Module</h3>
+                <p class="text-[11px] text-slate-400">Continuous Evaluation iv</p>
+            </div>
+        </a>
     </div>
-  </div>
+
+    <!-- 2 Column Admin Grid: Recent Submissions & Leaderboard -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Recent Student Submissions Table -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+            <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-code-commit text-emerald-400"></i> Recent Submissions Log
+                </h3>
+                <a href="{% url 'instructor_panel:submissions' %}" class="text-xs text-indigo-400 hover:underline">View All</a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-950/80 uppercase font-semibold text-slate-400 border-b border-slate-800">
+                        <tr>
+                            <th class="p-3">Student</th>
+                            <th class="p-3">Level</th>
+                            <th class="p-3">Language</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3">XP</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 font-mono">
+                        {% for sub in recent_submissions %}
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-white">{{ sub.user.username }}</td>
+                                <td class="p-3 text-slate-300">{{ sub.level.title|truncatechars:20 }}</td>
+                                <td class="p-3">{{ sub.language }}</td>
+                                <td class="p-3">
+                                    <span class="px-2 py-0.5 rounded text-[10px] {% if sub.status == 'ACCEPTED' %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/30{% else %}bg-rose-500/10 text-rose-400 border border-rose-500/30{% endif %}">
+                                        {{ sub.status }}
+                                    </span>
+                                </td>
+                                <td class="p-3 font-bold text-amber-400">+{{ sub.xp_earned }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="5" class="p-6 text-center text-slate-500">No submissions recorded yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Student Progress Leaderboard -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+            <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-users text-amber-400"></i> Top Registered Students
+                </h3>
+                <a href="{% url 'instructor_panel:students' %}" class="text-xs text-indigo-400 hover:underline">Manage All</a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-950/80 uppercase font-semibold text-slate-400 border-b border-slate-800">
+                        <tr>
+                            <th class="p-3">Student Name</th>
+                            <th class="p-3">ID</th>
+                            <th class="p-3">Batch</th>
+                            <th class="p-3">Rank Tier</th>
+                            <th class="p-3 text-right">XP</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 font-sans">
+                        {% for s in recent_students %}
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-white">{{ s.user.first_name|default:s.user.username }}</td>
+                                <td class="p-3 font-mono text-slate-400">{{ s.student_id }}</td>
+                                <td class="p-3 text-slate-400">{{ s.batch_section }}</td>
+                                <td class="p-3">
+                                    <span class="text-[10px] px-2 py-0.5 rounded font-mono font-semibold border {{ s.rank_badge_color }}">
+                                        Lvl {{ s.level }}
+                                    </span>
+                                </td>
+                                <td class="p-3 text-right font-mono font-bold text-amber-400">{{ s.xp }} XP</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="5" class="p-6 text-center text-slate-500">No student profiles found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 {% endblock %}

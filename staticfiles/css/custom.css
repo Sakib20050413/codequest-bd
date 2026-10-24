@@ -1,223 +1,71 @@
-/* ==========================================================================
-   CODEQUEST BD V10.0 — APPLE / LINEAR / CS50 FLAGSHIP DESIGN SYSTEM
-   Fixes:
-   - Req #2 & #29: Zero side clipping (`overflow-x: clip`), dynamic PC+Mobile nav
-   - Req #3: High-contrast Apple Alabaster Light Theme (`#f4f6f9` / `#ffffff` / `#0f172a`)
-   - Req #6: Theme-Adaptive Terminal & Code Editor (Daylight Terminal in Light Mode!)
-   ========================================================================== */
-:root, [data-theme="dark"] {
-  --bg-canvas: #04070e;
-  --bg-surface: rgba(11, 17, 30, 0.88);
-  --bg-surface-solid: #0b111e;
-  --bg-elevated: #131c31;
-  --bg-glass: rgba(8, 13, 24, 0.86);
-  --txt-1: #f8fafc;
-  --txt-2: #cbd5e1;
-  --txt-3: #64748b;
-  --border-1: rgba(56, 189, 248, 0.18);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --brand-primary: #10b981;
-  --brand-secondary: #06b6d4;
-  --brand-indigo: #6366f1;
-  --brand-amber: #f59e0b;
-  --btn-text: #022c22;
-  --card-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.55);
+/* CodeQuest BD - Custom Gamified Theme & Print Stylesheet */
 
-  /* Theme-Adaptive Terminal & Code Editor Variables (Req #6) */
-  --term-bg: #060a12;
-  --term-header: #0d1526;
-  --term-txt: #e2e8f0;
-  --term-code: #6ee7b7;
-  --term-muted: #64748b;
-  --term-border: rgba(56, 189, 248, 0.24);
-  --preview-stage-bg: #080d18;
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(16, 185, 129, 0.8);
+    }
 }
 
-[data-theme="light"] {
-  --bg-canvas: #f2f5f9;
-  --bg-surface: rgba(255, 255, 255, 0.95);
-  --bg-surface-solid: #ffffff;
-  --bg-elevated: #e8eef5;
-  --bg-glass: rgba(255, 255, 255, 0.92);
-  --txt-1: #0f172a;
-  --txt-2: #334155;
-  --txt-3: #475569;
-  --border-1: rgba(2, 132, 199, 0.28);
-  --border-subtle: #cbd5e1;
-  --brand-primary: #059669;
-  --brand-secondary: #0284c7;
-  --brand-indigo: #4f46e5;
-  --brand-amber: #d97706;
-  --btn-text: #ffffff;
-  --card-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.08);
-
-  /* Daylight Xcode / macOS Light Terminal (Fixes Req #6: Terminal is NEVER black in Light Mode!) */
-  --term-bg: #f8fafc;
-  --term-header: #e2e8f0;
-  --term-txt: #0f172a;
-  --term-code: #047857;
-  --term-muted: #475569;
-  --term-border: #94a3b8;
-  --preview-stage-bg: #f1f5f9;
+.glow-emerald {
+    animation: pulse-glow 2s infinite ease-in-out;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body {
-  width: 100%;
-  max-width: 100vw;
-  min-height: 100vh;
-  overflow-x: clip;
-  background-color: var(--bg-canvas);
-  color: var(--txt-1);
-  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
-  line-height: 1.55;
-  scroll-behavior: smooth;
-  transition: background-color 220ms ease, color 220ms ease;
+/* Custom scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #090d16;
+}
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #334155;
 }
 
-.font-display { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.025em; }
-.font-mono { font-family: 'JetBrains Mono', monospace; }
-a { color: inherit; text-decoration: none; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-
-/* True Edge-Safe Full-Screen Container (Fixes Req #29: Zero side cut-off on any screen!) */
-.cq-shell {
-  width: 100%;
-  max-width: 100%;
-  padding-left: clamp(14px, 2.2vw, 36px);
-  padding-right: clamp(14px, 2.2vw, 36px);
-  margin: 0 auto;
-  position: relative;
-  z-index: 2;
+/* Rover Maze Animation */
+.rover-sprite {
+    user-select: none;
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.6));
 }
 
-/* Live Ambient Background Canvas (Req #7) */
-#ambientLiveBgCanvas {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.65;
-}
+/* Print Stylesheet for BAIUST CSE 324 Formal Proposal */
+@media print {
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt;
+    }
 
-/* Responsive Sticky Navbar (Fixes Req #2: Buttons NEVER disappear on resize!) */
-.cq-navbar {
-  position: sticky;
-  top: 0;
-  z-index: 9999;
-  width: 100%;
-  min-height: 68px;
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
+    nav, footer, .no-print, button, .print-hide {
+        display: none !important;
+    }
 
-.cq-nav-links {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
+    .proposal-page {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
 
-.cq-actions-group {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-}
+    a {
+        color: #000 !important;
+        text-decoration: underline;
+    }
 
-@media (max-width: 960px) {
-  .cq-nav-links { display: none; }
-  .cq-mobile-toggle { display: inline-flex !important; }
-}
+    .print-break-inside-avoid {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
 
-.cq-btn {
-  padding: 0.48rem 0.9rem;
-  border-radius: 11px;
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-surface-solid);
-  color: var(--txt-1);
-  font-size: 0.76rem;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  white-space: nowrap;
-  transition: transform 150ms cubic-bezier(0.22, 1, 0.36, 1), border-color 150ms ease, background 150ms ease;
-}
-.cq-btn:hover {
-  border-color: var(--brand-primary);
-  transform: translateY(-1px);
-}
-.cq-btn:active { transform: scale(0.97); }
-
-.cq-btn-primary {
-  background: var(--brand-primary);
-  color: var(--btn-text);
-  border-color: var(--brand-primary);
-  font-weight: 800;
-}
-
-.cq-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 18px;
-  padding: clamp(1.1rem, 2vw, 1.65rem);
-  box-shadow: var(--card-shadow);
-  transition: border-color 180ms ease, transform 180ms ease;
-}
-.cq-card:hover { border-color: var(--border-1); }
-
-/* Theme-Adaptive Terminal & Code Box (Fixes Req #5 & #6) */
-.cq-terminal-window {
-  background: var(--term-bg);
-  color: var(--term-txt);
-  border: 1.5px solid var(--term-border);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: var(--card-shadow);
-  transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
-}
-.cq-terminal-bar {
-  background: var(--term-header);
-  padding: 0.6rem 1rem;
-  border-bottom: 1px solid var(--term-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.cq-code-textarea {
-  width: 100%;
-  background: var(--term-bg);
-  color: var(--term-code);
-  border: none;
-  padding: 0.9rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.82rem;
-  line-height: 1.65;
-  outline: none;
-  resize: vertical;
-}
-
-/* Responsive 12-Col Grid that Automatically Adapts on Laptop/Tablet/Mobile */
-.cq-grid-12 {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 1.15rem;
-  width: 100%;
-}
-@media (max-width: 1100px) {
-  .cq-col-lg-12 { grid-column: span 12 !important; }
+    .print-page-break {
+        page-break-before: always;
+    }
 }

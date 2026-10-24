@@ -1,19 +1,27 @@
-{% load static %}
-<footer class="cq-shell font-mono" style="border-top:1px solid var(--border-subtle); margin-top:4rem; padding-top:2.25rem; padding-bottom:2.5rem; font-size:0.75rem; color:var(--txt-3);">
-  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1.25rem;">
-    <div style="display:flex; align-items:center; gap:0.75rem;">
-      <img src="{% static 'img/logo.svg' %}" alt="CodeQuest Logo" style="width:34px; height:34px; border-radius:10px;" />
-      <div>
-        <div style="color:var(--txt-1); font-weight:800;">CodeQuest BD™ V10.0 — Flagship 3D Visual Programming &amp; CS50 Architecture Platform</div>
-        <div>Trademark &amp; Intellectual Property of <strong>Md Najmus Sakib Rahatul</strong> (AI/ML &amp; Full-Stack Architect, BAIUST CSE)</div>
-      </div>
+<footer class="bg-slate-950 border-t border-slate-900 py-10 px-4 sm:px-6 lg:px-8 mt-20 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="space-y-1 text-center md:text-left">
+            <p class="font-bold text-slate-200 text-sm flex items-center justify-center md:justify-start gap-2">
+                ⚡ CodeQuest BD — Gamified Programming Platform
+            </p>
+            <p class="text-slate-400">
+                CSE 324 Web Technologies Sessional Lab Final Project & Continuous Evaluations
+            </p>
+            <p class="text-slate-500 font-mono text-[11px]">
+                Built by <strong>Md Najmus Sakib Rahatul</strong> (Student ID: <strong>1119003</strong>), Level 3 Term 2, Section A
+            </p>
+            <p class="text-slate-500 text-[11px]">
+                Department of Computer Science & Engineering, Bangladesh Army International University of Science & Technology (BAIUST), Cumilla
+            </p>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-medium">
+            <a href="{% url 'arena:proposal' %}" class="hover:text-emerald-400 transition">Formal Proposal</a>
+            <a href="{% url 'arena:tracks' %}" class="hover:text-emerald-400 transition">6 Tracks</a>
+            <a href="{% url 'arena:blitz' %}" class="hover:text-emerald-400 transition">Bug Blitz</a>
+            <a href="{% url 'arena:leaderboard' %}" class="hover:text-emerald-400 transition">BAIUST Leaderboard</a>
+            <a href="/php_sessional_crud/index.php" target="_blank" class="hover:text-emerald-400 transition">PHP CRUD Module</a>
+            <a href="{% url 'instructor_panel:dashboard' %}" class="hover:text-indigo-400 transition">Admin Panel</a>
+        </div>
     </div>
-    <div style="display:flex; flex-wrap:wrap; gap:0.75rem;">
-      <a href="{% url 'catalogue' %}" class="cq-btn">16 Languages</a>
-      <a href="{% url 'games_hub' %}" class="cq-btn">108 Coding Games</a>
-      <a href="{% url 'profile_view' %}" class="cq-btn">Student Portal</a>
-      <a href="/instructor-panel/" class="cq-btn">Admin CMS</a>
-      <a href="{% url 'about_view' %}" class="cq-btn">Trademark Charter</a>
-    </div>
-  </div>
 </footer>

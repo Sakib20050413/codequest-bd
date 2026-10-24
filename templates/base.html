@@ -4,107 +4,217 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}CodeQuest BD™ V10.0 — 16 Languages, 108 3D/2D Coding Games &amp; CS50 Visual IDE{% endblock %}</title>
-  <link rel="icon" type="image/svg+xml" href="{% static 'img/logo.svg' %}" />
+  <title>{% block title %}CodeQuest BD — Modern Bite-Sized Programming Education{% endblock %}</title>
+  <meta name="description" content="Learn HTML, CSS, JavaScript, Python, and SQL through structured 3–7 minute interactive lessons, browser-based sandboxes, and automated verification." />
+  <meta name="keywords" content="learn programming, coding exercises, bite-sized lessons, interactive coding, web development, python, sql" />
+  
+  <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}" />
+  <link rel="apple-touch-icon" href="{% static 'img/logo-icon.svg' %}" />
+  
+  <!-- Typography: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="{% static 'css/codequest.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=4.5" />
+  {% block extra_head %}{% endblock %}
 </head>
 <body>
-  <!-- Live Interactive Constellation & Aurora Background (Req #7) -->
-  <canvas id="ambientLiveBgCanvas"></canvas>
+  <!-- Ambient Atmospheric Lighting Effects (Linear / Vercel Aesthetic) -->
+  <div class="ambient-glow-top"></div>
+  <div class="ambient-grid"></div>
 
-  {% include "navbar.html" %}
+  <!-- Floating Sticky Navigation Bar -->
+  <header class="cq-header">
+    <div class="shell shell-wide">
+      <nav class="cq-nav" aria-label="Main Navigation">
+        
+        <!-- Brand Logo with Vector Emblem -->
+        <a href="{% url 'landing' %}" class="brand-logo" aria-label="CodeQuest Home">
+          <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="36" style="display: block; width: auto;" />
+        </a>
 
-  <main class="cq-shell" style="padding-top:1.5rem; padding-bottom:3rem;">
+        <!-- Desktop Navigation Links -->
+        <ul class="nav-links">
+          <li>
+            <a href="{% url 'catalogue' %}" class="nav-link {% if '/courses/' in request.path %}active{% endif %}">
+              Courses
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'games_hub' %}" class="nav-link {% if '/games/' in request.path or '/practice/' in request.path %}active{% endif %}">
+              Practice Arena
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'playground' %}" class="nav-link {% if '/playground/' in request.path %}active{% endif %}">
+              Playground
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'about_view' %}" class="nav-link {% if '/about/' in request.path %}active{% endif %}">
+              About
+            </a>
+          </li>
+        </ul>
+
+        <!-- Right Side Widgets & User Controls (Dynamic Priority Hierarchy) -->
+        <div class="nav-actions-cluster">
+          
+          <!-- Streak Indicator (Visible on Desktop) -->
+          <div class="streak-pill desktop-only-stat" title="Daily Learning Streak">
+            <span>🔥</span>
+            <span id="streakCount">{{ user_streak }}d</span>
+          </div>
+
+          <!-- Total XP Badge (Visible on Desktop) -->
+          <div class="xp-pill desktop-only-stat" title="Total XP Earned">
+            <span>⚡</span>
+            <span id="xpCount">{{ user_xp }}</span> XP
+          </div>
+
+          <!-- Sound Mute/Unmute -->
+          <button id="soundToggleBtn" class="btn btn-icon" title="Toggle Audio Feedback" aria-label="Toggle Audio Feedback">
+            🔊
+          </button>
+
+          <!-- Theme Toggle -->
+          <button id="themeToggleBtn" class="btn btn-icon" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+            ☀
+          </button>
+
+          <!-- Account Buttons -->
+          {% if user.is_authenticated %}
+            <a href="{% url 'profile_view' %}" class="btn btn-ghost nav-auth-btn" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;">
+              Profile
+            </a>
+            <a href="{% url 'logout_view' %}" class="btn btn-ghost desktop-only-stat" style="padding: 0.45rem 0.75rem; font-size: 0.84rem; color: var(--text-muted);">
+              Logout
+            </a>
+          {% else %}
+            <a href="{% url 'login_view' %}" class="btn btn-ghost nav-auth-btn desktop-only-stat" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;">
+              Sign In
+            </a>
+            <a href="{% url 'signup_view' %}" class="btn btn-primary nav-auth-btn" style="padding: 0.45rem 0.95rem; font-size: 0.84rem;">
+              Get Started
+            </a>
+          {% endif %}
+
+          <!-- Mobile Hamburger Toggle -->
+          <button id="mobileMenuBtn" class="mobile-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Off-Canvas Navigation Drawer -->
+  <div id="mobileNavDrawer" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+    <div style="display: flex; gap: 0.75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 0.5rem;">
+      <div class="streak-pill" style="font-size: 0.85rem;">
+        <span>🔥</span> <span>{{ user_streak }}d Streak</span>
+      </div>
+      <div class="xp-pill" style="font-size: 0.85rem;">
+        <span>⚡</span> <span>{{ user_xp }} XP</span>
+      </div>
+    </div>
+    <a href="{% url 'catalogue' %}" class="nav-link">📚 All Courses</a>
+    <a href="{% url 'games_hub' %}" class="nav-link">🎮 Practice Arena (6 Games)</a>
+    <a href="{% url 'playground' %}" class="nav-link">💻 Browser IDE Playground</a>
+    <a href="{% url 'about_view' %}" class="nav-link">🏛️ About &amp; Trademark Charter</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'profile_view' %}" class="nav-link">👤 Student Command Center</a>
+      <a href="{% url 'logout_view' %}" class="nav-link" style="color: var(--danger);">Sign Out</a>
+    {% else %}
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;">
+        <a href="{% url 'login_view' %}" class="btn btn-ghost" style="text-align: center; justify-content: center;">Sign In</a>
+        <a href="{% url 'signup_view' %}" class="btn btn-primary" style="text-align: center; justify-content: center;">Sign Up</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Main Body Content -->
+  <main style="flex: 1;">
     {% block content %}{% endblock %}
   </main>
 
-  {% include "footer.html" %}
+  <!-- Editorial Platform Footer -->
+  <footer class="cq-footer">
+    <div class="shell">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2.5rem; margin-bottom: 2.5rem;">
+        
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.75rem;">
+            <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="30" style="display: block;" />
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; max-width: 320px;">
+            Bangladesh's flagship developer education platform. Master web technologies, systems programming, and databases with structured 3–7 minute lessons and interactive browser tools.
+          </p>
+        </div>
 
-  <script>
-    // 1. Persistent Dark / Crisp Apple Daylight Theme Switcher (Fixes Req #3 & #6)
-    (function initTheme() {
-      const saved = localStorage.getItem("cq_v10_theme") || "dark";
-      document.documentElement.setAttribute("data-theme", saved);
-    })();
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.85rem;">
+            Curriculum
+          </div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
+            <li><a href="{% url 'course_detail' 'html-core' %}">HTML5 Foundations</a></li>
+            <li><a href="{% url 'course_detail' 'css-core' %}">CSS3 Layouts &amp; Flexbox</a></li>
+            <li><a href="{% url 'course_detail' 'javascript-core' %}">JavaScript &amp; DOM</a></li>
+            <li><a href="{% url 'course_detail' 'python-core' %}">Python 3 Algorithmic Core</a></li>
+            <li><a href="{% url 'course_detail' 'sql-core' %}">SQL Relational Queries</a></li>
+          </ul>
+        </div>
 
-    window.toggleCqTheme = function () {
-      const cur = document.documentElement.getAttribute("data-theme") || "dark";
-      const next = cur === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("cq_v10_theme", next);
-    };
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.85rem;">
+            Practice &amp; Tools
+          </div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
+            <li><a href="{% url 'games_hub' %}">Practice Challenges Arena</a></li>
+            <li><a href="{% url 'playground' %}">Interactive Playground</a></li>
+            <li><a href="{% url 'game_play' 'tag-match' %}">HTML Tag Match Drill</a></li>
+            <li><a href="{% url 'game_play' 'flexbox-pond' %}">Flexbox Alignment Lab</a></li>
+            <li><a href="{% url 'game_play' 'bug-hunt' %}">Code Review Bug Hunt</a></li>
+          </ul>
+        </div>
 
-    // 2. Direct Live Webpage DOM Editor Mode (Fixes Req #5)
-    let pageEditActive = false;
-    window.toggleLivePageEdit = function () {
-      pageEditActive = !pageEditActive;
-      document.body.contentEditable = pageEditActive ? "true" : "false";
-      const btn = document.getElementById("liveEditPageBtn");
-      if (btn) {
-        btn.textContent = pageEditActive ? "✏️ Edit Page: ON" : "✏️ Edit Page: OFF";
-        btn.className = pageEditActive ? "cq-btn cq-btn-primary" : "cq-btn";
-      }
-    };
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.85rem;">
+            Platform
+          </div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
+            <li><a href="{% url 'about_view' %}">Architecture &amp; Principles</a></li>
+            <li><a href="{% url 'catalogue' %}">Full Course Roadmap</a></li>
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'profile_view' %}">Your Learning Profile</a></li>
+            {% else %}
+              <li><a href="{% url 'signup_view' %}">Create Free Account</a></li>
+            {% endif %}
+            <li><a href="https://github.com/Sakib20050413/codequest-bd" target="_blank" rel="noopener">GitHub Repository ↗</a></li>
+          </ul>
+        </div>
 
-    // 3. 60 FPS Ambient Interactive Constellation Background (Req #7)
-    (function initAmbientCanvas() {
-      const c = document.getElementById("ambientLiveBgCanvas");
-      if (!c) return;
-      const ctx = c.getContext("2d");
-      let w = window.innerWidth, h = window.innerHeight;
-      const pts = [];
-      for (let i = 0; i < 38; i++) {
-        pts.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 0.45,
-          vy: (Math.random() - 0.5) * 0.45,
-          r: 1.5 + Math.random() * 1.5
-        });
-      }
-      function resize() {
-        w = window.innerWidth; h = window.innerHeight;
-        c.width = w; c.height = h;
-      }
-      resize();
-      window.addEventListener("resize", resize);
+      </div>
 
-      function draw() {
-        requestAnimationFrame(draw);
-        ctx.clearRect(0, 0, w, h);
-        const isLight = document.documentElement.getAttribute("data-theme") === "light";
-        const dotCol = isLight ? "rgba(2, 132, 199, 0.35)" : "rgba(16, 185, 129, 0.4)";
-        const lineCol = isLight ? "rgba(2, 132, 199, 0.08)" : "rgba(56, 189, 248, 0.09)";
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle); font-size: 0.82rem; color: var(--text-muted);">
+        <div>
+          &copy; {% now "Y" %} CodeQuest BD. Designed for purposeful, accessible coding education.
+        </div>
+        <div>
+          Client-Side Sandboxed Execution &bull; WCAG 2.2 AA Compliant
+        </div>
+      </div>
+    </div>
+  </footer>
 
-        for (let i = 0; i < pts.length; i++) {
-          const p = pts[i];
-          p.x += p.vx; p.y += p.vy;
-          if (p.x < 0 || p.x > w) p.vx *= -1;
-          if (p.y < 0 || p.y > h) p.vy *= -1;
-          ctx.fillStyle = dotCol;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fill();
-
-          for (let j = i + 1; j < pts.length; j++) {
-            const p2 = pts[j];
-            const dx = p.x - p2.x, dy = p.y - p2.y;
-            if (dx * dx + dy * dy < 16000) {
-              ctx.strokeStyle = lineCol;
-              ctx.lineWidth = 1;
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.stroke();
-            }
-          }
-        }
-      }
-      draw();
-    })();
-  </script>
+  <script src="{% static 'js/ambient_canvas.js' %}?v=4.5"></script>
+  <script src="{% static 'js/codequest.js' %}?v=4.5"></script>
+  {% block extra_scripts %}{% endblock %}
 </body>
 </html>
