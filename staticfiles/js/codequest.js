@@ -340,6 +340,169 @@
     }
   }
 
+  // 6. Card Spotlight & 3D Tilt Engine (Linear / Apple / Vercel Proximity Interaction)
+  function initCardSpotlightAndTilt() {
+    if (window.matchMedia('(pointer: coarse)').matches) return; // Touch devices use native tap gestures
+
+    let activeCard = null;
+    let rafId = null;
+    let mouseX = 0;
+    let mouseY = 0;
+    let rect = null;
+
+    document.addEventListener('mouseover', function (e) {
+      const card = e.target.closest('.cq-card, .catalogue-course-card, .arcade-game-card, .arena-level-card, .arena-task-card, .hero-stat-card, .bento-tile, .featured-course-card, .lms-resume-card, .lms-habit-card, .cq-spotlight');
+      if (card) {
+        activeCard = card;
+        rect = card.getBoundingClientRect();
+      }
+    }, { passive: true });
+
+    document.addEventListener('mouseout', function (e) {
+      if (activeCard && (!e.relatedTarget || !activeCard.contains(e.relatedTarget))) {
+        activeCard.style.setProperty('--rot-x', '0deg');
+        activeCard.style.setProperty('--rot-y', '0deg');
+        activeCard = null;
+      }
+    }, { passive: true });
+
+    document.addEventListener('mousemove', function (e) {
+      if (!activeCard) return;
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(function () {
+          if (activeCard) {
+            if (!rect) rect = activeCard.getBoundingClientRect();
+            const x = mouseX - rect.left;
+            const y = mouseY - rect.top;
+            activeCard.style.setProperty('--mouse-x', x + 'px');
+            activeCard.style.setProperty('--mouse-y', y + 'px');
+
+            // Subtle 3D tilt calculation (clamped to max ±3.5deg for tactile luxury feel)
+            if (activeCard.classList.contains('cq-card-interactive') ||
+                activeCard.classList.contains('arcade-game-card') ||
+                activeCard.classList.contains('arena-level-card') ||
+                activeCard.classList.contains('catalogue-course-card') ||
+                activeCard.classList.contains('hero-stat-card')) {
+              const cx = rect.width / 2;
+              const cy = rect.height / 2;
+              const rotX = ((y - cy) / cy) * -3.5;
+              const rotY = ((x - cx) / cx) * 3.5;
+              activeCard.style.setProperty('--rot-x', rotX.toFixed(2) + 'deg');
+              activeCard.style.setProperty('--rot-y', rotY.toFixed(2) + 'deg');
+            }
+          }
+          rafId = null;
+        });
+      }
+    }, { passive: true });
+
+    window.addEventListener('scroll', function () {
+      if (activeCard) rect = activeCard.getBoundingClientRect();
+    }, { passive: true });
+  }
+
+  // 7. Scroll-Driven Staggered Entrance Reveal Engine
+  function initScrollReveal() {
+    if (typeof IntersectionObserver === 'undefined') {
+      document.querySelectorAll('.cq-reveal').forEach(el => el.classList.add('cq-revealed'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('cq-revealed');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -30px 0px'
+    });
+
+    const targets = document.querySelectorAll(
+      '.cq-card, .catalogue-course-card, .arcade-game-card, .arena-level-card, .arena-task-card, .hero-stat-card, .bento-tile, .featured-course-card, .lms-resume-card, .lms-habit-card, .cq-reveal'
+    );
+
+    targets.forEach(function (el) {
+      if (!el.classList.contains('cq-reveal')) {
+        el.classList.add('cq-reveal');
+      }
+      if (el.parentElement) {
+        const siblings = Array.from(el.parentElement.children);
+        const idx = siblings.indexOf(el);
+        if (idx > 0 && idx < 8 && !el.style.transitionDelay) {
+          el.style.transitionDelay = (idx * 50) + 'ms';
+        }
+      }
+      observer.observe(el);
+    });
+  }
+
+  // 8. Number Counter Rollup Engine (Quartic Ease-Out)
+  function initNumberCounters() {
+    const counterElements = document.querySelectorAll('[data-counter-val]');
+    if (!counterElements.length) return;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      counterElements.forEach(el => {
+        el.textContent = (el.getAttribute('data-counter-prefix') || '') + 
+                         parseFloat(el.getAttribute('data-counter-val')).toLocaleString() + 
+                         (el.getAttribute('data-counter-suffix') || '');
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          obs.unobserve(entry.target);
+          animateCounter(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    counterElements.forEach(function (el) {
+      observer.observe(el);
+    });
+
+    function animateCounter(el) {
+      const targetVal = parseFloat(el.getAttribute('data-counter-val'));
+      if (isNaN(targetVal)) return;
+      const prefix = el.getAttribute('data-counter-prefix') || '';
+      const suffix = el.getAttribute('data-counter-suffix') || '';
+      const duration = 1400; // ms
+      const startTime = performance.now();
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 4);
+        const currentVal = Math.round(ease * targetVal);
+        el.textContent = prefix + currentVal.toLocaleString() + suffix;
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = prefix + targetVal.toLocaleString() + suffix;
+        }
+      }
+      requestAnimationFrame(step);
+    }
+  }
+
+  // 9. Tactile Mechanical Click Sound Engine
+  function initTactileClickSounds() {
+    document.addEventListener('click', function (e) {
+      const target = e.target.closest('.btn, .filter-pill, .ide-tab, .tab-btn, .hero-lang-tab, .nav-link-item, .game-filter-btn, .task-filter-pill, .arena-mode-pill');
+      if (target && playMechanicalClick) {
+        playMechanicalClick();
+      }
+    });
+  }
+
   global.CodeQuest = {
     playTone: playTone,
     playMechanicalClick: playMechanicalClick,
@@ -355,5 +518,9 @@
     initMobileMenu();
     initSoundToggle();
     initDailyQuests();
+    initCardSpotlightAndTilt();
+    initScrollReveal();
+    initNumberCounters();
+    initTactileClickSounds();
   });
 })(typeof window !== 'undefined' ? window : this);

@@ -73,6 +73,11 @@
   --shadow-glow: 0 0 36px -4px rgba(99, 102, 241, 0.35);
   
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.15);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-fluid: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 /* ==========================================================================
@@ -403,15 +408,22 @@ body.is-fluid-layout .shell-wide {
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.18s var(--ease);
+  transition: transform 0.22s var(--ease-spring), box-shadow 0.22s var(--ease-out), background 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
   border: 1px solid transparent;
   font-family: inherit;
   white-space: nowrap;
   position: relative;
+  will-change: transform;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
 }
 
 .btn:active {
-  transform: translateY(1px) scale(0.99);
+  transform: translateY(1px) scale(0.97) !important;
+  transition-duration: 0.08s;
 }
 
 .btn:focus-visible {
@@ -419,7 +431,7 @@ body.is-fluid-layout .shell-wide {
   outline-offset: 3px;
 }
 
-/* Premium Gradient Button */
+/* Premium Gradient Button with Apple & Linear Specular Light Shimmer */
 .btn-primary {
   background: var(--accent-gradient-btn);
   color: #ffffff !important;
@@ -427,10 +439,37 @@ body.is-fluid-layout .shell-wide {
   box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.24) 50%,
+    transparent 100%
+  );
+  transform: translateX(-150%) skewX(-20deg);
+  animation: buttonShimmerSweep 5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
 .btn-primary:hover {
   filter: brightness(1.1);
-  box-shadow: 0 6px 24px rgba(99, 102, 241, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
-  transform: translateY(-1px);
+  box-shadow: 0 8px 26px rgba(99, 102, 241, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+  transform: translateY(-2px);
+}
+
+@keyframes buttonShimmerSweep {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  28%, 100% {
+    transform: translateX(250%) skewX(-20deg);
+  }
 }
 
 /* Glass Ghost Button */
@@ -541,10 +580,11 @@ body.is-fluid-layout .shell-wide {
   padding: 1.85rem;
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.12), 0 10px 30px -10px rgba(0, 0, 0, 0.5);
   position: relative;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
   overflow: hidden;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  will-change: transform, box-shadow;
 }
 
 [data-theme="light"] .cq-card {
@@ -562,10 +602,62 @@ body.is-fluid-layout .shell-wide {
   height: 1px;
   background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.25) 50%, transparent 100%);
   pointer-events: none;
+  z-index: 1;
 }
 
 [data-theme="light"] .cq-card::before {
   background: linear-gradient(90deg, transparent 0%, rgba(79, 70, 229, 0.2) 50%, transparent 100%);
+}
+
+/* Linear & Vercel Proximity Cursor Spotlight Glow */
+.cq-card::after,
+.catalogue-course-card::after,
+.arcade-game-card::after,
+.arena-level-card::after,
+.arena-task-card::after,
+.hero-stat-card::after,
+.bento-tile::after,
+.featured-course-card::after,
+.lms-resume-card::after,
+.lms-habit-card::after,
+.cq-spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(99, 102, 241, 0.16), transparent 50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-out);
+  z-index: 2;
+}
+
+[data-theme="light"] .cq-card::after,
+[data-theme="light"] .catalogue-course-card::after,
+[data-theme="light"] .arcade-game-card::after,
+[data-theme="light"] .arena-level-card::after,
+[data-theme="light"] .arena-task-card::after,
+[data-theme="light"] .hero-stat-card::after,
+[data-theme="light"] .bento-tile::after,
+[data-theme="light"] .featured-course-card::after,
+[data-theme="light"] .lms-resume-card::after,
+[data-theme="light"] .lms-habit-card::after,
+[data-theme="light"] .cq-spotlight::after {
+  background: radial-gradient(420px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(79, 70, 229, 0.09), transparent 50%);
+}
+
+.cq-card:hover::after,
+.catalogue-course-card:hover::after,
+.arcade-game-card:hover::after,
+.arena-level-card:hover::after,
+.arena-task-card:hover::after,
+.hero-stat-card:hover::after,
+.bento-tile:hover::after,
+.featured-course-card:hover::after,
+.lms-resume-card:hover::after,
+.lms-habit-card:hover::after,
+.cq-spotlight:hover::after {
+  opacity: 1;
 }
 
 .cq-card:hover {
@@ -573,22 +665,37 @@ body.is-fluid-layout .shell-wide {
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18), 0 16px 40px -10px rgba(0, 0, 0, 0.65), 0 0 24px -4px rgba(99, 102, 241, 0.2);
 }
 
-.cq-card-interactive {
+.cq-card-interactive,
+.catalogue-course-card,
+.arcade-game-card,
+.arena-level-card,
+.hero-stat-card {
   cursor: pointer;
   text-decoration: none;
   display: flex;
   flex-direction: column;
   transform-style: preserve-3d;
   perspective: 1000px;
+  transform: perspective(1000px) rotateX(var(--rot-x, 0deg)) rotateY(var(--rot-y, 0deg)) translateY(0);
+  transition: transform 0.26s var(--ease-spring), border-color 0.24s var(--ease-out), box-shadow 0.24s var(--ease-out);
+  will-change: transform;
 }
 
-.cq-card-interactive:hover {
-  transform: translateY(-5px);
+.cq-card-interactive:hover,
+.catalogue-course-card:hover,
+.arcade-game-card:hover,
+.arena-level-card:hover,
+.hero-stat-card:hover {
+  transform: perspective(1000px) rotateX(var(--rot-x, 0deg)) rotateY(var(--rot-y, 0deg)) translateY(-4px);
   border-color: var(--accent);
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 0 20px 48px -12px rgba(0, 0, 0, 0.7), 0 0 32px -4px rgba(99, 102, 241, 0.3);
 }
 
-[data-theme="light"] .cq-card-interactive:hover {
+[data-theme="light"] .cq-card-interactive:hover,
+[data-theme="light"] .catalogue-course-card:hover,
+[data-theme="light"] .arcade-game-card:hover,
+[data-theme="light"] .arena-level-card:hover,
+[data-theme="light"] .hero-stat-card:hover {
   border-color: var(--accent);
   box-shadow: 0 20px 40px -8px rgba(15, 23, 42, 0.14), 0 0 24px -2px rgba(79, 70, 229, 0.2);
 }
@@ -2989,4 +3096,77 @@ body.zen-locked .floating-zen-exit-pill,
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 }
+
+/* ==========================================================================
+   Apple & Emil Kowalski Scroll Reveal & Physics Engine
+   ========================================================================== */
+
+.cq-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
+  will-change: opacity, transform;
+}
+
+.cq-reveal.cq-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger transitions */
+.cq-stagger-1 { transition-delay: 50ms; }
+.cq-stagger-2 { transition-delay: 100ms; }
+.cq-stagger-3 { transition-delay: 150ms; }
+.cq-stagger-4 { transition-delay: 200ms; }
+.cq-stagger-5 { transition-delay: 250ms; }
+.cq-stagger-6 { transition-delay: 300ms; }
+
+/* Gentle floating physics */
+@keyframes subtleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.cq-float {
+  animation: subtleFloat 4.5s ease-in-out infinite;
+}
+
+/* Breathing Glow effect */
+@keyframes ambientBreathe {
+  0%, 100% {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.03);
+  }
+}
+
+.ambient-flare {
+  animation: ambientBreathe 6s ease-in-out infinite;
+}
+
+/* Hero IDE Halo Glow */
+.hero-ide-halo {
+  box-shadow: 0 25px 60px -15px rgba(99, 102, 241, 0.28), 0 0 80px -20px rgba(6, 182, 212, 0.16);
+  transition: box-shadow 0.35s var(--ease-out);
+}
+
+.hero-ide-halo:hover {
+  box-shadow: 0 30px 75px -15px rgba(99, 102, 241, 0.38), 0 0 100px -15px rgba(6, 182, 212, 0.25);
+}
+
+[data-theme="light"] .hero-ide-halo {
+  box-shadow: 0 20px 45px -10px rgba(79, 70, 229, 0.12), 0 0 40px -10px rgba(2, 132, 199, 0.08);
+}
+
+[data-theme="light"] .hero-ide-halo:hover {
+  box-shadow: 0 25px 55px -10px rgba(79, 70, 229, 0.18), 0 0 60px -10px rgba(2, 132, 199, 0.12);
+}
+
 

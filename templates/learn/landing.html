@@ -55,7 +55,7 @@
 
     <!-- Hero Right Column: Directly Editable & Reactive IDE Studio Window -->
     <div>
-            <div class="ide-window" style="box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 45px -5px rgba(99, 102, 241, 0.28); border-radius: var(--radius-lg); border: 1px solid var(--border-medium); overflow: hidden;">
+      <div class="ide-window hero-ide-halo" style="box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 45px -5px rgba(99, 102, 241, 0.28); border-radius: var(--radius-lg); border: 1px solid var(--border-medium); overflow: hidden;">
         
         <!-- IDE Titlebar with Mac Traffic Lights & Dynamic Title -->
         <div class="ide-titlebar" style="background: #0d1017; padding: 0.65rem 1.15rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-subtle);">
@@ -169,7 +169,7 @@ print("Welcome to CodeQuest BD — you are ready to build!")</textarea>
         ⚡
       </div>
       <div>
-        <div class="hero-stat-value" style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-mono);">0ms Setup</div>
+        <div class="hero-stat-value" style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-mono);"><span data-counter-val="0">0</span>ms Setup</div>
         <div class="hero-stat-label" style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">Zero Tooling Configuration</div>
       </div>
     </div>
@@ -179,7 +179,7 @@ print("Welcome to CodeQuest BD — you are ready to build!")</textarea>
         🛡️
       </div>
       <div>
-        <div class="hero-stat-value" style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-mono);">100% Sandboxed</div>
+        <div class="hero-stat-value" style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-mono);"><span data-counter-val="100">100</span>% Sandboxed</div>
         <div class="hero-stat-label" style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">Safe Client Memory Execution</div>
       </div>
     </div>
@@ -199,7 +199,7 @@ print("Welcome to CodeQuest BD — you are ready to build!")</textarea>
         🏎️
       </div>
       <div>
-        <div class="hero-stat-value" style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-mono);">108 Games</div>
+        <div class="hero-stat-value" style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-mono);"><span data-counter-val="108">108</span> Games</div>
         <div class="hero-stat-label" style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">2D Physics &amp; 3D WebGL</div>
       </div>
     </div>
@@ -2126,7 +2126,8 @@ print("Welcome to CodeQuest BD — you are ready to build!")</textarea>
           execTime.textContent = (Math.random() * 2 + 1.0).toFixed(1) + 'ms';
         }
         if (window.CodeQuest && window.CodeQuest.fireConfetti) {
-          window.CodeQuest.fireConfetti();
+          const rect = runBtn.getBoundingClientRect();
+          window.CodeQuest.fireConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
         }
         if (window.CodeQuest && window.CodeQuest.playTone) {
           window.CodeQuest.playTone('success');
