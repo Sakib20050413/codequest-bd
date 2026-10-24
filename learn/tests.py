@@ -139,3 +139,28 @@ class CodeQuestCoreTests(TestCase):
 
         self.profile.refresh_from_db()
         self.assertEqual(self.profile.xp, 30)
+
+    def test_catalogue_authenticated_dashboard(self):
+        self.client.login(username="testlearner", password="password123")
+        # Mark lesson 1 completed
+        UserProgress.objects.create(
+            user=self.user,
+            lesson=self.lesson1,
+            status="COMPLETED"
+        )
+        res = self.client.get(reverse("catalogue"))
+        self.assertEqual(res.status_code, 200)
+        self.assertContains(res, "Welcome back, testlearner!")
+        self.assertContains(res, "PICK UP WHERE YOU LEFT OFF")
+        self.assertContains(res, "Resume Lesson")
+        self.assertContains(res, "Practice Arena")
+        self.assertContains(res, "Arcade Drills")
+        self.assertContains(res, "1 / 2 Lessons Completed")
+        self.assertContains(res, "50%")
+
+    def test_catalogue_guest_view(self):
+        res = self.client.get(reverse("catalogue"))
+        self.assertEqual(res.status_code, 200)
+        self.assertContains(res, "1-Click Instant Demo")
+        self.assertContains(res, "Practice Arena")
+        self.assertContains(res, "Playground Studio")

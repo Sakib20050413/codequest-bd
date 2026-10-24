@@ -18,6 +18,233 @@
     </p>
   </div>
 
+
+  {% if learner.is_authenticated %}
+  <!-- Authenticated LMS Learner Command Center -->
+  <div class="lms-learner-hero">
+    
+    <!-- Welcome Bar -->
+    <div class="lms-welcome-bar">
+      <div class="lms-user-info">
+        <div class="lms-avatar-ring">
+          <div class="lms-avatar-inner">
+            {{ request.user.username|slice:":1"|upper }}
+          </div>
+        </div>
+        <div>
+          <div class="lms-user-title">
+            <span>Welcome back, {{ request.user.username }}!</span>
+            <span class="lms-status-chip lms-chip-tier">{{ learner.learner_stats.rank_icon }} {{ learner.learner_stats.rank_title }}</span>
+          </div>
+          <div class="lms-user-meta">
+            <span class="lms-status-chip lms-chip-streak">🔥 {{ learner.learner_stats.streak }}-Day Streak Active</span>
+            <span>&bull;</span>
+            <span>{{ learner.learner_stats.completed_lessons }} of {{ learner.learner_stats.total_lessons }} Curriculum Lessons Mastered ({{ learner.learner_stats.overall_pct }}%)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lms-quick-metrics">
+        <div class="lms-metric-pill">
+          <span class="lms-metric-value" style="color: #fbbf24;">⚡ {{ learner.learner_stats.xp }} XP</span>
+          <span class="lms-metric-label">Total Earned</span>
+        </div>
+        <div class="lms-metric-pill">
+          <span class="lms-metric-value" style="color: var(--accent);">{{ learner.learner_stats.overall_pct }}%</span>
+          <span class="lms-metric-label">Mastery Rate</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dual Dashboard Grid: Resume Learning Hero + Gamification & Habit Tracker -->
+    <div class="lms-dashboard-grid">
+      
+      <!-- Card A: Resume Momentum Hero -->
+      <div class="lms-resume-card">
+        <div>
+          <div class="lms-card-tag">
+            <span>⚡ PICK UP WHERE YOU LEFT OFF</span>
+          </div>
+          
+          {% if learner.continue_lesson %}
+          <div class="lms-resume-course">
+            {{ learner.active_course.language.name }} &bull; {{ learner.active_course.title }}
+          </div>
+          <h2 class="lms-resume-title">
+            Lesson 0{{ learner.continue_lesson.order }}: {{ learner.continue_lesson.title }}
+          </h2>
+          <div class="lms-resume-meta">
+            <span>⏱ ~{{ learner.continue_lesson.est_minutes }} mins interactive lab</span>
+            <span>&bull;</span>
+            <span style="color: #fbbf24;">+{{ learner.continue_lesson.xp }} XP on completion</span>
+            <span>&bull;</span>
+            <span>Sandbox: {{ learner.continue_lesson.get_execution_type_display }}</span>
+          </div>
+
+          <!-- Active Course Progress Bar -->
+          <div class="lms-progress-strip">
+            <div class="lms-progress-labels">
+              <span>Track Progress: {{ learner.active_course.title }}</span>
+              <span style="font-weight: 700; color: var(--accent);">{{ learner.active_course_progress.completed }}/{{ learner.active_course_progress.total }} Lessons ({{ learner.active_course_progress.pct }}%)</span>
+            </div>
+            <div class="lms-progress-track">
+              <div class="lms-progress-fill" style="width: {{ learner.active_course_progress.pct }}%;"></div>
+            </div>
+          </div>
+          {% else %}
+          <div class="lms-resume-course">Platform Curriculum</div>
+          <h2 class="lms-resume-title">All Core Tracks Explored!</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            Congratulations! You have completed all active modules. Dive into the Practice Arena or solve community coding drills.
+          </p>
+          {% endif %}
+        </div>
+
+        <div class="lms-resume-actions">
+          {% if learner.continue_lesson %}
+          <a href="{% url 'lesson_detail' learner.active_course.slug learner.continue_lesson.slug %}" class="lms-btn-resume">
+            <span>▶ Resume Lesson (0{{ learner.continue_lesson.order }})</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="{% url 'course_detail' learner.active_course.slug %}" class="btn btn-ghost" style="font-size: 0.85rem;">
+            Course Syllabus &rarr;
+          </a>
+          {% else %}
+          <a href="{% url 'games_hub' %}#tasks" class="lms-btn-resume">
+            <span>Enter Practice Arena &rarr;</span>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Card B: Daily Habit & Tier Progression Card -->
+      <div class="lms-habit-card">
+        <div>
+          <div class="lms-streak-header">
+            <div>
+              <div style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 800; color: #fbbf24; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem;">
+                Habit Engine
+              </div>
+              <div class="lms-streak-badge">
+                <span>🔥 {{ learner.learner_stats.streak }}</span>
+                <span style="font-size: 1rem; color: var(--text-primary); font-weight: 700;">Day Streak</span>
+              </div>
+            </div>
+            <span style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-muted);">
+              Last 7 Days
+            </span>
+          </div>
+
+          <!-- 7-Day Activity Matrix -->
+          <div class="lms-week-grid">
+            {% for d in learner.learner_stats.days %}
+            <div class="lms-day-bubble {% if d.is_active %}active{% endif %} {% if d.is_today %}today{% endif %}" title="{{ d.name }} ({{ d.date_num }}): {% if d.is_active %}Active streak day{% else %}Rest day{% endif %}">
+              <span class="lms-day-name">{{ d.name }}</span>
+              <div class="lms-day-dot">
+                {% if d.is_active %}✓{% else %}&bull;{% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Tier & XP Advancement -->
+        <div class="lms-tier-progress-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.76rem; font-family: var(--font-mono); margin-bottom: 0.4rem;">
+            <span style="color: var(--text-muted); font-weight: 600;">{{ learner.learner_stats.rank_icon }} {{ learner.learner_stats.rank_title }}</span>
+            <span style="color: #a5b4fc; font-weight: 700;">{{ learner.learner_stats.xp }} / {{ learner.learner_stats.next_tier_xp }} XP ({{ learner.learner_stats.tier_pct }}%)</span>
+          </div>
+          <div class="lms-progress-track" style="height: 6px;">
+            <div class="lms-progress-fill" style="width: {{ learner.learner_stats.tier_pct }}%; background: linear-gradient(90deg, #6366f1, #fbbf24);"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); margin-top: 0.4rem; font-family: var(--font-mono);">
+            <span>Platform: {{ learner.learner_stats.completed_lessons }}/{{ learner.learner_stats.total_lessons }} Labs</span>
+            <span>+50 XP / Lesson</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  {% else %}
+  <!-- Guest Onboarding / Value Proposition Hero -->
+  <div class="lms-guest-banner">
+    <div style="max-width: 620px;">
+      <div style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.74rem; font-family: var(--font-mono); font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+        <span>✦ Interactive Developer Ecosystem</span>
+      </div>
+      <h2 style="font-size: 1.65rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 0.5rem;">
+        Master Modern Code with In-Browser Sandboxes
+      </h2>
+      <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+        Sign in to track your learning streak, earn verifiable XP, unlock automated grading tests, and store your project progress across every device.
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-secondary);">
+        <span style="display: inline-flex; align-items: center; gap: 0.35rem;"><span style="color: var(--success);">✓</span> 28 Practice Arena Tasks</span>
+        <span style="display: inline-flex; align-items: center; gap: 0.35rem;"><span style="color: var(--success);">✓</span> 115 Playable Arcade Levels</span>
+        <span style="display: inline-flex; align-items: center; gap: 0.35rem;"><span style="color: var(--success);">✓</span> Free In-Browser Studio</span>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 0.75rem; min-width: 200px;">
+      <a href="{% url 'login_view' %}?demo=1" class="btn btn-primary" style="justify-content: center; font-weight: 800; padding: 0.65rem 1.4rem;">
+        ⚡ 1-Click Instant Demo
+      </a>
+      <a href="{% url 'signup_view' %}" class="btn btn-ghost" style="justify-content: center; font-size: 0.84rem;">
+        Create Free Account &rarr;
+      </a>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- LMS Quick Launch Learning Pillars -->
+  <div class="lms-quick-pads-grid">
+    <a href="{% url 'games_hub' %}#tasks" class="lms-quick-pad">
+      <div class="lms-pad-icon" style="background: rgba(99, 102, 241, 0.12); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.25);">
+        ⚡
+      </div>
+      <div class="lms-pad-content">
+        <div class="lms-pad-title">Practice Arena</div>
+        <div class="lms-pad-desc">28 Real-world problem sets with test runner</div>
+      </div>
+      <span class="lms-pad-arrow">&rarr;</span>
+    </a>
+
+    <a href="{% url 'games_hub' %}" class="lms-quick-pad">
+      <div class="lms-pad-icon" style="background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25);">
+        🎮
+      </div>
+      <div class="lms-pad-content">
+        <div class="lms-pad-title">Arcade Drills</div>
+        <div class="lms-pad-desc">115 Interactive syntax &amp; CSS puzzle levels</div>
+      </div>
+      <span class="lms-pad-arrow">&rarr;</span>
+    </a>
+
+    <a href="{% url 'playground' %}" class="lms-quick-pad">
+      <div class="lms-pad-icon" style="background: rgba(6, 182, 212, 0.12); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.25);">
+        💻
+      </div>
+      <div class="lms-pad-content">
+        <div class="lms-pad-title">Playground Studio</div>
+        <div class="lms-pad-desc">In-browser HTML/CSS/JS sandbox &amp; Zen Mode</div>
+      </div>
+      <span class="lms-pad-arrow">&rarr;</span>
+    </a>
+
+    <a href="{% url 'playground' %}?tool=box-model" class="lms-quick-pad">
+      <div class="lms-pad-icon" style="background: rgba(16, 185, 129, 0.12); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.25);">
+        📐
+      </div>
+      <div class="lms-pad-content">
+        <div class="lms-pad-title">Box Model Lab</div>
+        <div class="lms-pad-desc">Interactive margin, border, padding inspector</div>
+      </div>
+      <span class="lms-pad-arrow">&rarr;</span>
+    </a>
+  </div>
+
   <!-- Interactive RPG Skill Tree & Knowledge DAG Roadmap -->
   <div class="cq-card" style="padding: 2rem; margin-bottom: 2.75rem; border: 1px solid var(--border-strong); background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.08), var(--bg-surface) 70%);">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
@@ -213,6 +440,29 @@
               </div>
             </div>
 
+            <!-- Per-Course Dynamic LMS Progress Strip -->
+            <div class="course-card-progress-strip">
+              <div class="course-progress-header">
+                <span>Course Progress</span>
+                <span class="course-status-pill {% if course.user_progress.is_completed %}course-status-done{% elif course.user_progress.is_started %}course-status-active{% else %}course-status-fresh{% endif %}">
+                  {% if course.user_progress.is_completed %}
+                    ✓ Mastered
+                  {% elif course.user_progress.is_started %}
+                    ⚡ In Progress ({{ course.user_progress.pct }}%)
+                  {% else %}
+                    🌱 Not Started
+                  {% endif %}
+                </span>
+              </div>
+              <div class="lms-progress-track" style="height: 6px; margin-bottom: 0.35rem;">
+                <div class="lms-progress-fill" style="width: {{ course.user_progress.pct }}%; {% if course.user_progress.is_completed %}background: #10b981;{% endif %}"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+                <span>{{ course.user_progress.completed }} / {{ course.user_progress.total }} Lessons Completed</span>
+                <span>{{ course.user_progress.pct }}%</span>
+              </div>
+            </div>
+
             <!-- Title & Compelling Summary -->
             <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
               <a href="{% url 'course_detail' course.slug %}" style="color: inherit; text-decoration: none;">
@@ -243,9 +493,20 @@
                 <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="milestone-item-row" title="Launch Lesson {{ lesson.order }}: {{ lesson.title }}">
                   <div style="display: flex; align-items: center; gap: 0.5rem; overflow: hidden;">
                     <span class="milestone-idx">0{{ lesson.order }}</span>
-                    <span class="milestone-name">{{ lesson.title }}</span>
+                    <span class="milestone-name">
+                      {{ lesson.title }}
+                      {% if lesson.id in completed_lesson_ids %}
+                      <span class="milestone-done-mark" title="Lesson Completed">✓</span>
+                      {% endif %}
+                    </span>
                   </div>
-                  <span class="milestone-meta-pill">⏱ {{ lesson.est_minutes }}m &bull; +{{ lesson.xp }} XP</span>
+                  <span class="milestone-meta-pill">
+                    {% if lesson.id in completed_lesson_ids %}
+                    <span style="color: var(--success); font-weight: 700;">Completed ✓</span>
+                    {% else %}
+                    ⏱ {{ lesson.est_minutes }}m &bull; +{{ lesson.xp }} XP
+                    {% endif %}
+                  </span>
                 </a>
                 {% endfor %}
               </div>
@@ -261,8 +522,13 @@
                     <div style="display: flex; align-items: center; gap: 0.4rem; overflow: hidden;">
                       <span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 0.7rem;">#{{ lesson.order }}</span>
                       <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ lesson.title }}</span>
+                      {% if lesson.id in completed_lesson_ids %}
+                      <span class="milestone-done-mark" style="font-size: 0.7rem;">✓</span>
+                      {% endif %}
                     </div>
-                    <span style="font-family: var(--font-mono); color: var(--text-muted); font-size: 0.7rem; white-space: nowrap;">{{ lesson.est_minutes }}m</span>
+                    <span style="font-family: var(--font-mono); color: var(--text-muted); font-size: 0.7rem; white-space: nowrap;">
+                      {% if lesson.id in completed_lesson_ids %}<span style="color: var(--success); font-weight: 700;">Done ✓</span>{% else %}{{ lesson.est_minutes }}m{% endif %}
+                    </span>
                   </a>
                   {% endfor %}
                 </div>
@@ -282,8 +548,14 @@
           <!-- Bottom Action Bar -->
           <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
             <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">⏱ {{ course.total_minutes }} mins &bull; {{ course.lessons.count }} lessons</span>
-            <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-              Start Course &rarr;
+            <a href="{% url 'course_detail' course.slug %}" class="btn {% if course.user_progress.is_completed %}btn-ghost{% else %}btn-primary{% endif %}" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+              {% if course.user_progress.is_completed %}
+                Review Track &rarr;
+              {% elif course.user_progress.is_started %}
+                Continue Track &rarr;
+              {% else %}
+                Start Course &rarr;
+              {% endif %}
             </a>
           </div>
         </div>

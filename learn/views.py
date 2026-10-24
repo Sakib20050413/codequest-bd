@@ -41,8 +41,193 @@ def landing(request):
 
 
 def catalogue(request):
-    languages = Language.objects.filter(is_active=True).prefetch_related("courses__lessons")
-    return render(request, "learn/catalogue.html", {"languages": languages})
+    languages = list(Language.objects.filter(is_active=True).prefetch_related("courses__lessons"))
+    
+    learner_context = {
+        "is_authenticated": False,
+    }
+    completed_lesson_ids = set()
+    
+    if request.user.is_authenticated:
+        # User profile
+        profile, _ = UserProfile.objects.get_or_create(user=request.user)
+        
+        # All user progress items
+        user_progs = list(
+            request.user.progress.select_related("lesson__course__language").all()
+        )
+        completed_progs = [p for p in user_progs if p.status == "COMPLETED"]
+        completed_lesson_ids = set(p.lesson_id for p in completed_progs)
+        
+        total_lessons_count = Lesson.objects.count()
+        completed_count = len(completed_lesson_ids)
+        overall_pct = int(round((completed_count / total_lessons_count * 100))) if total_lessons_count > 0 else 0
+        
+        # Resume Lesson logic
+        continue_lesson = None
+        active_course = None
+        
+        # 1. Look for in-progress lesson
+        in_progress = [p for p in user_progs if p.status == "IN_PROGRESS" and p.lesson_id not in completed_lesson_ids]
+        if in_progress:
+            continue_lesson = in_progress[0].lesson
+            active_course = continue_lesson.course
+        elif completed_progs:
+            # Look for next lesson after the most recently completed one
+            last_completed = completed_progs[0].lesson
+            course_lessons = list(last_completed.course.lessons.order_by("order", "id"))
+            curr_idx = -1
+            for idx, l in enumerate(course_lessons):
+                if l.id == last_completed.id:
+                    curr_idx = idx
+                    break
+            if curr_idx != -1 and curr_idx + 1 < len(course_lessons):
+                continue_lesson = course_lessons[curr_idx + 1]
+                active_course = last_completed.course
+            else:
+                # Course is finished; find first uncompleted lesson in any active course
+                for lang in languages:
+                    for c in lang.courses.all():
+                        for l in c.lessons.all():
+                            if l.id not in completed_lesson_ids:
+                                continue_lesson = l
+                                active_course = c
+                                break
+                        if continue_lesson:
+                            break
+                    if continue_lesson:
+                        break
+        
+        if not continue_lesson:
+            first_course = Course.objects.first()
+            if first_course:
+                continue_lesson = first_course.lessons.first()
+                active_course = first_course
+
+        # Active course progress
+        active_course_progress = {"completed": 0, "total": 0, "pct": 0}
+        if active_course:
+            total_c = active_course.lessons.count()
+            comp_c = len([l for l in active_course.lessons.all() if l.id in completed_lesson_ids])
+            pct_c = int(round((comp_c / total_c * 100))) if total_c > 0 else 0
+            active_course_progress = {
+                "completed": comp_c,
+                "total": total_c,
+                "pct": pct_c,
+            }
+
+        # Per-course progress map
+        for lang in languages:
+            for course in lang.courses.all():
+                c_lessons = list(course.lessons.all())
+                c_total = len(c_lessons)
+                c_completed = len([l for l in c_lessons if l.id in completed_lesson_ids])
+                c_pct = int(round((c_completed / c_total * 100))) if c_total > 0 else 0
+                course.user_progress = {
+                    "completed": c_completed,
+                    "total": c_total,
+                    "pct": c_pct,
+                    "is_started": c_completed > 0 or any(p.lesson.course_id == course.id for p in user_progs),
+                    "is_completed": c_completed == c_total and c_total > 0,
+                }
+
+        # 7-day activity tracking dots
+        today = timezone.now().date()
+        days = []
+        for i in range(6, -1, -1):
+            d = today - timezone.timedelta(days=i)
+            is_active_day = False
+            if profile.last_active == d:
+                is_active_day = True
+            elif profile.last_active > d and (profile.last_active - d).days < profile.streak:
+                is_active_day = True
+
+            days.append({
+                "name": d.strftime("%a")[:3],
+                "date_num": d.strftime("%d"),
+                "is_today": (d == today),
+                "is_active": is_active_day,
+            })
+
+        # Rank tiering
+        xp = profile.xp
+        if xp >= 1500:
+            rank_title = "Architect Tier"
+            rank_icon = "👑"
+            next_tier_xp = 3000
+        elif xp >= 800:
+            rank_title = "Senior Engineer"
+            rank_icon = "🚀"
+            next_tier_xp = 1500
+        elif xp >= 300:
+            rank_title = "Fullstack Journeyman"
+            rank_icon = "⚡"
+            next_tier_xp = 800
+        elif xp >= 100:
+            rank_title = "Junior Explorer"
+            rank_icon = "🌱"
+            next_tier_xp = 300
+        else:
+            rank_title = "Novice Apprentice"
+            rank_icon = "⭐"
+            next_tier_xp = 100
+
+        # Tier progress percentage
+        prev_tier_xp = 0
+        if rank_title == "Junior Explorer":
+            prev_tier_xp = 100
+        elif rank_title == "Fullstack Journeyman":
+            prev_tier_xp = 300
+        elif rank_title == "Senior Engineer":
+            prev_tier_xp = 800
+        elif rank_title == "Architect Tier":
+            prev_tier_xp = 1500
+
+        tier_span = max(1, next_tier_xp - prev_tier_xp)
+        tier_xp_gained = max(0, xp - prev_tier_xp)
+        tier_pct = min(100, int(round((tier_xp_gained / tier_span) * 100)))
+
+        learner_stats = {
+            "xp": profile.xp,
+            "streak": profile.streak,
+            "completed_lessons": completed_count,
+            "total_lessons": total_lessons_count,
+            "overall_pct": overall_pct,
+            "rank_title": rank_title,
+            "rank_icon": rank_icon,
+            "next_tier_xp": next_tier_xp,
+            "tier_pct": tier_pct,
+            "days": days,
+        }
+
+        learner_context = {
+            "is_authenticated": True,
+            "profile": profile,
+            "learner_stats": learner_stats,
+            "continue_lesson": continue_lesson,
+            "active_course": active_course,
+            "active_course_progress": active_course_progress,
+        }
+    else:
+        for lang in languages:
+            for course in lang.courses.all():
+                course.user_progress = {
+                    "completed": 0,
+                    "total": course.lessons.count(),
+                    "pct": 0,
+                    "is_started": False,
+                    "is_completed": False,
+                }
+
+    return render(
+        request,
+        "learn/catalogue.html",
+        {
+            "languages": languages,
+            "learner": learner_context,
+            "completed_lesson_ids": completed_lesson_ids,
+        },
+    )
 
 
 def course_detail(request, course_slug):
