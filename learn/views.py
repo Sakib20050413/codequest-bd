@@ -369,15 +369,37 @@ def api_sync_guest_progress(request):
 
 
 def playground(request):
-    """Free-form interactive playground with iframe live preview."""
+    """Universal multi-language browser IDE and terminal studio."""
     task_id = request.GET.get("task")
+    lang_param = request.GET.get("lang", "").lower().strip()
     selected_task = None
+    initial_lang = "web"
+
     if task_id:
         for t in CODING_TASKS:
             if t["id"] == task_id:
                 selected_task = t
+                if t.get("cat") == "algorithms":
+                    initial_lang = "python"
+                elif t.get("cat") == "sql":
+                    initial_lang = "sql"
+                elif t.get("cat") == "systems":
+                    initial_lang = "c"
+                elif t.get("cat") == "frontend":
+                    initial_lang = "web"
                 break
-    return render(request, "learn/playground.html", {"selected_task": selected_task})
+    elif lang_param in ["python", "sql", "c", "go", "rust", "java", "bash", "web"]:
+        initial_lang = lang_param
+
+    return render(
+        request,
+        "learn/playground.html",
+        {
+            "selected_task": selected_task,
+            "initial_lang": initial_lang,
+            "task_id": task_id or "",
+        },
+    )
 
 
 def games_hub(request):
