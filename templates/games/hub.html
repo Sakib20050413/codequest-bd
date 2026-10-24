@@ -1,59 +1,521 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Practice Arena: Coding Drills &amp; Challenges — CodeQuest BD{% endblock %}
+{% block title %}Practice Arena: 115 Playable Coding Challenges &amp; Drills — CodeQuest BD{% endblock %}
 
 {% block content %}
 <div class="shell" style="padding-top: 2.5rem; padding-bottom: 5rem;">
   
+  <!-- Header & Telemetry -->
   <div style="margin-bottom: 2.5rem;">
-    <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
-      Targeted Skill Drills
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem;">
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">
+        🎯 115 IN-BROWSER PLAYABLE CHALLENGES &bull; 6 AAA ENGINES
+      </div>
+      <div style="display: flex; gap: 0.65rem; align-items: center;">
+        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
+          ⚡ Earn 3,250 Total XP
+        </span>
+        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
+          10+ Languages Tested
+        </span>
+      </div>
     </div>
-    <h1 style="font-size: 2.3rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 0.75rem;">
-      Practice Arena &amp; Coding Challenges
+
+    <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; margin-bottom: 0.75rem;">
+      Practice Arena &amp; 115 Coding Challenges
     </h1>
-    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 650px; line-height: 1.6;">
-      Reinforce language fundamentals through fast, focused exercises. Each challenge tests a specific aspect of development: semantic structure, layout algorithms, debugging, syntax fluency, or program execution prediction.
+    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
+      Reinforce language syntax, memory mental models, and algorithmic reflexes through 115 active, playable challenges. Jump directly into any level across our 6 browser engines.
     </p>
   </div>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
-    {% for game in games %}
-    <div class="cq-card cq-card-interactive" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2rem;">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
-          <div style="font-size: 2.25rem;">{{ game.icon_svg|default:'🎯' }}</div>
-          <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 600; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm);">
-            +{{ game.xp_per_win }} XP
-          </span>
-        </div>
-
-        <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">
-          {{ game.title }}
-        </h2>
-        <div style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.75rem;">
-          {{ game.tagline }}
-        </div>
-        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem;">
-          {{ game.description }}
-        </p>
+  <!-- Interactive Search & Engine Filter Tabs -->
+  <div class="cq-card" style="margin-bottom: 2.5rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border-medium); background: var(--bg-surface);">
+    
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+      <!-- Search Input -->
+      <div style="flex: 1; min-width: 280px; position: relative;">
+        <input type="text" id="arenaSearchInput" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; font-size: 0.92rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;" placeholder="Search 115 challenges by language (python, js, css, sql, c) or concept...">
+        <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted);">🔍</span>
       </div>
 
-      <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle);">
-        <span style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
-          ⏱ {{ game.difficulty }}
-        </span>
-        <a href="{% url 'game_play' game.slug %}" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.84rem;">
-          Launch Challenge &rarr;
-        </a>
+      <!-- Result Counter -->
+      <div id="arenaFilterCount" style="font-size: 0.84rem; font-family: var(--font-mono); font-weight: 600; color: var(--accent);">
+        Showing 115 of 115 Playable Challenges
       </div>
     </div>
-    {% empty %}
-    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted); background: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
-      No practice challenges found.
+
+    <!-- Category Filter Tabs -->
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+      <button class="btn arena-filter-tab active" data-filter="all" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+        All (115)
+      </button>
+      <button class="btn btn-ghost arena-filter-tab" data-filter="code-typer" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+        🏎️ Keystroke Racing (20)
+      </button>
+      <button class="btn btn-ghost arena-filter-tab" data-filter="flexbox-pond" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+        🐸 Flexbox &amp; Grid (20)
+      </button>
+      <button class="btn btn-ghost arena-filter-tab" data-filter="bug-hunt" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+        🐛 Bug Hunt (20)
+      </button>
+      <button class="btn btn-ghost arena-filter-tab" data-filter="output-predictor" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+        🔮 Output Predictor (20)
+      </button>
+      <button class="btn btn-ghost arena-filter-tab" data-filter="tag-match" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+        ⚡ Tag &amp; Syntax (20)
+      </button>
+      <button class="btn btn-ghost arena-filter-tab" data-filter="rover-3d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+        🤖 Cyber Rover 3D (15)
+      </button>
     </div>
-    {% endfor %}
+
   </div>
 
+  <!-- 6 FLAGSHIP ENGINE SECTIONS WITH 115 PLAYABLE LEVEL CARDS -->
+
+  <!-- ENGINE 1: Code TypeRacer 3D (20 Tracks) -->
+  <section class="arena-engine-section" data-engine="code-typer" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4; text-transform: uppercase;">
+          Engine 01 &bull; 20 High-Speed Keystroke Racing Circuits
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          🏎️ Code TypeRacer 3D Arena
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'code-typer' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch TypeRacer Arena &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      
+      {% for track in "12345678901234567890"|make_list %}
+      <a href="{% url 'game_play' 'code-typer' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="typer race speed {% if forloop.counter == 1 %}javascript array{% elif forloop.counter == 2 %}python math{% elif forloop.counter == 3 %}sql database{% elif forloop.counter == 4 %}css flexbox{% elif forloop.counter == 5 %}react hook{% elif forloop.counter == 6 %}javascript async fetch{% elif forloop.counter == 7 %}rust memory{% elif forloop.counter == 8 %}typescript generic{% elif forloop.counter == 9 %}cpp vector{% elif forloop.counter == 10 %}go goroutine{% elif forloop.counter == 11 %}java stream{% elif forloop.counter == 12 %}python list{% elif forloop.counter == 13 %}html5 semantic{% elif forloop.counter == 14 %}docker devops{% elif forloop.counter == 15 %}bash linux{% elif forloop.counter == 16 %}css container{% elif forloop.counter == 17 %}sql window{% elif forloop.counter == 18 %}python file{% elif forloop.counter == 19 %}javascript nullish{% else %}rust match{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4;">
+              Track {{ forloop.counter|stringformat:"02d" }}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +30 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}JavaScript: Array Transformations
+            {% elif forloop.counter == 2 %}Python: Data Pipeline &amp; Sum
+            {% elif forloop.counter == 3 %}SQL: Modern User Query
+            {% elif forloop.counter == 4 %}CSS: Responsive Flex Container
+            {% elif forloop.counter == 5 %}React: State &amp; Loading Hook
+            {% elif forloop.counter == 6 %}JavaScript: Fetch &amp; Promise Stream
+            {% elif forloop.counter == 7 %}Rust: Safe Memory Allocation
+            {% elif forloop.counter == 8 %}TypeScript: Generic Response Interface
+            {% elif forloop.counter == 9 %}C++: Vector Sorting Algorithm
+            {% elif forloop.counter == 10 %}Go: Goroutines &amp; Channel Concurrency
+            {% elif forloop.counter == 11 %}Java: Stream Filter Collection
+            {% elif forloop.counter == 12 %}Python: List Comprehension Filter
+            {% elif forloop.counter == 13 %}HTML5: Semantic Container Blueprint
+            {% elif forloop.counter == 14 %}Docker: Production Buildfile
+            {% elif forloop.counter == 15 %}Bash: Log Rotation &amp; Archival
+            {% elif forloop.counter == 16 %}CSS: Container Query Responsive
+            {% elif forloop.counter == 17 %}SQL: Window Function Dense Rank
+            {% elif forloop.counter == 18 %}Python: Context Manager Safe IO
+            {% elif forloop.counter == 19 %}JavaScript: Optional Chaining &amp; Nullish
+            {% else %}Rust: Pattern Matching Result
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">AI Bots Turing &amp; Ada</span>
+          <span style="color: #06b6d4; font-weight: 700;">▶ Play Track</span>
+        </div>
+      </a>
+      {% endfor %}
+
+    </div>
+  </section>
+
+  <!-- ENGINE 2: Flexbox & Grid Pond (20 Levels) -->
+  <section class="arena-engine-section" data-engine="flexbox-pond" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; text-transform: uppercase;">
+          Engine 02 &bull; 20 Modern CSS Layout &amp; Alignment Levels
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          🐸 Flexbox &amp; Grid Alignment Pond
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'flexbox-pond' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch Flexbox Pond &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      
+      {% for lvl in "12345678901234567890"|make_list %}
+      <a href="{% url 'game_play' 'flexbox-pond' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="css flexbox grid layout align justify {% if forloop.counter <= 10 %}flexbox{% else %}grid{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #10b981;">
+              Level {{ forloop.counter|stringformat:"02d" }} &bull; {% if forloop.counter <= 10 %}Flexbox{% else %}CSS Grid{% endif %}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +25 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}Flexbox: Align Right (justify-content)
+            {% elif forloop.counter == 2 %}Flexbox: Center Horizontally
+            {% elif forloop.counter == 3 %}Flexbox: Move to Bottom (align-items)
+            {% elif forloop.counter == 4 %}Flexbox: Dead Center (2D Alignment)
+            {% elif forloop.counter == 5 %}Flexbox: Bottom Right Corner
+            {% elif forloop.counter == 6 %}Flexbox: Space Around Elements
+            {% elif forloop.counter == 7 %}Flexbox: Space Evenly Distribution
+            {% elif forloop.counter == 8 %}Flexbox: Vertical Column Stacking
+            {% elif forloop.counter == 9 %}Flexbox: Reversed Row Layout
+            {% elif forloop.counter == 10 %}Flexbox: Column Centered Cross-Axis
+            {% elif forloop.counter == 11 %}CSS Grid: Shorthand place-items: center
+            {% elif forloop.counter == 12 %}CSS Grid: Align Items to End
+            {% elif forloop.counter == 13 %}CSS Grid: Align Items to Bottom
+            {% elif forloop.counter == 14 %}CSS Grid: Shorthand place-items: end end
+            {% elif forloop.counter == 15 %}CSS Grid: 3-Column Equal repeat(3, 1fr)
+            {% elif forloop.counter == 16 %}CSS Grid: Proportional 1fr 2fr Columns
+            {% elif forloop.counter == 17 %}CSS Grid: Grid Gap Gutters
+            {% elif forloop.counter == 18 %}CSS Grid: Align Full Grid Content
+            {% elif forloop.counter == 19 %}CSS Grid: Auto-Flow Columns
+            {% else %}CSS Grid: Master Shorthand place-content
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">Reactive Water Canvas</span>
+          <span style="color: #10b981; font-weight: 700;">▶ Play Level</span>
+        </div>
+      </a>
+      {% endfor %}
+
+    </div>
+  </section>
+
+  <!-- ENGINE 3: Bug Hunt (20 Missions) -->
+  <section class="arena-engine-section" data-engine="bug-hunt" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #ef4444; text-transform: uppercase;">
+          Engine 03 &bull; 20 Real-World Code Review &amp; Debugging Missions
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          🐛 Bug Hunt: Spot the Error
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'bug-hunt' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch Bug Hunt &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      
+      {% for m in "12345678901234567890"|make_list %}
+      <a href="{% url 'game_play' 'bug-hunt' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="debug bug review {% if forloop.counter in '1,6,9,13,16,20' %}python{% elif forloop.counter in '2,7,10,14,17' %}javascript{% elif forloop.counter in '5,12,18' %}sql{% elif forloop.counter in '4,15' %}css{% elif forloop.counter == 3 %}html{% elif forloop.counter in '8,19' %}c{% elif forloop.counter == 11 %}java{% else %}php{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #ef4444;">
+              Mission {{ forloop.counter|stringformat:"02d" }}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +25 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}Python: Missing Loop Colon
+            {% elif forloop.counter == 2 %}JavaScript: Assignment in Condition
+            {% elif forloop.counter == 3 %}HTML: Unclosed Element
+            {% elif forloop.counter == 4 %}CSS: Missing Unit on Length
+            {% elif forloop.counter == 5 %}SQL: Null Equality Comparison
+            {% elif forloop.counter == 6 %}Python: Modifying List in Iteration
+            {% elif forloop.counter == 7 %}JavaScript: Unchecked Property Access
+            {% elif forloop.counter == 8 %}C: Missing Semicolon
+            {% elif forloop.counter == 9 %}Python: Mutable Default Argument
+            {% elif forloop.counter == 10 %}JavaScript: Const Reassignment
+            {% elif forloop.counter == 11 %}Java: String Identity vs Equality
+            {% elif forloop.counter == 12 %}SQL: Missing Column in Group By
+            {% elif forloop.counter == 13 %}Python: Unbound Local Variable
+            {% elif forloop.counter == 14 %}JavaScript: Off-by-One Loop Bounds
+            {% elif forloop.counter == 15 %}CSS: Malformed Hex Color Digits
+            {% elif forloop.counter == 16 %}Python: ZeroDivisionError Handling
+            {% elif forloop.counter == 17 %}JavaScript: Missing Await in Async
+            {% elif forloop.counter == 18 %}SQL: Missing Join ON Condition
+            {% elif forloop.counter == 19 %}C: Array Out-of-Bounds Write
+            {% else %}PHP: Strict Type Mismatch &amp; Unset Key
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">Click Line to Triage</span>
+          <span style="color: #ef4444; font-weight: 700;">▶ Spot Bug</span>
+        </div>
+      </a>
+      {% endfor %}
+
+    </div>
+  </section>
+
+  <!-- ENGINE 4: Output Predictor (20 Challenges) -->
+  <section class="arena-engine-section" data-engine="output-predictor" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #a855f7; text-transform: uppercase;">
+          Engine 04 &bull; 20 Mental Model &amp; Scoping Evaluation Puzzles
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          🔮 Output Predictor: AST &amp; Evaluation Order
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'output-predictor' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch Output Predictor &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      
+      {% for ch in "12345678901234567890"|make_list %}
+      <a href="{% url 'game_play' 'output-predictor' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="output predict ast {% if forloop.counter in '1,6,8,11,14,17,20' %}python{% elif forloop.counter in '2,5,7,10,12,15,18' %}javascript{% elif forloop.counter in '3,9,16' %}sql{% else %}c{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #a855f7;">
+              Challenge {{ forloop.counter|stringformat:"02d" }}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +25 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}Python: List Mutation via Aliasing
+            {% elif forloop.counter == 2 %}JavaScript: The Type of NaN
+            {% elif forloop.counter == 3 %}SQL: Null Equality Comparison
+            {% elif forloop.counter == 4 %}C: Post-Increment Evaluation
+            {% elif forloop.counter == 5 %}JavaScript: Event Loop Microtasks
+            {% elif forloop.counter == 6 %}Python: Negative Step Slicing
+            {% elif forloop.counter == 7 %}JavaScript: Loose Coercion Equality
+            {% elif forloop.counter == 8 %}Python: Dict Key Deduplication
+            {% elif forloop.counter == 9 %}SQL: COUNT(col) vs COUNT(*)
+            {% elif forloop.counter == 10 %}JavaScript: Var Hoisting Semantics
+            {% elif forloop.counter == 11 %}Python: Default Param Retention
+            {% elif forloop.counter == 12 %}JavaScript: Arrow Function 'this'
+            {% elif forloop.counter == 13 %}C: Truncating Integer Division
+            {% elif forloop.counter == 14 %}Python: Boolean Operator Precedence
+            {% elif forloop.counter == 15 %}JavaScript: Lexicographical Sort
+            {% elif forloop.counter == 16 %}SQL: UNION vs UNION ALL
+            {% elif forloop.counter == 17 %}Python: Rest Unpacking
+            {% elif forloop.counter == 18 %}JavaScript: Object Spread Shallow Copy
+            {% elif forloop.counter == 19 %}C: Pointer Dereference
+            {% else %}Python: Generator Evaluation Timing
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">Evaluate STDOUT</span>
+          <span style="color: #a855f7; font-weight: 700;">▶ Predict Output</span>
+        </div>
+      </a>
+      {% endfor %}
+
+    </div>
+  </section>
+
+  <!-- ENGINE 5: Tag & Syntax Matcher (20 Drills) -->
+  <section class="arena-engine-section" data-engine="tag-match" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; text-transform: uppercase;">
+          Engine 05 &bull; 20 Timed Semantic &amp; Web Syntax Speed Drills
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          ⚡ Tag &amp; Syntax Matcher
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'tag-match' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch Tag Matcher &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      
+      {% for dr in "12345678901234567890"|make_list %}
+      <a href="{% url 'game_play' 'tag-match' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="tag syntax match {% if forloop.counter <= 10 %}html semantic{% elif forloop.counter <= 13 %}css selector{% elif forloop.counter <= 16 %}http api{% elif forloop.counter <= 18 %}git{% else %}sql{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24;">
+              Drill {{ forloop.counter|stringformat:"02d" }}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +25 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}HTML5: &lt;main&gt; Document Body
+            {% elif forloop.counter == 2 %}HTML5: &lt;header&gt; Banner &amp; Nav
+            {% elif forloop.counter == 3 %}HTML5: &lt;footer&gt; Legal &amp; Contact
+            {% elif forloop.counter == 4 %}HTML5: &lt;article&gt; Self-Contained Unit
+            {% elif forloop.counter == 5 %}HTML5: &lt;aside&gt; Sidebar &amp; Callout
+            {% elif forloop.counter == 6 %}HTML5: &lt;nav&gt; Primary Links
+            {% elif forloop.counter == 7 %}HTML5: &lt;figure&gt; &amp; Caption
+            {% elif forloop.counter == 8 %}HTML5: &lt;dialog&gt; Native Popups
+            {% elif forloop.counter == 9 %}HTML5: &lt;template&gt; Inert DOM Nodes
+            {% elif forloop.counter == 10 %}HTML5: &lt;mark&gt; Highlighted Text
+            {% elif forloop.counter == 11 %}CSS: :nth-child(even) Pseudo
+            {% elif forloop.counter == 12 %}CSS: :has() Parent Selector
+            {% elif forloop.counter == 13 %}CSS: [attr^='val'] Prefix Selector
+            {% elif forloop.counter == 14 %}HTTP: 201 Created Response
+            {% elif forloop.counter == 15 %}HTTP: 304 Not Modified Cache
+            {% elif forloop.counter == 16 %}HTTP: 429 Rate Limit Warning
+            {% elif forloop.counter == 17 %}Git: git cherry-pick Commit
+            {% elif forloop.counter == 18 %}Git: git stash Shelf
+            {% elif forloop.counter == 19 %}SQL: HAVING Aggregate Filter
+            {% else %}SQL: COALESCE() Fallback
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">Timed Recognition</span>
+          <span style="color: #fbbf24; font-weight: 700;">▶ Match Token</span>
+        </div>
+      </a>
+      {% endfor %}
+
+    </div>
+  </section>
+
+  <!-- ENGINE 6: Cyber Rover 3D Explorer (15 Missions) -->
+  <section class="arena-engine-section" data-engine="rover-3d" style="margin-bottom: 3.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #38bdf8; text-transform: uppercase;">
+          Engine 06 &bull; 15 Planetary Spatial Navigation &amp; Robotics Missions
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          🤖 Cyber Rover 3D Space Explorer
+        </h2>
+      </div>
+      <a href="{% url 'game_play' 'rover-3d' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+        Launch Rover Simulator &rarr;
+      </a>
+    </div>
+
+    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+      
+      {% for rov in "123456789012345"|make_list %}
+      <a href="{% url 'game_play' 'rover-3d' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="rover 3d webgl space robotics {% if forloop.counter <= 7 %}mars{% elif forloop.counter <= 9 %}europa{% elif forloop.counter <= 11 %}titan{% elif forloop.counter == 12 %}enceladus{% elif forloop.counter == 13 %}moon{% elif forloop.counter == 14 %}asteroid{% else %}deep space{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #38bdf8;">
+              Mission {{ forloop.counter|stringformat:"02d" }}
+            </span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
+              +40 XP
+            </span>
+          </div>
+          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            {% if forloop.counter == 1 %}Mars Crater Alpha: Pod Landing
+            {% elif forloop.counter == 2 %}Olympus Mons Foothills Mineral Harvest
+            {% elif forloop.counter == 3 %}Valles Marineris Diagonal Trench
+            {% elif forloop.counter == 4 %}Utopia Planitia Basin Perimeter
+            {% elif forloop.counter == 5 %}Elysium Planitia Geothermal Ridge
+            {% elif forloop.counter == 6 %}Jezero River Delta Sediments
+            {% elif forloop.counter == 7 %}Gale Crater Mountain Spiral
+            {% elif forloop.counter == 8 %}Europa Subsurface Ice Sheets
+            {% elif forloop.counter == 9 %}Europa Hydrothermal Geysers
+            {% elif forloop.counter == 10 %}Titan Methane Shoreline Survey
+            {% elif forloop.counter == 11 %}Titan Xanadu Dune Crossing
+            {% elif forloop.counter == 12 %}Enceladus South Polar Tiger Stripes
+            {% elif forloop.counter == 13 %}Lunar Shackleton Crater Shadow Ice
+            {% elif forloop.counter == 14 %}Asteroid 16 Psyche Metallic Core
+            {% else %}Kuiper Belt Outpost Omega Relics
+            {% endif %}
+          </div>
+        </div>
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+          <span style="color: var(--text-muted); font-family: var(--font-mono);">WebGL Autonomous Scripting</span>
+          <span style="color: #38bdf8; font-weight: 700;">▶ Pilot Mission</span>
+        </div>
+      </a>
+      {% endfor %}
+
+    </div>
+  </section>
+
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  (function () {
+    'use strict';
+    const searchInput = document.getElementById('arenaSearchInput');
+    const filterTabs = document.querySelectorAll('.arena-filter-tab');
+    const sections = document.querySelectorAll('.arena-engine-section');
+    const levelCards = document.querySelectorAll('.arena-level-card');
+    const countDisplay = document.getElementById('arenaFilterCount');
+
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    function filterArena() {
+      let visibleCount = 0;
+      const q = searchQuery.toLowerCase().trim();
+
+      sections.forEach(function (sec) {
+        const engine = sec.getAttribute('data-engine');
+        const matchesTab = (activeFilter === 'all' || activeFilter === engine);
+
+        let sectionHasVisible = false;
+        const cards = sec.querySelectorAll('.arena-level-card');
+
+        cards.forEach(function (card) {
+          const tags = (card.getAttribute('data-tags') || '').toLowerCase();
+          const title = (card.querySelector('.level-title')?.textContent || '').toLowerCase();
+          const matchesSearch = !q || tags.includes(q) || title.includes(q);
+
+          if (matchesTab && matchesSearch) {
+            card.style.display = 'flex';
+            visibleCount++;
+            sectionHasVisible = true;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        sec.style.display = sectionHasVisible ? 'block' : 'none';
+      });
+
+      if (countDisplay) {
+        countDisplay.textContent = `Showing ${visibleCount} of 115 Playable Challenges`;
+      }
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        searchQuery = searchInput.value;
+        filterArena();
+      });
+    }
+
+    filterTabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        filterTabs.forEach(t => {
+          t.classList.remove('active');
+          t.classList.add('btn-ghost');
+        });
+        tab.classList.add('active');
+        tab.classList.remove('btn-ghost');
+        activeFilter = tab.getAttribute('data-filter');
+        filterArena();
+      });
+    });
+  })();
+</script>
 {% endblock %}

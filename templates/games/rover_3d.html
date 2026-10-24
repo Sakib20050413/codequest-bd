@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Cyber Rover 3D — Autonomous Robotics Simulation — CodeQuest BD{% endblock %}
+{% block title %}Cyber Rover 3D: 15 Planetary Robotics Missions — CodeQuest BD{% endblock %}
 
 {% block extra_head %}
 <!-- Three.js WebGL 3D Engine -->
@@ -13,40 +13,67 @@
 <div class="shell" style="padding-top: 2rem; padding-bottom: 5rem;">
 
   <!-- Breadcrumb -->
-  <div style="margin-bottom: 1.5rem;">
+  <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
     <a href="{% url 'games_hub' %}" style="font-size: 0.88rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;">
       &larr; Back to Practice Arena
     </a>
+    <span style="font-size: 0.82rem; font-family: var(--font-mono); color: #38bdf8; background: rgba(56, 189, 248, 0.12); padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid rgba(56, 189, 248, 0.3);">
+      15 Missions &bull; +40 XP / Sector
+    </span>
   </div>
 
   <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
 
     <!-- Topbar HUD -->
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle);">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle);">
       <div>
         <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">
-          Interactive 3D Simulation &bull; Algorithmic Spatial Logic
+          Practice Arena Engine 06 &bull; Spatial Robotics
         </div>
         <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0; letter-spacing: -0.02em;">
-          🤖 Cyber Rover 3D: Mission Red Planet
+          🤖 Cyber Rover 3D Explorer
         </h1>
       </div>
 
       <!-- Telemetry Stats -->
       <div style="display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center;">
+        <div id="roverPlanetBadge" style="background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem; color: #38bdf8; font-weight: 700;">
+          Mars Sector
+        </div>
         <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
           <span style="color: var(--text-muted);">COORDS: </span>
           <strong id="hudCoords" style="color: #38bdf8;">(0, 0)</strong>
         </div>
         <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
-          <span style="color: var(--text-muted);">GEMS: </span>
+          <span style="color: var(--text-muted);">CRYSTALS: </span>
           <strong id="hudGems" style="color: #10b981;">0 / 3</strong>
         </div>
-        <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
-          <span style="color: var(--text-muted);">REWARD: </span>
-          <strong style="color: #fbbf24;">+35 XP</strong>
-        </div>
       </div>
+    </div>
+
+    <!-- 15-Mission Level Selector Bar -->
+    <div style="margin-bottom: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+        <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">
+          Select Planetary Mission (1 – 15):
+        </span>
+        <span id="roverMissionTitle" style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          Mission 1 of 15: Mars Crater Alpha
+        </span>
+      </div>
+      <div id="roverMissionPills" style="display: flex; gap: 0.35rem; flex-wrap: wrap; overflow-x: auto;">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- Mission Briefing -->
+    <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+      <div id="roverMissionBrief" style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 600;">
+        Collect 3 glowing energy crystals scattered near the landing pod.
+      </div>
+      <button id="btnResetMission" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.76rem;">
+        ↺ Reset Rover
+      </button>
     </div>
 
     <!-- 3D WORKSPACE (Grid: 3D Viewport on Left, Control Console on Right) -->
@@ -72,60 +99,82 @@
         <div id="rover3dCanvas" style="width: 100%; height: 100%; min-height: 480px;"></div>
 
         <!-- 3D Mission Banner Overlay -->
-        <div id="missionSuccessBanner" style="display: none; position: absolute; inset: 0; background: rgba(7, 8, 12, 0.9); z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;">
+        <div id="missionSuccessBanner" style="display: none; position: absolute; inset: 0; background: rgba(7, 8, 12, 0.92); z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;">
           <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🎉</div>
           <h2 style="font-size: 1.85rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">
             Mission Complete! All Crystals Extracted!
           </h2>
           <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1rem;">
-            You navigated the 3D rover successfully and collected all alien energy cores.
+            Telemetry validated. +40 XP awarded to your cadet profile.
           </p>
-          <button id="resetMissionBtn" class="btn btn-primary" style="padding: 0.75rem 1.85rem; font-size: 0.95rem;">
-            Replay Mission ↺
-          </button>
-        </div>
-      </div>
-
-      <!-- Right Column: Command Console & Controls -->
-      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-        
-        <!-- Quick Action Buttons -->
-        <div class="cq-card" style="padding: 1.5rem;">
-          <div style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 1rem;">
-            Manual D-Pad Controls
-          </div>
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; max-width: 280px; margin: 0 auto 1.25rem;">
-            <div></div>
-            <button id="btnForward" class="btn btn-primary" style="padding: 0.75rem;">▲ Forward</button>
-            <div></div>
-            <button id="btnTurnLeft" class="btn btn-ghost" style="padding: 0.75rem;">◀ Left</button>
-            <button id="btnCollect" class="btn btn-ghost" style="padding: 0.75rem; color: #10b981; font-weight: 700;">💎 Grab</button>
-            <button id="btnTurnRight" class="btn btn-ghost" style="padding: 0.75rem;">Right ▶</button>
-          </div>
-          <div style="font-size: 0.76rem; color: var(--text-muted); text-align: center; font-family: var(--font-mono);">
-            Keyboard: W (Forward), A (Left), D (Right), Space (Collect)
-          </div>
-        </div>
-
-        <!-- Scripting Console -->
-        <div class="cq-card" style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-            <div style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 700;">
-              Autonomous Code Program
-            </div>
-            <button id="btnRunScript" class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.78rem;">
-              ▶ Execute Script
+          <div style="display: flex; gap: 0.75rem;">
+            <button id="nextMissionBtn" class="btn btn-primary" style="padding: 0.65rem 1.75rem; font-size: 0.95rem;">
+              Next Planetary Mission &rarr;
             </button>
           </div>
+        </div>
 
-          <textarea id="roverScriptBox" class="code-editor form-input" style="flex: 1; min-height: 140px; font-family: var(--font-mono); font-size: 0.86rem; line-height: 1.6;" spellcheck="false">// Program autonomous rover movements
+      </div>
+
+      <!-- Right Column: Dual Interface (Manual D-Pad + Code Scripting Terminal) -->
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        
+        <!-- Status Bar -->
+        <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.75rem 1.25rem; font-family: var(--font-mono); font-size: 0.85rem;">
+          <div id="roverStatusMsg" style="color: var(--text-muted);">
+            Status: Rover online and awaiting instructions.
+          </div>
+        </div>
+
+        <!-- Control Mode A: Tactile Cyber D-Pad -->
+        <div class="cq-card" style="padding: 1.25rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);">
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 0.05em;">
+            Manual Navigation D-Pad
+          </div>
+          
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+            <!-- Forward Button -->
+            <button id="dpadFwd" class="btn btn-ghost" style="width: 140px; padding: 0.75rem; font-weight: 700; font-size: 0.9rem; background: var(--bg-panel); border: 1px solid var(--border-medium);">
+              ▲ FORWARD
+            </button>
+
+            <!-- Left, Harvest, Right -->
+            <div style="display: flex; gap: 0.5rem;">
+              <button id="dpadLeft" class="btn btn-ghost" style="width: 90px; padding: 0.75rem; font-weight: 700; font-size: 0.9rem; background: var(--bg-panel); border: 1px solid var(--border-medium);">
+                ◀ LEFT
+              </button>
+              <button id="dpadCollect" class="btn btn-primary" style="width: 120px; padding: 0.75rem; font-weight: 800; font-size: 0.9rem; background: #059669; border-color: #10b981;">
+                💎 EXTRACT
+              </button>
+              <button id="dpadRight" class="btn btn-ghost" style="width: 90px; padding: 0.75rem; font-weight: 700; font-size: 0.9rem; background: var(--bg-panel); border: 1px solid var(--border-medium);">
+                RIGHT ▶
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Control Mode B: Autonomous Code Automation Terminal -->
+        <div class="cq-card" style="flex: 1; padding: 1.25rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+              Autonomous Code Pilot
+            </div>
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent);">JavaScript SDK</span>
+          </div>
+
+          <textarea id="roverCodeInput" class="code-editor" style="flex: 1; min-height: 120px; width: 100%; background: #060913; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.75rem; font-family: var(--font-mono); font-size: 0.85rem; color: #38bdf8; resize: vertical;" spellcheck="false">// Program autonomous rover movements
 rover.forward();
+rover.forward();
+rover.collect();
 rover.turnRight();
 rover.forward();
 rover.collect();</textarea>
 
-          <div id="roverStatusMsg" style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--text-muted); margin-top: 0.85rem;">
-            Status: Rover online and standing by.
+          <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Methods: .forward(), .turnLeft(), .turnRight(), .collect()</span>
+            <button id="btnRunRoverScript" class="btn btn-primary" style="padding: 0.45rem 1.25rem; font-size: 0.84rem;">
+              ▶ Execute Script
+            </button>
           </div>
         </div>
 

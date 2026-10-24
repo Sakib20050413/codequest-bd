@@ -31,7 +31,7 @@
           Start Learning Free &rarr;
         </a>
         <a href="{% url 'games_hub' %}" class="btn btn-ghost" style="padding: 0.85rem 1.65rem; font-size: 0.98rem;">
-          🎮 Practice Arena (6 Games)
+          🎮 Practice Arena (115 Games)
         </a>
         <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.85rem 1.5rem; font-size: 0.98rem;">
           IDE Playground ↗
@@ -336,22 +336,22 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
       <div>
         <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">
-          🎮 Interactive Arcade &bull; Learning Through Play
+          🎮 115 Active Playable Challenges &bull; 6 Flagship Engines
         </div>
         <h2 style="font-size: clamp(2rem, 3.8vw, 2.7rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em;">
-          Practice Arena: 6 Flagship Coding Games
+          Practice Arena: 115 Playable Coding Challenges
         </h2>
         <p style="font-size: 1.05rem; color: var(--text-muted); margin-top: 0.4rem; max-width: 650px;">
-          Reinforce muscle memory through AAA-inspired game mechanics. Write code to race supercars, steer planetary rovers, and align elements.
+          Reinforce language syntax, memory mental models, and algorithmic reflexes through 115 active, playable challenges. Jump directly into any level across our 6 browser engines.
         </p>
       </div>
 
       <div style="display: flex; gap: 0.75rem;">
         <button id="openGamesTaxonomyBtn" class="btn btn-ghost" style="font-size: 0.88rem;">
-          📜 100+ Games Taxonomy
+          🚀 115 Missions Launchpad
         </button>
         <a href="{% url 'games_hub' %}" class="btn btn-primary" style="font-size: 0.88rem;">
-          Enter Arena Hub &rarr;
+          Explore All 115 Levels &rarr;
         </a>
       </div>
     </div>
@@ -564,63 +564,878 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
 
 </div>
 
-<!-- 100+ Coding Games Taxonomy Modal (Point 16) -->
-<div id="gamesTaxonomyModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 10000; align-items: center; justify-content: center; padding: 1.5rem;">
-  <div class="cq-card" style="width: 100%; max-width: 820px; max-height: 88vh; overflow-y: auto; padding: 2.25rem; border: 1px solid var(--border-strong);">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
+<!-- 115 Playable Coding Challenges Launchpad Modal (Point 16) -->
+<div id="gamesTaxonomyModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 10000; align-items: center; justify-content: center; padding: 1.5rem;">
+  <div class="cq-card" style="width: 100%; max-width: 960px; max-height: 90vh; overflow-y: auto; padding: 2rem; border: 1px solid var(--border-strong); background: var(--bg-surface);">
+    
+    <!-- Modal Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
       <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <span style="font-size: 1.75rem;">📜</span>
+        <span style="font-size: 1.75rem;">🚀</span>
         <div>
-          <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0;">CodeQuest 100+ Coding Games Architecture Taxonomy</h3>
-          <span style="font-size: 0.8rem; color: var(--text-muted);">AAA-inspired coding gaming ecosystem categorizing 100+ gamified skill drills</span>
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0;">CodeQuest 115 Playable Challenges Launchpad</h3>
+          <span style="font-size: 0.82rem; color: var(--text-muted);">Instant direct access to all 115 in-browser playable levels across 6 interactive engines</span>
         </div>
       </div>
-      <button id="closeGamesTaxonomyBtn" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 1rem;">✕</button>
+      <button id="closeGamesTaxonomyBtn" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 1.1rem; border-radius: 6px;">✕</button>
     </div>
 
-    <!-- Taxonomy Categories Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; font-size: 0.85rem;">
-      <div class="cq-card" style="padding: 1.2rem; background: var(--bg-panel);">
-        <div style="font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;">1. 3D &amp; Spatial Simulations (15 Games)</div>
-        <p style="color: var(--text-muted); line-height: 1.5; font-size: 0.78rem;">
-          Cyber Rover 3D, Space Station Orbit Scheduler, Drone Flight Path Matrix, Quantum Gate Maze.
-        </p>
+    <!-- Quick Search & Tabs -->
+    <div style="margin-bottom: 1.25rem;">
+      <div style="position: relative; margin-bottom: 1rem;">
+        <input type="text" id="modalSearchInput" placeholder="Filter 115 missions by keyword (e.g. python, flexbox, async, sql)..." style="width: 100%; padding: 0.65rem 1rem 0.65rem 2.25rem; font-size: 0.88rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;">
+        <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--text-muted);">🔍</span>
       </div>
 
-      <div class="cq-card" style="padding: 1.2rem; background: var(--bg-panel);">
-        <div style="font-weight: 700; color: #06b6d4; margin-bottom: 0.5rem;">2. High-Speed Keystroke Racing (20 Games)</div>
-        <p style="color: var(--text-muted); line-height: 1.5; font-size: 0.78rem;">
-          Code TypeRacer 3D, Syntax Drift Nitro, Regex Sniper, Vim Escape Room, Shell Command Blitz.
-        </p>
-      </div>
-
-      <div class="cq-card" style="padding: 1.2rem; background: var(--bg-panel);">
-        <div style="font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">3. Layout &amp; Visual Logic Puzzles (20 Games)</div>
-        <p style="color: var(--text-muted); line-height: 1.5; font-size: 0.78rem;">
-          Flexbox Pond, Grid Builder City, CSS Z-Index Tower, SVG Path Sculptor, Box Model Squeeze.
-        </p>
-      </div>
-
-      <div class="cq-card" style="padding: 1.2rem; background: var(--bg-panel);">
-        <div style="font-weight: 700; color: #f59e0b; margin-bottom: 0.5rem;">4. Algorithmic Arena Duels (25 Games)</div>
-        <p style="color: var(--text-muted); line-height: 1.5; font-size: 0.78rem;">
-          Sorting Battle Royale, Binary Search Tower, Graph Shortest Path Maze, Dynamic Programming Quest.
-        </p>
-      </div>
-
-      <div class="cq-card" style="padding: 1.2rem; background: var(--bg-panel);">
-        <div style="font-weight: 700; color: #ef4444; margin-bottom: 0.5rem;">5. Security &amp; Cyber Defense (20 Games)</div>
-        <p style="color: var(--text-muted); line-height: 1.5; font-size: 0.78rem;">
-          SQL Injection Lockdown, XSS Sanitizer Shield, Memory Buffer Guard, Cryptographic Cipher Decrypt.
-        </p>
+      <div style="display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.4rem; scrollbar-width: none;">
+        <button class="btn modal-engine-tab active" data-tab="tab-typer" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">🏎️ Keystroke (20)</button>
+        <button class="btn btn-ghost modal-engine-tab" data-tab="tab-pond" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">🐸 Flexbox &amp; Grid (20)</button>
+        <button class="btn btn-ghost modal-engine-tab" data-tab="tab-bug" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">🐛 Bug Hunt (20)</button>
+        <button class="btn btn-ghost modal-engine-tab" data-tab="tab-predictor" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">🔮 Output Predictor (20)</button>
+        <button class="btn btn-ghost modal-engine-tab" data-tab="tab-tag" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">⚡ Tag Matcher (20)</button>
+        <button class="btn btn-ghost modal-engine-tab" data-tab="tab-rover" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 6px;">🤖 Cyber Rover (15)</button>
       </div>
     </div>
 
-    <div style="margin-top: 1.75rem; text-align: center;">
-      <a href="{% url 'games_hub' %}" class="btn btn-primary" style="padding: 0.65rem 1.75rem; font-size: 0.9rem;">
-        Launch Currently Active 6 Games in Arena &rarr;
+    <!-- Tab 1: Code TypeRacer 3D -->
+    <div id="tab-typer" class="modal-tab-content" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+        <a href="{% url 'game_play' 'code-typer' %}?level=1" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 01: javascript array transformations" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 01</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 01: JavaScript Array Transformations</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=2" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 02: python data pipeline & sum" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 02</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 02: Python Data Pipeline & Sum</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=3" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 03: sql modern user analytics query" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 03</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 03: SQL Modern User Analytics Query</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=4" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 04: css responsive flex container" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 04</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 04: CSS Responsive Flex Container</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=5" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 05: react state & loading hook" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 05</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 05: React State & Loading Hook</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=6" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 06: javascript fetch & promise stream" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 06</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 06: JavaScript Fetch & Promise Stream</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=7" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 07: rust safe memory allocation" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 07</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 07: Rust Safe Memory Allocation</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=8" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 08: typescript generic response interface" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 08</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 08: TypeScript Generic Response Interface</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=9" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 09: c++ vector sorting algorithm" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 09</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 09: C++ Vector Sorting Algorithm</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=10" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 10: go goroutines & channel concurrency" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 10</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 10: Go Goroutines & Channel Concurrency</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=11" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 11: java stream filter collection" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 11</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 11: Java Stream Filter Collection</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=12" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 12: python list comprehension filter" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 12</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 12: Python List Comprehension Filter</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=13" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 13: html5 semantic container blueprint" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 13</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 13: HTML5 Semantic Container Blueprint</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=14" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 14: docker production buildfile" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 14</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 14: Docker Production Buildfile</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=15" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 15: bash log rotation & archival" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 15</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 15: Bash Log Rotation & Archival</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=16" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 16: css container query responsive" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 16</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 16: CSS Container Query Responsive</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=17" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 17: sql window function dense rank" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 17</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 17: SQL Window Function Dense Rank</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=18" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 18: python context manager safe io" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 18</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 18: Python Context Manager Safe IO</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=19" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 19: javascript optional chaining & nullish" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 19</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 19: JavaScript Optional Chaining & Nullish</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'code-typer' %}?level=20" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="track 20: rust pattern matching result" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700;">Level 20</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Track 20: Rust Pattern Matching Result</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #06b6d4; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+30 XP)</span>
+        </a>
+    </div>
+
+    <!-- Tab 2: Flexbox & Grid Pond -->
+    <div id="tab-pond" class="modal-tab-content" style="display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=1" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 01: flexbox align right (justify-content)" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 01</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 01: Flexbox Align Right (justify-content)</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=2" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 02: flexbox center horizontally" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 02</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 02: Flexbox Center Horizontally</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=3" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 03: flexbox move to bottom (align-items)" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 03</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 03: Flexbox Move to Bottom (align-items)</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=4" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 04: flexbox dead center (2d alignment)" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 04</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 04: Flexbox Dead Center (2D Alignment)</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=5" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 05: flexbox bottom right corner" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 05</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 05: Flexbox Bottom Right Corner</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=6" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 06: flexbox space around elements" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 06</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 06: Flexbox Space Around Elements</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=7" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 07: flexbox space evenly distribution" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 07</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 07: Flexbox Space Evenly Distribution</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=8" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 08: flexbox vertical column stacking" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 08</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 08: Flexbox Vertical Column Stacking</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=9" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 09: flexbox reversed row layout" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 09</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 09: Flexbox Reversed Row Layout</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=10" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 10: flexbox column centered cross-axis" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 10</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 10: Flexbox Column Centered Cross-Axis</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=11" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 11: css grid shorthand place-items: center" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 11</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 11: CSS Grid Shorthand place-items: center</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=12" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 12: css grid align items to end" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 12</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 12: CSS Grid Align Items to End</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=13" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 13: css grid align items to bottom" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 13</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 13: CSS Grid Align Items to Bottom</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=14" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 14: css grid shorthand place-items: end end" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 14</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 14: CSS Grid Shorthand place-items: end end</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=15" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 15: css grid 3-column equal repeat(3, 1fr)" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 15</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 15: CSS Grid 3-Column Equal repeat(3, 1fr)</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=16" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 16: css grid proportional 1fr 2fr columns" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 16</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 16: CSS Grid Proportional 1fr 2fr Columns</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=17" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 17: css grid grid gap gutters" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 17</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 17: CSS Grid Grid Gap Gutters</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=18" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 18: css grid align full grid content" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 18</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 18: CSS Grid Align Full Grid Content</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=19" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 19: css grid auto-flow columns" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 19</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 19: CSS Grid Auto-Flow Columns</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'flexbox-pond' %}?level=20" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="level 20: css grid master shorthand place-content" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level 20</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Level 20: CSS Grid Master Shorthand place-content</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+    </div>
+
+    <!-- Tab 3: Bug Hunt -->
+    <div id="tab-bug" class="modal-tab-content" style="display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=1" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 01: python missing loop colon" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 01</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 01: Python Missing Loop Colon</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=2" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 02: javascript assignment in condition" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 02</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 02: JavaScript Assignment in Condition</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=3" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 03: html unclosed element" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 03</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 03: HTML Unclosed Element</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=4" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 04: css missing unit on length" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 04</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 04: CSS Missing Unit on Length</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=5" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 05: sql null equality comparison" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 05</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 05: SQL Null Equality Comparison</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=6" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 06: python modifying list in iteration" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 06</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 06: Python Modifying List in Iteration</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=7" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 07: javascript unchecked property access" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 07</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 07: JavaScript Unchecked Property Access</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=8" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 08: c missing semicolon" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 08</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 08: C Missing Semicolon</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=9" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 09: python mutable default argument" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 09</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 09: Python Mutable Default Argument</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=10" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 10: javascript const reassignment" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 10</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 10: JavaScript Const Reassignment</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=11" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 11: java string identity vs equality" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 11</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 11: Java String Identity vs Equality</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=12" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 12: sql missing column in group by" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 12</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 12: SQL Missing Column in Group By</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=13" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 13: python unbound local variable" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 13</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 13: Python Unbound Local Variable</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=14" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 14: javascript off-by-one loop bounds" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 14</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 14: JavaScript Off-by-One Loop Bounds</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=15" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 15: css malformed hex color digits" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 15</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 15: CSS Malformed Hex Color Digits</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=16" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 16: python zerodivisionerror handling" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 16</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 16: Python ZeroDivisionError Handling</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=17" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 17: javascript missing await in async" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 17</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 17: JavaScript Missing Await in Async</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=18" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 18: sql missing join on condition" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 18</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 18: SQL Missing Join ON Condition</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=19" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 19: c array out-of-bounds write" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 19</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 19: C Array Out-of-Bounds Write</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'bug-hunt' %}?level=20" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 20: php strict type mismatch & unset key" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444; font-weight: 700;">Level 20</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 20: PHP Strict Type Mismatch & Unset Key</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+    </div>
+
+    <!-- Tab 4: Output Predictor -->
+    <div id="tab-predictor" class="modal-tab-content" style="display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+        <a href="{% url 'game_play' 'output-predictor' %}?level=1" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 01: python list mutation via aliasing" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 01</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 01: Python List Mutation via Aliasing</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=2" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 02: javascript the type of nan" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 02</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 02: JavaScript The Type of NaN</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=3" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 03: sql null equality comparison" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 03</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 03: SQL Null Equality Comparison</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=4" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 04: c post-increment evaluation" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 04</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 04: C Post-Increment Evaluation</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=5" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 05: javascript event loop microtasks" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 05</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 05: JavaScript Event Loop Microtasks</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=6" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 06: python negative step slicing" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 06</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 06: Python Negative Step Slicing</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=7" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 07: javascript loose coercion equality" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 07</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 07: JavaScript Loose Coercion Equality</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=8" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 08: python dict key deduplication" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 08</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 08: Python Dict Key Deduplication</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=9" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 09: sql count(col) vs count(*)" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 09</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 09: SQL COUNT(col) vs COUNT(*)</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=10" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 10: javascript var hoisting semantics" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 10</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 10: JavaScript Var Hoisting Semantics</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=11" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 11: python default param retention" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 11</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 11: Python Default Param Retention</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=12" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 12: javascript arrow function 'this'" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 12</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 12: JavaScript Arrow Function 'this'</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=13" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 13: c truncating integer division" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 13</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 13: C Truncating Integer Division</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=14" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 14: python boolean operator precedence" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 14</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 14: Python Boolean Operator Precedence</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=15" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 15: javascript lexicographical sort" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 15</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 15: JavaScript Lexicographical Sort</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=16" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 16: sql union vs union all" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 16</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 16: SQL UNION vs UNION ALL</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=17" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 17: python rest unpacking" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 17</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 17: Python Rest Unpacking</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=18" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 18: javascript object spread shallow copy" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 18</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 18: JavaScript Object Spread Shallow Copy</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=19" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 19: c pointer dereference" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 19</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 19: C Pointer Dereference</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'output-predictor' %}?level=20" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="challenge 20: python generator evaluation timing" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #a855f7; font-weight: 700;">Level 20</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Challenge 20: Python Generator Evaluation Timing</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #a855f7; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+    </div>
+
+    <!-- Tab 5: Tag & Syntax Matcher -->
+    <div id="tab-tag" class="modal-tab-content" style="display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+        <a href="{% url 'game_play' 'tag-match' %}?level=1" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 01: html5 <main> document body" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 01</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 01: HTML5 <main> Document Body</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=2" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 02: html5 <header> banner & nav" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 02</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 02: HTML5 <header> Banner & Nav</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=3" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 03: html5 <footer> legal & contact" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 03</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 03: HTML5 <footer> Legal & Contact</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=4" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 04: html5 <article> self-contained unit" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 04</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 04: HTML5 <article> Self-Contained Unit</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=5" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 05: html5 <aside> sidebar & callout" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 05</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 05: HTML5 <aside> Sidebar & Callout</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=6" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 06: html5 <nav> primary links" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 06</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 06: HTML5 <nav> Primary Links</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=7" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 07: html5 <figure> & caption" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 07</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 07: HTML5 <figure> & Caption</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=8" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 08: html5 <dialog> native popups" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 08</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 08: HTML5 <dialog> Native Popups</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=9" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 09: html5 <template> inert dom nodes" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 09</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 09: HTML5 <template> Inert DOM Nodes</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=10" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 10: html5 <mark> highlighted text" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 10</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 10: HTML5 <mark> Highlighted Text</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=11" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 11: css :nth-child(even) pseudo" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 11</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 11: CSS :nth-child(even) Pseudo</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=12" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 12: css :has() parent selector" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 12</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 12: CSS :has() Parent Selector</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=13" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 13: css [attr^='val'] prefix selector" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 13</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 13: CSS [attr^='val'] Prefix Selector</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=14" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 14: http 201 created response" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 14</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 14: HTTP 201 Created Response</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=15" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 15: http 304 not modified cache" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 15</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 15: HTTP 304 Not Modified Cache</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=16" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 16: http 429 rate limit warning" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 16</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 16: HTTP 429 Rate Limit Warning</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=17" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 17: git git cherry-pick commit" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 17</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 17: Git git cherry-pick Commit</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=18" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 18: git git stash shelf" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 18</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 18: Git git stash Shelf</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=19" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 19: sql having aggregate filter" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 19</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 19: SQL HAVING Aggregate Filter</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'tag-match' %}?level=20" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="drill 20: sql coalesce() fallback" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">Level 20</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Drill 20: SQL COALESCE() Fallback</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+25 XP)</span>
+        </a>
+    </div>
+
+    <!-- Tab 6: Cyber Rover 3D -->
+    <div id="tab-rover" class="modal-tab-content" style="display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; max-height: 48vh; overflow-y: auto; padding-right: 0.25rem;">
+        <a href="{% url 'game_play' 'rover-3d' %}?level=1" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 01: mars crater alpha pod landing" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 01</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 01: Mars Crater Alpha Pod Landing</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=2" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 02: olympus mons foothills harvest" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 02</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 02: Olympus Mons Foothills Harvest</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=3" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 03: valles marineris diagonal trench" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 03</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 03: Valles Marineris Diagonal Trench</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=4" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 04: utopia planitia basin perimeter" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 04</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 04: Utopia Planitia Basin Perimeter</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=5" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 05: elysium planitia geothermal ridge" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 05</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 05: Elysium Planitia Geothermal Ridge</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=6" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 06: jezero river delta sediments" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 06</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 06: Jezero River Delta Sediments</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=7" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 07: gale crater mountain spiral" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 07</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 07: Gale Crater Mountain Spiral</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=8" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 08: europa subsurface ice sheets" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 08</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 08: Europa Subsurface Ice Sheets</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=9" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 09: europa hydrothermal geysers" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 09</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 09: Europa Hydrothermal Geysers</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=10" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 10: titan methane shoreline survey" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 10</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 10: Titan Methane Shoreline Survey</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=11" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 11: titan xanadu dune crossing" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 11</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 11: Titan Xanadu Dune Crossing</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=12" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 12: enceladus south polar tiger stripes" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 12</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 12: Enceladus South Polar Tiger Stripes</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=13" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 13: lunar shackleton crater shadow ice" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 13</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 13: Lunar Shackleton Crater Shadow Ice</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=14" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 14: asteroid 16 psyche metallic core" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 14</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 14: Asteroid 16 Psyche Metallic Core</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+        <a href="{% url 'game_play' 'rover-3d' %}?level=15" class="cq-card cq-card-interactive modal-challenge-card" data-modal-title="mission 15: kuiper belt outpost omega relics" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div>
+            <div style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8; font-weight: 700;">Level 15</div>
+            <div class="m-title" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Mission 15: Kuiper Belt Outpost Omega Relics</div>
+          </div>
+          <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; margin-left: 0.5rem;">▶ Play (+40 XP)</span>
+        </a>
+    </div>
+
+    <!-- Modal Footer -->
+    <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
+        Total: 115 Missions &bull; Earn up to 3,250 XP
+      </span>
+      <a href="{% url 'games_hub' %}" class="btn btn-primary" style="padding: 0.55rem 1.45rem; font-size: 0.88rem;">
+        Launch Full 115-Game Command Center &rarr;
       </a>
     </div>
+
   </div>
 </div>
 {% endblock %}
@@ -1020,10 +1835,13 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
     // Initial render of HTML visual stage
     setTech('html');
 
-    // 3. 100+ Games Taxonomy Modal Controls (Point 16)
+    // 3. 115 Playable Challenges Launchpad Modal Controls (Point 16)
     const taxonomyModal = document.getElementById('gamesTaxonomyModal');
     const openTaxonomyBtn = document.getElementById('openGamesTaxonomyBtn');
     const closeTaxonomyBtn = document.getElementById('closeGamesTaxonomyBtn');
+    const modalTabs = document.querySelectorAll('.modal-engine-tab');
+    const modalPanes = document.querySelectorAll('.modal-tab-content');
+    const modalSearch = document.getElementById('modalSearchInput');
 
     if (openTaxonomyBtn && taxonomyModal) {
       openTaxonomyBtn.onclick = function () {
@@ -1035,6 +1853,33 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
       taxonomyModal.onclick = function (e) {
         if (e.target === taxonomyModal) taxonomyModal.style.display = 'none';
       };
+
+      modalTabs.forEach(function (tab) {
+        tab.onclick = function () {
+          modalTabs.forEach(t => {
+            t.classList.remove('active');
+            t.classList.add('btn-ghost');
+          });
+          tab.classList.add('active');
+          tab.classList.remove('btn-ghost');
+
+          const targetId = tab.getAttribute('data-tab');
+          modalPanes.forEach(pane => {
+            pane.style.display = (pane.id === targetId) ? 'grid' : 'none';
+          });
+        };
+      });
+
+      if (modalSearch) {
+        modalSearch.addEventListener('input', function () {
+          const q = modalSearch.value.toLowerCase().trim();
+          const allCards = document.querySelectorAll('.modal-challenge-card');
+          allCards.forEach(card => {
+            const text = (card.getAttribute('data-modal-title') || '').toLowerCase();
+            card.style.display = (!q || text.includes(q)) ? 'flex' : 'none';
+          });
+        });
+      }
     }
   })();
 </script>

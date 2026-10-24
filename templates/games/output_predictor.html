@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Output Predictor: Mental Model Quiz — CodeQuest BD{% endblock %}
+{% block title %}Output Predictor: 20 Mental Model &amp; Execution Challenges — CodeQuest BD{% endblock %}
 
 {% block content %}
-<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 780px;">
+<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 860px;">
   
-  <div style="margin-bottom: 1.5rem;">
-    <a href="{% url 'games_hub' %}" style="font-size: 0.85rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
+  <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+    <a href="{% url 'games_hub' %}" style="font-size: 0.88rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;">
       &larr; Back to Practice Arena
     </a>
+    <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); background: var(--accent-subtle); padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid rgba(20, 184, 166, 0.25);">
+      20 Challenges &bull; +25 XP / Solved
+    </span>
   </div>
 
   <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
@@ -17,18 +20,33 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
       <div>
         <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em;">
-          Practice Drill 05
+          Practice Arena Engine 05 &bull; Mental Model Simulator
         </div>
-        <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
-          Output Predictor: Scoping &amp; Evaluation Order
+        <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
+          🔮 Output Predictor: AST &amp; Evaluation Order
         </h1>
       </div>
 
       <div style="text-align: right;">
-        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Score</div>
+        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Total Score</div>
         <div style="font-size: 1.4rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent);">
-          <span id="predictorScore">0</span>
+          <span id="predictorScore">0</span> XP
         </div>
+      </div>
+    </div>
+
+    <!-- 20-Challenge Level Selector Bar -->
+    <div style="margin-bottom: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+        <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">
+          Select Challenge (1 – 20):
+        </span>
+        <span id="predictorMissionTitle" style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          Challenge 1 of 20
+        </span>
+      </div>
+      <div id="predictorLevelPills" style="display: flex; gap: 0.35rem; flex-wrap: wrap; overflow-x: auto;">
+        <!-- Injected by JS -->
       </div>
     </div>
 
@@ -48,7 +66,7 @@
     </div>
 
     <!-- Options Grid -->
-    <div id="predictorOptions" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+    <div id="predictorOptions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
       <!-- Injected by JS -->
     </div>
 
