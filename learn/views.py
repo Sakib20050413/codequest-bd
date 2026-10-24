@@ -265,12 +265,20 @@ def lesson_detail(request, course_slug, lesson_slug):
     prev_lesson = all_lessons[curr_idx - 1] if curr_idx > 0 else None
     next_lesson = all_lessons[curr_idx + 1] if curr_idx < len(all_lessons) - 1 else None
 
-    # Track start
+    # Track start & fetch completed lessons for syllabus drawer
+    completed_ids = set()
     if request.user.is_authenticated:
         UserProgress.objects.get_or_create(
             user=request.user,
             lesson=lesson,
             defaults={"status": "IN_PROGRESS", "attempts": 1}
+        )
+        completed_ids = set(
+            UserProgress.objects.filter(
+                user=request.user,
+                lesson__course=course,
+                status="COMPLETED"
+            ).values_list("lesson_id", flat=True)
         )
 
     return render(
@@ -281,6 +289,8 @@ def lesson_detail(request, course_slug, lesson_slug):
             "lesson": lesson,
             "prev_lesson": prev_lesson,
             "next_lesson": next_lesson,
+            "all_lessons": all_lessons,
+            "completed_ids": completed_ids,
             "tests_json_str": json.dumps(lesson.tests_json or []),
             "hints_json_str": json.dumps(lesson.hints_json or []),
         },

@@ -29,6 +29,9 @@
       <a href="{% url 'course_detail' course.slug %}" class="btn btn-ghost" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">
         &larr; {{ course.title }}
       </a>
+      <button id="syllabusDrawerBtn" class="btn btn-ghost" style="padding: 0.4rem 0.85rem; font-size: 0.82rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); display: inline-flex; align-items: center; gap: 0.4rem;" title="View Course Syllabus & Jump to Lessons">
+        <span>☰</span> <span>Syllabus ({{ lesson.order }}/{{ all_lessons|length|default:course.lessons.count }})</span>
+      </button>
       <div style="display: flex; align-items: center; gap: 0.5rem;">
         <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); color: var(--accent);">
           #{{ lesson.order }}
@@ -95,6 +98,9 @@
         <span style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
           {{ course.title }} &bull; {{ lesson.title }}
         </span>
+        <button id="zenSyllabusDrawerBtn" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); border-radius: 4px;" title="Jump to Course Lessons">
+          ☰ Lessons ({{ lesson.order }}/{{ all_lessons|length|default:course.lessons.count }})
+        </button>
         <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; background: var(--accent-subtle); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid rgba(99, 102, 241, 0.25);">
           ⚡ +{{ lesson.xp }} XP
         </span>
@@ -129,6 +135,9 @@
         </button>
         <button class="study-tab-btn" data-study-tab="task">
           🎯 Task
+        </button>
+        <button class="study-tab-btn" data-study-tab="quiz">
+          🧠 Quick Quiz &amp; Cheat Sheet
         </button>
         <button class="study-tab-btn" data-study-tab="models">
           🏗️ Software Models
@@ -367,6 +376,44 @@ margin: 24px; padding: 20px; border: 2px solid;
             </div>
             <div id="architectureTiersContainer">
               <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Interactive Quick Quiz & Cheat Sheet -->
+        <div id="studyTabQuiz" class="study-tab-content" style="display: none;">
+          <!-- Knowledge Check Card -->
+          <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: #a855f7; text-transform: uppercase;">
+                🧠 Knowledge Check &bull; Quick Concept Check
+              </span>
+              <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">
+                Instant Feedback
+              </span>
+            </div>
+            <div id="quickQuizQuestion" style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.85rem; line-height: 1.5;">
+              What is the key takeaway of this lesson?
+            </div>
+            <div id="quickQuizOptions" style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <!-- Dynamically populated by JS -->
+            </div>
+            <div id="quickQuizFeedback" style="display: none; margin-top: 0.75rem; padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.84rem; line-height: 1.5;"></div>
+          </div>
+
+          <!-- Cheat Sheet Card -->
+          <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase;">
+                📋 Quick Reference Cheat Sheet
+              </span>
+              <button id="btnCopyCheatSheet" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono);">
+                Copy Snippet 📋
+              </button>
+            </div>
+            <pre id="cheatSheetSnippet" style="background: #060913; border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.82rem; color: #38bdf8; overflow-x: auto; margin-bottom: 0.75rem;"><code>{{ lesson.solution }}</code></pre>
+            <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
+              💡 <strong>Pro Tip:</strong> Re-type this pattern in the editor instead of copying to reinforce neural muscle memory.
             </div>
           </div>
         </div>
@@ -820,6 +867,7 @@ margin: 24px; padding: 20px; border: 2px solid;
     const studyContents = {
       concept: document.getElementById('studyTabConcept'),
       task: document.getElementById('studyTabTask'),
+      quiz: document.getElementById('studyTabQuiz'),
       models: document.getElementById('studyTabModels') || document.getElementById('studyTabDomtree'),
       hints: document.getElementById('studyTabHints'),
     };
@@ -963,6 +1011,117 @@ margin: 24px; padding: 20px; border: 2px solid;
       });
     }
 
+    // --- LMS Enhanced Features: Quick Quiz, Syllabus Drawer & Keyboard Shortcuts ---
+    
+    // 1. Drawer open/close logic
+    const drawerModal = document.getElementById('syllabusDrawerModal');
+    const openDrawerBtn = document.getElementById('syllabusDrawerBtn');
+    const openDrawerZenBtn = document.getElementById('zenSyllabusDrawerBtn');
+    const closeDrawerBtn = document.getElementById('closeSyllabusDrawerBtn');
+
+    function toggleSyllabusDrawer(show) {
+      if (!drawerModal) return;
+      drawerModal.style.display = show ? 'flex' : 'none';
+    }
+
+    if (openDrawerBtn) openDrawerBtn.onclick = () => toggleSyllabusDrawer(true);
+    if (openDrawerZenBtn) openDrawerZenBtn.onclick = () => toggleSyllabusDrawer(true);
+    if (closeDrawerBtn) closeDrawerBtn.onclick = () => toggleSyllabusDrawer(false);
+    if (drawerModal) {
+      drawerModal.onclick = (e) => {
+        if (e.target === drawerModal) toggleSyllabusDrawer(false);
+      };
+    }
+
+    // 2. Interactive Quick Quiz Generator
+    const quizOptions = document.getElementById('quickQuizOptions');
+    const quizFeedback = document.getElementById('quickQuizFeedback');
+    const copyCheatBtn = document.getElementById('btnCopyCheatSheet');
+
+    function getLessonQuizData() {
+      const title = "{{ lesson.title|escapejs }}";
+      const lang = "{{ course.language.name|escapejs }}";
+      return {
+        question: `In ${lang}, what is the essential principle demonstrated in "${title}"?`,
+        options: [
+          {
+            text: "It establishes the correct syntax, scope, or structure expected by the runtime engine.",
+            isCorrect: true,
+            explanation: "Spot on! Adhering to language contracts and idiomatic syntax ensures clean execution without runtime errors."
+          },
+          {
+            text: "It completely bypasses all security rules and memory boundaries.",
+            isCorrect: false,
+            explanation: "Incorrect. Modern languages enforce strict boundaries, typing, and safety guarantees."
+          },
+          {
+            text: "It is an optional cosmetic comment ignored by compiler and browser engines.",
+            isCorrect: false,
+            explanation: "Incorrect. The code is active, executable logic that determines program state and layout."
+          }
+        ]
+      };
+    }
+
+    if (quizOptions) {
+      const qData = getLessonQuizData();
+      const qTitleEl = document.getElementById('quickQuizQuestion');
+      if (qTitleEl) qTitleEl.textContent = qData.question;
+      quizOptions.innerHTML = '';
+      qData.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-ghost';
+        btn.style.cssText = 'text-align: left; justify-content: flex-start; padding: 0.65rem 0.95rem; font-size: 0.84rem; border-radius: 6px; border: 1px solid var(--border-subtle); line-height: 1.4;';
+        btn.innerHTML = `<span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent); margin-right: 0.5rem;">${String.fromCharCode(65 + idx)}.</span> <span>${opt.text}</span>`;
+        btn.onclick = () => {
+          if (opt.isCorrect) {
+            btn.style.background = 'rgba(16, 185, 129, 0.15)';
+            btn.style.borderColor = 'var(--success)';
+            btn.style.color = 'var(--success)';
+            quizFeedback.style.display = 'block';
+            quizFeedback.style.background = 'rgba(16, 185, 129, 0.1)';
+            quizFeedback.style.border = '1px solid var(--success)';
+            quizFeedback.style.color = 'var(--success)';
+            quizFeedback.innerHTML = `<strong>✓ Correct!</strong> ${opt.explanation}`;
+            if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('success');
+          } else {
+            btn.style.background = 'rgba(239, 68, 68, 0.15)';
+            btn.style.borderColor = 'var(--danger)';
+            btn.style.color = 'var(--danger)';
+            quizFeedback.style.display = 'block';
+            quizFeedback.style.background = 'rgba(239, 68, 68, 0.1)';
+            quizFeedback.style.border = '1px solid var(--danger)';
+            quizFeedback.style.color = '#fca5a5';
+            quizFeedback.innerHTML = `<strong>✕ Review:</strong> ${opt.explanation}`;
+            if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('error');
+          }
+        };
+        quizOptions.appendChild(btn);
+      });
+    }
+
+    if (copyCheatBtn) {
+      copyCheatBtn.onclick = () => {
+        const snippet = document.getElementById('cheatSheetSnippet').textContent;
+        navigator.clipboard.writeText(snippet);
+        copyCheatBtn.textContent = '✓ Copied!';
+        setTimeout(() => { copyCheatBtn.textContent = 'Copy Snippet 📋'; }, 1500);
+      };
+    }
+
+    // 3. Ergonomic Alt+N and Alt+P Navigation Shortcuts
+    window.addEventListener('keydown', function(e) {
+      if (e.altKey && (e.key === 'n' || e.key === 'N')) {
+        {% if next_lesson %}
+        window.location.href = "{% url 'lesson_detail' course.slug next_lesson.slug %}";
+        {% endif %}
+      } else if (e.altKey && (e.key === 'p' || e.key === 'P')) {
+        {% if prev_lesson %}
+        window.location.href = "{% url 'lesson_detail' course.slug prev_lesson.slug %}";
+        {% endif %}
+      }
+    });
+
     // Responsive Mobile Tab Switcher
     const tabs = document.querySelectorAll('.mobile-tab-btn');
     const pInst = document.getElementById('panelInstructions');
@@ -1044,4 +1203,60 @@ margin: 24px; padding: 20px; border: 2px solid;
     font-weight: 700;
   }
 </style>
+<!-- Slide-Out Course Syllabus Drawer Modal (Z-Index 2147483646) -->
+<div id="syllabusDrawerModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); z-index: 2147483646; justify-content: flex-end;">
+  <div style="background: var(--bg-surface); width: 100%; max-width: 440px; height: 100vh; border-left: 1px solid var(--border-strong); display: flex; flex-direction: column; box-shadow: -10px 0 35px rgba(0,0,0,0.6); animation: slideLeft 0.25s var(--ease);">
+    
+    <!-- Drawer Header -->
+    <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; background: var(--bg-panel);">
+      <div>
+        <div style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; text-transform: uppercase;">
+          {{ course.language.name }} &bull; {{ course.level }}
+        </div>
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
+          {{ course.title }}
+        </h3>
+      </div>
+      <button id="closeSyllabusDrawerBtn" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 1.1rem; border-radius: 6px;">
+        ✕
+      </button>
+    </div>
+
+    <!-- Progress Meter -->
+    <div style="padding: 0.85rem 1.5rem; background: var(--bg-surface-elevated); border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-family: var(--font-mono);">
+      <span style="color: var(--text-muted);">Course Progress</span>
+      <span style="color: var(--success); font-weight: 700;">{{ completed_ids|length }} / {{ all_lessons|length|default:course.lessons.count }} Mastered</span>
+    </div>
+
+    <!-- Lessons List -->
+    <div style="flex: 1; overflow-y: auto; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.6rem;">
+      {% for l in all_lessons %}
+      <a href="{% url 'lesson_detail' course.slug l.slug %}" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: 1px solid {% if l.id == lesson.id %}var(--accent){% else %}var(--border-subtle){% endif %}; background: {% if l.id == lesson.id %}rgba(20, 184, 166, 0.12){% else %}var(--bg-panel){% endif %}; transition: all 0.15s ease;">
+        <div style="display: flex; align-items: center; gap: 0.85rem;">
+          <div style="width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.74rem; font-weight: 800; background: {% if l.id in completed_ids %}var(--success-subtle){% else %}var(--bg-surface){% endif %}; color: {% if l.id in completed_ids %}var(--success){% else %}var(--text-muted){% endif %}; border: 1px solid {% if l.id in completed_ids %}rgba(16, 185, 129, 0.35){% else %}var(--border-subtle){% endif %};">
+            {% if l.id in completed_ids %}✓{% else %}{{ l.order }}{% endif %}
+          </div>
+          <div>
+            <div style="font-size: 0.88rem; font-weight: 700; color: {% if l.id == lesson.id %}var(--accent){% else %}var(--text-primary){% endif %};">
+              {{ l.title }}
+            </div>
+            <div style="font-size: 0.74rem; color: var(--text-muted);">
+              ⏱ {{ l.est_minutes }} min &bull; +{{ l.xp }} XP
+            </div>
+          </div>
+        </div>
+        {% if l.id == lesson.id %}
+        <span style="font-size: 0.68rem; font-family: var(--font-mono); font-weight: 700; background: var(--accent); color: #07090e; padding: 0.15rem 0.45rem; border-radius: 4px;">
+          ACTIVE
+        </span>
+        {% endif %}
+      </a>
+      {% empty %}
+      <div style="text-align: center; color: var(--text-muted); padding: 2rem;">No lessons loaded.</div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
 {% endblock %}

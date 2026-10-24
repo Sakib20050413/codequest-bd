@@ -49,15 +49,52 @@
       </div>
 
       <!-- Progress Indicator -->
-      <div style="background: var(--bg-panel); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+      <div style="background: var(--bg-panel); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); margin-bottom: 1.5rem;">
         <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; margin-bottom: 0.75rem;">
-          <span style="color: var(--text-secondary); font-weight: 700;">Track Completion</span>
+          <span style="color: var(--text-secondary); font-weight: 700;">Track Mastery</span>
           <span style="font-family: var(--font-mono); color: var(--accent-secondary); font-weight: 800;">
             {{ completed_ids|length }} / {{ lessons|length }} Completed
           </span>
         </div>
-        <div class="progress-bar-bg">
+        <div class="progress-bar-bg" style="margin-bottom: 1rem;">
           <div class="progress-bar-fill" style="width: {% if lessons|length > 0 %}{% widthratio completed_ids|length lessons|length 100 %}{% else %}0{% endif %}%;"></div>
+        </div>
+        
+        {% if lessons|length > 0 %}
+          {% if completed_ids|length == lessons|length %}
+            <div style="text-align: center; padding: 0.65rem; background: var(--success-subtle); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 6px; color: var(--success); font-weight: 700; font-size: 0.88rem;">
+              🏆 Track Completed! All {{ lessons|length }} Modules Mastered
+            </div>
+          {% else %}
+            <a href="{% url 'lesson_detail' course.slug lessons.0.slug %}" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.92rem; padding: 0.75rem 1.25rem; font-weight: 800; box-shadow: 0 4px 16px rgba(20, 184, 166, 0.35);">
+              ▶ Resume Learning Track &rarr;
+            </a>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <!-- What You Will Master -->
+      <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+        <div style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 0.75rem;">
+          🎓 LMS Architecture Highlights
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+          <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+            <span style="color: var(--success); font-weight: 700;">✓</span>
+            <span><strong>Micro-Learning Units:</strong> Bite-sized 3–7 min concepts with zero fluff.</span>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+            <span style="color: var(--success); font-weight: 700;">✓</span>
+            <span><strong>In-Browser Execution:</strong> Instant feedback via sandboxed iframe & WebAssembly.</span>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+            <span style="color: var(--success); font-weight: 700;">✓</span>
+            <span><strong>Mental Models:</strong> Inline diagrams, Living DOM & Box Model inspectors.</span>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+            <span style="color: var(--success); font-weight: 700;">✓</span>
+            <span><strong>Gamified XP:</strong> Climb leaderboard tiers and unlock verified milestone badges.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -88,13 +125,19 @@
             </div>
 
             <div>
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
+                <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 4px; {% if forloop.counter <= 4 %}background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25);{% elif forloop.counter <= 8 %}background: rgba(168, 85, 247, 0.12); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.25);{% else %}background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25);{% endif %}">
+                  {% if forloop.counter <= 4 %}MODULE 1: FOUNDATIONS{% elif forloop.counter <= 8 %}MODULE 2: CORE LOGIC{% else %}MODULE 3: ARCHITECTURE{% endif %}
+                </span>
+                <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700;">+{{ lesson.xp }} XP</span>
+              </div>
               <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">
                 <a href="{% url 'lesson_detail' course.slug lesson.slug %}" style="color: inherit; text-decoration: none;">
                   {{ lesson.title }}
                 </a>
               </h3>
               <div style="font-size: 0.84rem; color: var(--text-muted);">
-                ⏱ {{ lesson.est_minutes }} min interactive practice &bull; +{{ lesson.xp }} XP
+                ⏱ {{ lesson.est_minutes }} min bite-sized practice &bull; Automated test validation &bull; SVG Mental Model
               </div>
             </div>
           </div>
