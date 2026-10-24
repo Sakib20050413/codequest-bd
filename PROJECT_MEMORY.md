@@ -62,6 +62,7 @@ flowchart TD
 10. **Turn 10 (Connected Graphics & Complete LMS Micro-Units)**: Added 24 new core lessons (Java 8, PHP 8, Bash 8) bringing the curriculum to 88 lessons. Added Curriculum Bridge badges connecting games to course modules. Guarded Three.js against CDN latency.
 11. **Turn 11 (108 Master Games & 1,080 Playable Levels)**: User asked for 100+ games so total levels exceed 1,000+. Designed and seeded 108 games across 10 specialized domains into `db.sqlite3`. Built the high-fidelity `arcade_player.html` engine with 3D WebGL, 2D Vector Canvas, Web Audio API synthesis, level progression, and slide-over catalog drawer.
 12. **Turn 12 (Comprehensive Quality Audit & Declutter)**: Discovered that all 88 lesson titles had redundant double numbering (`#01 01. Title`). Cleaned all titles to clean human-readable names (`#1 Title`). Updated landing page hero stats. Authored this master living memory document.
+13. **Turn 13 (Zero-Learner Empathy & Radical Simplification)**: Tested the live site from the perspective of someone who has never touched code. Discovered that the hero terminal (with terms like WASM, AST, Memory leaks) caused anxiety for absolute beginners. Replaced the hero snippet with a welcoming beginner script. Introduced the 'New to programming? Start with one of these 2 paths' onboarding ribbon right below the hero (Visual Web vs Python Logic). Live verified on Vercel (commit 90c6cbc).
 
 ---
 
