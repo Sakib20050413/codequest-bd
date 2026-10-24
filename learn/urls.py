@@ -18,6 +18,7 @@ urlpatterns = [
     path("api/lesson/<int:lesson_id>/check/", views.api_check_lesson, name="api_check_lesson"),
     path("api/progress/sync/", views.api_sync_guest_progress, name="api_sync_guest_progress"),
     path("api/feedback/", views.submit_feedback, name="submit_feedback"),
+    path("api/cloud-db-status/", views.api_cloud_db_status, name="api_cloud_db_status"),
 
     # Authentication & User Profile
     path("profile/", views.profile_view, name="profile_view"),

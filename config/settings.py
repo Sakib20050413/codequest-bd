@@ -6,7 +6,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-codequest-modern-learning-platform-key")
-DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
+DEBUG = os.environ.get("DEBUG", "False" if "VERCEL" in os.environ else "True").lower() in ("true", "1", "yes")
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 if "*" not in ALLOWED_HOSTS and "localhost" not in ALLOWED_HOSTS:
@@ -61,13 +61,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# Database Configuration (Neon PostgreSQL on Cloud / SQLite for Local Dev)
-if os.environ.get("DATABASE_URL"):
+# Database Configuration (Neon / Supabase PostgreSQL on Cloud or SQLite for Local Dev)
+db_url = os.environ.get("DATABASE_URL") or os.environ.get("POSTGRES_URL")
+if db_url:
+    # On serverless (Vercel), conn_max_age=0 prevents connection leaks / dropped sockets
+    conn_max_age = int(os.environ.get("CONN_MAX_AGE", "0" if "VERCEL" in os.environ else "600"))
     DATABASES = {
         "default": dj_database_url.config(
-            default=os.environ.get("DATABASE_URL"),
-            conn_max_age=600,
+            default=db_url,
+            conn_max_age=conn_max_age,
             conn_health_checks=True,
+            ssl_require=True,
         )
     }
 elif "VERCEL" in os.environ:
@@ -119,5 +123,17 @@ LOGOUT_REDIRECT_URL = "/"
 # Security Headers & Client Sandboxing
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Session & Authentication Integrity (Persistent 30-Day Login State)
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30-Day persistent session
+SESSION_SAVE_EVERY_REQUEST = True        # Auto-refresh session expiration on learner activity
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Keep learner signed in across browser sessions
 SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = "Lax"
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True

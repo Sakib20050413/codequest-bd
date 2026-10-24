@@ -511,3 +511,61 @@ def submit_feedback(request):
         return JsonResponse({"ok": True})
     except Exception as exc:
         return JsonResponse({"ok": False, "error": str(exc)}, status=400)
+
+
+def api_cloud_db_status(request):
+    """
+    Diagnostic and health check endpoint for database persistence and integrity.
+    Provides immediate verification of whether Vercel is running on persistent Neon Postgres or ephemeral SQLite.
+    """
+    from django.db import connection
+    from django.conf import settings
+    from django.core.management import call_command
+    import os
+
+    db_settings = connection.settings_dict
+    engine = db_settings.get("ENGINE", "")
+    is_postgres = "postgresql" in engine
+    is_vercel = "VERCEL" in os.environ
+    db_host = db_settings.get("HOST", "")
+
+    action = request.GET.get("action", "")
+    key = request.GET.get("key", "")
+    migration_output = None
+
+    if action in ("migrate", "seed") and key and key == getattr(settings, "SECRET_KEY", ""):
+        try:
+            call_command("migrate", interactive=False)
+            call_command("seed_lessons")
+            migration_output = "Migration and seed executed successfully."
+        except Exception as e:
+            migration_output = f"Error during execution: {str(e)}"
+
+    tables = connection.introspection.table_names()
+    user_count = User.objects.count() if "auth_user" in tables else 0
+    lesson_count = Lesson.objects.count() if "learn_lesson" in tables else 0
+    course_count = Course.objects.count() if "learn_course" in tables else 0
+
+    if is_postgres:
+        status_msg = "HEALTHY: Connected to persistent cloud PostgreSQL database (Neon/Supabase)."
+        persistence = "Persistent Cloud Storage"
+    elif is_vercel:
+        status_msg = "WARNING: Running on ephemeral Vercel /tmp SQLite. User accounts reset on cold start. Add DATABASE_URL to Vercel Environment Variables."
+        persistence = "Ephemeral (Reset on cold start)"
+    else:
+        status_msg = "LOCAL: Running on local SQLite database."
+        persistence = "Local File Storage"
+
+    return JsonResponse({
+        "status": status_msg,
+        "engine": engine,
+        "persistence_mode": persistence,
+        "is_postgres": is_postgres,
+        "is_vercel": is_vercel,
+        "database_host": db_host if is_postgres else "Local /tmp",
+        "tables_count": len(tables),
+        "users_count": user_count,
+        "courses_count": course_count,
+        "lessons_count": lesson_count,
+        "action_result": migration_output,
+    })

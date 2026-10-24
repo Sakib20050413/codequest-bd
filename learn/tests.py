@@ -164,3 +164,11 @@ class CodeQuestCoreTests(TestCase):
         self.assertContains(res, "1-Click Instant Demo")
         self.assertContains(res, "Practice Arena")
         self.assertContains(res, "Playground Studio")
+
+    def test_cloud_db_status_endpoint(self):
+        res = self.client.get(reverse("api_cloud_db_status"))
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertIn("status", data)
+        self.assertIn("persistence_mode", data)
+        self.assertIn("tables_count", data)
