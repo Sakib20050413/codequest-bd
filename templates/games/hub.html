@@ -10,23 +10,23 @@
   <div style="margin-bottom: 2.5rem;">
     <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem;">
       <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">
-        🎯 28 REAL-WORLD CODING TASKS &bull; 115 IN-BROWSER CHALLENGES
+        🎯 28 REAL-WORLD CODING TASKS &bull; 108 MASTER CODING GAMES (1,080 LEVELS)
       </div>
       <div style="display: flex; gap: 0.65rem; align-items: center;">
         <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
-          ⚡ Earn 5,250 Total XP
+          ⚡ Earn 54,000+ Total XP
         </span>
         <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
-          12 Flagship Game Engines
+          108 Master Games &bull; 2D/3D Simulators
         </span>
       </div>
     </div>
 
     <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; margin-bottom: 0.75rem;">
-      Practice Arena: Coding Tasks &amp; 175 Challenges (12 Engines)
+      Practice Arena: Coding Tasks &amp; 108 Master Games (1,080 Levels)
     </h1>
-    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
-      Master real-world engineering through 28 practical coding tasks and 175 fast-paced interactive challenges across 12 flagship engines. Build responsive CSS Grid wireframes, solve SQL database crime mysteries, simulate 2D canvas physics loops, construct 3D WebGL voxel megacities, decode regex cipher streams, and defend backend APIs against DDoS sieges.
+    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 840px; line-height: 1.6;">
+      Master software engineering through 28 practical coding tasks and 108 high-attraction coding games across 10 specialized domains. Explore 3D WebGL space exploration, 2D vector physics, CSS design battles, algorithm duels, SQL crime mysteries, cybersecurity CTFs, DevOps cloud simulators, hardware logic gates, keystroke speed circuits, and autonomous AI neural networks.
     </p>
   </div>
 
@@ -38,7 +38,7 @@
         ⚡ Practical Coding Tasks (28)
       </button>
       <button id="modeBtnArcade" class="arena-mode-btn {% if active_mode == 'arcade' %}active{% endif %}" onclick="switchArenaMode('arcade')">
-        🎮 Gamified Arcade &amp; Drills (175)
+        🎮 108 Master Games (1,080 Levels)
       </button>
       <button id="modeBtnQuests" class="arena-mode-btn {% if active_mode == 'quests' %}active{% endif %}" onclick="switchArenaMode('quests')">
         🔥 Daily Quests &amp; Bounties
@@ -258,6 +258,100 @@
 
     </div>
 
+
+    <!-- ================================================================
+         THE 108 MASTER CODING GAMES CATALOG (1,080 PLAYABLE LEVELS)
+         ================================================================ -->
+    <div style="margin-bottom: 4rem;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; gap: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+        <div>
+          <div style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--accent); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">
+            Complete Master Arcade &bull; 10 Specialized Domains &bull; 10 Levels Each
+          </div>
+          <h2 style="font-size: 1.7rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+            🕹️ The 108 Coding Games Matrix (1,080 Playable Levels)
+          </h2>
+        </div>
+        <div style="font-size: 0.82rem; font-family: var(--font-mono); color: #10b981; background: var(--success-subtle); padding: 0.35rem 0.85rem; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.25);">
+          ⚡ 54,000+ Total Earnable XP
+        </div>
+      </div>
+
+      <!-- 10 Domain Filter Pills -->
+      <div id="masterArcadeCategoryTabs" style="display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 1.75rem;">
+        <button class="btn arcade-cat-pill active" data-cat="all" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
+          All Games (108)
+        </button>
+        <button class="btn btn-ghost arcade-cat-pill" data-cat="3d webgl metaverse" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
+          🌐 3D WebGL (10)
+        </button>
+        <button class="btn btn-ghost arcade-cat-pill" data-cat="2d canvas & physics" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
+          🚀 2D Canvas (11)
+        </button>
+        <button class="btn btn-ghost arcade-cat-pill" data-cat="css & frontend battles" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
+          🎨 CSS Battles (11)
+        </button>
+        <button class="btn btn-ghost arcade-cat-pill" data-cat="algorithm & logic arenas" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
+          ⚔️ Algorithms (11)
+        </button>
+        <button class="btn btn-ghost arcade-cat-pill" data-cat="sql & database mysteries" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
+          🔍 SQL Mysteries (10)
+        </button>
+        <button class="btn btn-ghost arcade-cat-pill" data-cat="cyber security & ctf" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
+          🛡️ Cyber &amp; CTF (11)
+        </button>
+        <button class="btn btn-ghost arcade-cat-pill" data-cat="devops & cloud simulators" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
+          ☁️ DevOps &amp; Cloud (11)
+        </button>
+        <button class="btn btn-ghost arcade-cat-pill" data-cat="hardware & logic gates" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
+          ⚡ Hardware &amp; Gates (11)
+        </button>
+        <button class="btn btn-ghost arcade-cat-pill" data-cat="speed & reflex drills" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
+          🏎️ Speed Drills (11)
+        </button>
+        <button class="btn btn-ghost arcade-cat-pill" data-cat="ai & autonomous agents" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
+          🤖 AI &amp; Neural (11)
+        </button>
+      </div>
+
+      <!-- 108 Master Games Grid -->
+      <div id="masterArcadeGamesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem;">
+        {% for g in games %}
+        <div class="cq-card cq-card-interactive arcade-game-card" data-cat="{{ g.category|lower }}" data-title="{{ g.title|lower }}" data-desc="{{ g.tagline|lower }}" style="padding: 1.35rem; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); position: relative; overflow: hidden; background: var(--bg-surface);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span style="font-size: 2.2rem; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));">{{ g.icon_svg }}</span>
+              <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
+                <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(20, 184, 166, 0.25);">
+                  #{{ g.order|stringformat:"03d" }} &bull; 10 Levels
+                </span>
+                <span style="font-size: 0.74rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">
+                  +{{ g.xp_per_win }} XP / win
+                </span>
+              </div>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.35rem; line-height: 1.35;">
+              {{ g.title }}
+            </h3>
+            <div style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.65rem;">
+              {{ g.category }} &bull; {{ g.difficulty }}
+            </div>
+            <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin: 0 0 1.25rem;">
+              {{ g.tagline }}
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.85rem; border-top: 1px solid var(--border-subtle);">
+            <span style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">
+              Engine Cartridge
+            </span>
+            <a href="{% url 'game_play' g.slug %}" class="btn btn-primary" style="padding: 0.4rem 1.05rem; font-size: 0.82rem; font-weight: 800;">
+              ▶ Play Engine &rarr;
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
 
 <!-- 6 FLAGSHIP ENGINE SECTIONS WITH 115 PLAYABLE LEVEL CARDS -->
 
@@ -1316,10 +1410,43 @@
         sec.style.display = sectionHasVisible ? 'block' : 'none';
       });
 
+      // Also filter 108 Master Games Grid
+      const masterCards = document.querySelectorAll('.arcade-game-card');
+      let visibleMasterGames = 0;
+      masterCards.forEach(function (card) {
+        const cat = card.getAttribute('data-cat') || '';
+        const title = card.getAttribute('data-title') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const matchesCat = (activeMasterCat === 'all' || cat === activeMasterCat);
+        const matchesQ = !q || title.includes(q) || desc.includes(q) || cat.includes(q);
+
+        if (matchesCat && matchesQ) {
+          card.style.display = 'flex';
+          visibleMasterGames++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
       if (countDisplay) {
-        countDisplay.textContent = `Showing ${visibleCount} of 175 Playable Challenges`;
+        countDisplay.textContent = `Showing ${visibleMasterGames} Games & ${visibleCount} Flagship Challenges`;
       }
     }
+
+    let activeMasterCat = 'all';
+    const masterCatPills = document.querySelectorAll('.arcade-cat-pill');
+    masterCatPills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        masterCatPills.forEach(p => {
+          p.classList.remove('active');
+          p.classList.add('btn-ghost');
+        });
+        pill.classList.add('active');
+        pill.classList.remove('btn-ghost');
+        activeMasterCat = pill.getAttribute('data-cat');
+        filterArena();
+      });
+    });
 
     if (arenaSearch) {
       arenaSearch.addEventListener('input', filterArena);

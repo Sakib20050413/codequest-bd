@@ -1,0 +1,784 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ game.title }} (10 Levels) — CodeQuest BD 108 Master Arcade{% endblock %}
+
+{% block extra_head %}
+<!-- Three.js WebGL 3D Simulation Engine -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  .arcade-viewport {
+    position: relative;
+    width: 100%;
+    min-height: 440px;
+    background: #05070f;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  }
+  .arcade-hud-pill {
+    background: rgba(10, 15, 30, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .arcade-drawer-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(5, 8, 16, 0.75);
+    backdrop-filter: blur(8px);
+    align-items: stretch;
+    justify-content: flex-end;
+  }
+  .arcade-drawer-modal.open {
+    display: flex;
+  }
+  .arcade-drawer-content {
+    width: min(520px, 92vw);
+    background: var(--bg-surface);
+    border-left: 1px solid var(--border-strong);
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6);
+  }
+  .arcade-game-item-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-panel);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+  .arcade-game-item-card:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+  .arcade-game-item-card.active {
+    border-color: var(--accent);
+    background: rgba(20, 184, 166, 0.12);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem;">
+
+  <!-- Breadcrumb & Catalog Switcher Bar -->
+  <div style="margin-bottom: 1.25rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+    <div style="display: flex; align-items: center; gap: 0.85rem;">
+      <a href="{% url 'games_hub' %}?mode=arcade" style="font-size: 0.88rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;">
+        &larr; Practice Arena Hub
+      </a>
+      <span style="color: var(--border-medium);">&bull;</span>
+      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.65rem; border-radius: 999px; border: 1px solid rgba(20, 184, 166, 0.25);">
+        {{ game.category }}
+      </span>
+    </div>
+
+    <!-- Quick Drawer Trigger & XP Badge -->
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <button id="openCatalogDrawerBtn" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.35rem 0.95rem; border-color: var(--border-medium); font-weight: 700; color: var(--text-primary);">
+        🕹️ Browse All 108 Games &rarr;
+      </button>
+      <span style="font-size: 0.82rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid rgba(16, 185, 129, 0.25);">
+        ⚡ +{{ game.xp_per_win }} XP / Level
+      </span>
+    </div>
+  </div>
+
+  <div class="cq-card" style="padding: 2rem; border: 1px solid var(--border-strong);">
+
+    <!-- Topbar HUD Header -->
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle);">
+      <div>
+        <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent); text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">
+          Master Arcade Cartridge #{{ game.order|stringformat:"03d" }} &bull; {{ game.difficulty }}
+        </div>
+        <h1 style="font-size: clamp(1.6rem, 2.8vw, 2.1rem); font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0.4rem; letter-spacing: -0.02em;">
+          {{ game.icon_svg }} {{ game.title }}
+        </h1>
+        <p style="font-size: 0.92rem; color: var(--text-muted); margin: 0; max-width: 720px; line-height: 1.5;">
+          {{ game.description }}
+        </p>
+      </div>
+
+      <!-- Real-Time Telemetry Metrics -->
+      <div style="display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center;">
+        <div class="arcade-hud-pill">
+          <span>FPS:</span>
+          <strong id="hudFps" style="color: #10b981;">60</strong>
+        </div>
+        <div class="arcade-hud-pill">
+          <span>SCORE:</span>
+          <strong id="hudScore" style="color: #38bdf8;">0</strong>
+        </div>
+        <div class="arcade-hud-pill">
+          <span>LEVEL:</span>
+          <strong id="hudLevelBadge" style="color: #f59e0b;">1 / 10</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Curriculum Bridge Connection Banner -->
+    <div style="background: rgba(20, 184, 166, 0.08); border: 1px solid rgba(20, 184, 166, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span style="font-size: 1.4rem;">🎓</span>
+        <div>
+          <div style="font-size: 0.84rem; font-weight: 700; color: var(--accent);">Connected Curriculum: {{ game.category }}</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">{{ game.tagline }} Practice here to reinforce concepts taught in courses.</div>
+        </div>
+      </div>
+      <a href="{% url 'catalogue' %}" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.35rem 0.85rem; border-color: rgba(20, 184, 166, 0.3); color: var(--accent);">
+        View Related Course &rarr;
+      </a>
+    </div>
+
+    <!-- 10-Level Mission Selector Bar -->
+    <div style="margin-bottom: 1.75rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1.15rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
+        <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">
+          Select Mission Level (1 – 10):
+        </span>
+        <span id="activeLevelTitle" style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          Mission 01: Foundations &amp; Initialization
+        </span>
+      </div>
+      <div id="levelPillsContainer" style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+        <!-- Injected by JavaScript (10 Level Pills) -->
+      </div>
+    </div>
+
+    <!-- MAIN TWO-COLUMN WORKSPACE: Visual Viewport on Left, Code & Control Console on Right -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; align-items: stretch;">
+
+      <!-- Column 1: Interactive Visual Simulation Viewport (2D & 3D WebGL) -->
+      <div class="arcade-viewport" id="viewportContainer">
+
+        <!-- Top Floating Mode Bar -->
+        <div style="position: absolute; top: 12px; left: 12px; z-index: 10; display: flex; gap: 0.4rem; background: rgba(7, 8, 14, 0.85); backdrop-filter: blur(12px); padding: 0.3rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <button id="viewMode3dBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 700;">
+            🌐 3D WebGL
+          </button>
+          <button id="viewMode2dBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 700;">
+            🚀 2D Vector
+          </button>
+          <button id="resetSimBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px;">
+            ↺ Reset
+          </button>
+        </div>
+
+        <!-- 3D WebGL Canvas Mount -->
+        <div id="threeCanvasMount" style="width: 100%; height: 100%; min-height: 440px;"></div>
+
+        <!-- 2D Canvas Fallback / Vector Mode -->
+        <canvas id="vectorCanvas2d" style="display: none; width: 100%; height: 100%; min-height: 440px; background: #070914;"></canvas>
+
+        <!-- Win Overlay Banner -->
+        <div id="winBannerModal" style="display: none; position: absolute; inset: 0; z-index: 20; background: rgba(7, 9, 18, 0.94); backdrop-filter: blur(8px); flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;">
+          <div style="font-size: 3.5rem; margin-bottom: 0.5rem; animation: bounce 1s infinite;">🏆</div>
+          <h2 style="font-size: 1.85rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">
+            Mission Complete!
+          </h2>
+          <p id="winBannerSubtitle" style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; max-width: 420px;">
+            Simulation parameters validated. +{{ game.xp_per_win }} XP awarded to your cadet profile.
+          </p>
+          <div style="display: flex; gap: 0.75rem;">
+            <button id="nextLevelActionBtn" class="btn btn-primary" style="padding: 0.65rem 1.75rem; font-size: 0.95rem; font-weight: 800;">
+              Next Mission &rarr;
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Column 2: Mission Briefing, Code Editor & Execution Console -->
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+
+        <!-- Mission Objective Box -->
+        <div class="cq-card" style="padding: 1.25rem; background: var(--bg-surface); border: 1px solid var(--border-subtle);">
+          <div style="font-size: 0.76rem; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 0.35rem; letter-spacing: 0.05em;">
+            Mission Directive
+          </div>
+          <div id="missionObjectiveText" style="font-size: 0.92rem; color: var(--text-primary); font-weight: 600; line-height: 1.5;">
+            Initialize simulation parameters, configure loop conditions, and execute state transitions to pass telemetry checks.
+          </div>
+        </div>
+
+        <!-- Code Editor Console -->
+        <div class="cq-card" style="flex: 1; padding: 1.25rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+            <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">
+              Algorithm &amp; State Editor
+            </span>
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent);">JavaScript / System API</span>
+          </div>
+
+          <textarea id="arcadeCodeEditor" class="code-editor" style="flex: 1; min-height: 180px; width: 100%; background: #060913; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem; font-family: var(--font-mono); font-size: 0.86rem; color: #38bdf8; resize: vertical; line-height: 1.5;" spellcheck="false">// Mission Script: {{ game.title }}
+function runSimulation(state) {
+  state.power = 100;
+  state.active = true;
+  state.velocity += 1.5;
+  return state.velocity >= 5.0;
+}</textarea>
+
+          <!-- Execution Controls -->
+          <div style="margin-top: 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+            <span id="consoleStatusText" style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">
+              Ready. Press Execute to test logic.
+            </span>
+            <button id="btnExecuteScript" class="btn btn-primary" style="padding: 0.5rem 1.4rem; font-size: 0.86rem; font-weight: 800;">
+              ▶ Run &amp; Verify
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- SLIDE-OVER DRAWER: All 108 Master Arcade Games -->
+<div id="arcadeMasterDrawer" class="arcade-drawer-modal" aria-hidden="true">
+  <div class="arcade-drawer-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
+      <div>
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+          🕹️ Master Arcade: 108 Games
+        </h3>
+        <span style="font-size: 0.78rem; color: var(--text-muted);">1,080 Playable Coding Challenges</span>
+      </div>
+      <button id="closeCatalogDrawerBtn" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 1.1rem; border: none; cursor: pointer;">
+        ✕
+      </button>
+    </div>
+
+    <!-- Live Search Filter in Drawer -->
+    <div style="margin-bottom: 1rem;">
+      <input type="text" id="drawerSearchInput" placeholder="Filter 108 games by title or category..." style="width: 100%; padding: 0.65rem 0.85rem; font-size: 0.86rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); outline: none;">
+    </div>
+
+    <!-- Scrollable 108 Game List -->
+    <div id="drawerGamesList" style="display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; padding-right: 0.25rem;">
+      {% for g in all_games %}
+      <a href="{% url 'game_play' g.slug %}" class="arcade-game-item-card {% if g.slug == game.slug %}active{% endif %}" data-title="{{ g.title|lower }}" data-cat="{{ g.category|lower }}">
+        <span style="font-size: 1.5rem;">{{ g.icon_svg }}</span>
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-size: 0.86rem; font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            {{ g.title }}
+          </div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">
+            #{{ g.order|stringformat:"03d" }} &bull; {{ g.category }}
+          </div>
+        </div>
+        <span style="font-size: 0.72rem; color: #10b981; font-weight: 700; font-family: var(--font-mono);">
+          +{{ g.xp_per_win }} XP
+        </span>
+      </a>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function() {
+  'use strict';
+
+  // Game Configuration & State
+  const GAME_SLUG = "{{ game.slug }}";
+  const GAME_TITLE = "{{ game.title }}";
+  const GAME_CATEGORY = "{{ game.category }}";
+  const TOTAL_LEVELS = 10;
+  let currentLevel = 1;
+  let currentScore = 0;
+  let completedLevels = new Set();
+
+  // Load completed levels from localStorage
+  try {
+    const saved = localStorage.getItem('cq_arcade_' + GAME_SLUG);
+    if (saved) completedLevels = new Set(JSON.parse(saved));
+  } catch(e) {}
+
+  // Web Audio Synth for crisp arcade audio
+  const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
+  function playSound(type) {
+    if (!audioCtx) return;
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    const now = audioCtx.currentTime;
+
+    if (type === 'click') {
+      osc.frequency.setValueAtTime(440, now);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+      osc.start(now);
+      osc.stop(now + 0.05);
+    } else if (type === 'success') {
+      osc.frequency.setValueAtTime(523.25, now);
+      osc.frequency.setValueAtTime(659.25, now + 0.08);
+      osc.frequency.setValueAtTime(783.99, now + 0.16);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+      osc.start(now);
+      osc.stop(now + 0.35);
+    } else if (type === 'error') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(160, now);
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+      osc.start(now);
+      osc.stop(now + 0.2);
+    }
+  }
+
+  // Confetti Particle Burst
+  function fireVictoryConfetti() {
+    if (window.CodeQuest && window.CodeQuest.fireConfetti) {
+      window.CodeQuest.fireConfetti();
+      return;
+    }
+    const mount = document.getElementById('viewportContainer');
+    if (!mount) return;
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.style.position = 'absolute';
+      p.style.width = '8px';
+      p.style.height = '8px';
+      p.style.borderRadius = '2px';
+      p.style.left = (Math.random() * 80 + 10) + '%';
+      p.style.top = '50%';
+      p.style.background = ['#14b8a6', '#38bdf8', '#f59e0b', '#ec4899', '#10b981'][Math.floor(Math.random() * 5)];
+      p.style.zIndex = '30';
+      p.style.transition = 'all 1s cubic-bezier(0.25, 1, 0.5, 1)';
+      mount.appendChild(p);
+      setTimeout(() => {
+        p.style.transform = `translate(${(Math.random() - 0.5) * 300}px, ${(Math.random() - 0.5) * 300}px) rotate(${Math.random() * 360}deg)`;
+        p.style.opacity = '0';
+      }, 20);
+      setTimeout(() => p.remove(), 1100);
+    }
+  }
+
+  // 10 Level Mission Data Generator
+  const MISSIONS = [
+    { title: "Foundations: State Initialization", brief: "Configure initial simulation state variables, verify flags, and start the system loop.", starter: "function runSimulation(state) {\n  state.power = 100;\n  state.online = true;\n  return state.power === 100 && state.online;\n}" },
+    { title: "Kinematics: Velocity Increment", brief: "Apply acceleration formulas to reach target orbital velocity within threshold limits.", starter: "function runSimulation(state) {\n  state.velocity = 0;\n  for(let i = 0; i < 5; i++) state.velocity += 2.0;\n  return state.velocity >= 10.0;\n}" },
+    { title: "Control Flow: Boundary Clamping", brief: "Implement boundary safeguards to clamp coordinates within safety sectors (-10 to +10).", starter: "function runSimulation(state) {\n  let x = state.targetX || 15;\n  let clampedX = Math.max(-10, Math.min(10, x));\n  return clampedX <= 10 && clampedX >= -10;\n}" },
+    { title: "Arrays: Buffer Transformation", brief: "Transform sensor data telemetry streams using array map and filter methods.", starter: "function runSimulation(state) {\n  const raw = [12, 45, 88, 120, 204];\n  const normalized = raw.filter(v => v > 50).map(v => v * 2);\n  return normalized.length === 3;\n}" },
+    { title: "State Machine: Mode Transitions", brief: "Transition the state machine from IDLE -> SCANNING -> ACTIVE without illegal state jumps.", starter: "function runSimulation(state) {\n  state.mode = 'IDLE';\n  if (state.mode === 'IDLE') state.mode = 'SCANNING';\n  if (state.mode === 'SCANNING') state.mode = 'ACTIVE';\n  return state.mode === 'ACTIVE';\n}" },
+    { title: "Optimization: Delta Time Throttling", brief: "Calculate frame elapsed time to enforce smooth 60fps physics step calculations.", starter: "function runSimulation(state) {\n  const dt = 1 / 60;\n  state.physicsTick = (state.physicsTick || 0) + dt;\n  return state.physicsTick > 0;\n}" },
+    { title: "Spatial Hash: Collision Detection", brief: "Detect vector collision overlap between the agent hitbox and obstacle bounding radius.", starter: "function runSimulation(state) {\n  const dist = Math.hypot(3, 4); // 5.0\n  return dist === 5;\n}" },
+    { title: "Recursion: Matrix Unraveling", brief: "Unravel nested multi-dimensional coordinate arrays using recursive traversal.", starter: "function runSimulation(state) {\n  function sum(arr) {\n    return arr.reduce((acc, v) => acc + (Array.isArray(v) ? sum(v) : v), 0);\n  }\n  return sum([1, [2, [3, 4]]]) === 10;\n}" },
+    { title: "Security: Checksum Integrity", brief: "Calculate hash payload parity bits to verify packet integrity against signal corruption.", starter: "function runSimulation(state) {\n  const payload = [1, 0, 1, 1, 0];\n  const parity = payload.reduce((acc, bit) => acc ^ bit, 0);\n  return parity === 1;\n}" },
+    { title: "Grandmaster: Sovereign Architecture", brief: "Orchestrate full autonomous system state with zero memory leaks and clean exit codes.", starter: "function runSimulation(state) {\n  state.integrity = 100;\n  state.activeJobs = 0;\n  state.missionComplete = true;\n  return state.missionComplete && state.integrity === 100;\n}" }
+  ];
+
+  // Render Level Selector Pills
+  function renderLevelPills() {
+    const container = document.getElementById('levelPillsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    for (let i = 1; i <= TOTAL_LEVELS; i++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn ' + (i === currentLevel ? 'btn-primary' : 'btn-ghost');
+      btn.style.padding = '0.3rem 0.65rem';
+      btn.style.fontSize = '0.78rem';
+      btn.style.fontFamily = 'var(--font-mono)';
+      btn.style.borderRadius = '6px';
+      btn.style.minWidth = '36px';
+
+      const isDone = completedLevels.has(i);
+      btn.innerHTML = `${i}${isDone ? ' <span style="color:#10b981;">✓</span>' : ''}`;
+      btn.title = `Level ${i}: ${MISSIONS[i-1].title}`;
+
+      btn.onclick = function() {
+        loadLevel(i);
+      };
+      container.appendChild(btn);
+    }
+  }
+
+  // Load Specific Level
+  function loadLevel(lvl) {
+    currentLevel = lvl;
+    playSound('click');
+    const mission = MISSIONS[lvl - 1];
+    const titleEl = document.getElementById('activeLevelTitle');
+    const briefEl = document.getElementById('missionObjectiveText');
+    const hudLvl = document.getElementById('hudLevelBadge');
+    const editor = document.getElementById('arcadeCodeEditor');
+    const winBanner = document.getElementById('winBannerModal');
+
+    if (titleEl) titleEl.textContent = `Mission ${String(lvl).padStart(2, '0')}: ${mission.title}`;
+    if (briefEl) briefEl.textContent = mission.brief;
+    if (hudLvl) hudLvl.textContent = `${lvl} / ${TOTAL_LEVELS}`;
+    if (editor) editor.value = mission.starter;
+    if (winBanner) winBanner.style.display = 'none';
+
+    document.getElementById('consoleStatusText').textContent = `Mission ${lvl} loaded. Review and verify code.`;
+    document.getElementById('consoleStatusText').style.color = 'var(--text-muted)';
+
+    renderLevelPills();
+  }
+
+  // Three.js 3D Interactive WebGL Arena Setup
+  let scene, camera, renderer, animationFrameId;
+  let heroMesh, wireframeGrid, particleCloud;
+
+  function init3DScene() {
+    const container = document.getElementById('threeCanvasMount');
+    if (!container || !window.THREE) return;
+
+    const width = container.clientWidth || 480;
+    const height = container.clientHeight || 440;
+
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x060814);
+    scene.fog = new THREE.FogExp2(0x060814, 0.035);
+
+    camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(0, 10, 18);
+    camera.lookAt(0, 0, 0);
+
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.innerHTML = '';
+    container.appendChild(renderer.domElement);
+
+    // Glowing Cyber Grid
+    wireframeGrid = new THREE.GridHelper(30, 20, 0x14b8a6, 0x1e293b);
+    wireframeGrid.position.y = -2;
+    scene.add(wireframeGrid);
+
+    // Dynamic Central Hero Mesh (Icosahedron / Crystal)
+    const geo = new THREE.IcosahedronGeometry(2.4, 0);
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0x14b8a6,
+      roughness: 0.2,
+      metalness: 0.8,
+      wireframe: false,
+      emissive: 0x042f2e,
+      emissiveIntensity: 0.6
+    });
+    heroMesh = new THREE.Mesh(geo, mat);
+    scene.add(heroMesh);
+
+    // Wireframe Cage around hero mesh
+    const wireMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, wireframe: true });
+    const wireMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(2.6, 0), wireMat);
+    heroMesh.add(wireMesh);
+
+    // Ambient & Directional Lights
+    const ambLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambLight);
+
+    const dirLight = new THREE.DirectionalLight(0x38bdf8, 1.6);
+    dirLight.position.set(10, 20, 15);
+    scene.add(dirLight);
+
+    const pointLight = new THREE.PointLight(0xf59e0b, 2, 20);
+    pointLight.position.set(-8, 6, -8);
+    scene.add(pointLight);
+
+    // Starfield Particle Dust
+    const starsGeo = new THREE.BufferGeometry();
+    const starCount = 300;
+    const starCoords = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount * 3; i++) {
+      starCoords[i] = (Math.random() - 0.5) * 60;
+    }
+    starsGeo.setAttribute('position', new THREE.BufferAttribute(starCoords, 3));
+    const starsMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.25, transparent: true, opacity: 0.8 });
+    particleCloud = new THREE.Points(starsGeo, starsMat);
+    scene.add(particleCloud);
+
+    window.addEventListener('resize', onWindowResize);
+    animate3D();
+  }
+
+  function onWindowResize() {
+    const container = document.getElementById('threeCanvasMount');
+    if (!container || !renderer || !camera) return;
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }
+
+  let lastTime = performance.now();
+  let frameCount = 0;
+  function animate3D() {
+    animationFrameId = requestAnimationFrame(animate3D);
+
+    const now = performance.now();
+    frameCount++;
+    if (now - lastTime >= 1000) {
+      const fpsEl = document.getElementById('hudFps');
+      if (fpsEl) fpsEl.textContent = frameCount;
+      frameCount = 0;
+      lastTime = now;
+    }
+
+    if (heroMesh) {
+      heroMesh.rotation.x += 0.008;
+      heroMesh.rotation.y += 0.012;
+      heroMesh.position.y = Math.sin(now * 0.002) * 0.4;
+    }
+    if (particleCloud) {
+      particleCloud.rotation.y += 0.001;
+    }
+    if (wireframeGrid) {
+      wireframeGrid.position.z = (wireframeGrid.position.z + 0.03) % (30 / 20);
+    }
+
+    if (renderer && scene && camera) {
+      renderer.render(scene, camera);
+    }
+  }
+
+  // 2D Vector Canvas Animation
+  let canvas2d, ctx2d, anim2dId;
+  function init2DCanvas() {
+    canvas2d = document.getElementById('vectorCanvas2d');
+    if (!canvas2d) return;
+    ctx2d = canvas2d.getContext('2d');
+    canvas2d.width = canvas2d.clientWidth || 480;
+    canvas2d.height = canvas2d.clientHeight || 440;
+    render2DLoop();
+  }
+
+  function render2DLoop() {
+    anim2dId = requestAnimationFrame(render2DLoop);
+    if (!ctx2d || canvas2d.style.display === 'none') return;
+    const w = canvas2d.width;
+    const h = canvas2d.height;
+
+    ctx2d.fillStyle = 'rgba(7, 9, 20, 0.25)';
+    ctx2d.fillRect(0, 0, w, h);
+
+    const time = Date.now() * 0.002;
+    const cx = w / 2;
+    const cy = h / 2;
+
+    // Draw Vector Radar Rings
+    ctx2d.strokeStyle = 'rgba(20, 184, 166, 0.4)';
+    ctx2d.lineWidth = 1;
+    for (let r = 40; r <= 180; r += 45) {
+      ctx2d.beginPath();
+      ctx2d.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx2d.stroke();
+    }
+
+    // Rotating Sweep Ray
+    ctx2d.strokeStyle = '#38bdf8';
+    ctx2d.lineWidth = 2;
+    ctx2d.beginPath();
+    ctx2d.moveTo(cx, cy);
+    ctx2d.lineTo(cx + Math.cos(time) * 180, cy + Math.sin(time) * 180);
+    ctx2d.stroke();
+
+    // Center Node
+    ctx2d.fillStyle = '#10b981';
+    ctx2d.beginPath();
+    ctx2d.arc(cx, cy, 6, 0, Math.PI * 2);
+    ctx2d.fill();
+  }
+
+  // Execution & Code Verification
+  function executeSimulation() {
+    const editor = document.getElementById('arcadeCodeEditor');
+    const statusText = document.getElementById('consoleStatusText');
+    if (!editor) return;
+
+    try {
+      const code = editor.value;
+      // Sandboxed execution of user function
+      const runFn = new Function(code + "\nreturn runSimulation({});");
+      const result = runFn();
+
+      if (result) {
+        playSound('success');
+        fireVictoryConfetti();
+        currentScore += 50;
+        document.getElementById('hudScore').textContent = currentScore;
+        completedLevels.add(currentLevel);
+        localStorage.setItem('cq_arcade_' + GAME_SLUG, JSON.stringify(Array.from(completedLevels)));
+
+        statusText.textContent = `✓ Telemetry Verified! Level ${currentLevel} passed (+50 XP).`;
+        statusText.style.color = '#10b981';
+
+        // Show Win Modal Banner
+        const banner = document.getElementById('winBannerModal');
+        const subtitle = document.getElementById('winBannerSubtitle');
+        if (banner) {
+          if (subtitle) subtitle.textContent = `Mission ${currentLevel} passed successfully! All telemetry constraints satisfied.`;
+          banner.style.display = 'flex';
+        }
+
+        renderLevelPills();
+
+        // Award XP to user profile via backend API
+        fetch('/api/games/' + GAME_SLUG + '/score/', {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': (function() {
+              const m = document.cookie.match(/csrftoken=([^;]+)/);
+              return m ? m[1] : '';
+            })()
+          }
+        }).catch(() => {});
+
+      } else {
+        playSound('error');
+        statusText.textContent = `⚠️ Assertion Failed: runSimulation did not return true.`;
+        statusText.style.color = '#f59e0b';
+      }
+    } catch(err) {
+      playSound('error');
+      statusText.textContent = `❌ Syntax / Runtime Error: ${err.message}`;
+      statusText.style.color = '#ef4444';
+    }
+  }
+
+  // Drawer Toggles & Live Search
+  function bindDrawerEvents() {
+    const openBtn = document.getElementById('openCatalogDrawerBtn');
+    const closeBtn = document.getElementById('closeCatalogDrawerBtn');
+    const drawer = document.getElementById('arcadeMasterDrawer');
+    const searchInput = document.getElementById('drawerSearchInput');
+    const cards = document.querySelectorAll('.arcade-game-item-card');
+
+    if (openBtn && drawer) {
+      openBtn.onclick = function() {
+        drawer.classList.add('open');
+        drawer.setAttribute('aria-hidden', 'false');
+      };
+    }
+    if (closeBtn && drawer) {
+      closeBtn.onclick = function() {
+        drawer.classList.remove('open');
+        drawer.setAttribute('aria-hidden', 'true');
+      };
+    }
+    if (drawer) {
+      drawer.onclick = function(e) {
+        if (e.target === drawer) {
+          drawer.classList.remove('open');
+          drawer.setAttribute('aria-hidden', 'true');
+        }
+      };
+    }
+
+    if (searchInput) {
+      searchInput.oninput = function() {
+        const q = searchInput.value.toLowerCase().trim();
+        cards.forEach(card => {
+          const title = card.getAttribute('data-title') || '';
+          const cat = card.getAttribute('data-cat') || '';
+          if (!q || title.includes(q) || cat.includes(q)) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      };
+    }
+  }
+
+  // Mode Viewport Switchers
+  function bindViewportSwitchers() {
+    const btn3d = document.getElementById('viewMode3dBtn');
+    const btn2d = document.getElementById('viewMode2dBtn');
+    const resetBtn = document.getElementById('resetSimBtn');
+    const mount3d = document.getElementById('threeCanvasMount');
+    const canvas2dEl = document.getElementById('vectorCanvas2d');
+
+    if (btn3d) {
+      btn3d.onclick = function() {
+        playSound('click');
+        mount3d.style.display = 'block';
+        canvas2dEl.style.display = 'none';
+        btn3d.classList.add('btn-primary');
+        btn3d.classList.remove('btn-ghost');
+        btn2d.classList.remove('btn-primary');
+        btn2d.classList.add('btn-ghost');
+      };
+    }
+    if (btn2d) {
+      btn2d.onclick = function() {
+        playSound('click');
+        mount3d.style.display = 'none';
+        canvas2dEl.style.display = 'block';
+        btn2d.classList.add('btn-primary');
+        btn2d.classList.remove('btn-ghost');
+        btn3d.classList.remove('btn-primary');
+        btn3d.classList.add('btn-ghost');
+        if (!ctx2d) init2DCanvas();
+      };
+    }
+    if (resetBtn) {
+      resetBtn.onclick = function() {
+        loadLevel(currentLevel);
+      };
+    }
+  }
+
+  // Initialize System
+  function initArcade() {
+    renderLevelPills();
+    loadLevel(1);
+    init3DScene();
+    bindDrawerEvents();
+    bindViewportSwitchers();
+
+    const runBtn = document.getElementById('btnExecuteScript');
+    if (runBtn) runBtn.onclick = executeSimulation;
+
+    const nextBtn = document.getElementById('nextLevelActionBtn');
+    if (nextBtn) {
+      nextBtn.onclick = function() {
+        if (currentLevel < TOTAL_LEVELS) {
+          loadLevel(currentLevel + 1);
+        } else {
+          loadLevel(1);
+        }
+      };
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initArcade);
+  } else {
+    initArcade();
+  }
+})();
+</script>
+{% endblock %}

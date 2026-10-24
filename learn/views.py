@@ -413,20 +413,39 @@ def playground(request):
 
 
 def games_hub(request):
-    games = Game.objects.all()
+    games = Game.objects.all().order_by("order")
     active_mode = request.GET.get("mode", "tasks")
+    category_counts = {}
+    for g in games:
+        category_counts[g.category] = category_counts.get(g.category, 0) + 1
+
     return render(request, "games/hub.html", {
         "games": games,
         "tasks": CODING_TASKS,
         "active_mode": active_mode,
         "total_tasks_xp": sum(t["xp"] for t in CODING_TASKS),
+        "total_games_count": games.count(),
+        "category_counts": category_counts,
     })
 
 
 def game_play(request, game_slug):
     game = get_object_or_404(Game, slug=game_slug)
-    template_name = f"games/{game_slug.replace('-', '_')}.html"
-    return render(request, template_name, {"game": game})
+    specific_template = f"games/{game_slug.replace('-', '_')}.html"
+    try:
+        from django.template.loader import select_template
+        t = select_template([specific_template, "games/arcade_player.html"])
+        template_name = t.template.name
+    except Exception:
+        template_name = "games/arcade_player.html"
+
+    all_games = Game.objects.all().order_by("order")
+    related_games = Game.objects.filter(category=game.category).exclude(id=game.id)[:8]
+    return render(request, template_name, {
+        "game": game,
+        "all_games": all_games,
+        "related_games": related_games,
+    })
 
 
 @require_POST
