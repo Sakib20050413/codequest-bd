@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   
-  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=5.0" />
+  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=5.2" />
   {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -29,9 +29,10 @@
     <div class="shell shell-wide">
       <nav class="cq-nav" aria-label="Main Navigation">
         
-        <!-- Brand Logo with Vector Emblem -->
+        <!-- Brand Logo with Vector Emblem (Dark & Light Adaptive) -->
         <a href="{% url 'landing' %}" class="brand-logo" aria-label="CodeQuest Home">
-          <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="36" style="display: block; width: auto;" />
+          <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="34" class="logo-dark-theme" style="display: block; width: auto;" />
+          <img src="{% static 'img/logo-light.svg' %}" alt="CodeQuest BD" height="34" class="logo-light-theme" style="display: none; width: auto;" />
         </a>
 
         <!-- Desktop Navigation Links -->
@@ -74,7 +75,7 @@
           </div>
 
           <!-- Sound Mute/Unmute -->
-          <button id="soundToggleBtn" class="btn btn-icon" title="Toggle Audio Feedback" aria-label="Toggle Audio Feedback">
+          <button id="soundToggleBtn" class="btn btn-icon desktop-only-stat" title="Toggle Audio Feedback" aria-label="Toggle Audio Feedback">
             🔊
           </button>
 
@@ -90,7 +91,7 @@
 
           <!-- Account Buttons -->
           {% if user.is_authenticated %}
-            <a href="{% url 'profile_view' %}" class="btn btn-ghost nav-auth-btn" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;">
+            <a href="{% url 'profile_view' %}" class="btn btn-ghost nav-auth-btn desktop-only-stat" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;">
               Profile
             </a>
             <a href="{% url 'logout_view' %}" class="btn btn-ghost desktop-only-stat" style="padding: 0.45rem 0.75rem; font-size: 0.84rem; color: var(--text-muted);">
@@ -100,7 +101,7 @@
             <a href="{% url 'login_view' %}" class="btn btn-ghost nav-auth-btn desktop-only-stat" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;">
               Sign In
             </a>
-            <a href="{% url 'signup_view' %}" class="btn btn-primary nav-auth-btn" style="padding: 0.45rem 0.95rem; font-size: 0.84rem;">
+            <a href="{% url 'signup_view' %}" class="btn btn-primary nav-auth-btn desktop-only-stat" style="padding: 0.45rem 0.95rem; font-size: 0.84rem;">
               Get Started
             </a>
           {% endif %}
@@ -119,29 +120,85 @@
     </div>
   </header>
 
-  <!-- Mobile Off-Canvas Navigation Drawer -->
+  <!-- Mobile Off-Canvas Navigation Drawer (Apple Glassmorphism) -->
   <div id="mobileNavDrawer" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
-    <div style="display: flex; gap: 0.75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 0.5rem;">
-      <div class="streak-pill" style="font-size: 0.85rem;">
-        <span>🔥</span> <span>{{ user_streak }}d Streak</span>
+    <div class="mobile-drawer-header">
+      <div class="mobile-drawer-stats">
+        <div class="streak-pill">
+          <span>🔥</span> <span>{{ user_streak }}d Streak</span>
+        </div>
+        <div class="xp-pill">
+          <span>⚡</span> <span>{{ user_xp }} XP</span>
+        </div>
       </div>
-      <div class="xp-pill" style="font-size: 0.85rem;">
-        <span>⚡</span> <span>{{ user_xp }} XP</span>
-      </div>
+      <button id="mobileDrawerCloseBtn" class="mobile-drawer-close" aria-label="Close menu">✕</button>
     </div>
-    <a href="{% url 'catalogue' %}" class="nav-link">📚 All Courses</a>
-    <a href="{% url 'games_hub' %}" class="nav-link">🎮 Practice Arena (115 Levels & 28 Tasks)</a>
-    <a href="{% url 'playground' %}" class="nav-link">💻 Browser IDE Playground</a>
-    <a href="{% url 'about_view' %}" class="nav-link">🏛️ About &amp; Trademark Charter</a>
-    {% if user.is_authenticated %}
-      <a href="{% url 'profile_view' %}" class="nav-link">👤 Student Command Center</a>
-      <a href="{% url 'logout_view' %}" class="nav-link" style="color: var(--danger);">Sign Out</a>
-    {% else %}
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;">
-        <a href="{% url 'login_view' %}" class="btn btn-ghost" style="text-align: center; justify-content: center;">Sign In</a>
-        <a href="{% url 'signup_view' %}" class="btn btn-primary" style="text-align: center; justify-content: center;">Sign Up</a>
-      </div>
-    {% endif %}
+
+    <!-- Audio Toggle Bar in Mobile Drawer -->
+    <div class="mobile-audio-toggle-bar">
+      <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 0.5rem;">
+        <span>🔊</span> Audio Sound Effects
+      </span>
+      <button id="mobileSoundToggleBtn" class="btn btn-ghost" style="padding: 0.25rem 0.75rem; font-size: 0.78rem;">
+        Mute / Unmute
+      </button>
+    </div>
+
+    <!-- Navigation Menu Items -->
+    <nav class="mobile-nav-menu">
+      <a href="{% url 'catalogue' %}" class="mobile-menu-item">
+        <div class="menu-icon-wrap" style="background: rgba(99, 102, 241, 0.12); color: #818cf8;">📚</div>
+        <div class="menu-text-wrap">
+          <div class="menu-item-title">All Courses</div>
+          <div class="menu-item-desc">9 guided tracks with bite-sized lessons</div>
+        </div>
+        <span class="menu-item-arrow">›</span>
+      </a>
+
+      <a href="{% url 'games_hub' %}" class="mobile-menu-item">
+        <div class="menu-icon-wrap" style="background: rgba(6, 182, 212, 0.12); color: #06b6d4;">🎮</div>
+        <div class="menu-text-wrap">
+          <div class="menu-item-title">Practice Arena</div>
+          <div class="menu-item-desc">108 games &amp; 28 practical coding tasks</div>
+        </div>
+        <span class="menu-item-arrow">›</span>
+      </a>
+
+      <a href="{% url 'playground' %}" class="mobile-menu-item">
+        <div class="menu-icon-wrap" style="background: rgba(16, 185, 129, 0.12); color: #10b981;">💻</div>
+        <div class="menu-text-wrap">
+          <div class="menu-item-title">IDE Playground</div>
+          <div class="menu-item-desc">In-browser code editor &amp; multi-language WASM</div>
+        </div>
+        <span class="menu-item-arrow">›</span>
+      </a>
+
+      <a href="{% url 'about_view' %}" class="mobile-menu-item">
+        <div class="menu-icon-wrap" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b;">🏛️</div>
+        <div class="menu-text-wrap">
+          <div class="menu-item-title">About CodeQuest</div>
+          <div class="menu-item-desc">Pedagogical principles &amp; platform roadmap</div>
+        </div>
+        <span class="menu-item-arrow">›</span>
+      </a>
+    </nav>
+
+    <!-- Account Actions in Mobile Drawer -->
+    <div class="mobile-auth-footer">
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile_view' %}" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; font-weight: 700;">
+          👤 Student Command Center
+        </a>
+        <a href="{% url 'logout_view' %}" class="btn btn-ghost" style="width: 100%; justify-content: center; padding: 0.65rem; color: var(--danger); margin-top: 0.5rem;">
+          Sign Out
+        </a>
+      {% else %}
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <a href="{% url 'login_view' %}" class="btn btn-ghost" style="justify-content: center; padding: 0.75rem; font-weight: 600;">Sign In</a>
+          <a href="{% url 'signup_view' %}" class="btn btn-primary" style="justify-content: center; padding: 0.75rem; font-weight: 700;">Get Started</a>
+        </div>
+      {% endif %}
+    </div>
   </div>
 
   <!-- Main Body Content -->
@@ -156,7 +213,8 @@
         
         <div>
           <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.75rem;">
-            <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="30" style="display: block;" />
+            <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="30" class="logo-dark-theme" style="display: block;" />
+            <img src="{% static 'img/logo-light.svg' %}" alt="CodeQuest BD" height="30" class="logo-light-theme" style="display: none;" />
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; max-width: 320px;">
             Bangladesh's flagship developer education platform. Master web technologies, systems programming, and databases with structured 3–7 minute lessons and interactive browser tools.

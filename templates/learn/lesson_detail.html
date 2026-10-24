@@ -242,7 +242,7 @@
                 Software Architecture &amp; Models
               </div>
               <div style="font-size: 0.72rem; color: var(--text-muted);">
-                5 Living engineering models &bull; Interactive mental maps
+                7 Living engineering models &bull; Interactive mental maps
               </div>
             </div>
             <span style="font-size: 0.72rem; color: var(--success); font-family: var(--font-mono); background: rgba(16,185,129,0.12); padding: 0.15rem 0.5rem; border-radius: 999px; border: 1px solid rgba(16,185,129,0.25);">
@@ -250,12 +250,14 @@
             </span>
           </div>
 
-          <!-- Model Navigation Pills Bar -->
-          <div class="models-nav-pills" style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.65rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
+          <!-- Model Navigation Pills Bar (7 Living Software Models) -->
+          <div class="models-nav-pills" style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.65rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); -webkit-overflow-scrolling: touch; scrollbar-width: none;">
             <button class="model-pill-btn active" data-model="dom">🌳 DOM Tree</button>
             <button class="model-pill-btn" data-model="box">📦 CSS Box Model</button>
             <button class="model-pill-btn" data-model="ast">⚡ AST &amp; State</button>
+            <button class="model-pill-btn" data-model="memory">🧠 Memory &amp; Pointers</button>
             <button class="model-pill-btn" data-model="schema">🗄️ Relational Schema</button>
+            <button class="model-pill-btn" data-model="eventloop">🔄 Event Loop</button>
             <button class="model-pill-btn" data-model="arch">🏛️ 3-Tier Architecture</button>
           </div>
 
@@ -399,6 +401,120 @@ margin: 24px; padding: 20px; border: 2px solid;
             </div>
             <div id="architectureTiersContainer">
               <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Pane 6: Memory Layout & Pointers Model (Stack vs. Heap) -->
+          <div id="modelPaneMemory" class="model-pane-content" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">
+              <span>Memory Layout &bull; Stack Frames vs. Dynamic Heap</span>
+              <span style="color: #38bdf8;">64-bit Hex Pointers</span>
+            </div>
+
+            <!-- Memory Action Toolbar -->
+            <div style="display: flex; gap: 0.4rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+              <button id="memBtnPushStack" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono);">
+                + Push Stack Frame
+              </button>
+              <button id="memBtnPopStack" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono);">
+                - Pop Frame
+              </button>
+              <button id="memBtnAllocHeap" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono); color: #10b981;">
+                + malloc(64)
+              </button>
+              <button id="memBtnFreeHeap" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444;">
+                free()
+              </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <!-- Left: Stack Memory Segment (LIFO) -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem;">
+                <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #818cf8; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                  <span>STACK MEMORY (LIFO)</span>
+                  <span style="color: var(--text-muted); font-size: 0.68rem;">High &rarr; Low</span>
+                </div>
+                <div id="stackFramesList" style="display: flex; flex-direction: column; gap: 0.45rem; min-height: 160px; max-height: 240px; overflow-y: auto;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <!-- Right: Heap Memory Segment (Dynamic Allocations) -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem;">
+                <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #34d399; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                  <span>HEAP MEMORY (DYN)</span>
+                  <span style="color: var(--text-muted); font-size: 0.68rem;">Low &rarr; High</span>
+                </div>
+                <div id="heapBlocksList" style="display: flex; flex-direction: column; gap: 0.45rem; min-height: 160px; max-height: 240px; overflow-y: auto;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 0.75rem; font-size: 0.74rem; color: var(--text-muted); line-height: 1.45;">
+              💡 <strong>Systems Mental Model:</strong> Stack frames allocate fast fixed-size automatic storage for local scope. The Heap provides persistent dynamic memory referenced via 64-bit pointers (e.g. <code>0x7ffee4b2</code>).
+            </div>
+          </div>
+
+          <!-- Pane 7: Concurrency & Event Loop Model -->
+          <div id="modelPaneEventloop" class="model-pane-content" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">
+              <span>Event Loop &bull; Single-Threaded Concurrency Pipeline</span>
+              <button id="btnStepEventLoop" class="btn btn-primary" style="padding: 0.2rem 0.65rem; font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700;">
+                ⚡ Step Event Loop Tick
+              </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.5rem; margin-bottom: 0.75rem;">
+              <!-- 1. Call Stack -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #818cf8; margin-bottom: 0.35rem;">
+                  CALL STACK (LIFO)
+                </div>
+                <div id="elCallStack" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <!-- 2. Web APIs / Background -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b; margin-bottom: 0.35rem;">
+                  WEB APIS / IO
+                </div>
+                <div id="elWebApis" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <!-- 3. Microtask Queue -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4; margin-bottom: 0.35rem;">
+                  MICROTASK (Promises)
+                </div>
+                <div id="elMicrotasks" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <!-- 4. Macrotask Queue -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; margin-bottom: 0.35rem;">
+                  TASK QUEUE (Timers)
+                </div>
+                <div id="elMacrotasks" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Loop State Indicator -->
+            <div id="elLoopStatus" style="padding: 0.5rem 0.75rem; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 4px; font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-primary); display: flex; justify-content: space-between; align-items: center;">
+              <span>Loop Status: <strong style="color: var(--accent);">Waiting for next tick</strong></span>
+              <span style="color: var(--text-muted); font-size: 0.7rem;">Priority: Microtasks &gt; Tasks</span>
+            </div>
+
+            <div style="margin-top: 0.75rem; font-size: 0.74rem; color: var(--text-muted); line-height: 1.45;">
+              💡 <strong>Runtime Mental Model:</strong> The Event Loop continuously checks if the Call Stack is empty. When empty, it drains all Microtasks (Promises) before dequeuing the next Macrotask (setTimeout/DOM events).
             </div>
           </div>
         </div>
@@ -1190,6 +1306,28 @@ margin: 24px; padding: 20px; border: 2px solid;
     const pInst = document.getElementById('panelInstructions');
     const pEdit = document.getElementById('panelCodeEditor');
     const pDeck = document.getElementById('panelStudioDeck');
+    const pWrapper = document.getElementById('panelEditorWrapper');
+
+    function applyMobileTab(target) {
+      if (!pInst || !pWrapper) return;
+      if (target === 'instructions') {
+        pInst.style.display = 'flex';
+        pWrapper.style.display = 'none';
+      } else if (target === 'editor') {
+        pInst.style.display = 'none';
+        pWrapper.style.display = 'flex';
+        if (pEdit) pEdit.style.display = 'flex';
+        if (pDeck) pDeck.style.display = 'none';
+        if (cmInstance) {
+          setTimeout(() => cmInstance.refresh(), 50);
+        }
+      } else if (target === 'preview') {
+        pInst.style.display = 'none';
+        pWrapper.style.display = 'flex';
+        if (pEdit) pEdit.style.display = 'none';
+        if (pDeck) pDeck.style.display = 'flex';
+      }
+    }
 
     function checkResponsiveView() {
       const isMobile = window.innerWidth <= 860;
@@ -1197,13 +1335,16 @@ margin: 24px; padding: 20px; border: 2px solid;
       if (tabGroup) tabGroup.style.display = isMobile ? 'flex' : 'none';
 
       if (!isMobile) {
-        if (pInst) pInst.style.display = 'flex';
+        if (pInst) { pInst.style.display = 'flex'; pInst.style.flex = ''; pInst.style.minWidth = ''; pInst.style.maxWidth = ''; }
+        if (pWrapper) { pWrapper.style.display = 'flex'; pWrapper.style.minWidth = ''; }
         if (pEdit) pEdit.style.display = 'flex';
         if (pDeck) pDeck.style.display = 'flex';
         if (splitter) splitter.style.display = 'flex';
       } else {
         if (splitter) splitter.style.display = 'none';
-        if (pInst) pInst.style.flex = '1 1 100%';
+        const activeTab = document.querySelector('.mobile-tab-btn.active');
+        const target = activeTab ? activeTab.getAttribute('data-tab') : 'instructions';
+        applyMobileTab(target);
       }
       if (cmInstance) cmInstance.refresh();
     }
@@ -1213,21 +1354,7 @@ margin: 24px; padding: 20px; border: 2px solid;
         tabs.forEach(t => t.classList.remove('active'));
         btn.classList.add('active');
         const target = btn.getAttribute('data-tab');
-
-        if (target === 'instructions') {
-          if (pInst) pInst.style.display = 'flex';
-          if (pEdit) pEdit.style.display = 'none';
-          if (pDeck) pDeck.style.display = 'none';
-        } else if (target === 'editor') {
-          if (pInst) pInst.style.display = 'none';
-          if (pEdit) pEdit.style.display = 'flex';
-          if (pDeck) pDeck.style.display = 'none';
-          if (cmInstance) cmInstance.refresh();
-        } else if (target === 'preview') {
-          if (pInst) pInst.style.display = 'none';
-          if (pEdit) pEdit.style.display = 'none';
-          if (pDeck) pDeck.style.display = 'flex';
-        }
+        applyMobileTab(target);
       };
     });
 

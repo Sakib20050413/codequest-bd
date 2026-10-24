@@ -428,6 +428,12 @@
     color: #a5b4fc;
   }
 
+  [data-theme="light"] .catalogue-lang-pill {
+    background: #eef2ff;
+    color: #4338ca;
+    border-color: #c7d2fe;
+  }
+
   .catalogue-level-pill {
     font-size: 0.72rem;
     font-family: var(--font-mono);
@@ -439,6 +445,12 @@
     border-radius: 999px;
   }
 
+  [data-theme="light"] .catalogue-level-pill {
+    background: #f0fdf4;
+    color: #15803d;
+    border-color: #bbf7d0;
+  }
+
   .catalogue-xp-pill {
     font-size: 0.78rem;
     font-family: var(--font-mono);
@@ -448,6 +460,33 @@
     border: 1px solid rgba(251, 191, 36, 0.25);
     padding: 0.2rem 0.55rem;
     border-radius: 6px;
+  }
+
+  [data-theme="light"] .catalogue-xp-pill {
+    background: #fffbeb;
+    color: #b45309;
+    border-color: #fde68a;
+  }
+
+  [data-theme="light"] .catalogue-course-card {
+    background: #ffffff !important;
+    border-color: rgba(15, 23, 42, 0.08) !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 8px 24px -4px rgba(15, 23, 42, 0.07) !important;
+  }
+
+  [data-theme="light"] .catalogue-course-card:hover {
+    border-color: var(--accent) !important;
+    box-shadow: 0 16px 36px -6px rgba(15, 23, 42, 0.12) !important;
+  }
+
+  .filter-pill {
+    transition: all 0.15s ease;
+  }
+
+  [data-theme="light"] .filter-pill {
+    background: #ffffff;
+    color: #334155;
+    border: 1px solid #cbd5e1;
   }
 
   .filter-pill.active {

@@ -447,6 +447,10 @@
     global.CodeQuestLessonRunner.updateDomTree = updateDomTree;
     global.CodeQuestLessonRunner.updatePreview = updatePreview;
 
+    window.addEventListener('cq:theme-changed', function () {
+      updatePreview();
+    });
+
     // Initial preview and DOM tree render
     updatePreview();
     updateDomTree();

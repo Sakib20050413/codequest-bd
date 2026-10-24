@@ -81,13 +81,13 @@
       },
       light: {
         orbs: [
-          { color: '14, 165, 233', alpha: 0.14 },  // Sky 500
-          { color: '79, 70, 229', alpha: 0.13 },   // Indigo 600
-          { color: '13, 148, 136', alpha: 0.10 },  // Teal 600
-          { color: '245, 158, 11', alpha: 0.09 }   // Amber 500
+          { color: '14, 165, 233', alpha: 0.07 },  // Soft Sky Aura
+          { color: '99, 102, 241', alpha: 0.06 },   // Soft Indigo Aura
+          { color: '168, 85, 247', alpha: 0.04 },  // Soft Violet Aura
+          { color: '245, 158, 11', alpha: 0.04 }   // Soft Amber Aura
         ],
-        dotBase: 'rgba(15, 23, 42, 0.065)',
-        dotActive: 'rgba(79, 70, 229, 0.30)',
+        dotBase: 'rgba(15, 23, 42, 0.02)',
+        dotActive: 'rgba(79, 70, 229, 0.12)',
         node: '79, 70, 229',
         line: '2, 132, 199'
       }
@@ -266,6 +266,9 @@
     }
 
     function drawParticlesAndFilaments(pal) {
+      // In Light Mode: suppress noisy filaments & dark particle dots to preserve Apple-grade luminous white readability
+      if (!isDarkTheme()) return;
+
       const nodeColor = pal.node;
       const lineColor = pal.line;
 

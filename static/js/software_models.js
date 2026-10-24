@@ -29,7 +29,9 @@
       dom: document.getElementById('modelPaneDom'),
       box: document.getElementById('modelPaneBox'),
       ast: document.getElementById('modelPaneAst'),
+      memory: document.getElementById('modelPaneMemory'),
       schema: document.getElementById('modelPaneSchema'),
+      eventloop: document.getElementById('modelPaneEventloop'),
       arch: document.getElementById('modelPaneArch')
     };
 
@@ -46,7 +48,9 @@
       // Trigger specific model refresh
       if (modelKey === 'box') updateBoxModel();
       if (modelKey === 'ast') updateAstModel();
+      if (modelKey === 'memory') updateMemoryModel();
       if (modelKey === 'schema') updateSchemaModel();
+      if (modelKey === 'eventloop') updateEventLoopModel();
       if (modelKey === 'arch') updateArchModel();
       if (modelKey === 'dom' && global.CodeQuestLessonRunner && global.CodeQuestLessonRunner.updateDomTree) {
         global.CodeQuestLessonRunner.updateDomTree();
@@ -360,6 +364,202 @@
       });
 
       container.innerHTML = html;
+    }
+
+    // -------------------------------------------------------------
+    // MODEL 6: Memory Layout & Pointers Model Logic (Stack vs. Heap)
+    // -------------------------------------------------------------
+    let stackFrames = [
+      {
+        func: 'main(argc, argv)',
+        vars: [
+          { name: 'argc', val: '1', addr: '0x7ffee4b20a10', type: 'int' },
+          { name: 'msg_ptr', val: '0x005a2b10', addr: '0x7ffee4b20a18', type: 'char*', pointsTo: '0x005a2b10' },
+          { name: 'status', val: '0', addr: '0x7ffee4b20a20', type: 'int' }
+        ]
+      },
+      {
+        func: 'execute_program()',
+        vars: [
+          { name: 'session_id', val: '2804', addr: '0x7ffee4b209d0', type: 'int' },
+          { name: 'buffer_ptr', val: '0x005a2b60', addr: '0x7ffee4b209d8', type: 'void*', pointsTo: '0x005a2b60' }
+        ]
+      }
+    ];
+
+    let heapBlocks = [
+      { addr: '0x005a2b10', size: '64B', tag: 'malloc', label: '"CodeQuest BD\\0"', free: false },
+      { addr: '0x005a2b60', size: '128B', tag: 'malloc', label: 'Buffer[128]', free: false },
+      { addr: '0x005a2bf0', size: '256B', tag: 'malloc', label: 'Unallocated Chunk', free: true }
+    ];
+
+    function updateMemoryModel() {
+      const stackList = document.getElementById('stackFramesList');
+      const heapList = document.getElementById('heapBlocksList');
+      if (!stackList || !heapList) return;
+
+      let stackHtml = '';
+      stackFrames.forEach((frame, fIdx) => {
+        stackHtml += `
+          <div style="background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.25); border-radius:6px; padding:0.45rem 0.6rem;">
+            <div style="display:flex; justify-content:space-between; font-size:0.72rem; font-weight:700; color:#818cf8; margin-bottom:0.25rem;">
+              <span>FRAME ${stackFrames.length - 1 - fIdx}: ${escapeHtml(frame.func)}</span>
+              <span style="font-size:0.65rem; color:var(--text-muted);">${frame.vars.length} vars</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:0.2rem; font-size:0.68rem; font-family:var(--font-mono);">
+        `;
+        frame.vars.forEach(v => {
+          const isPointer = v.type.includes('*');
+          stackHtml += `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.15); padding:0.15rem 0.35rem; border-radius:3px;">
+              <span style="color:var(--text-muted);">${v.addr}</span>
+              <span style="color:${isPointer ? '#38bdf8' : 'var(--text-primary)'}; font-weight:600;">${v.type} ${v.name}</span>
+              <span style="color:${isPointer ? '#f59e0b' : '#34d399'}; font-weight:700;">${v.val} ${isPointer ? '➔' : ''}</span>
+            </div>
+          `;
+        });
+        stackHtml += `</div></div>`;
+      });
+      stackList.innerHTML = stackHtml;
+
+      let heapHtml = '';
+      heapBlocks.forEach(b => {
+        heapHtml += `
+          <div style="background:${b.free ? 'rgba(239,68,68,0.06)' : 'rgba(16,185,129,0.08)'}; border:1px solid ${b.free ? 'rgba(239,68,68,0.2)' : 'rgba(16,185,129,0.25)'}; border-radius:6px; padding:0.4rem 0.6rem; display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:0.68rem;">
+            <div>
+              <span style="color:var(--text-muted);">${b.addr}</span>
+              <span style="font-weight:700; color:${b.free ? 'var(--text-muted)' : '#34d399'}; margin-left:0.35rem;">${b.size} &bull; ${escapeHtml(b.label)}</span>
+            </div>
+            <span style="font-size:0.65rem; font-weight:700; color:${b.free ? '#ef4444' : '#10b981'}; background:${b.free ? 'rgba(239,68,68,0.12)' : 'rgba(16,185,129,0.12)'}; padding:0.1rem 0.35rem; border-radius:3px;">
+              ${b.free ? 'FREE' : 'ALLOCATED'}
+            </span>
+          </div>
+        `;
+      });
+      heapList.innerHTML = heapHtml;
+    }
+
+    const btnPush = document.getElementById('memBtnPushStack');
+    const btnPop = document.getElementById('memBtnPopStack');
+    const btnAlloc = document.getElementById('memBtnAllocHeap');
+    const btnFree = document.getElementById('memBtnFreeHeap');
+
+    if (btnPush) {
+      btnPush.onclick = function () {
+        const id = stackFrames.length + 1;
+        const hex = '0x7ffee4b209' + (stackFrames.length * 20).toString(16);
+        stackFrames.unshift({
+          func: `subroutine_0${id}()`,
+          vars: [
+            { name: `local_${id}`, val: `${id * 10}`, addr: hex, type: 'int' },
+            { name: `h_ref`, val: '0x005a2b10', addr: hex.replace(/0$/, '8'), type: 'char*', pointsTo: '0x005a2b10' }
+          ]
+        });
+        updateMemoryModel();
+      };
+    }
+
+    if (btnPop) {
+      btnPop.onclick = function () {
+        if (stackFrames.length > 1) {
+          stackFrames.shift();
+          updateMemoryModel();
+        }
+      };
+    }
+
+    if (btnAlloc) {
+      btnAlloc.onclick = function () {
+        const nextAddr = '0x005a' + (2000 + heapBlocks.length * 64).toString(16);
+        heapBlocks.push({
+          addr: nextAddr,
+          size: '64B',
+          tag: 'malloc',
+          label: `Chunk[${heapBlocks.length}]`,
+          free: false
+        });
+        updateMemoryModel();
+      };
+    }
+
+    if (btnFree) {
+      btnFree.onclick = function () {
+        for (let i = heapBlocks.length - 1; i >= 0; i--) {
+          if (!heapBlocks[i].free) {
+            heapBlocks[i].free = true;
+            break;
+          }
+        }
+        updateMemoryModel();
+      };
+    }
+
+    // -------------------------------------------------------------
+    // MODEL 7: Concurrency & Event Loop Model Logic
+    // -------------------------------------------------------------
+    let elState = {
+      callStack: ['main()', 'fetchLessonData()'],
+      webApis: ['HTTP GET /api/v1/lessons (running)', 'setTimeout(timerCb, 100ms)'],
+      microtasks: ['Promise.then(processData)'],
+      macrotasks: ['timerCb()', 'onDOMEvent()'],
+      tick: 0
+    };
+
+    function updateEventLoopModel() {
+      const cs = document.getElementById('elCallStack');
+      const wa = document.getElementById('elWebApis');
+      const mt = document.getElementById('elMicrotasks');
+      const ma = document.getElementById('elMacrotasks');
+      const status = document.getElementById('elLoopStatus');
+      if (!cs || !wa || !mt || !ma) return;
+
+      cs.innerHTML = elState.callStack.map((f, i) =>
+        `<div style="padding:0.25rem 0.4rem; background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.25); border-radius:4px; color:${i === 0 ? '#38bdf8' : 'var(--text-primary)'}; font-weight:${i === 0 ? '700' : 'normal'};">[${i}] ${escapeHtml(f)}</div>`
+      ).join('') || '<div style="color:var(--text-muted); font-style:italic; padding:0.5rem 0;">Stack Empty (Loop Ready)</div>';
+
+      wa.innerHTML = elState.webApis.map(f =>
+        `<div style="padding:0.25rem 0.4rem; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.25); border-radius:4px; color:#f59e0b;">${escapeHtml(f)}</div>`
+      ).join('') || '<div style="color:var(--text-muted); font-style:italic; padding:0.5rem 0;">Idle</div>';
+
+      mt.innerHTML = elState.microtasks.map(f =>
+        `<div style="padding:0.25rem 0.4rem; background:rgba(6,182,212,0.12); border:1px solid rgba(6,182,212,0.3); border-radius:4px; color:#06b6d4; font-weight:600;">${escapeHtml(f)}</div>`
+      ).join('') || '<div style="color:var(--text-muted); font-style:italic; padding:0.5rem 0;">Queue Empty</div>';
+
+      ma.innerHTML = elState.macrotasks.map(f =>
+        `<div style="padding:0.25rem 0.4rem; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.25); border-radius:4px; color:#10b981;">${escapeHtml(f)}</div>`
+      ).join('') || '<div style="color:var(--text-muted); font-style:italic; padding:0.5rem 0;">Queue Empty</div>';
+
+      if (status) {
+        status.innerHTML = `
+          <span>Loop Tick #${elState.tick}: <strong style="color:var(--accent);">${elState.callStack.length > 0 ? 'Executing Call Stack' : elState.microtasks.length > 0 ? 'Draining Microtasks' : elState.macrotasks.length > 0 ? 'Dequeuing Macrotask' : 'Idle'}</strong></span>
+          <span style="color:var(--text-muted); font-size:0.7rem;">Microtasks (${elState.microtasks.length}) &bull; Tasks (${elState.macrotasks.length})</span>
+        `;
+      }
+    }
+
+    const btnStepLoop = document.getElementById('btnStepEventLoop');
+    if (btnStepLoop) {
+      btnStepLoop.onclick = function () {
+        elState.tick++;
+        if (elState.callStack.length > 0) {
+          elState.callStack.pop();
+        } else if (elState.microtasks.length > 0) {
+          const task = elState.microtasks.shift();
+          elState.callStack.push(task);
+        } else if (elState.macrotasks.length > 0) {
+          const task = elState.macrotasks.shift();
+          elState.callStack.push(task);
+        } else if (elState.webApis.length > 0) {
+          const api = elState.webApis.shift();
+          elState.macrotasks.push('completed: ' + api.split(' ')[0]);
+        } else {
+          elState.callStack = ['main()', 'fetchLessonData()'];
+          elState.webApis = ['HTTP GET /api/v1/lessons (running)', 'setTimeout(timerCb, 100ms)'];
+          elState.microtasks = ['Promise.then(processData)'];
+          elState.macrotasks = ['timerCb()', 'onDOMEvent()'];
+        }
+        updateEventLoopModel();
+      };
     }
 
     // -------------------------------------------------------------

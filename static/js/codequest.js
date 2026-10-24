@@ -66,24 +66,54 @@
   function initMobileMenu() {
     const btn = document.getElementById('mobileMenuBtn');
     const drawer = document.getElementById('mobileNavDrawer');
-    if (!btn || !drawer) return;
+    const closeBtn = document.getElementById('mobileDrawerCloseBtn');
+    if (!drawer) return;
 
-    btn.onclick = function () {
-      const isOpen = drawer.classList.contains('open');
-      if (isOpen) {
-        drawer.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
-      } else {
-        drawer.classList.add('open');
-        btn.setAttribute('aria-expanded', 'true');
+    function openDrawer() {
+      drawer.classList.add('open');
+      if (btn) btn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    if (btn) {
+      btn.onclick = function (e) {
+        e.stopPropagation();
+        if (drawer.classList.contains('open')) {
+          closeDrawer();
+        } else {
+          openDrawer();
+        }
+      };
+    }
+
+    if (closeBtn) {
+      closeBtn.onclick = function () {
+        closeDrawer();
+      };
+    }
+
+    // Close on navigation link click
+    drawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeDrawer);
+    });
+
+    // Close on Escape key
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) {
+        closeDrawer();
       }
-    };
+    });
 
-    // Close drawer when clicking outside or resizing
+    // Close drawer when resizing to desktop
     window.addEventListener('resize', function () {
       if (window.innerWidth > 860 && drawer.classList.contains('open')) {
-        drawer.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
+        closeDrawer();
       }
     });
   }
@@ -133,15 +163,31 @@
   }
 
   function initSoundToggle() {
-    const btn = document.getElementById('soundToggleBtn');
-    if (!btn) return;
-    btn.textContent = isSoundEnabled() ? '🔊' : '🔇';
-    btn.onclick = function () {
+    const desktopBtn = document.getElementById('soundToggleBtn');
+    const mobileBtn = document.getElementById('mobileSoundToggleBtn');
+
+    function syncButtons() {
+      const enabled = isSoundEnabled();
+      if (desktopBtn) {
+        desktopBtn.textContent = enabled ? '🔊' : '🔇';
+      }
+      if (mobileBtn) {
+        mobileBtn.textContent = enabled ? '🔊 Sound: ON' : '🔇 Sound: OFF';
+        mobileBtn.style.color = enabled ? 'var(--accent)' : 'var(--text-muted)';
+      }
+    }
+
+    syncButtons();
+
+    function toggle() {
       const next = !isSoundEnabled();
       localStorage.setItem('cq_sound', next ? 'true' : 'false');
-      btn.textContent = next ? '🔊' : '🔇';
+      syncButtons();
       if (next) playTone('click');
-    };
+    }
+
+    if (desktopBtn) desktopBtn.onclick = toggle;
+    if (mobileBtn) mobileBtn.onclick = toggle;
   }
 
   // 4. Guest LocalStorage Progress Sync
