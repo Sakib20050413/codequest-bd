@@ -613,9 +613,11 @@
     }
 
     const zenBoxBtn = document.getElementById('zenBoxBtn');
-    const openBoxBtn = document.getElementById('openBoxInspectorBtn');
-    if (zenBoxBtn && openBoxBtn) {
-      zenBoxBtn.onclick = function () { openBoxBtn.click(); };
+    if (zenBoxBtn) {
+      zenBoxBtn.onclick = function () {
+        const boxTrigger = document.getElementById('openBoxInspectorBtn');
+        if (boxTrigger) boxTrigger.click();
+      };
     }
 
     // Sync Zen tabs with standard tabs
