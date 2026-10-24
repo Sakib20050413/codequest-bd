@@ -124,7 +124,7 @@
       desc: "HTTP response code indicating cached client resource is fresh and unchanged",
       tag: "304 Not Modified",
       decoys: ["301 Moved", "302 Found", "204 No Content"],
-      hint: "Transfers zero body payload; leverages ETag."
+      hint: "Transfers zero body payload; relies on HTTP ETag validation."
     },
     {
       id: 16,

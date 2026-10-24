@@ -37,7 +37,7 @@ LANGUAGES = [
         "name": "Python 3",
         "slug": "python",
         "code": "PY",
-        "category": "Scripting & AI",
+        "category": "Backend & Scripting",
         "summary": "Write clean algorithmic logic, loops, and data transformations.",
         "icon": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c4 0 5 1.5 5 4v2H9c-2 0-3 1-3 3v2H4c-2.5 0-4-1.5-4-5s1.5-6 5-6h7zM12 22c-4 0-5-1.5-5-4v-2h8c2 0 3-1 3-3v-2h2c2.5 0 4 1.5 4 5s-1.5 6-5 6h-7z"/></svg>',
         "order": 4,
