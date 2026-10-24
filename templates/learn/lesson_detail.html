@@ -781,19 +781,19 @@ margin: 24px; padding: 20px; border: 2px solid;
       concept: document.getElementById('studyTabConcept'),
       task: document.getElementById('studyTabTask'),
       models: document.getElementById('studyTabModels') || document.getElementById('studyTabDomtree'),
-      domtree: document.getElementById('studyTabModels') || document.getElementById('studyTabDomtree'),
       hints: document.getElementById('studyTabHints'),
     };
 
     studyTabBtns.forEach(btn => {
       btn.addEventListener('click', function () {
-        const tabKey = btn.getAttribute('data-study-tab');
+        const rawKey = btn.getAttribute('data-study-tab');
+        const tabKey = (rawKey === 'domtree') ? 'models' : rawKey;
         studyTabBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
         Object.keys(studyContents).forEach(k => {
           if (studyContents[k]) {
-            studyContents[k].style.display = k === tabKey ? 'block' : 'none';
+            studyContents[k].style.display = (k === tabKey) ? 'block' : 'none';
           }
         });
       });
