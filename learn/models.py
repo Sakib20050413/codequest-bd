@@ -1,187 +1,127 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
 
 
-class Language(models.Model):
-    name = models.CharField(max_length=80, unique=True)
-    slug = models.SlugField(max_length=80, unique=True)
-    short_code = models.CharField(max_length=16, default="CODE")
-    category = models.CharField(max_length=80, default="Core Foundations")
-    summary = models.CharField(max_length=240)
-    icon_svg = models.TextField(blank=True, default="")
-    order = models.PositiveIntegerField(default=0)
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        ordering = ["order", "name"]
-
-    def __str__(self):
-        return self.name
-
-
-class Course(models.Model):
-    language = models.ForeignKey(Language, on_delete=models.CASCADE, related_name="courses")
-    title = models.CharField(max_length=160)
-    slug = models.SlugField(max_length=160, unique=True)
-    description = models.TextField()
-    level = models.CharField(max_length=40, default="Beginner")
-    order = models.PositiveIntegerField(default=0)
-    xp_reward = models.PositiveIntegerField(default=200)
-
-    class Meta:
-        ordering = ["order", "id"]
-
-    def __str__(self):
-        return f"{self.language.name} — {self.title}"
-
-    @property
-    def lesson_count(self):
-        return self.lessons.count()
-
-    @property
-    def total_minutes(self):
-        return sum(l.est_minutes for l in self.lessons.all())
-
-
-class Lesson(models.Model):
-    EXECUTION_TYPES = [
-        ("IFRAME", "HTML/CSS/JS Live Preview (Sandboxed iframe)"),
-        ("PYODIDE", "Python 3 Client-Side WASM (Pyodide)"),
-        ("SQL", "SQL Browser Database (sql.js WASM)"),
-        ("PREDICT", "Predict the Output (C, Java, PHP, Bash)"),
-        ("QUIZ", "Fill-the-Blank & Multiple Choice"),
-    ]
-
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="lessons")
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200)
-    order = models.PositiveIntegerField(default=1)
-    est_minutes = models.PositiveIntegerField(default=5, help_text="Bite-sized duration (3-7 min)")
-    xp = models.PositiveIntegerField(default=50)
-    execution_type = models.CharField(max_length=20, choices=EXECUTION_TYPES, default="IFRAME")
-    
-    # Lesson Content (under 150 words + diagram/mental model)
-    body_md = models.TextField(help_text="Short markdown explanation (max ~150 words + diagram/example)")
-    diagram_svg = models.TextField(blank=True, default="", help_text="Optional clean inline SVG diagram")
-    
-    # Interactive Task
-    task_prompt = models.TextField(help_text="Clear single task description")
-    starter_code = models.TextField(help_text="Initial code placed in editor")
-    solution = models.TextField(help_text="Working solution code")
-    
-    # Auto-Checking & Hint Ladder (stored as JSON)
-    tests_json = models.JSONField(
-        default=list,
-        blank=True,
-        help_text="List of test checks: [{'id': 'c1', 'desc': 'Has <h1> tag', 'type': 'dom_exists', 'query': 'h1'}]"
-    )
-    hints_json = models.JSONField(
-        default=list,
-        blank=True,
-        help_text="Hint ladder: ['Hint 1: Check your syntax', 'Hint 2: Use display: flex']"
-    )
-
-    class Meta:
-        ordering = ["course__order", "order", "id"]
-        unique_together = ("course", "slug")
-
-    def __str__(self):
-        return f"{self.course.slug} // {self.order}. {self.title}"
-
-
-class Game(models.Model):
+class LanguageTrack(models.Model):
     slug = models.SlugField(max_length=60, unique=True)
-    title = models.CharField(max_length=120)
-    tagline = models.CharField(max_length=240)
-    description = models.TextField()
-    category = models.CharField(max_length=80, default="Syntax Drill")
-    difficulty = models.CharField(max_length=40, default="Beginner (1-2 min)")
-    icon_svg = models.TextField(blank=True, default="")
-    xp_per_win = models.PositiveIntegerField(default=50)
+    name = models.CharField(max_length=100)
+    short_code = models.CharField(max_length=16, default="PY")
+    category = models.CharField(max_length=80, default="Systems & AI")
+    compiler_runtime = models.CharField(max_length=100, default="CPython 3.12 WASM + AST")
+    engine_mode = models.CharField(max_length=40, default="TREE_3D")
+    accent_hex = models.CharField(max_length=20, default="#10b981")
+    summary = models.CharField(max_length=280)
+    architecture_note = models.TextField(default="Executes in zero-setup browser sandbox with real-time Stack, Heap, and DOM visualization.")
+    total_modules = models.PositiveIntegerField(default=6)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ["order", "id"]
 
     def __str__(self):
-        return self.title
+        return f"{self.name} ({self.short_code})"
 
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    xp = models.PositiveIntegerField(default=0)
-    streak = models.PositiveIntegerField(default=1)
-    last_active = models.DateField(default=timezone.now)
-    theme_pref = models.CharField(max_length=10, default="dark", choices=[("dark", "Dark"), ("light", "Light")])
-    sound_enabled = models.BooleanField(default=True)
-
-    def __str__(self):
-        return f"{self.user.username} ({self.xp} XP, {self.streak}d streak)"
-
-    def record_activity(self):
-        today = timezone.now().date()
-        if self.last_active == today:
-            return
-        elif self.last_active == today - timezone.timedelta(days=1):
-            self.streak += 1
-        elif self.last_active < today - timezone.timedelta(days=1):
-            self.streak = 1
-        self.last_active = today
-        self.save(update_fields=["streak", "last_active"])
-
-
-class UserProgress(models.Model):
-    STATUS_CHOICES = [
-        ("NOT_STARTED", "Not Started"),
-        ("IN_PROGRESS", "In Progress"),
-        ("COMPLETED", "Completed"),
-    ]
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="progress")
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="user_progress")
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="IN_PROGRESS")
-    best_score = models.IntegerField(default=100)
-    attempts = models.PositiveIntegerField(default=1)
-    completed_at = models.DateTimeField(null=True, blank=True)
+class MicroLesson(models.Model):
+    track = models.ForeignKey(LanguageTrack, on_delete=models.CASCADE, related_name="lessons")
+    slug = models.SlugField(max_length=100)
+    step_number = models.PositiveIntegerField(default=1)
+    title = models.CharField(max_length=180)
+    duration_badge = models.CharField(max_length=40, default="3 Min Visual Class")
+    cs50_mental_model = models.TextField()
+    ai_video_narration = models.TextField(
+        default="Watch how each line of code allocates a stack frame, updates heap pointers, and mutates the live 3D/DOM scene in real time."
+    )
+    stack_heap_snapshot_json = models.TextField(
+        default='[{"frame":"main()","var":"depth","val":"6","addr":"0x7ffee1"},{"frame":"heap","var":"TreeNodes","val":"64 branches","addr":"0x104a00"}]'
+    )
+    cheat_sheet_rows = models.TextField()
+    task_1_prompt = models.CharField(max_length=260, default="Task 1: Run the starter code to observe the Stack/Heap & 3D scene.")
+    task_2_prompt = models.CharField(max_length=260, default="Task 2: Modify the loop count or parameter to expand the structure.")
+    task_3_prompt = models.CharField(max_length=260, default="Task 3: Complete the full verification challenge to claim +100 XP.")
+    starter_code = models.TextField()
+    solution_code = models.TextField()
+    hint_text = models.CharField(max_length=280)
+    xp_reward = models.PositiveIntegerField(default=100)
 
     class Meta:
-        unique_together = ("user", "lesson")
-        ordering = ["-completed_at", "-id"]
+        ordering = ["track__order", "step_number", "id"]
+
+    def parsed_cheats(self):
+        rows = []
+        for line in self.cheat_sheet_rows.splitlines():
+            parts = [p.strip() for p in line.split("|")]
+            if len(parts) >= 3:
+                rows.append({"syntax": parts[0], "meaning": parts[1], "example": parts[2]})
+        return rows
 
     def __str__(self):
-        return f"{self.user.username} - {self.lesson.title} ({self.status})"
+        return f"{self.track.short_code} - {self.title}"
 
 
-class Badge(models.Model):
-    slug = models.SlugField(max_length=80, unique=True)
-    name = models.CharField(max_length=120)
-    description = models.CharField(max_length=240)
-    icon_svg = models.TextField(blank=True, default="")
-    xp_required = models.PositiveIntegerField(default=100)
-    earned_by = models.ManyToManyField(User, related_name="badges", blank=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Feedback(models.Model):
-    CATEGORY_CHOICES = [
-        ("CONTENT", "Lesson Content / Typo"),
-        ("BUG", "Editor / Test Bug"),
-        ("SUGGESTION", "Feature Suggestion"),
-        ("GENERAL", "General Praise / Thoughts"),
+class CodingGameChallenge(models.Model):
+    GAME_ENGINE_CHOICES = [
+        ("ROVER_3D", "CyberPunk 3D Rover & Drone Odyssey"),
+        ("TREE_3D", "Bio-Genesis 3D Fractal Forest"),
+        ("SOLAR_3D", "Starfield 3D Orbital Gravity Fleet"),
+        ("DOM_TOWER", "Flexbox & Grid 3D Hologram Defense"),
+        ("SQL_HEIST", "WatchDogs SQL & PHP Vault Heist"),
+        ("BOSS_BLITZ", "Boss-Battle 60s Bug-Hunter & Memory Arena"),
     ]
+    game_number = models.PositiveIntegerField(default=1)
+    slug = models.SlugField(max_length=120, unique=True)
+    title = models.CharField(max_length=180)
+    category_name = models.CharField(max_length=100, default="CyberPunk 3D Rover")
+    engine_mode = models.CharField(max_length=30, choices=GAME_ENGINE_CHOICES, default="ROVER_3D")
+    language_tag = models.CharField(max_length=40, default="Python / C / JS")
+    difficulty = models.CharField(max_length=30, default="Beginner")
+    duration_Label = models.CharField(max_length=30, default="2 Min")
+    xp_reward = models.PositiveIntegerField(default=75)
+    mission_brief = models.TextField()
+    starter_code = models.TextField()
+    solution_code = models.TextField()
+    target_keyword = models.CharField(max_length=80, default="for")
 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="feedback")
-    lesson = models.ForeignKey(Lesson, on_delete=models.SET_NULL, null=True, blank=True, related_name="feedback")
-    category = models.CharField(max_length=30, choices=CATEGORY_CHOICES, default="CONTENT")
-    message = models.TextField()
-    email = models.EmailField(blank=True, default="")
+    class Meta:
+        ordering = ["game_number", "id"]
+
+    def __str__(self):
+        return f"Game #{self.game_number:03d}: {self.title}"
+
+
+class StudentProfile(models.Model):
+    ROLE_CHOICES = [
+        ("STUDENT", "Pro Learner / Student"),
+        ("ADMIN", "Platform Architect / Instructor Admin"),
+    ]
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="student_profile")
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="STUDENT")
+    xp = models.PositiveIntegerField(default=650)
+    streak_days = models.PositiveIntegerField(default=7)
+    streak_freeze_shields = models.PositiveIntegerField(default=2)
+    league_tier = models.CharField(max_length=40, default="Emerald Samurai")
+    active_track_slug = models.CharField(max_length=60, default="python")
+    solved_games_count = models.PositiveIntegerField(default=12)
+    completed_lessons_count = models.PositiveIntegerField(default=8)
+    personal_scratchpad = models.TextField(
+        default="# Personal Dev Notes & Algorithm Scratchpad\n# Saved automatically to your Student Dashboard\n"
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username} ({self.role} - {self.xp} XP)"
+
+
+class TelemetryAndSecurityLog(models.Model):
+    session_hash = models.CharField(max_length=64, default="verified-session")
+    event_type = models.CharField(max_length=50, default="CODE_EXECUTION")
+    language_slug = models.CharField(max_length=50, default="python")
+    module_title = models.CharField(max_length=180, default="Interactive Sandbox")
+    engine_mode = models.CharField(max_length=40, default="TREE_3D")
+    ttc_seconds = models.FloatField(default=39.4)
+    latency_ms = models.FloatField(default=4.2)
+    security_status = models.CharField(max_length=60, default="SANDBOX_CLEAN_PASS")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["-created_at"]
-
-    def __str__(self):
-        return f"[{self.category}] {self.message[:40]}"

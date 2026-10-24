@@ -1,59 +1,61 @@
 {% extends "base.html" %}
-
-{% block title %}Practice Arena: Coding Drills &amp; Challenges — CodeQuest BD{% endblock %}
-
+{% load static %}
+{% block title %}108 Playable 3D/2D Coding Games — CodeQuest BD™ Arena{% endblock %}
 {% block content %}
-<div class="shell" style="padding-top: 2.5rem; padding-bottom: 5rem;">
-  
-  <div style="margin-bottom: 2.5rem;">
-    <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
-      Targeted Skill Drills
-    </div>
-    <h1 style="font-size: 2.3rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 0.75rem;">
-      Practice Arena &amp; Coding Challenges
-    </h1>
-    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 650px; line-height: 1.6;">
-      Reinforce language fundamentals through fast, focused exercises. Each challenge tests a specific aspect of development: semantic structure, layout algorithms, debugging, syntax fluency, or program execution prediction.
-    </p>
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:1rem; margin-bottom:1.5rem;">
+  <div>
+    <div class="font-mono" style="font-size:0.74rem; color:var(--brand-amber); font-weight:800;">TARGETED CODING CHALLENGES // {{ total_games_count }} PLAYABLE GAMES</div>
+    <h1 class="font-display" style="font-size:2.2rem; font-weight:800;">AAA-Inspired 3D &amp; 2D Coding Game Arena ({{ total_games_count }} Missions)</h1>
+    <p style="font-size:0.88rem; color:var(--txt-2);">Filter across 6 game engines or search by language, algorithm, or mission number.</p>
   </div>
-
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
-    {% for game in games %}
-    <div class="cq-card cq-card-interactive" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2rem;">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
-          <div style="font-size: 2.25rem;">{{ game.icon_svg|default:'🎯' }}</div>
-          <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 600; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); padding: 0.2rem 0.6rem; border-radius: var(--radius-sm);">
-            +{{ game.xp_per_win }} XP
-          </span>
-        </div>
-
-        <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">
-          {{ game.title }}
-        </h2>
-        <div style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.75rem;">
-          {{ game.tagline }}
-        </div>
-        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.75rem;">
-          {{ game.description }}
-        </p>
-      </div>
-
-      <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle);">
-        <span style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
-          ⏱ {{ game.difficulty }}
-        </span>
-        <a href="{% url 'game_play' game.slug %}" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.84rem;">
-          Launch Challenge &rarr;
-        </a>
-      </div>
-    </div>
-    {% empty %}
-    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted); background: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
-      No practice challenges found.
-    </div>
-    {% endfor %}
-  </div>
-
+  <input id="gameSearchBox" type="text" oninput="filterGamesCatalog()" placeholder="Search 108 games (e.g. Rover, Tree, SQL, Flexbox)..." class="cq-btn font-mono" style="min-width:270px; padding:0.65rem 1rem;" />
 </div>
+
+<!-- 6 Game Engine Filter Tabs -->
+<div style="display:flex; flex-wrap:wrap; gap:0.45rem; margin-bottom:1.5rem;" class="font-mono">
+  <button type="button" onclick="setGameCat('ALL', this)" class="gcat-btn cq-btn cq-btn-primary">All ({{ total_games_count }})</button>
+  <button type="button" onclick="setGameCat('ROVER_3D', this)" class="gcat-btn cq-btn">🏎️ CyberPunk 3D Rover (18)</button>
+  <button type="button" onclick="setGameCat('TREE_3D', this)" class="gcat-btn cq-btn">🌳 Bio-Genesis 3D Forest (18)</button>
+  <button type="button" onclick="setGameCat('SOLAR_3D', this)" class="gcat-btn cq-btn">🪐 Starfield 3D Gravity (18)</button>
+  <button type="button" onclick="setGameCat('DOM_TOWER', this)" class="gcat-btn cq-btn">🏰 Flexbox &amp; DOM Defense (18)</button>
+  <button type="button" onclick="setGameCat('SQL_HEIST', this)" class="gcat-btn cq-btn">🔐 WatchDogs SQL Heist (18)</button>
+  <button type="button" onclick="setGameCat('BOSS_BLITZ', this)" class="gcat-btn cq-btn">⚡ Boss-Battle Bug Blitz (18)</button>
+</div>
+
+<div id="gamesCatalogGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(275px, 1fr)); gap:1rem;">
+  {% for g in games %}
+  <article class="cq-card game-card-item" data-engine="{{ g.engine_mode }}" data-title="{{ g.title|lower }} {{ g.category_name|lower }} {{ g.language_tag|lower }}" style="display:flex; flex-direction:column; justify-content:space-between; gap:0.75rem;">
+    <div>
+      <div class="font-mono" style="display:flex; justify-content:space-between; font-size:0.68rem; margin-bottom:0.35rem;">
+        <span style="color:var(--brand-primary); font-weight:800;">{{ g.engine_mode }} • {{ g.difficulty }}</span>
+        <span style="color:var(--brand-amber); font-weight:700;">+{{ g.xp_reward }} XP</span>
+      </div>
+      <h2 style="font-size:1rem; font-weight:800; margin-bottom:0.3rem;">{{ g.title }}</h2>
+      <p style="font-size:0.78rem; color:var(--txt-2);">{{ g.mission_brief }}</p>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.6rem; border-top:1px solid var(--border-subtle);" class="font-mono">
+      <span style="font-size:0.68rem; color:var(--txt-3);">{{ g.language_tag }}</span>
+      <a href="{% url 'game_play' g.slug %}" class="cq-btn cq-btn-primary" style="padding:0.35rem 0.8rem; font-size:0.72rem;">▶ Play Mission</a>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+
+<script>
+  let activeGameEngine = "ALL";
+  window.setGameCat = function (eng, btn) {
+    activeGameEngine = eng;
+    document.querySelectorAll(".gcat-btn").forEach(function (b) { b.className = "gcat-btn cq-btn"; });
+    btn.className = "gcat-btn cq-btn cq-btn-primary";
+    filterGamesCatalog();
+  };
+  window.filterGamesCatalog = function () {
+    const q = (document.getElementById("gameSearchBox").value || "").toLowerCase();
+    document.querySelectorAll(".game-card-item").forEach(function (c) {
+      const matchEng = (activeGameEngine === "ALL" || c.getAttribute("data-engine") === activeGameEngine);
+      const matchQ = c.getAttribute("data-title").indexOf(q) !== -1;
+      c.style.display = (matchEng && matchQ) ? "flex" : "none";
+    });
+  };
+</script>
 {% endblock %}

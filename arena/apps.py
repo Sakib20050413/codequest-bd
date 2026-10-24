@@ -1,6 +1,4 @@
 from django.apps import AppConfig
-
-
 class ArenaConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'arena'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "arena"

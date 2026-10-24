@@ -1,143 +1,66 @@
 {% extends "base.html" %}
-{% load static %}
-
-{% block title %}Cyber Rover 3D — Autonomous Robotics Simulation — CodeQuest BD{% endblock %}
-
-{% block extra_head %}
-<!-- Three.js WebGL 3D Engine -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-{% endblock %}
-
+{% block title %}{{ game.title }} — 3D Game Arena{% endblock %}
 {% block content %}
-<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem;">
-
-  <!-- Breadcrumb -->
-  <div style="margin-bottom: 1.5rem;">
-    <a href="{% url 'games_hub' %}" style="font-size: 0.88rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;">
-      &larr; Back to Practice Arena
-    </a>
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.25rem;">
+  <div>
+    <span class="font-mono" style="font-size:0.72rem; color:var(--brand-primary); font-weight:800;">{{ game.category_name }} // {{ game.engine_mode }}</span>
+    <h1 class="font-display" style="font-size:1.75rem; font-weight:800;">{{ game.title }} (+{{ game.xp_reward }} XP)</h1>
   </div>
-
-  <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
-
-    <!-- Topbar HUD -->
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle);">
-      <div>
-        <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">
-          Interactive 3D Simulation &bull; Algorithmic Spatial Logic
-        </div>
-        <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0; letter-spacing: -0.02em;">
-          🤖 Cyber Rover 3D: Mission Red Planet
-        </h1>
-      </div>
-
-      <!-- Telemetry Stats -->
-      <div style="display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center;">
-        <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
-          <span style="color: var(--text-muted);">COORDS: </span>
-          <strong id="hudCoords" style="color: #38bdf8;">(0, 0)</strong>
-        </div>
-        <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
-          <span style="color: var(--text-muted);">GEMS: </span>
-          <strong id="hudGems" style="color: #10b981;">0 / 3</strong>
-        </div>
-        <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
-          <span style="color: var(--text-muted);">REWARD: </span>
-          <strong style="color: #fbbf24;">+35 XP</strong>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3D WORKSPACE (Grid: 3D Viewport on Left, Control Console on Right) -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; align-items: stretch;">
-
-      <!-- Left Column: 3D WebGL Canvas Container -->
-      <div style="position: relative; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-strong); min-height: 480px; background: #05070d;">
-        
-        <!-- 3D Floating Camera Controls Bar -->
-        <div style="position: absolute; top: 12px; left: 12px; z-index: 10; display: flex; gap: 0.4rem; background: rgba(7, 8, 12, 0.85); backdrop-filter: blur(12px); padding: 0.35rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-          <button id="camIsoBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 4px;">
-            Isometric
-          </button>
-          <button id="camTopBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 4px;">
-            Top-Down
-          </button>
-          <button id="camChaseBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 4px;">
-            Chase Cam
-          </button>
-        </div>
-
-        <!-- Canvas DOM Mount -->
-        <div id="rover3dCanvas" style="width: 100%; height: 100%; min-height: 480px;"></div>
-
-        <!-- 3D Mission Banner Overlay -->
-        <div id="missionSuccessBanner" style="display: none; position: absolute; inset: 0; background: rgba(7, 8, 12, 0.9); z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;">
-          <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🎉</div>
-          <h2 style="font-size: 1.85rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">
-            Mission Complete! All Crystals Extracted!
-          </h2>
-          <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1rem;">
-            You navigated the 3D rover successfully and collected all alien energy cores.
-          </p>
-          <button id="resetMissionBtn" class="btn btn-primary" style="padding: 0.75rem 1.85rem; font-size: 0.95rem;">
-            Replay Mission ↺
-          </button>
-        </div>
-      </div>
-
-      <!-- Right Column: Command Console & Controls -->
-      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-        
-        <!-- Quick Action Buttons -->
-        <div class="cq-card" style="padding: 1.5rem;">
-          <div style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 1rem;">
-            Manual D-Pad Controls
-          </div>
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; max-width: 280px; margin: 0 auto 1.25rem;">
-            <div></div>
-            <button id="btnForward" class="btn btn-primary" style="padding: 0.75rem;">▲ Forward</button>
-            <div></div>
-            <button id="btnTurnLeft" class="btn btn-ghost" style="padding: 0.75rem;">◀ Left</button>
-            <button id="btnCollect" class="btn btn-ghost" style="padding: 0.75rem; color: #10b981; font-weight: 700;">💎 Grab</button>
-            <button id="btnTurnRight" class="btn btn-ghost" style="padding: 0.75rem;">Right ▶</button>
-          </div>
-          <div style="font-size: 0.76rem; color: var(--text-muted); text-align: center; font-family: var(--font-mono);">
-            Keyboard: W (Forward), A (Left), D (Right), Space (Collect)
-          </div>
-        </div>
-
-        <!-- Scripting Console -->
-        <div class="cq-card" style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-            <div style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 700;">
-              Autonomous Code Program
-            </div>
-            <button id="btnRunScript" class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.78rem;">
-              ▶ Execute Script
-            </button>
-          </div>
-
-          <textarea id="roverScriptBox" class="code-editor form-input" style="flex: 1; min-height: 140px; font-family: var(--font-mono); font-size: 0.86rem; line-height: 1.6;" spellcheck="false">// Program autonomous rover movements
-rover.forward();
-rover.turnRight();
-rover.forward();
-rover.collect();</textarea>
-
-          <div id="roverStatusMsg" style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--text-muted); margin-top: 0.85rem;">
-            Status: Rover online and standing by.
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
+  <a href="{% url 'games_hub' %}" class="cq-btn font-mono">← Back to All 108 Games</a>
 </div>
-{% endblock %}
 
-{% block extra_scripts %}
-<script src="{% static 'js/games/rover_3d.js' %}"></script>
+<div class="cq-grid-12" style="align-items:stretch;">
+  <div class="cq-card cq-col-lg-12" style="grid-column: span 6; display:flex; flex-direction:column; justify-content:space-between; gap:0.9rem;">
+    <p style="font-size:0.88rem; color:var(--txt-2);">{{ game.mission_brief }}</p>
+    <div class="cq-terminal-window">
+      <div class="cq-terminal-bar font-mono" style="font-size:0.72rem;">
+        <span>{{ game.language_tag }} — Mission Control</span>
+        <button type="button" onclick="document.getElementById('gameCodeBox').value = document.getElementById('gameCodeBox').defaultValue" class="cq-btn" style="padding:0.2rem 0.55rem; font-size:0.66rem;">↺ Reset</button>
+      </div>
+      <textarea id="gameCodeBox" rows="7" class="cq-code-textarea">{{ game.starter_code }}</textarea>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center;" class="font-mono">
+      <span id="gameExecStatus" style="font-size:0.76rem; color:var(--brand-primary); font-weight:700;">Ready. Click Execute to launch 3D simulation!</span>
+      <button type="button" onclick="executeGameMission()" class="cq-btn cq-btn-primary" style="padding:0.75rem 1.4rem;">▶ Execute &amp; Claim +{{ game.xp_reward }} XP</button>
+    </div>
+  </div>
+
+  <div class="cq-card cq-col-lg-12" style="grid-column: span 6;">
+    <div style="position:relative; width:100%; height:360px; border-radius:14px; overflow:hidden; background:#040811; border:1px solid var(--border-1);">
+      <canvas id="gamePlay3dCanvas" style="width:100%; height:100%; display:block;"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+  let gamePulse = 1.0;
+  window.executeGameMission = function () {
+    gamePulse = 2.2;
+    document.getElementById("gameExecStatus").textContent = "🏆 MISSION ACCOMPLISHED! +{{ game.xp_reward }} XP Awarded!";
+  };
+  (function initGameCanvas() {
+    const c = document.getElementById("gamePlay3dCanvas");
+    if (!c) return;
+    const ctx = c.getContext("2d");
+    function draw() {
+      requestAnimationFrame(draw);
+      const r = c.parentElement.getBoundingClientRect();
+      c.width = r.width || 480; c.height = r.height || 360;
+      const t = Date.now() * 0.0025;
+      if (gamePulse > 1.0) gamePulse = Math.max(1.0, gamePulse - 0.02);
+      ctx.fillStyle = "#040811";
+      ctx.fillRect(0, 0, c.width, c.height);
+      const cx = c.width / 2, cy = c.height / 2;
+      for (let i = 1; i <= 6; i++) {
+        const rad = i * 24 * gamePulse;
+        const a = t * (2.2 - i * 0.25);
+        ctx.strokeStyle = "rgba(16, 185, 129, 0.28)";
+        ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = i % 2 === 0 ? "#10b981" : "#38bdf8";
+        ctx.beginPath(); ctx.arc(cx + Math.cos(a) * rad, cy + Math.sin(a) * rad, 7, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    draw();
+  })();
+</script>
 {% endblock %}

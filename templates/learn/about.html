@@ -1,120 +1,40 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}About, Trademark &amp; Architecture — CodeQuest BD{% endblock %}
-
+{% block title %}Official Trademark Charter &amp; Architecture — Md Najmus Sakib Rahatul{% endblock %}
 {% block content %}
-<div class="shell" style="padding-top: 3.5rem; padding-bottom: 5rem; max-width: 860px;">
-
-  <!-- Header Header -->
-  <div style="margin-bottom: 3rem;">
-    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-      <img src="{% static 'img/logo-icon.svg' %}" alt="CodeQuest BD" width="32" height="32" />
-      <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono);">
-        PLATFORM CHARTER &bull; EST. 2024
-      </span>
+<div class="cq-card" style="margin-bottom:2rem;">
+  <div style="display:flex; flex-wrap:wrap; align-items:center; gap:1.25rem; margin-bottom:1.5rem; padding-bottom:1.25rem; border-bottom:1px solid var(--border-subtle);">
+    <img src="{% static 'img/codequest_logo.jpg' %}" alt="CodeQuest Official Emblem" style="width:76px; height:76px; border-radius:20px; border:2px solid var(--brand-primary);" />
+    <div>
+      <span class="font-mono" style="font-size:0.72rem; color:var(--brand-primary); font-weight:800;">[ OFFICIAL PLATFORM CHARTER &amp; TRADEMARK ATTRIBUTION ]</span>
+      <h1 class="font-display" style="font-size:2.2rem; font-weight:800; margin-top:0.2rem;">CodeQuest BD™ — Architected by Md Najmus Sakib Rahatul</h1>
+      <p class="font-mono" style="font-size:0.78rem; color:var(--txt-2);">AI/ML Systems Engineer • Edge TinyML Researcher • Full-Stack Architect (Dept. of CSE, BAIUST, Cumilla)</p>
     </div>
-    <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem;">
-      Architected for Real Software Mastery.
-    </h1>
-    <p style="font-size: 1.12rem; color: var(--text-secondary); line-height: 1.65;">
-      CodeQuest BD is Bangladesh's open developer education initiative founded by <strong>Sakib</strong>. Built on a singular premise: software engineering cannot be learned by passively watching video lectures. It is forged by writing code, breaking mental models, and inspecting runtime outputs in real time.
-    </p>
   </div>
 
-  <div style="display: flex; flex-direction: column; gap: 2.25rem;">
-    
-    <!-- Principle 1 -->
-    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
-        <span style="font-size: 1.5rem;">⏱️</span>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-          1. Focused 3–7 Minute Micro-Lessons
-        </h2>
-      </div>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; margin: 0;">
-        Long multi-hour tutorials encourage passive consumption and prompt fatigue. Every CodeQuest module isolates one conceptual invariant (e.g. the DOM tree, flexbox alignment axes, closure scope, Python list comprehensions, SQL relational joins). You read the mental model, inspect the interactive playground, and immediately write verified code.
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem;">
+    <div style="padding:1.15rem; border-radius:14px; background:var(--bg-elevated);">
+      <div class="font-mono" style="font-size:0.7rem; color:var(--brand-primary); font-weight:800; margin-bottom:0.35rem;">01 // TRADEMARK &amp; AUTHORSHIP</div>
+      <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:0.35rem;">Sole Architect &amp; Lead Engineer</h3>
+      <p style="font-size:0.83rem; color:var(--txt-2);">
+        CodeQuest BD™ V10.0, its 5 non-blocky 3D visual simulation engines, 16-language AST/WASM transpiler, and 108 gamified coding missions are the original engineering work and trademark of <strong>Md Najmus Sakib Rahatul</strong>.
       </p>
     </div>
-
-    <!-- Principle 2 -->
-    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
-        <span style="font-size: 1.5rem;">🛡️</span>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-          2. 100% Client-Side Sandboxed Security Architecture
-        </h2>
-      </div>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 1rem;">
-        CodeQuest BD rejects heavy server-side execution queues that introduce network latency and operational vulnerability. All code execution runs strictly on the client device inside secure isolation boundaries:
-      </p>
-      <ul style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.9rem; color: var(--text-secondary); padding-left: 1.25rem; margin: 0;">
-        <li><strong style="color: var(--text-primary);">Web Engine (HTML/CSS/JS):</strong> Rendered in isolated <code style="color: var(--accent); font-family: var(--font-mono);">iframe sandbox="allow-scripts"</code> with origin isolation.</li>
-        <li><strong style="color: var(--text-primary);">Python Runtime:</strong> Compiled WebAssembly via official Pyodide CPython 3.12 engine.</li>
-        <li><strong style="color: var(--text-primary);">Relational Database:</strong> SQLite3 compiled to WebAssembly via sql.js with in-memory virtual schemas.</li>
-      </ul>
-    </div>
-
-    <!-- Principle 3 -->
-    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
-        <span style="font-size: 1.5rem;">🎮</span>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-          3. Targeted Coding Challenges &amp; 100+ Game Taxonomy
-        </h2>
-      </div>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; margin: 0;">
-        Gamification in CodeQuest BD is not artificial decoration. It is cognitive reinforcement. Our Practice Arena features interactive drills like <em>Cyber Rover 3D</em> (spatial pathfinding), <em>Code TypeRacer 3D</em> (muscle memory and syntax fluency), and <em>Flexbox Pond</em> (layout coordinate navigation), supported by an extensive 100+ game curriculum roadmap spanning algorithms, cybersecurity, and systems architecture.
+    <div style="padding:1.15rem; border-radius:14px; background:var(--bg-elevated);">
+      <div class="font-mono" style="font-size:0.7rem; color:var(--brand-secondary); font-weight:800; margin-bottom:0.35rem;">02 // PEDAGOGICAL ARCHITECTURE</div>
+      <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:0.35rem;">CS50 Visual Stack + 45s AI Classroom</h3>
+      <p style="font-size:0.83rem; color:var(--txt-2);">
+        Combines Harvard CS50 stack/heap memory visualization, 45-second AI animated classroom briefings, and Programming-Hero-style daily streak retention.
       </p>
     </div>
-
-    <!-- Principle 4 -->
-    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
-        <span style="font-size: 1.5rem;">🔒</span>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-          4. Privacy-First &amp; Local-First Data Sovereignty
-        </h2>
-      </div>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; margin: 0;">
-        We enforce zero commercial surveillance. No behavioral tracking cookies, no third-party ad pixels. Learners can start solving exercises completely anonymously; progress is stored locally in <code style="color: var(--accent); font-family: var(--font-mono);">localStorage</code>. When an account is created, local state seamlessly merges with your cloud profile with one cryptographic sync.
-      </p>
-    </div>
-
-    <!-- Founder & Trademark Charter -->
-    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong); background: radial-gradient(ellipse at bottom right, rgba(99, 102, 241, 0.08), var(--bg-surface) 70%);">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
-        <span style="font-size: 1.5rem;">🇧🇩</span>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-          Founder Attribution &amp; Trademark Charter
-        </h2>
-      </div>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 1.25rem;">
-        <strong>CodeQuest BD™</strong> is a registered open-source education project founded and led by <strong>Sakib</strong> to democratize computer science and web engineering for learners across Bangladesh and worldwide.
-      </p>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; padding: 1.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 0.85rem;">
-        <div>
-          <div style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Initiative Founder</div>
-          <div style="color: var(--text-primary); font-weight: 700; margin-top: 0.2rem;">Sakib</div>
-          <div style="color: var(--text-muted); font-size: 0.78rem;">Lead Architect &amp; Maintainer</div>
-        </div>
-        <div>
-          <div style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Trademark &amp; Brand</div>
-          <div style="color: var(--text-primary); font-weight: 700; margin-top: 0.2rem;">CodeQuest BD™</div>
-          <div style="color: var(--text-muted); font-size: 0.78rem;">All Rights Reserved &bull; MIT Core</div>
-        </div>
-        <div>
-          <div style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Codebase &amp; Contributions</div>
-          <div style="color: var(--accent); font-weight: 700; margin-top: 0.2rem;">
-            <a href="https://github.com/Sakib20050413/codequest-bd" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">GitHub Repository ↗</a>
-          </div>
-          <div style="color: var(--text-muted); font-size: 0.78rem;">Open Issue Tracker &amp; PRs</div>
-        </div>
+    <div style="padding:1.15rem; border-radius:14px; background:var(--bg-elevated);">
+      <div class="font-mono" style="font-size:0.7rem; color:var(--brand-amber); font-weight:800; margin-bottom:0.35rem;">03 // VERIFIED PROFILES &amp; CONTACT</div>
+      <div class="font-mono" style="font-size:0.76rem; display:flex; flex-direction:column; gap:0.4rem; margin-top:0.4rem;">
+        <a href="https://github.com/Sakib20050413" target="_blank" style="color:var(--brand-primary);">• GitHub: github.com/Sakib20050413 ↗</a>
+        <a href="https://www.linkedin.com/in/md-najmus-sakib-rahatul-559a85285/" target="_blank" style="color:var(--brand-secondary);">• LinkedIn: md-najmus-sakib-rahatul ↗</a>
+        <a href="https://sakib-portfolio-green.vercel.app/" target="_blank" style="color:var(--brand-amber);">• AI/ML Portfolio: sakib-portfolio-green.vercel.app ↗</a>
       </div>
     </div>
-
   </div>
-
 </div>
 {% endblock %}
