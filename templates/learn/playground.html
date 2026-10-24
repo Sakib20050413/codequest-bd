@@ -591,25 +591,37 @@
       exitZenBtn.onclick = toggleZenMode;
     }
 
-    // Connect Zen HUD buttons to primary handlers
+    // Connect Zen HUD buttons to primary handlers via dynamic lookup
     const zenRunBtn = document.getElementById('zenRunBtn');
-    if (zenRunBtn && runBtn) {
-      zenRunBtn.onclick = function () { runBtn.click(); };
+    if (zenRunBtn) {
+      zenRunBtn.onclick = function () {
+        const btn = document.getElementById('runPlaygroundBtn');
+        if (btn) btn.click();
+      };
     }
 
     const zenResetBtn = document.getElementById('zenResetBtn');
-    if (zenResetBtn && resetBtn) {
-      zenResetBtn.onclick = function () { resetBtn.click(); };
+    if (zenResetBtn) {
+      zenResetBtn.onclick = function () {
+        const btn = document.getElementById('resetPlaygroundBtn');
+        if (btn) btn.click();
+      };
     }
 
     const zenDiffBtn = document.getElementById('zenDiffBtn');
-    if (zenDiffBtn && diffBtn) {
-      zenDiffBtn.onclick = function () { diffBtn.click(); };
+    if (zenDiffBtn) {
+      zenDiffBtn.onclick = function () {
+        const btn = document.getElementById('toggleDiffBtn');
+        if (btn) btn.click();
+      };
     }
 
     const zenLayoutBtn = document.getElementById('zenLayoutBtn');
-    if (zenLayoutBtn && layoutBtn) {
-      zenLayoutBtn.onclick = function () { layoutBtn.click(); };
+    if (zenLayoutBtn) {
+      zenLayoutBtn.onclick = function () {
+        const btn = document.getElementById('toggleLayoutBtn');
+        if (btn) btn.click();
+      };
     }
 
     const zenBoxBtn = document.getElementById('zenBoxBtn');

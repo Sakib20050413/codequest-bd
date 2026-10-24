@@ -551,15 +551,24 @@
     }
 
     const zenLessonRunBtn = document.getElementById('zenLessonRunBtn');
-    const mainRunBtn = document.getElementById('btnRunCode');
-    if (zenLessonRunBtn && mainRunBtn) {
-      zenLessonRunBtn.onclick = function () { mainRunBtn.click(); };
+    if (zenLessonRunBtn) {
+      zenLessonRunBtn.onclick = function () {
+        const checkBtn = document.getElementById('checkSolutionBtn');
+        if (checkBtn) {
+          checkBtn.click();
+        } else {
+          const runBtn = document.getElementById('runCodeBtn');
+          if (runBtn) runBtn.click();
+        }
+      };
     }
 
     const zenLessonAudioToggle = document.getElementById('zenLessonAudioToggle');
-    const mainAudioToggle = document.getElementById('lessonAudioToggle');
-    if (zenLessonAudioToggle && mainAudioToggle) {
-      zenLessonAudioToggle.onclick = function () { mainAudioToggle.click(); };
+    if (zenLessonAudioToggle) {
+      zenLessonAudioToggle.onclick = function () {
+        const audioBtn = document.getElementById('lessonAudioToggle');
+        if (audioBtn) audioBtn.click();
+      };
     }
 
     // Global Escape Key to cleanly exit Zen Mode
