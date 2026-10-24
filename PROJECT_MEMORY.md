@@ -210,3 +210,45 @@ The user identified two issues with the Beginner Onboarding Hero section:
 ### 3. Verification
 - **Playwright MCP**: Captured live_onboarding_refined.png, verifying complete visual cohesion, zero Bengali glyphs in UI, and balanced responsive typography.
 - **Automated Tests**: 14/14 Django tests passed (Ran 14 tests in 13.447s - OK).
+
+
+---
+
+## 8. TURN 19: COURSE CATALOGUE HUMAN-READABLE REDESIGN (2026-10-24)
+
+### 1. Problem Diagnosis & User Feedback
+- **User Prompt**: 'couse area te onek details human unreadable hoiya jaitas webpage a oita tumi analysis koro kibae ki korle balo hoy na hoy.. mcp diya skill use koira deep ressoning koro onno website then tik koro ai part ta'
+- **Root Cause & Clutter Analysis**:
+  - The Course Catalogue page (/courses/ or templates/learn/catalogue.html) was overloaded with visual noise and stacked banners pushing content off-screen:
+    1. Four stacked top banners (giant 300px guest promo, 4 quick pads, and a squished 6-node 'Gamified Tech-Tree' with microscopic 11px font) consumed >700px before the first course was visible.
+    2. Each course rendered in a noisy 2-column layout (course card on the left with 30+ badges, chips, progress meters, and accordion syllabi, paired with a duplicate 'Companion Arena Drill' card on the right), producing over 4,000px of scrolling fatigue.
+    3. Missing instant search and category filtration across all 9 curriculum tracks.
+
+### 2. Architectural Redesign & Industry Benchmarking
+Benchmarked against Frontend Masters, Scrimba, Brilliant, and Codecademy:
+- **Clean Sleek Header**:
+  - Replaced the 4 stacked top banners with a focused eyebrow pill ('Curriculum Roadmap - In-Browser Labs'), bold gradient headline ('Programming Courses & Guided Tracks'), and an ultra-concise 2-line description.
+  - Retained the complete authenticated learner command center ({% if learner.is_authenticated %}) for logged-in students (avatar, streak, XP, continue lesson button, 7-day habit tracker).
+  - Streamlined guest value strip to an ambient horizontal bar with 4 key value props and 1-click action triggers ('1-Click Instant Demo', 'Practice Arena', 'Playground Studio', 'Create Account').
+- **Real-Time Search & Category Filters**:
+  - Live instant search input filtering on title, description, and language syntax with zero latency.
+  - Category filter pills: All Tracks (9), Web Foundations, Scripting & Python, Databases (SQL), and Systems & CLI.
+- **Symmetrical 3-Column Responsive Course Card Grid**:
+  - CSS Grid: grid-template-columns: repeat(3, 1fr) on desktop (1200px+), 2 columns on tablet, 1 column on mobile.
+  - Standardized card anatomy:
+    - Header: Language pill, Difficulty badge, XP reward chip (+250 XP / +450 XP).
+    - Progress Bar: Active completion meter ({{ completed }} / {{ total }} Lessons Completed).
+    - Body: Bold title (clickable link), concise 2-line description, 4 monospace curriculum highlight tags.
+    - Telemetry bar: Duration, Lessons count, Hands-on ratio (100%).
+    - Action footer: Symmetrical 'Syllabus' ghost button and 'Start Track' primary button.
+- **Dedicated Practice Arena Callout**:
+  - Replaced duplicate per-course drill cards with an elegant bottom callout card linking directly to /games/ (Arcade Drills) and /playground/ (Playground Studio).
+
+### 3. Verification & Evidence
+- **Playwright MCP Screen Audits**:
+  - live_catalogue_top.png: Top header, guest strip, filter pills, and Row 1 of symmetrical 3-column cards.
+  - live_catalogue_bottom.png: Symmetrical 3x3 course matrix across all 9 curriculum tracks.
+  - live_catalogue_footer.png: Interactive Practice Arena callout banner and footer.
+  - live_filter_web.png: Category pill click test confirming instant filtering to 3 Web Foundations tracks.
+  - live_search_python.png: Real-time keyword filter test instantly isolating the Python 3 course card.
+- **Django Test Suite**: Executed python manage.py test learn with 14/14 tests passing.

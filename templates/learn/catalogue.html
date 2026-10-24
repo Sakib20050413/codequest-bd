@@ -5,19 +5,19 @@
 {% block content %}
 <div class="shell shell-wide" style="padding-top: 2.5rem; padding-bottom: 5rem;">
   
-  <!-- Header -->
-  <div style="margin-bottom: 2.5rem;">
-    <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
-      Curriculum Roadmap
+  <!-- Sleek Header & Breadcrumb -->
+  <div style="margin-bottom: 2.25rem;">
+    <div class="section-eyebrow-pill" style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25);">
+      <span class="pill-pulse-dot" style="background: #38bdf8; box-shadow: 0 0 10px #38bdf8;"></span>
+      <span style="color: #7dd3fc;">Curriculum Roadmap &bull; In-Browser Labs</span>
     </div>
-    <h1 style="font-size: 2.3rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 0.75rem;">
-      Programming Courses &amp; Tracks
+    <h1 style="font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.035em; line-height: 1.15; margin: 0 0 0.75rem 0;">
+      Programming Courses &amp; <span style="background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Guided Tracks</span>
     </h1>
-    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 640px; line-height: 1.6;">
-      Every course is structured into focused 3–7 minute interactive lessons. Choose a track below to practice syntax, understand mental models, and build real proficiency.
+    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 680px; line-height: 1.65; margin: 0;">
+      Master foundational software engineering through bite-sized, interactive browser lessons. Every course pairs an intuitive mental model with an instant coding sandbox.
     </p>
   </div>
-
 
   {% if learner.is_authenticated %}
   <!-- Authenticated LMS Learner Command Center -->
@@ -169,201 +169,45 @@
 
   </div>
   {% else %}
-  <!-- Guest Onboarding / Value Proposition Hero -->
-  <div class="lms-guest-banner">
-    <div style="max-width: 620px;">
-      <div style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.74rem; font-family: var(--font-mono); font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
-        <span>✦ Interactive Developer Ecosystem</span>
-      </div>
-      <h2 style="font-size: 1.65rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 0.5rem;">
-        Master Modern Code with In-Browser Sandboxes
-      </h2>
-      <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
-        Sign in to track your learning streak, earn verifiable XP, unlock automated grading tests, and store your project progress across every device.
-      </p>
-      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-secondary);">
-        <span style="display: inline-flex; align-items: center; gap: 0.35rem;"><span style="color: var(--success);">✓</span> 28 Practice Arena Tasks</span>
-        <span style="display: inline-flex; align-items: center; gap: 0.35rem;"><span style="color: var(--success);">✓</span> 115 Playable Arcade Levels</span>
-        <span style="display: inline-flex; align-items: center; gap: 0.35rem;"><span style="color: var(--success);">✓</span> Free In-Browser Studio</span>
-      </div>
+  <!-- Clean, Non-Intrusive Value Strip for Guests -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.15rem 1.65rem; background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.08), var(--bg-surface) 75%); border: 1px solid var(--border-medium); border-radius: var(--radius-lg); margin-bottom: 2.25rem;">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; font-size: 0.86rem; font-family: var(--font-mono); color: var(--text-secondary);">
+      <span style="display: inline-flex; align-items: center; gap: 0.45rem; color: var(--text-primary); font-weight: 700;">
+        <span style="color: #38bdf8;">✦</span> 88 Interactive Units
+      </span>
+      <span style="display: inline-flex; align-items: center; gap: 0.45rem;">
+        <span style="color: #10b981;">✓</span> Zero Tooling Setup
+      </span>
+      <span style="display: inline-flex; align-items: center; gap: 0.45rem;">
+        <span style="color: #10b981;">✓</span> 100% In-Browser Execution
+      </span>
+      <span style="display: inline-flex; align-items: center; gap: 0.45rem;">
+        <span style="color: #10b981;">✓</span> Automated Verification
+      </span>
     </div>
-    <div style="display: flex; flex-direction: column; gap: 0.75rem; min-width: 200px;">
-      <a href="{% url 'login_view' %}?demo=1" class="btn btn-primary" style="justify-content: center; font-weight: 800; padding: 0.65rem 1.4rem;">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem;">
+      <a href="{% url 'login_view' %}?demo=1" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.45rem 0.95rem;">
         ⚡ 1-Click Instant Demo
       </a>
-      <a href="{% url 'signup_view' %}" class="btn btn-ghost" style="justify-content: center; font-size: 0.84rem;">
-        Create Free Account &rarr;
+      <a href="{% url 'games_hub' %}" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.45rem 0.95rem;">
+        🎮 Practice Arena
+      </a>
+      <a href="{% url 'playground' %}" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.45rem 0.95rem;">
+        🧪 Playground Studio
+      </a>
+      <a href="{% url 'signup_view' %}" class="btn btn-primary" style="font-size: 0.84rem; padding: 0.45rem 1.25rem; font-weight: 700;">
+        Create Account &rarr;
       </a>
     </div>
   </div>
   {% endif %}
 
-  <!-- LMS Quick Launch Learning Pillars -->
-  <div class="lms-quick-pads-grid">
-    <a href="{% url 'games_hub' %}#tasks" class="lms-quick-pad">
-      <div class="lms-pad-icon" style="background: rgba(99, 102, 241, 0.12); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.25);">
-        ⚡
-      </div>
-      <div class="lms-pad-content">
-        <div class="lms-pad-title">Practice Arena</div>
-        <div class="lms-pad-desc">28 Real-world problem sets with test runner</div>
-      </div>
-      <span class="lms-pad-arrow">&rarr;</span>
-    </a>
-
-    <a href="{% url 'games_hub' %}" class="lms-quick-pad">
-      <div class="lms-pad-icon" style="background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25);">
-        🎮
-      </div>
-      <div class="lms-pad-content">
-        <div class="lms-pad-title">Arcade Drills</div>
-        <div class="lms-pad-desc">115 Interactive syntax &amp; CSS puzzle levels</div>
-      </div>
-      <span class="lms-pad-arrow">&rarr;</span>
-    </a>
-
-    <a href="{% url 'playground' %}" class="lms-quick-pad">
-      <div class="lms-pad-icon" style="background: rgba(6, 182, 212, 0.12); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.25);">
-        💻
-      </div>
-      <div class="lms-pad-content">
-        <div class="lms-pad-title">Playground Studio</div>
-        <div class="lms-pad-desc">In-browser HTML/CSS/JS sandbox &amp; Zen Mode</div>
-      </div>
-      <span class="lms-pad-arrow">&rarr;</span>
-    </a>
-
-    <a href="{% url 'playground' %}?tool=box-model" class="lms-quick-pad">
-      <div class="lms-pad-icon" style="background: rgba(16, 185, 129, 0.12); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.25);">
-        📐
-      </div>
-      <div class="lms-pad-content">
-        <div class="lms-pad-title">Box Model Lab</div>
-        <div class="lms-pad-desc">Interactive margin, border, padding inspector</div>
-      </div>
-      <span class="lms-pad-arrow">&rarr;</span>
-    </a>
-  </div>
-
-  <!-- Interactive RPG Skill Tree & Knowledge DAG Roadmap -->
-  <div class="cq-card" style="padding: 2rem; margin-bottom: 2.75rem; border: 1px solid var(--border-strong); background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.08), var(--bg-surface) 70%);">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">
-          Gamified Tech-Tree
-        </div>
-        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.01em;">
-          Mastery Road &bull; Directed Skill Graph
-        </h2>
-      </div>
-      <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
-        <span style="display: inline-flex; align-items: center; gap: 0.35rem;"><span style="width:8px; height:8px; border-radius:50%; background:var(--accent);"></span> Core Track</span>
-        <span style="display: inline-flex; align-items: center; gap: 0.35rem;"><span style="width:8px; height:8px; border-radius:50%; background:var(--success);"></span> Unlocked</span>
-      </div>
-    </div>
-
-    <!-- Visual Graph Nodes Flow -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; position: relative;">
-      
-      <!-- Node 1: HTML Core -->
-      <a href="{% url 'course_detail' 'html-core' %}" class="skill-node unlocked" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 1.35rem;">🌐</span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--lang-html); background: rgba(249, 115, 22, 0.12); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Stage 1</span>
-          </div>
-          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">HTML5 Core</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted);">Semantic Skeleton</div>
-        </div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-top: 0.75rem; font-weight: 600;">
-          Launch Track &rarr;
-        </div>
-      </a>
-
-      <!-- Node 2: CSS Core -->
-      <a href="{% url 'course_detail' 'css-core' %}" class="skill-node unlocked" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 1.35rem;">🎨</span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--lang-css); background: rgba(56, 189, 248, 0.12); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Stage 2</span>
-          </div>
-          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">CSS Layouts</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted);">Flexbox &amp; Grid</div>
-        </div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-top: 0.75rem; font-weight: 600;">
-          Launch Track &rarr;
-        </div>
-      </a>
-
-      <!-- Node 3: JavaScript Core -->
-      <a href="{% url 'course_detail' 'javascript-core' %}" class="skill-node unlocked" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 1.35rem;">⚡</span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--lang-js); background: rgba(250, 204, 21, 0.12); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Stage 3</span>
-          </div>
-          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">JavaScript</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted);">DOM &amp; State Loops</div>
-        </div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-top: 0.75rem; font-weight: 600;">
-          Launch Track &rarr;
-        </div>
-      </a>
-
-      <!-- Node 4: Python Core -->
-      <a href="{% url 'course_detail' 'python-core' %}" class="skill-node unlocked" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 1.35rem;">🐍</span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--lang-py); background: rgba(52, 211, 153, 0.12); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Stage 4</span>
-          </div>
-          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">Python Logic</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted);">Data &amp; Automation</div>
-        </div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-top: 0.75rem; font-weight: 600;">
-          Launch Track &rarr;
-        </div>
-      </a>
-
-      <!-- Node 5: SQL Core -->
-      <a href="{% url 'course_detail' 'sql-core' %}" class="skill-node unlocked" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 1.35rem;">🗄️</span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--lang-sql); background: rgba(192, 132, 252, 0.12); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Stage 5</span>
-          </div>
-          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">SQL Schemas</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted);">Relational Tables</div>
-        </div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); margin-top: 0.75rem; font-weight: 600;">
-          Launch Track &rarr;
-        </div>
-      </a>
-
-      <!-- Node 6: Fullstack Capstone -->
-      <div class="skill-node mastered" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 140px; border-color: rgba(16, 185, 129, 0.4);">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 1.35rem;">🚀</span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--success); background: var(--success-subtle); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs);">Capstone</span>
-          </div>
-          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.2rem;">Fullstack Mastery</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted);">Arena &amp; Practice</div>
-        </div>
-        <a href="{% url 'games_hub' %}" style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--success); text-decoration: none; font-weight: 600; margin-top: 0.75rem;">
-          Enter Arena &rarr;
-        </a>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Search & Filter Controls -->
+  <!-- Search & Category Filters Bar -->
   <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle);">
     
     <!-- Real-time Search Input -->
-    <div style="position: relative; width: 100%; max-width: 380px;">
-      <input type="text" id="courseSearchInput" class="form-input" placeholder="Search courses (e.g., Python, Flexbox, SQL)..." aria-label="Search courses" style="padding-left: 2.25rem;" />
+    <div style="position: relative; width: 100%; max-width: 360px;">
+      <input type="text" id="courseSearchInput" class="form-input" placeholder="Search tracks, syntax, or concepts..." aria-label="Search courses" style="padding-left: 2.25rem; font-size: 0.88rem;" />
       <svg style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-muted); pointer-events: none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -372,592 +216,279 @@
 
     <!-- Category Filter Pills -->
     <div id="categoryFilterGroup" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-      <button class="btn btn-ghost filter-pill active" data-category="all" style="font-size: 0.8rem; padding: 0.35rem 0.85rem; border-radius: 999px;">
-        All Tracks
+      <button class="btn btn-ghost filter-pill active" data-group="all" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 999px;">
+        All Tracks ({{ languages|length }})
       </button>
-      <button class="btn btn-ghost filter-pill" data-category="Web Foundations" style="font-size: 0.8rem; padding: 0.35rem 0.85rem; border-radius: 999px;">
-        Web Foundations
+      <button class="btn btn-ghost filter-pill" data-group="web" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 999px;">
+        🌐 Web Foundations
       </button>
-      <button class="btn btn-ghost filter-pill" data-category="Backend & Scripting" style="font-size: 0.8rem; padding: 0.35rem 0.85rem; border-radius: 999px;">
-        Backend &amp; Scripting
+      <button class="btn btn-ghost filter-pill" data-group="backend" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 999px;">
+        🐍 Scripting &amp; Python
       </button>
-      <button class="btn btn-ghost filter-pill" data-category="Databases" style="font-size: 0.8rem; padding: 0.35rem 0.85rem; border-radius: 999px;">
-        Databases
+      <button class="btn btn-ghost filter-pill" data-group="database" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 999px;">
+        🗄️ Databases (SQL)
       </button>
-      <button class="btn btn-ghost filter-pill" data-category="Systems Stubs" style="font-size: 0.8rem; padding: 0.35rem 0.85rem; border-radius: 999px;">
-        Systems &amp; CLI
+      <button class="btn btn-ghost filter-pill" data-group="systems" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 999px;">
+        ⚙️ Systems &amp; CLI
       </button>
     </div>
-
   </div>
 
-  <!-- Languages and Courses Section -->
-  <div id="coursesCatalogContainer" style="display: flex; flex-direction: column; gap: 3.5rem;">
+  <!-- Symmetrical 3-Column Human-Readable Course Cards Grid -->
+  <div id="coursesCatalogContainer" class="catalogue-courses-grid">
     {% for lang in languages %}
-    <section class="language-track-section" data-category="{{ lang.category }}">
-      
-      <!-- Section Header -->
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <div style="width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--bg-panel); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; color: var(--accent);">
-            {{ lang.icon_svg|safe }}
+      {% for course in lang.courses.all %}
+      <div class="cq-card cq-card-interactive catalogue-course-card" 
+           data-title="{{ course.title|lower }}" 
+           data-desc="{{ course.description|lower }}" 
+           data-lang="{{ lang.name|lower }}" 
+           data-group="{% if 'Web' in lang.category %}web{% elif 'Backend' in lang.category or 'Scripting' in lang.category %}backend{% elif 'Database' in lang.category %}database{% elif 'System' in lang.category or 'CLI' in lang.category %}systems{% else %}other{% endif %}">
+        
+        <div>
+          <!-- Header Row -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span class="catalogue-lang-pill">
+                {{ lang.name }}
+              </span>
+              <span class="catalogue-level-pill">
+                {{ course.level }}
+              </span>
+            </div>
+            <span class="catalogue-xp-pill">
+              +{{ course.xp_reward }} XP
+            </span>
           </div>
-          <div>
-            <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-              {{ lang.name }}
-            </h2>
-            <span style="font-size: 0.82rem; color: var(--text-muted);">{{ lang.summary }}</span>
+
+          <!-- Course Progress Bar (If user has progress) -->
+          {% if course.user_progress.is_started %}
+          <div style="margin-bottom: 1rem; background: var(--bg-panel); padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; font-size: 0.72rem; font-family: var(--font-mono); margin-bottom: 0.35rem;">
+              <span style="color: var(--text-muted);">{{ course.user_progress.completed }} / {{ course.user_progress.total }} Lessons Completed</span>
+              <span style="font-weight: 700; color: {% if course.user_progress.is_completed %}var(--success){% else %}var(--accent){% endif %};">
+                {% if course.user_progress.is_completed %}✓ Mastered{% else %}{{ course.user_progress.pct }}%{% endif %}
+              </span>
+            </div>
+            <div class="lms-progress-track" style="height: 5px;">
+              <div class="lms-progress-fill" style="width: {{ course.user_progress.pct }}%; {% if course.user_progress.is_completed %}background: #10b981;{% endif %}"></div>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Title -->
+          <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.55rem; letter-spacing: -0.02em; line-height: 1.3;">
+            <a href="{% url 'course_detail' course.slug %}" style="color: inherit; text-decoration: none;">
+              {{ course.title }}
+            </a>
+          </h3>
+
+          <!-- Readable Description -->
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+            {{ course.description }}
+          </p>
+
+          <!-- Curriculum Highlights Tags -->
+          <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem;">
+            {% for tag in course.tags_list %}
+            <span style="font-size: 0.74rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.2rem 0.55rem; border-radius: 4px; color: var(--text-secondary);">
+              #{{ tag }}
+            </span>
+            {% endfor %}
           </div>
         </div>
-        <span style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted); background: var(--bg-panel); padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-          {{ lang.category }}
-        </span>
-      </div>
 
-      <!-- Course Cards & Interactive Labs Dual Grid (Eliminates Empty Space) -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 1.75rem; align-items: start;">
-        {% for course in lang.courses.all %}
-        <!-- Card 1: Comprehensive Interactive Curriculum Course -->
-        <div class="course-card-item course-card-enhanced" data-title="{{ course.title|lower }}" data-desc="{{ course.description|lower }}" data-lang="{{ lang.name|lower }}">
-          <div>
-            <!-- Top Metadata Strip -->
-            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-              <div style="display: flex; align-items: center; gap: 0.45rem;">
-                <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: var(--bg-panel); color: var(--accent); border: 1px solid var(--border-subtle); font-weight: 700;">
-                  {{ course.level }}
-                </span>
-                <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent-secondary); background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.25); padding: 0.15rem 0.45rem; border-radius: 4px;">
-                  ⚡ Auto-Graded Sandbox
-                </span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.45rem;">
-                <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
-                  +{{ course.xp_reward }} XP
-                </span>
-                <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 600; color: var(--text-muted);">
-                  ⏱ {{ course.total_minutes }} mins
-                </span>
+        <div>
+          <!-- Telemetry Bar -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; background: var(--bg-panel); padding: 0.75rem 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); margin-bottom: 1.25rem; text-align: center;">
+            <div>
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Duration</div>
+              <div style="font-size: 0.92rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-primary);">
+                ⏱ {{ course.total_minutes }}m
               </div>
             </div>
-
-            <!-- Per-Course Dynamic LMS Progress Strip -->
-            <div class="course-card-progress-strip">
-              <div class="course-progress-header">
-                <span>Course Progress</span>
-                <span class="course-status-pill {% if course.user_progress.is_completed %}course-status-done{% elif course.user_progress.is_started %}course-status-active{% else %}course-status-fresh{% endif %}">
-                  {% if course.user_progress.is_completed %}
-                    ✓ Mastered
-                  {% elif course.user_progress.is_started %}
-                    ⚡ In Progress ({{ course.user_progress.pct }}%)
-                  {% else %}
-                    🌱 Not Started
-                  {% endif %}
-                </span>
-              </div>
-              <div class="lms-progress-track" style="height: 6px; margin-bottom: 0.35rem;">
-                <div class="lms-progress-fill" style="width: {{ course.user_progress.pct }}%; {% if course.user_progress.is_completed %}background: #10b981;{% endif %}"></div>
-              </div>
-              <div style="display: flex; justify-content: space-between; font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-                <span>{{ course.user_progress.completed }} / {{ course.user_progress.total }} Lessons Completed</span>
-                <span>{{ course.user_progress.pct }}%</span>
+            <div>
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Lessons</div>
+              <div style="font-size: 0.92rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent);">
+                📚 {{ course.lessons.count }}
               </div>
             </div>
-
-            <!-- Title & Compelling Summary -->
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
-              <a href="{% url 'course_detail' course.slug %}" style="color: inherit; text-decoration: none;">
-                {{ course.title }}
-              </a>
-            </h3>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
-              {{ course.description }}
-            </p>
-
-            <!-- Feature Badges Strip -->
-            <div class="course-features-strip">
-              <span class="feature-tag-pill">🖥️ 100% In-Browser Code Sandbox</span>
-              <span class="feature-tag-pill">🧪 Automated Tests on Submit</span>
-              <span class="feature-tag-pill">📜 Verified Certificate</span>
-            </div>
-
-            <!-- Curriculum Milestones Preview (Interactive Roadmap) -->
-            <div class="course-milestones-preview">
-              <div class="milestones-header">
-                <span>Course Modules ({{ course.lessons.count }} Lessons)</span>
-                <button type="button" class="btn btn-ghost" style="padding: 0.2rem 0.55rem; font-size: 0.72rem; height: auto;" onclick="toggleSyllabusDrawer('drawer-{{ course.id }}', this)">
-                  Peek Full Syllabus ▾
-                </button>
+            <div>
+              <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Hands-on</div>
+              <div style="font-size: 0.92rem; font-weight: 800; font-family: var(--font-mono); color: #10b981;">
+                🎯 100%
               </div>
-              <div class="milestones-chips-list">
-                {% for lesson in course.lessons.all|slice:":4" %}
-                <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="milestone-item-row" title="Launch Lesson {{ lesson.order }}: {{ lesson.title }}">
-                  <div style="display: flex; align-items: center; gap: 0.5rem; overflow: hidden;">
-                    <span class="milestone-idx">0{{ lesson.order }}</span>
-                    <span class="milestone-name">
-                      {{ lesson.title }}
-                      {% if lesson.id in completed_lesson_ids %}
-                      <span class="milestone-done-mark" title="Lesson Completed">✓</span>
-                      {% endif %}
-                    </span>
-                  </div>
-                  <span class="milestone-meta-pill">
-                    {% if lesson.id in completed_lesson_ids %}
-                    <span style="color: var(--success); font-weight: 700;">Completed ✓</span>
-                    {% else %}
-                    ⏱ {{ lesson.est_minutes }}m &bull; +{{ lesson.xp }} XP
-                    {% endif %}
-                  </span>
-                </a>
-                {% endfor %}
-              </div>
-
-              <!-- Expandable Full Syllabus Drawer -->
-              <div id="drawer-{{ course.id }}" class="course-syllabus-drawer" style="display: none;">
-                <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--accent); margin-bottom: 0.5rem; font-weight: 700;">
-                  Complete {{ course.lessons.count }}-Module Roadmap:
-                </div>
-                <div class="drawer-lessons-grid">
-                  {% for lesson in course.lessons.all %}
-                  <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="drawer-lesson-card">
-                    <div style="display: flex; align-items: center; gap: 0.4rem; overflow: hidden;">
-                      <span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 0.7rem;">#{{ lesson.order }}</span>
-                      <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ lesson.title }}</span>
-                      {% if lesson.id in completed_lesson_ids %}
-                      <span class="milestone-done-mark" style="font-size: 0.7rem;">✓</span>
-                      {% endif %}
-                    </div>
-                    <span style="font-family: var(--font-mono); color: var(--text-muted); font-size: 0.7rem; white-space: nowrap;">
-                      {% if lesson.id in completed_lesson_ids %}<span style="color: var(--success); font-weight: 700;">Done ✓</span>{% else %}{{ lesson.est_minutes }}m{% endif %}
-                    </span>
-                  </a>
-                  {% endfor %}
-                </div>
-              </div>
-            </div>
-
-            <!-- Skill Tags -->
-            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
-              {% for tag in course.tags_list %}
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">
-                #{{ tag }}
-              </span>
-              {% endfor %}
             </div>
           </div>
 
-          <!-- Bottom Action Bar -->
-          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
-            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">⏱ {{ course.total_minutes }} mins &bull; {{ course.lessons.count }} lessons</span>
-            <a href="{% url 'course_detail' course.slug %}" class="btn {% if course.user_progress.is_completed %}btn-ghost{% else %}btn-primary{% endif %}" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
+          <!-- Bottom Action Buttons -->
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+            <a href="{% url 'course_detail' course.slug %}" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.45rem 0.85rem;">
+              Syllabus &rarr;
+            </a>
+            <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary" style="font-size: 0.84rem; padding: 0.45rem 1.25rem; font-weight: 700;">
               {% if course.user_progress.is_completed %}
                 Review Track &rarr;
               {% elif course.user_progress.is_started %}
                 Continue Track &rarr;
               {% else %}
-                Start Course &rarr;
+                Start Track &rarr;
               {% endif %}
             </a>
           </div>
         </div>
-        {% empty %}
-        <div style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem;">
-          New curriculum modules for this track are currently in preparation.
-        </div>
-        {% endfor %}
 
-        <!-- Card 2: Interactive Hands-on Arena & Lab Companion -->
-        {% if lang.slug == 'html' %}
-        <div class="track-companion-card">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(20, 184, 166, 0.12); color: var(--success); border: 1px solid rgba(20, 184, 166, 0.3); font-weight: 700;">
-                ⚡ Arena Drill
-              </span>
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
-                +100 XP Bounty
-              </span>
-            </div>
-
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
-              HTML5 Tag Match &amp; DOM Tree Drill
-            </h3>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-              Test rapid syntax recall and semantic element mapping under timed drill conditions. Match opening and closing tags and verify live DOM tree hierarchies.
-            </p>
-
-            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--success);">✦</span> 10 Fast-Paced Recall Rounds
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--success);">✦</span> Visual DOM Tree Verification
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--success);">✦</span> Zero Setup &bull; Instant Feedback
-              </div>
-            </div>
-
-            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#FastRecall</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#DOMTree</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#SemanticHTML</span>
-            </div>
-          </div>
-
-          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
-            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">🎮 Speed Challenge</span>
-            <a href="{% url 'game_play' 'tag-match' %}" class="btn btn-ghost" style="border-color: rgba(20, 184, 166, 0.4); color: var(--success); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-              Launch Arena Drill 🚀
-            </a>
-          </div>
-        </div>
-
-        {% elif lang.slug == 'css' %}
-        <div class="track-companion-card">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(56, 189, 248, 0.12); color: var(--lang-css); border: 1px solid rgba(56, 189, 248, 0.3); font-weight: 700;">
-                🎮 Visual Game Lab
-              </span>
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
-                +150 XP Bounty
-              </span>
-            </div>
-
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
-              Flexbox Alignment Pond &amp; Layout Lab
-            </h3>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-              Master flex-direction, justify-content, align-items, and CSS Grid algorithms through 24 interactive puzzle levels. Guide items into alignment with zero guesswork.
-            </p>
-
-            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-css);">✦</span> 24 Progressive Puzzle Levels
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-css);">✦</span> Live CSS Property Evaluator
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-css);">✦</span> Visual Box Model Feedback
-              </div>
-            </div>
-
-            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#FlexboxPond</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#JustifyContent</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#AlignItems</span>
-            </div>
-          </div>
-
-          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
-            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">🐸 24 Levels</span>
-            <a href="{% url 'game_play' 'flexbox-pond' %}" class="btn btn-ghost" style="border-color: rgba(56, 189, 248, 0.4); color: var(--lang-css); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-              Play Flexbox Lab 🐸
-            </a>
-          </div>
-        </div>
-
-        {% elif lang.slug == 'javascript' %}
-        <div class="track-companion-card">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(250, 204, 21, 0.12); color: var(--lang-js); border: 1px solid rgba(250, 204, 21, 0.3); font-weight: 700;">
-                🔍 Code Review Drill
-              </span>
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
-                +150 XP Bounty
-              </span>
-            </div>
-
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
-              JS Code Review Bug Hunt &amp; Debugging Lab
-            </h3>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-              Act as a senior engineer reviewing code pull requests. Locate scope errors, resolve broken async promises, and patch faulty event handlers against automated tests.
-            </p>
-
-            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-js);">✦</span> 10 Realistic Broken Codebases
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-js);">✦</span> Async &amp; Event Loop Triage
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-js);">✦</span> Automated Test Assertions
-              </div>
-            </div>
-
-            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#ScopeDebugging</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#AsyncPromises</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#EventHandling</span>
-            </div>
-          </div>
-
-          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
-            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">🐛 10 Bug Cases</span>
-            <a href="{% url 'game_play' 'bug-hunt' %}" class="btn btn-ghost" style="border-color: rgba(250, 204, 21, 0.4); color: var(--lang-js); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-              Start Bug Hunt 🐛
-            </a>
-          </div>
-        </div>
-
-        {% elif lang.slug == 'python' %}
-        <div class="track-companion-card">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(52, 211, 153, 0.12); color: var(--lang-py); border: 1px solid rgba(52, 211, 153, 0.3); font-weight: 700;">
-                🐍 In-Browser REPL
-              </span>
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
-                0ms Latency
-              </span>
-            </div>
-
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
-              Python 3 WebAssembly Sandbox &amp; REPL
-            </h3>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-              Write and execute Python data structures, algorithms, and list comprehensions directly in your browser with Pyodide WebAssembly. Zero install required.
-            </p>
-
-            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-py);">✦</span> Full Python 3.11 Runtime in WebAssembly
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-py);">✦</span> Interactive Terminal REPL &amp; Stdout
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-py);">✦</span> Built-in Data Structure Visualizer
-              </div>
-            </div>
-
-            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#PyodideWasm</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#ListComprehensions</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#Algorithms</span>
-            </div>
-          </div>
-
-          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
-            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">💻 Live REPL</span>
-            <a href="{% url 'playground' %}?lang=python" class="btn btn-ghost" style="border-color: rgba(52, 211, 153, 0.4); color: var(--lang-py); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-              Open Python REPL 💻
-            </a>
-          </div>
-        </div>
-
-        {% elif lang.slug == 'sql' %}
-        <div class="track-companion-card">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(192, 132, 252, 0.12); color: var(--lang-sql); border: 1px solid rgba(192, 132, 252, 0.3); font-weight: 700;">
-                🗄️ In-Memory Database
-              </span>
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
-                Instant Tables
-              </span>
-            </div>
-
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
-              In-Memory SQLite Database &amp; Query Studio
-            </h3>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-              Write complex SELECT, multi-table INNER/LEFT JOIN, and aggregate queries on seeded schemas with real-time tabular grid visualization and query validation.
-            </p>
-
-            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-sql);">✦</span> Full SQLite Engine via WebAssembly
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-sql);">✦</span> Visual Tabular Output Grid
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--lang-sql);">✦</span> Relational Schema &amp; FK Visualizer
-              </div>
-            </div>
-
-            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#RelationalSchema</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#InnerJoins</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#AggregateQueries</span>
-            </div>
-          </div>
-
-          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
-            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">📊 Query Sandbox</span>
-            <a href="{% url 'playground' %}?lang=sql" class="btn btn-ghost" style="border-color: rgba(192, 132, 252, 0.4); color: var(--lang-sql); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-              Open SQL Studio 📊
-            </a>
-          </div>
-        </div>
-
-        {% elif lang.slug == 'c-lang' %}
-        <div class="track-companion-card">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: rgba(99, 102, 241, 0.12); color: var(--accent); border: 1px solid rgba(99, 102, 241, 0.3); font-weight: 700;">
-                🧠 Memory Lab
-              </span>
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
-                Harvard CS50
-              </span>
-            </div>
-
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
-              CS50 Harvard Stack &amp; Heap Memory Visualizer
-            </h3>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-              Inspect pointer dereferencing, stack frames, heap allocations, and memory byte addresses in an interactive architectural diagram studio.
-            </p>
-
-            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--accent);">✦</span> Pointer Address &amp; Dereference Diagrams
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--accent);">✦</span> Stack Frame &amp; Activation Trace
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--accent);">✦</span> Heap Allocation &amp; Buffer Inspection
-              </div>
-            </div>
-
-            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#PointerVisualizer</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#StackHeap</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#CS50Model</span>
-            </div>
-          </div>
-
-          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
-            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">🏛️ Memory Model</span>
-            <a href="{% url 'playground' %}?lang=c" class="btn btn-ghost" style="border-color: rgba(99, 102, 241, 0.4); color: var(--accent); padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-              Launch Memory Lab 🧠
-            </a>
-          </div>
-        </div>
-
-        {% else %}
-        <div class="track-companion-card">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); background: var(--bg-panel); color: var(--accent-secondary); border: 1px solid var(--border-subtle); font-weight: 700;">
-                🎯 Code Predictor
-              </span>
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
-                +100 XP
-              </span>
-            </div>
-
-            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.45rem; letter-spacing: -0.015em;">
-              {{ lang.name }} Syntax Playground &amp; Drills
-            </h3>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-              Read code blocks, predict evaluation outcomes, test mental execution models, and verify syntax directly in the sandbox.
-            </p>
-
-            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--text-secondary);">
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--accent-secondary);">✦</span> Syntax &amp; Execution Output Drills
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--accent-secondary);">✦</span> Instant Result Comparisons
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="color: var(--accent-secondary);">✦</span> Zero Environment Overhead
-              </div>
-            </div>
-
-            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#SyntaxFluency</span>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">#MentalModels</span>
-            </div>
-          </div>
-
-          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.84rem;">
-            <span style="color: var(--text-muted); font-family: var(--font-mono); font-weight: 600;">⚡ Practice Drill</span>
-            <a href="{% url 'game_play' 'output-predictor' %}" class="btn btn-ghost" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-              Play Predictor 🎯
-            </a>
-          </div>
-        </div>
-        {% endif %}
       </div>
-
-    </section>
+      {% endfor %}
     {% empty %}
-    <div style="text-align: center; padding: 4rem; color: var(--text-muted);">
-      No tracks found in database.
-    </div>
+      <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--text-muted);">
+        No tracks found in database.
+      </div>
     {% endfor %}
   </div>
 
+  <!-- Empty Search Results Placeholder -->
   <div id="noSearchResultsMsg" style="display: none; text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
-    <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🔍</div>
-    <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">No matching courses found</div>
-    <p style="font-size: 0.9rem;">Try adjusting your search keywords or category filters.</p>
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+    <div style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">No matching courses found</div>
+    <p style="font-size: 0.9rem;">Try adjusting your search keywords or switching category filters.</p>
+  </div>
+
+  <!-- Practice Arena & Arcade Drills Callout Strip -->
+  <div style="margin-top: 4.5rem; padding: 2.25rem; background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), var(--bg-surface) 75%); border: 1px solid var(--border-medium); border-radius: var(--radius-xl); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;">
+    <div>
+      <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #a5b4fc; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.35rem;">
+        🎮 Interactive Practice Arena &bull; Arcade Drills
+      </div>
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.4rem 0;">
+        Looking for arcade code drills and algorithmic challenges?
+      </h3>
+      <p style="font-size: 0.92rem; color: var(--text-muted); margin: 0; max-width: 650px;">
+        Test your reflexes with 175 levels across 12 in-browser engines in our Practice Arena and interactive Playground Studio.
+      </p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.7rem 1.25rem; font-weight: 700; font-size: 0.9rem;">
+        Playground Studio
+      </a>
+      <a href="{% url 'games_hub' %}" class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-weight: 700; font-size: 0.9rem;">
+        Explore Arcade Drills &rarr;
+      </a>
+    </div>
   </div>
 
 </div>
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
-  window.toggleSyllabusDrawer = function (drawerId, btn) {
-    const drawer = document.getElementById(drawerId);
-    if (!drawer) return;
-    const isHidden = drawer.style.display === 'none' || !drawer.style.display;
-    drawer.style.display = isHidden ? 'block' : 'none';
-    if (btn) {
-      btn.textContent = isHidden ? 'Hide Syllabus ▴' : 'Peek Full Syllabus ▾';
+<style>
+  /* Symmetrical 3-Column Matrix on Desktop, 2 cols on tablet, 1 on mobile */
+  .catalogue-courses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+  @media (max-width: 1200px) {
+    .catalogue-courses-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
-  };
+  }
+  @media (max-width: 768px) {
+    .catalogue-courses-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 
+  .catalogue-course-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.85rem;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-lg);
+    background: radial-gradient(ellipse at top right, rgba(99, 102, 241, 0.04), var(--bg-surface) 75%);
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .catalogue-course-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.4), 0 0 20px -4px rgba(99, 102, 241, 0.15);
+  }
+
+  .catalogue-lang-pill {
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    color: #a5b4fc;
+  }
+
+  .catalogue-level-pill {
+    font-size: 0.72rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-subtle);
+    border: 1px solid rgba(20, 184, 166, 0.25);
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+  }
+
+  .catalogue-xp-pill {
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.1);
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+  }
+
+  .filter-pill.active {
+    background: var(--accent) !important;
+    color: #ffffff !important;
+    border-color: var(--accent) !important;
+  }
+</style>
+
+<script>
   (function () {
     const searchInput = document.getElementById('courseSearchInput');
     const filterPills = document.querySelectorAll('.filter-pill');
-    const sections = document.querySelectorAll('.language-track-section');
-    const cards = document.querySelectorAll('.course-card-item');
+    const cards = document.querySelectorAll('.catalogue-course-card');
     const emptyMsg = document.getElementById('noSearchResultsMsg');
 
-    let activeCategory = 'all';
+    let activeGroup = 'all';
 
     function applyFilters() {
       const q = (searchInput.value || '').trim().toLowerCase();
-      let visibleCardCount = 0;
+      let visibleCount = 0;
 
-      sections.forEach(function (sec) {
-        const secCat = sec.getAttribute('data-category') || '';
-        const matchCat = activeCategory === 'all' || secCat === activeCategory;
-        let secCardsVisible = 0;
+      cards.forEach(function (card) {
+        const title = card.getAttribute('data-title') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const lang = card.getAttribute('data-lang') || '';
+        const grp = card.getAttribute('data-group') || '';
 
-        const secCards = sec.querySelectorAll('.course-card-item');
-        secCards.forEach(function (c) {
-          const title = c.getAttribute('data-title') || '';
-          const desc = c.getAttribute('data-desc') || '';
-          const lang = c.getAttribute('data-lang') || '';
+        const matchGroup = (activeGroup === 'all' || grp === activeGroup);
+        const matchQuery = !q || title.includes(q) || desc.includes(q) || lang.includes(q);
 
-          const matchQuery = !q || title.includes(q) || desc.includes(q) || lang.includes(q);
-
-          if (matchCat && matchQuery) {
-            c.style.display = 'flex';
-            secCardsVisible++;
-            visibleCardCount++;
-          } else {
-            c.style.display = 'none';
-          }
-        });
-
-        sec.style.display = secCardsVisible > 0 ? 'block' : 'none';
+        if (matchGroup && matchQuery) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
       });
 
       if (emptyMsg) {
-        emptyMsg.style.display = visibleCardCount === 0 ? 'block' : 'none';
+        emptyMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
       }
     }
 
@@ -969,7 +500,7 @@
       pill.addEventListener('click', function () {
         filterPills.forEach(p => p.classList.remove('active'));
         pill.classList.add('active');
-        activeCategory = pill.getAttribute('data-category') || 'all';
+        activeGroup = pill.getAttribute('data-group') || 'all';
         applyFilters();
       });
     });
