@@ -103,6 +103,11 @@ class CodeQuestCoreTests(TestCase):
         self.assertContains(res, "First Heading")
         self.assertContains(res, "codeEditor")
         self.assertContains(res, "previewIframe")
+        self.assertContains(res, "Software Models")
+        self.assertContains(res, "software_models.js")
+        self.assertContains(res, "CSS Box Model")
+        self.assertContains(res, "AST &amp; State")
+        self.assertContains(res, "Relational Schema")
 
     def test_decoy_admin_returns_404(self):
         res = self.client.get("/admin/")

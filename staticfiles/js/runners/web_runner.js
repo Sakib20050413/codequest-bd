@@ -124,31 +124,51 @@
 
     renderTestList(null);
 
-    // Live Visual DOM Tree Generator
+    // Live Visual DOM Tree Generator (Robust Dual-Mode: Live Iframe + DOMParser Fallback)
     function updateDomTree() {
-      if (!domTreeContainer || !previewFrame) return;
+      if (!domTreeContainer) return;
       try {
-        const doc = previewFrame.contentDocument || (previewFrame.contentWindow && previewFrame.contentWindow.document);
+        let doc = null;
+        if (previewFrame) {
+          try {
+            doc = previewFrame.contentDocument || (previewFrame.contentWindow && previewFrame.contentWindow.document);
+          } catch (e) {}
+        }
+        // Fallback: parse raw editor code directly via DOMParser to prevent any blank initialization state
+        if (!doc || !doc.body || doc.body.children.length === 0) {
+          const code = editor ? editor.value : '';
+          if (code) {
+            try {
+              doc = new DOMParser().parseFromString(code, 'text/html');
+            } catch (e) {}
+          }
+        }
         if (!doc || !doc.body) return;
 
-        function traverseNode(node) {
+        let totalElements = 0;
+        let maxDepth = 0;
+
+        function traverseNode(node, currentDepth) {
           if (node.nodeType !== Node.ELEMENT_NODE) return '';
           const tag = node.tagName.toLowerCase();
           if (['script', 'style', 'meta', 'link'].includes(tag)) return '';
+
+          totalElements++;
+          if (currentDepth > maxDepth) maxDepth = currentDepth;
 
           let textSample = '';
           for (let i = 0; i < node.childNodes.length; i++) {
             const child = node.childNodes[i];
             if (child.nodeType === Node.TEXT_NODE && child.textContent.trim()) {
               textSample = child.textContent.trim();
-              if (textSample.length > 20) textSample = textSample.substring(0, 20) + '…';
+              if (textSample.length > 24) textSample = textSample.substring(0, 24) + '…';
               break;
             }
           }
 
           let childHtml = '';
           for (let i = 0; i < node.children.length; i++) {
-            childHtml += traverseNode(node.children[i]);
+            childHtml += traverseNode(node.children[i], currentDepth + 1);
           }
 
           const tagColor =
@@ -162,16 +182,30 @@
               ? '#34d399'
               : tag === 'a'
               ? '#ec4899'
+              : tag === 'article' || tag === 'section'
+              ? '#a855f7'
               : '#c084fc';
+
+          let attrHtml = '';
+          if (node.id) {
+            attrHtml += `<span style="font-size:0.68rem; color:#facc15; margin-left:0.35rem; font-family:var(--font-mono);">#${escapeHtml(node.id)}</span>`;
+          }
+          if (node.className && typeof node.className === 'string') {
+            const cls = node.className.trim().split(/\s+/)[0];
+            if (cls) {
+              attrHtml += `<span style="font-size:0.68rem; color:#38bdf8; margin-left:0.25rem; font-family:var(--font-mono);">.${escapeHtml(cls)}</span>`;
+            }
+          }
 
           return `
             <div class="dom-tree-node">
               <span class="dom-tag" style="border-color: ${tagColor}50; color: ${tagColor};">
                 &lt;${tag}&gt;
               </span>
+              ${attrHtml}
               ${
                 textSample
-                  ? `<span style="font-size: 0.75rem; color: var(--text-muted); margin-left: 0.4rem; font-family: var(--font-mono);">&quot;${escapeHtml(
+                  ? `<span style="font-size: 0.74rem; color: var(--text-muted); margin-left: 0.4rem; font-family: var(--font-mono);">&quot;${escapeHtml(
                       textSample
                     )}&quot;</span>`
                   : ''
@@ -183,7 +217,12 @@
 
         let fullTreeHtml = '';
         for (let i = 0; i < doc.body.children.length; i++) {
-          fullTreeHtml += traverseNode(doc.body.children[i]);
+          fullTreeHtml += traverseNode(doc.body.children[i], 1);
+        }
+
+        const domStatsBadge = document.getElementById('domStatsBadge');
+        if (domStatsBadge) {
+          domStatsBadge.textContent = `${totalElements} Element${totalElements === 1 ? '' : 's'} • Max Depth: ${maxDepth}`;
         }
 
         if (!fullTreeHtml.trim()) {
@@ -389,13 +428,20 @@
       return match ? match[1] : '';
     }
 
-    // Initial preview render
+    // Expose runners to global instance
+    global.CodeQuestLessonRunner.updateDomTree = updateDomTree;
+    global.CodeQuestLessonRunner.updatePreview = updatePreview;
+
+    // Initial preview and DOM tree render
     updatePreview();
+    updateDomTree();
   }
 
   global.CodeQuestLessonRunner = {
     init: initLessonRunner,
     escapeHtml: escapeHtml,
     formatTestDescription: formatTestDescription,
+    updateDomTree: null,
+    updatePreview: null,
   };
 })(typeof window !== 'undefined' ? window : this);

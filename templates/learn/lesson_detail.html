@@ -130,8 +130,8 @@
         <button class="study-tab-btn" data-study-tab="task">
           🎯 Task
         </button>
-        <button class="study-tab-btn" data-study-tab="domtree">
-          🌲 Live DOM Tree
+        <button class="study-tab-btn" data-study-tab="models">
+          🏗️ Software Models
         </button>
         <button class="study-tab-btn" data-study-tab="hints">
           🔍 Guided Hints
@@ -202,25 +202,172 @@
           </button>
         </div>
 
-        <!-- Tab 3: Live DOM Tree Visualizer -->
-        <div id="studyTabDomtree" class="study-tab-content" style="display: none;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <div style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
-              Live DOM Node Hierarchy
+        <!-- Tab 3: Software Engineering Living Models Hub -->
+        <div id="studyTabModels" class="study-tab-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <div style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em;">
+                Software Architecture &amp; Models
+              </div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">
+                5 Living engineering models &bull; Interactive mental maps
+              </div>
             </div>
-            <span style="font-size: 0.72rem; color: var(--success); font-family: var(--font-mono);">
+            <span style="font-size: 0.72rem; color: var(--success); font-family: var(--font-mono); background: rgba(16,185,129,0.12); padding: 0.15rem 0.5rem; border-radius: 999px; border: 1px solid rgba(16,185,129,0.25);">
               ● Real-Time Sync
             </span>
           </div>
 
-          <div id="liveDomTreeContainer" style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1.15rem; min-height: 200px; max-height: 400px; overflow-y: auto;">
-            <div style="color: var(--text-muted); font-size: 0.8rem; font-style: italic;">
-              Initializing DOM tree inspector...
+          <!-- Model Navigation Pills Bar -->
+          <div class="models-nav-pills" style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.65rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
+            <button class="model-pill-btn active" data-model="dom">🌳 DOM Tree</button>
+            <button class="model-pill-btn" data-model="box">📦 CSS Box Model</button>
+            <button class="model-pill-btn" data-model="ast">⚡ AST &amp; State</button>
+            <button class="model-pill-btn" data-model="schema">🗄️ Relational Schema</button>
+            <button class="model-pill-btn" data-model="arch">🏛️ 3-Tier Architecture</button>
+          </div>
+
+          <!-- Pane 1: Live DOM Tree (Document Object Model) -->
+          <div id="modelPaneDom" class="model-pane-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted);">
+              <span id="domStatsBadge">0 Elements &bull; Depth: 0</span>
+              <span style="color: #38bdf8;">HTML5 Living DOM</span>
+            </div>
+            <div id="liveDomTreeContainer" style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1rem; min-height: 220px; max-height: 400px; overflow-y: auto;">
+              <!-- Populated live by DOM parser -->
+            </div>
+            <div style="margin-top: 0.75rem; font-size: 0.76rem; color: var(--text-muted); line-height: 1.45;">
+              💡 The Document Object Model (DOM) is an in-memory tree representing every tag, attribute, and text node rendered by the browser engine.
             </div>
           </div>
 
-          <div style="margin-top: 1rem; font-size: 0.78rem; color: var(--text-muted); line-height: 1.45;">
-            💡 As you type HTML in the code editor, this visual tree outlines your document structure in real time.
+          <!-- Pane 2: CSS Box Model (Layout & Geometry Model) -->
+          <div id="modelPaneBox" class="model-pane-content" style="display: none;">
+            <div style="background: var(--bg-panel); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem; border: 1px solid var(--border-subtle);">
+              <div class="box-model-preview" style="display: flex; justify-content: center; align-items: center;">
+                <div id="inBmMarginLayer" class="bm-layer bm-margin" style="background: rgba(245, 158, 11, 0.12); border: 1px dashed #f59e0b; padding: 24px; border-radius: 8px; text-align: center; transition: all 0.15s ease;">
+                  <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 0.25rem;">Margin (<span id="inlineLabelMargin">24px</span>)</span>
+                  <div id="inBmBorderLayer" class="bm-layer bm-border" style="background: rgba(6, 182, 212, 0.15); border: 2px solid #06b6d4; border-radius: 6px; text-align: center; transition: all 0.15s ease;">
+                    <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700; margin-bottom: 0.25rem;">Border (<span id="inlineLabelBorder">2px</span>)</span>
+                    <div id="inBmPaddingLayer" class="bm-layer bm-padding" style="background: rgba(16, 185, 129, 0.15); padding: 20px; border-radius: 4px; text-align: center; transition: all 0.15s ease;">
+                      <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: #10b981; font-weight: 700; margin-bottom: 0.25rem;">Padding (<span id="inlineLabelPadding">20px</span>)</span>
+                      <div id="inBmContentLayer" class="bm-layer bm-content" style="background: rgba(99, 102, 241, 0.25); border: 1px solid #6366f1; padding: 0.5rem 1rem; border-radius: 4px; text-align: center; min-width: 140px;">
+                        <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #ffffff; font-weight: 700;">Content (240 × 56px)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mathematical Breakdown Card -->
+            <div id="boxModelMathDisplay" style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; font-family: var(--font-mono); font-size: 0.74rem; margin-bottom: 1rem;">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Box-Sizing Mode Toggle -->
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; padding: 0.5rem 0.75rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 0.78rem;">
+              <span style="color: var(--text-muted); font-weight: 700;">Box Sizing:</span>
+              <label style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                <input type="radio" name="boxSizingMode" value="border-box" checked />
+                <span>border-box</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                <input type="radio" name="boxSizingMode" value="content-box" />
+                <span>content-box</span>
+              </label>
+            </div>
+
+            <!-- Sliders -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1rem;">
+              <div>
+                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: #f59e0b;">
+                  <span>Margin</span>
+                  <span id="inlineValMargin">24px</span>
+                </label>
+                <input type="range" id="inlineInputMargin" min="0" max="48" value="24" style="width: 100%; accent-color: #f59e0b;" />
+              </div>
+              <div>
+                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: #06b6d4;">
+                  <span>Border Width</span>
+                  <span id="inlineValBorder">2px</span>
+                </label>
+                <input type="range" id="inlineInputBorder" min="0" max="12" value="2" style="width: 100%; accent-color: #06b6d4;" />
+              </div>
+              <div>
+                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: #10b981;">
+                  <span>Padding</span>
+                  <span id="inlineValPadding">20px</span>
+                </label>
+                <input type="range" id="inlineInputPadding" min="0" max="48" value="20" style="width: 100%; accent-color: #10b981;" />
+              </div>
+              <div>
+                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: var(--accent);">
+                  <span>Border Radius</span>
+                  <span id="inlineLabelRadius">8px</span>
+                </label>
+                <input type="range" id="inlineInputRadius" min="0" max="24" value="8" style="width: 100%; accent-color: var(--accent);" />
+              </div>
+            </div>
+
+            <!-- CSS Output Box -->
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; background: var(--bg-surface); padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+              <code id="inlineBoxModelCssOutput" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); white-space: pre-wrap; word-break: break-all;">
+box-sizing: border-box;
+margin: 24px; padding: 20px; border: 2px solid;
+              </code>
+              <button id="inlineCopyBoxCssBtn" class="btn btn-primary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; flex-shrink: 0;">
+                Copy CSS
+              </button>
+            </div>
+          </div>
+
+          <!-- Pane 3: AST & State Flow Model -->
+          <div id="modelPaneAst" class="model-pane-content" style="display: none;">
+            <div style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.65rem;">
+              Abstract Syntax Tree &bull; In-Memory Compilation Tokens
+            </div>
+            <div id="astNodesContainer" style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem; max-height: 220px; overflow-y: auto; margin-bottom: 1rem;">
+              <!-- Populated by JS -->
+            </div>
+
+            <div style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.45rem;">
+              Call Stack &amp; Execution Frames
+            </div>
+            <div id="callStackContainer" style="margin-bottom: 1rem;">
+              <!-- Populated by JS -->
+            </div>
+
+            <div style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.45rem;">
+              Lexical Scope Chain Inspector
+            </div>
+            <div id="scopeChainContainer" style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Pane 4: Relational Schema Model -->
+          <div id="modelPaneSchema" class="model-pane-content" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">
+              <span>Relational Tables &bull; PostgreSQL / SQLite</span>
+              <span style="color: #10b981;">ACID Safe</span>
+            </div>
+            <div id="relationalTablesList" style="max-height: 340px; overflow-y: auto;">
+              <!-- Populated by JS -->
+            </div>
+            <div style="margin-top: 0.75rem; font-size: 0.74rem; color: var(--text-muted); line-height: 1.45;">
+              💡 Relational databases organize persistent state into mathematical relations with indexed Primary Keys ($O(1)$ lookup) and Foreign Key integrity.
+            </div>
+          </div>
+
+          <!-- Pane 5: 3-Tier Architecture Model -->
+          <div id="modelPaneArch" class="model-pane-content" style="display: none;">
+            <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.75rem;">
+              Full-Stack 3-Tier Architecture Topology
+            </div>
+            <div id="architectureTiersContainer">
+              <!-- Populated by JS -->
+            </div>
           </div>
         </div>
 
@@ -452,6 +599,7 @@
 
 {% block extra_scripts %}
 <script src="{% static 'js/runners/web_runner.js' %}"></script>
+<script src="{% static 'js/software_models.js' %}"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const rawEditor = document.getElementById('codeEditor');
@@ -480,11 +628,14 @@
         lineWrapping: true
       });
 
-      // Synchronize changes to textarea & mechanical click audio
+      // Synchronize changes to textarea, mechanical click audio, and living software models
       cmInstance.on('change', function () {
         cmInstance.save();
         if (sfxEnabled && window.CodeQuest && window.CodeQuest.playMechanicalClick) {
           window.CodeQuest.playMechanicalClick();
+        }
+        if (window.updateAllSoftwareModels) {
+          window.updateAllSoftwareModels();
         }
       });
 
@@ -581,6 +732,7 @@
     });
 
     // Draggable Workspace Splitter
+    const wsContainer = document.getElementById('workspaceContainer');
     const splitter = document.getElementById('workspaceSplitter');
     const panelInst = document.getElementById('panelInstructions');
 
@@ -623,12 +775,13 @@
       });
     }
 
-    // Study Tabs (Left Pane: Concept / Task / DOM Tree / Hints)
+    // Study Tabs (Left Pane: Concept / Task / Software Models / Hints)
     const studyTabBtns = document.querySelectorAll('.study-tab-btn');
     const studyContents = {
       concept: document.getElementById('studyTabConcept'),
       task: document.getElementById('studyTabTask'),
-      domtree: document.getElementById('studyTabDomtree'),
+      models: document.getElementById('studyTabModels') || document.getElementById('studyTabDomtree'),
+      domtree: document.getElementById('studyTabModels') || document.getElementById('studyTabDomtree'),
       hints: document.getElementById('studyTabHints'),
     };
 
@@ -753,6 +906,13 @@
       });
     }
 
+    // Initialize Living Software Architecture & Models Studio
+    if (window.CodeQuestSoftwareModels) {
+      window.CodeQuestSoftwareModels.init({
+        langSlug: '{{ course.language.slug|default:"html" }}'
+      });
+    }
+
     // Reset starter code in CodeMirror
     const resetBtn = document.getElementById('resetCodeBtn');
     if (resetBtn && cmInstance) {
@@ -819,6 +979,29 @@
     border-color: var(--accent);
     color: var(--accent);
     font-weight: 600;
+  }
+  .model-pill-btn {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    padding: 0.32rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .model-pill-btn:hover {
+    background: var(--bg-panel);
+    color: var(--text-primary);
+    border-color: var(--border-medium);
+  }
+  .model-pill-btn.active {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+    font-weight: 700;
   }
 </style>
 {% endblock %}
