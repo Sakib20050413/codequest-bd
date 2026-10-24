@@ -259,6 +259,11 @@
       _origLog.apply(console, args);
       window.parent.postMessage({ type: 'cq_console', level: 'log', msg: args.join(' ') }, '*');
     };
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' || e.keyCode === 27) {
+        window.parent.postMessage({ type: 'cq_esc' }, '*');
+      }
+    });
   <\/script>
   <style>
     body {

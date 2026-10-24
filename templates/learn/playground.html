@@ -71,8 +71,8 @@
 
       <!-- Right: Exit Zen Button with Keyboard Esc Badge -->
       <div style="display: flex; align-items: center; gap: 0.5rem;">
-        <button id="exitZenBtn" class="btn" style="padding: 0.35rem 0.95rem; font-size: 0.82rem; font-weight: 700; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;" title="Exit Zen Fullscreen (Press Esc)">
-          ✕ Exit Zen <kbd style="background: rgba(0,0,0,0.35); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.72rem; color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3);">Esc</kbd>
+        <button id="exitZenBtn" class="btn" style="padding: 0.42rem 1.15rem; font-size: 0.84rem; font-weight: 800; background: #ef4444; border: 1px solid #f87171; color: #ffffff; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(239, 68, 68, 0.45);" title="Exit Zen Fullscreen (Press Esc)">
+          ✕ Exit Zen <kbd style="background: rgba(0,0,0,0.4); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.72rem; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.4);">Esc</kbd>
         </button>
       </div>
     </div>
@@ -127,7 +127,7 @@
     </div>
 
     <!-- PRIMARY MULTI-LANGUAGE STUDIO SELECTOR BAR -->
-    <div style="margin-bottom: 1.25rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.65rem 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+    <div class="studio-selector-bar" style="margin-bottom: 1.25rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.65rem 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
       <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
         <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-right: 0.25rem;">
           Studio Environment:
@@ -168,7 +168,7 @@
 
     {% if selected_task %}
     <!-- Active Coding Task HUD Banner -->
-    <div class="cq-card" style="margin-bottom: 1.25rem; padding: 1.25rem 1.5rem; border: 1px solid rgba(99, 102, 241, 0.4); background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.1), var(--bg-surface) 75%);">
+    <div class="cq-card task-hud-banner" style="margin-bottom: 1.25rem; padding: 1.25rem 1.5rem; border: 1px solid rgba(99, 102, 241, 0.4); background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.1), var(--bg-surface) 75%);">
       <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 0.65rem;">
         <div style="display: flex; align-items: center; gap: 0.5rem;">
           <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #ffffff; background: var(--accent-gradient-btn); padding: 0.2rem 0.55rem; border-radius: 4px;">
@@ -403,6 +403,13 @@
     </div>
   </div>
 
+  <!-- Floating Always-On-Top Exit Zen Pill (Maximum Z-Index 2147483647 Failsafe) -->
+  <button id="floatingZenExitPill" class="floating-zen-exit-pill" title="Exit Zen Fullscreen Mode (Press Esc)">
+    <span class="zen-exit-pill-icon">✕</span>
+    <span class="zen-exit-pill-text">Exit Zen Mode</span>
+    <kbd class="zen-exit-pill-kbd">Esc</kbd>
+  </button>
+
 </div>
 
 <style>
@@ -411,32 +418,48 @@
   }
   .zen-hud-bar {
     display: none;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10, 15, 26, 0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.65rem 1.25rem;
-    margin-bottom: 1rem;
-    justify-content: space-between;
+    height: 52px;
+    min-height: 52px;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-strong);
+    padding: 0 1.25rem;
     align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    z-index: 2147483645 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    flex-shrink: 0 !important;
   }
   .zen-fullscreen-root {
     position: fixed !important;
     inset: 0 !important;
-    z-index: 9999 !important;
-    background: #090d16 !important;
-    padding: 1rem 1.5rem !important;
-    overflow-y: auto !important;
     width: 100vw !important;
     height: 100vh !important;
+    z-index: 2147483640 !important;
+    background: var(--bg-canvas) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    box-shadow: none !important;
   }
   .zen-fullscreen-root .zen-hud-bar {
     display: flex !important;
   }
-  .zen-fullscreen-root .standard-toolbar {
+  .zen-fullscreen-root .standard-toolbar,
+  .zen-fullscreen-root .studio-selector-bar,
+  .zen-fullscreen-root .task-hud-banner {
     display: none !important;
+  }
+  .zen-fullscreen-root .zen-workspace-body {
+    flex: 1 1 0% !important;
+    height: calc(100vh - 52px) !important;
+    max-height: calc(100vh - 52px) !important;
+    padding: 0.75rem 1rem !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    display: grid !important;
   }
   body.zen-locked {
     overflow: hidden !important;
@@ -645,7 +668,17 @@
         });
         cm.setOption('extraKeys', {
           'Ctrl-Enter': function () { runBtn.click(); },
-          'Cmd-Enter': function () { runBtn.click(); }
+          'Cmd-Enter': function () { runBtn.click(); },
+          'Esc': function () {
+            if (studioRoot && studioRoot.classList.contains('zen-fullscreen-root')) {
+              toggleZenMode();
+            }
+          },
+          'Escape': function () {
+            if (studioRoot && studioRoot.classList.contains('zen-fullscreen-root')) {
+              toggleZenMode();
+            }
+          }
         });
       });
     }
@@ -1642,6 +1675,11 @@ pwd
             window.onerror = function(msg, url, line) {
               forward('error', ['Runtime Error: ' + msg + ' (Line ' + line + ')']);
             };
+            window.addEventListener('keydown', function(e) {
+              if (e.key === 'Escape' || e.keyCode === 27) {
+                window.parent.postMessage({ type: 'cq_esc' }, '*');
+              }
+            });
           })();
         <\/script>
       `;
@@ -2077,6 +2115,8 @@ sys.stderr = sys_err
     const zenClearTermBtn = document.getElementById('zenClearTermBtn');
     const zenLayoutBtn = document.getElementById('zenLayoutBtn');
 
+    const floatingZenExitPill = document.getElementById('floatingZenExitPill');
+
     function toggleZenMode() {
       if (!studioRoot) return;
       const isZen = studioRoot.classList.toggle('zen-fullscreen-root');
@@ -2084,7 +2124,11 @@ sys.stderr = sys_err
 
       if (zenBtn) {
         zenBtn.innerHTML = isZen ? '✕ Exit Zen' : '⛶ Zen Mode';
-        zenBtn.style.borderColor = isZen ? 'var(--accent)' : '';
+        zenBtn.style.borderColor = isZen ? '#ef4444' : '';
+      }
+
+      if (floatingZenExitPill) {
+        floatingZenExitPill.style.display = isZen ? 'inline-flex' : 'none';
       }
 
       setTimeout(() => {
@@ -2097,16 +2141,23 @@ sys.stderr = sys_err
 
     if (zenBtn) zenBtn.onclick = toggleZenMode;
     if (exitZenBtn) exitZenBtn.onclick = toggleZenMode;
+    if (floatingZenExitPill) floatingZenExitPill.onclick = toggleZenMode;
     if (zenRunBtn) zenRunBtn.onclick = () => runBtn.click();
     if (zenResetBtn) zenResetBtn.onclick = () => resetBtn.click();
     if (zenClearTermBtn) zenClearTermBtn.onclick = () => termClearBtn.click();
     if (zenLayoutBtn) zenLayoutBtn.onclick = () => layoutBtn.click();
 
-    window.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && studioRoot && studioRoot.classList.contains('zen-fullscreen-root')) {
-        toggleZenMode();
+    function handleGlobalZenEscape(e) {
+      if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+        if (studioRoot && studioRoot.classList.contains('zen-fullscreen-root')) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleZenMode();
+        }
       }
-    });
+    }
+    window.addEventListener('keydown', handleGlobalZenEscape, true);
+    document.addEventListener('keydown', handleGlobalZenEscape, true);
 
     layoutBtn.onclick = () => {
       isStacked = !isStacked;
@@ -2117,10 +2168,15 @@ sys.stderr = sys_err
       if (cmCode) cmCode.refresh();
     };
 
-    // Console message listener for web sandbox
+    // Console and Event message listener for web sandbox
     window.addEventListener('message', e => {
-      if (e.data && e.data.type === 'cq_console') {
+      if (!e.data) return;
+      if (e.data.type === 'cq_console') {
         addConsoleEntry(e.data.level, e.data.message);
+      } else if (e.data.type === 'cq_esc') {
+        if (studioRoot && studioRoot.classList.contains('zen-fullscreen-root')) {
+          toggleZenMode();
+        }
       }
     });
 

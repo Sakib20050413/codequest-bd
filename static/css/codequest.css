@@ -1044,7 +1044,7 @@ body.zen-locked .ambient-grid {
   inset: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: 99999 !important;
+  z-index: 2147483640 !important;
   background: var(--bg-canvas) !important;
   display: flex !important;
   flex-direction: column !important;
@@ -1065,20 +1065,23 @@ body.zen-locked .ambient-grid {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  z-index: 100;
+  z-index: 2147483645 !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0 !important;
 }
 
 .zen-fullscreen-root .zen-hud-bar {
   display: flex !important;
 }
 
-/* Hide standard page toolbars when Zen is active */
-.zen-fullscreen-root .standard-toolbar {
+/* Hide standard page toolbars & banners when Zen is active */
+.zen-fullscreen-root .standard-toolbar,
+.zen-fullscreen-root .studio-selector-bar,
+.zen-fullscreen-root .task-hud-banner {
   display: none !important;
 }
 
-/* Zen Workspace Body takes remaining viewport height */
+/* Zen Workspace Body takes remaining viewport height cleanly */
 .zen-fullscreen-root .zen-workspace-body {
   flex: 1 1 0% !important;
   height: calc(100vh - 52px) !important;
@@ -1105,13 +1108,85 @@ body.zen-locked .ambient-grid {
   height: 100% !important;
 }
 
+/* Floating Always-On-Top Exit Zen Pill (Maximum Z-Index 2147483647 Failsafe) */
+.floating-zen-exit-pill {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 28px !important;
+  z-index: 2147483647 !important;
+  display: none !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  padding: 0.55rem 1.15rem !important;
+  background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
+  color: #ffffff !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 0.84rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 8px 30px rgba(239, 68, 68, 0.5), 0 2px 10px rgba(0, 0, 0, 0.6) !important;
+  cursor: pointer !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease !important;
+  pointer-events: auto !important;
+  text-decoration: none !important;
+}
+
+.floating-zen-exit-pill:hover {
+  transform: translateY(-2px) scale(1.04) !important;
+  box-shadow: 0 12px 35px rgba(239, 68, 68, 0.7), 0 4px 12px rgba(0, 0, 0, 0.7) !important;
+  background: linear-gradient(135deg, #f87171, #dc2626) !important;
+}
+
+.floating-zen-exit-pill:active {
+  transform: translateY(0) scale(0.97) !important;
+}
+
+.floating-zen-exit-pill .zen-exit-pill-icon {
+  font-size: 1rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+.floating-zen-exit-pill .zen-exit-pill-text {
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.floating-zen-exit-pill .zen-exit-pill-kbd {
+  background: rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 4px !important;
+  padding: 0.15rem 0.45rem !important;
+  font-size: 0.72rem !important;
+  color: #fecaca !important;
+}
+
+/* Floating pill display trigger */
+body.zen-locked .floating-zen-exit-pill,
+.zen-fullscreen-root .floating-zen-exit-pill {
+  display: inline-flex !important;
+  animation: zenPillPulse 2.5s infinite ease-in-out !important;
+}
+
+@keyframes zenPillPulse {
+  0%, 100% {
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5), 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 10px 32px rgba(239, 68, 68, 0.7), 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+}
+
 /* Backward compatibility for legacy zen-active class */
 .zen-active {
   position: fixed !important;
   inset: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: 99999 !important;
+  z-index: 2147483640 !important;
   background: var(--bg-canvas) !important;
   padding: 1rem !important;
   margin: 0 !important;
