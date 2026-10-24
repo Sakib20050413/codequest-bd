@@ -183,3 +183,30 @@ epeat(auto-fit, minmax(340px, 1fr)) on desktop widths (~1800px) created 5 column
   - live_tracks_grid.png: Verified radiant headline, 3x2 symmetrical matrix, and individual course descriptions.
   - debug_filter_web.png: Verified filtering tabs retain exact grid responsiveness when toggled.
 - **Test Suite**: python manage.py test learn executed with 14/14 tests passing.
+
+
+---
+
+## 7. TURN 18: ZERO-BENGALI UI AUDIT & HARMONIOUS CYAN/INDIGO ONBOARDING PALETTE (2026-10-24)
+
+### 1. Problem Diagnosis & User Feedback
+The user identified two issues with the Beginner Onboarding Hero section:
+1. **Mixed Bengali Text in UI**:
+   - The eyebrow pill displayed ১০০% নতুনদের জন্য alongside English text.
+   - The user mandated: 'sob english a rako website a' (all website UI content must strictly be in 100% English).
+2. **Discordant Red/Orange & Bright Green Palette**:
+   - The two side-by-side cards used a stark traffic-light combination: Card 1 had heavy orange borders (#f97316) and solid red-orange buttons (#ea580c), while Card 2 had bright green borders (#10b981) and solid green buttons (#059669).
+   - Side by side, this clashed violently with the dark-mode aesthetic of the platform.
+
+### 2. Design System Alignment (Linear & Vercel Standards)
+- **100% English UI Guarantee**:
+  - Removed all non-English characters across all templates (landing.html, 404.html, 500.html, playground.html).
+  - Audited via automated regex scanner: 0 non-English characters remain in template copy.
+- **Harmonious Dual-Tone Developer Palette**:
+  - **Card 1 (Web Foundations - HTML & CSS)**: Refactored to Electric Cyan (#0ea5e9 / #38bdf8) with a glassmorphism icon container, VISUAL • UI • FAST PAYOFF pill, and an electric cyan gradient button (linear-gradient(135deg, #0284c7, #0369a1)).
+  - **Card 2 (Algorithmic Logic - Python 3)**: Refactored to Royal Indigo (#6366f1 / #818cf8) with a glassmorphism icon container, LOGIC • AI • SCRIPTING pill, and an indigo gradient button (linear-gradient(135deg, #4f46e5, #4338ca)).
+  - Replaced solid primary flat blocks with subtle ambient radial backdrops, illuminated 1px top accent line, and monospace feature metric boxes.
+
+### 3. Verification
+- **Playwright MCP**: Captured live_onboarding_refined.png, verifying complete visual cohesion, zero Bengali glyphs in UI, and balanced responsive typography.
+- **Automated Tests**: 14/14 Django tests passed (Ran 14 tests in 13.447s - OK).

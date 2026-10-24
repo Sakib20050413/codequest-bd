@@ -963,20 +963,20 @@ class BankAccount:
 
     def deposit(self, amount):
         self.balance += amount
-        print(f"[+৳{amount:,}] Deposited to {self.owner}'s account.")
+        print(f"[+${amount:,}] Deposited to {self.owner}'s account.")
 
     def withdraw(self, amount):
         if amount > self.balance:
-            print(f"[!] Insufficient funds! Current balance: ৳{self.balance:,}")
+            print(f"[!] Insufficient funds! Current balance: ${self.balance:,}")
             return False
         self.balance -= amount
-        print(f"[-৳{amount:,}] Withdrawn. Remaining: ৳{self.balance:,}")
+        print(f"[-${amount:,}] Withdrawn. Remaining: ${self.balance:,}")
         return True
 
 acc = BankAccount("Sakib", 5000)
 acc.deposit(2500)
 acc.withdraw(1200)
-print(f"Final Balance for {acc.owner}: ৳{acc.balance:,}")
+print(f"Final Balance for {acc.owner}: ${acc.balance:,}")
 `
         },
         blank: {
@@ -1891,9 +1891,9 @@ sys.stderr = sys_err
       // Default demo table render
       const cols = ['id', 'customer_name', 'total_orders', 'total_spent'];
       const vals = [
-        [1, 'Ayesha Siddiqua', 3, '৳63,000'],
-        [3, 'Sadia Akter', 1, '৳22,000'],
-        [2, 'Mahmudul Karim', 1, '৳8,500']
+        [1, 'Ayesha Siddiqua', 3, '$63,000'],
+        [3, 'Sadia Akter', 1, '$22,000'],
+        [2, 'Mahmudul Karim', 1, '$8,500']
       ];
       renderSqlTable(cols, vals);
       sqlDataGridArea.style.display = 'block';

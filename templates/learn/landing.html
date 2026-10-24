@@ -110,7 +110,7 @@
           <div id="heroLineNumbers" style="padding: 1.15rem 0.65rem 1.15rem 0.95rem; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; color: #475569; user-select: none; text-align: right; border-right: 1px solid rgba(255, 255, 255, 0.05); background: #07090e;">
             1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7
           </div>
-          <textarea id="heroEditableCode" class="hero-code-area" style="flex: 1; min-height: 180px; max-height: 220px; background: transparent; color: #34d399; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; border: none; outline: none; padding: 1.15rem 1.25rem; resize: none; tab-size: 2; overflow-y: auto;" spellcheck="false"># Welcome to Programming! (যে কেউ কোড করতে পারে)
+          <textarea id="heroEditableCode" class="hero-code-area" style="flex: 1; min-height: 180px; max-height: 220px; background: transparent; color: #34d399; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; border: none; outline: none; padding: 1.15rem 1.25rem; resize: none; tab-size: 2; overflow-y: auto;" spellcheck="false"># Welcome to Programming! (Anyone can code)
 name = "Future Developer"
 print(f"Hello, {name}!")
 print("Welcome to CodeQuest BD — you are ready to build!")</textarea>
@@ -205,73 +205,108 @@ print("Welcome to CodeQuest BD — you are ready to build!")</textarea>
     </div>
   </div>
 
-  <!-- BEGINNER ONBOARDING HERO: Where Should You Start? -->
-  <section style="margin: 2.5rem 0 4.5rem; padding: 2.25rem; background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: var(--radius-xl); box-shadow: var(--shadow-card);">
-    <div style="text-align: center; max-width: 680px; margin: 0 auto 2rem;">
-      <div style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); padding: 0.25rem 0.75rem; border-radius: 999px; margin-bottom: 0.65rem;">
-        <span>👋</span> Zero Experience Required &bull; ১০০% নতুনদের জন্য
+  <!-- BEGINNER ONBOARDING HERO: Where Should You Start? (Harmonious Cyan & Indigo Palette) -->
+  <section style="margin: 3.5rem 0 5rem; padding: 3rem 2.5rem; background: radial-gradient(ellipse at top center, rgba(99, 102, 241, 0.06), var(--bg-surface) 70%); border: 1px solid var(--border-medium); border-radius: var(--radius-xl); box-shadow: var(--shadow-card); position: relative; overflow: hidden;">
+    <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 450px; height: 1px; background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.4), transparent); pointer-events: none;"></div>
+
+    <div style="text-align: center; max-width: 680px; margin: 0 auto 2.5rem;">
+      <div class="section-eyebrow-pill" style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.22); margin-bottom: 0.85rem;">
+        <span class="pill-pulse-dot" style="background: #818cf8; box-shadow: 0 0 10px #818cf8;"></span>
+        <span style="color: #a5b4fc;">Zero Experience Required &bull; 100% Beginner Friendly</span>
       </div>
-      <h2 style="font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 0.5rem;">
-        New to programming? Start with one of these 2 paths:
+      <h2 style="font-size: clamp(1.9rem, 3.4vw, 2.5rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; line-height: 1.2; margin: 0 0 0.65rem 0;">
+        New to programming? <span style="background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Choose your first step</span>
       </h2>
-      <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
-        You don't need math or prior computer knowledge. Pick the path that sounds fun, write your first code in 3 minutes, and see instant results.
+      <p style="font-size: 0.98rem; color: var(--text-muted); line-height: 1.65; margin: 0;">
+        You do not need math or prior computer science knowledge. Pick what excites you, run your first line of code in 3 minutes, and see instant live results.
       </p>
     </div>
 
-    <!-- 2 Simple Choice Cards -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-      <!-- Path 1: Visual Web (HTML5) -->
-      <div class="cq-card cq-card-interactive" style="padding: 1.75rem; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.03); display: flex; flex-direction: column; justify-content: space-between;">
+    <!-- 2 Choice Cards: Electric Cyan (Web) & Deep Indigo (Python) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem;">
+      
+      <!-- Path 1: Visual Web (HTML5 & CSS3) - Electric Cyan Theme -->
+      <div class="cq-card cq-card-interactive" style="padding: 2.25rem; border: 1px solid rgba(56, 189, 248, 0.22); background: radial-gradient(circle at top left, rgba(14, 165, 233, 0.08), transparent 70%), var(--bg-surface); display: flex; flex-direction: column; justify-content: space-between; border-radius: var(--radius-lg); position: relative; overflow: hidden;">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <span style="font-size: 2.2rem;">🌐</span>
-            <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #f97316; background: rgba(249, 115, 22, 0.12); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(249, 115, 22, 0.3);">
-              Recommended for Visual Learners
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); display: flex; align-items: center; justify-content: center; font-size: 1.55rem;">
+              🌐
+            </div>
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #38bdf8; background: rgba(56, 189, 248, 0.08); padding: 0.3rem 0.75rem; border-radius: 999px; border: 1px solid rgba(56, 189, 248, 0.25); letter-spacing: 0.04em;">
+              VISUAL &bull; UI &bull; FAST PAYOFF
             </span>
           </div>
-          <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
+
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.55rem; letter-spacing: -0.02em;">
             Web Foundations (HTML &amp; CSS)
           </h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-            See what you build immediately. Learn how web pages are structured with headings, buttons, and images. Perfect if you want to create your own website fast.
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.4rem;">
+            See what you build immediately. Learn how real websites construct pages with buttons, navigation bars, and responsive styling. Ideal if you love visual creation.
           </p>
-          <div style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-secondary); margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem;">
-            <span>⏱ Lesson 1 takes only 3 minutes</span>
-            <span>✓ Pre-filled starter template</span>
-            <span>⚡ +40 XP on your first lesson</span>
+
+          <div style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--text-secondary); margin-bottom: 1.75rem; display: flex; flex-direction: column; gap: 0.55rem; background: var(--bg-panel); padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="color: #38bdf8;">⏱</span>
+              <span>Lesson 1 takes only 3 minutes</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="color: #38bdf8;">✓</span>
+              <span>Pre-filled starter code template</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="color: #38bdf8;">⚡</span>
+              <span style="color: #38bdf8; font-weight: 700;">+40 XP on your first lesson</span>
+            </div>
           </div>
         </div>
-        <a href="/learn/html-core/page-skeleton/" class="btn btn-primary" style="padding: 0.65rem 1.25rem; font-size: 0.9rem; font-weight: 700; justify-content: center; background: #ea580c; border-color: #f97316;">
-          Start Lesson 1: Build a Web Page &rarr;
+
+        <a href="/learn/html-core/page-skeleton/" class="btn" style="padding: 0.8rem 1.4rem; font-size: 0.92rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border-radius: var(--radius-md); background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border: 1px solid rgba(56, 189, 248, 0.45); color: #ffffff; box-shadow: 0 4px 16px rgba(2, 132, 199, 0.28); transition: all 0.2s ease;">
+          <span>Start Lesson 1: Build a Web Page</span>
+          <span style="font-size: 1.1rem; line-height: 1;">&rarr;</span>
         </a>
       </div>
 
-      <!-- Path 2: Logic & Automation (Python 3) -->
-      <div class="cq-card cq-card-interactive" style="padding: 1.75rem; border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.03); display: flex; flex-direction: column; justify-content: space-between;">
+      <!-- Path 2: Logic & Automation (Python 3) - Royal Indigo Theme -->
+      <div class="cq-card cq-card-interactive" style="padding: 2.25rem; border: 1px solid rgba(129, 140, 248, 0.22); background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 70%), var(--bg-surface); display: flex; flex-direction: column; justify-content: space-between; border-radius: var(--radius-lg); position: relative; overflow: hidden;">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <span style="font-size: 2.2rem;">🐍</span>
-            <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.3);">
-              Recommended for Problem Solvers
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.25); display: flex; align-items: center; justify-content: center; font-size: 1.55rem;">
+              🐍
+            </div>
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #a5b4fc; background: rgba(99, 102, 241, 0.08); padding: 0.3rem 0.75rem; border-radius: 999px; border: 1px solid rgba(99, 102, 241, 0.25); letter-spacing: 0.04em;">
+              LOGIC &bull; AI &bull; SCRIPTING
             </span>
           </div>
-          <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
+
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.55rem; letter-spacing: -0.02em;">
             Beginner Python 3 Logic
           </h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
-            Python reads just like plain English. Learn how computers calculate, automate tasks, and make decisions. The #1 language for beginners, data science, and AI.
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.4rem;">
+            Python reads just like plain English. Learn how computers calculate, automate repetitive tasks, and make logical decisions. The #1 language for beginners, data science, and AI.
           </p>
-          <div style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-secondary); margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem;">
-            <span>⏱ Lesson 1 takes only 2 minutes</span>
-            <span>✓ Zero setup — runs in your browser</span>
-            <span>⚡ +40 XP on your first lesson</span>
+
+          <div style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--text-secondary); margin-bottom: 1.75rem; display: flex; flex-direction: column; gap: 0.55rem; background: var(--bg-panel); padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="color: #818cf8;">⏱</span>
+              <span>Lesson 1 takes only 2 minutes</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="color: #818cf8;">✓</span>
+              <span>Zero setup — runs in browser memory</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="color: #818cf8;">⚡</span>
+              <span style="color: #818cf8; font-weight: 700;">+40 XP on your first lesson</span>
+            </div>
           </div>
         </div>
-        <a href="/learn/python-core/print-syntax/" class="btn btn-primary" style="padding: 0.65rem 1.25rem; font-size: 0.9rem; font-weight: 700; justify-content: center; background: #059669; border-color: #10b981;">
-          Start Lesson 1: Print Your Name &rarr;
+
+        <a href="/learn/python-core/print-syntax/" class="btn" style="padding: 0.8rem 1.4rem; font-size: 0.92rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; text-decoration: none; border-radius: var(--radius-md); background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%); border: 1px solid rgba(129, 140, 248, 0.45); color: #ffffff; box-shadow: 0 4px 16px rgba(79, 70, 229, 0.28); transition: all 0.2s ease;">
+          <span>Start Lesson 1: Print Your Name</span>
+          <span style="font-size: 1.1rem; line-height: 1;">&rarr;</span>
         </a>
       </div>
+
     </div>
   </section>
 
