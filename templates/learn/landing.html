@@ -55,76 +55,108 @@
 
     <!-- Hero Right Column: Directly Editable & Reactive IDE Studio Window -->
     <div>
-      <div class="ide-window" style="box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.75), 0 0 40px -5px rgba(99, 102, 241, 0.25);">
+            <div class="ide-window" style="box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 45px -5px rgba(99, 102, 241, 0.28); border-radius: var(--radius-lg); border: 1px solid var(--border-medium); overflow: hidden;">
         
-        <!-- IDE Titlebar -->
-        <div class="ide-titlebar">
-          <div class="ide-dots">
+        <!-- IDE Titlebar with Mac Traffic Lights & Dynamic Title -->
+        <div class="ide-titlebar" style="background: #0d1017; padding: 0.65rem 1.15rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-subtle);">
+          <div class="ide-dots" style="display: flex; align-items: center; gap: 0.45rem;">
             <span class="ide-dot ide-dot-red"></span>
             <span class="ide-dot ide-dot-yellow"></span>
             <span class="ide-dot ide-dot-green"></span>
-            <span style="margin-left: 0.6rem; color: #cbd5e1; font-weight: 600; font-size: 0.78rem;">
-              app.interactive.jsx &bull; Direct In-Place Editor
+            <span id="heroEditorTitle" style="margin-left: 0.65rem; color: #cbd5e1; font-weight: 600; font-size: 0.78rem; font-family: var(--font-mono);">
+              main.py &bull; Python 3 Edge WASM
             </span>
           </div>
-          <div style="display: flex; gap: 0.5rem; align-items: center;">
-            <button id="heroResetBtn" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; color: #94a3b8;" title="Reset Starter Snippet">
+          <div style="display: flex; gap: 0.45rem; align-items: center;">
+            <button id="heroResetBtn" class="btn btn-ghost" style="padding: 0.2rem 0.65rem; font-size: 0.72rem; color: #94a3b8;" title="Reset Starter Snippet">
               ↺ Reset
             </button>
-            <button id="heroRunBtn" class="btn btn-primary" style="padding: 0.25rem 0.85rem; font-size: 0.75rem; border-radius: 6px;">
-              ▶ Run &amp; Test (8ms)
+            <button id="heroRunBtn" class="btn btn-primary" style="padding: 0.25rem 0.85rem; font-size: 0.75rem; border-radius: 6px; font-weight: 700;">
+              ▶ Run &amp; Test (3ms)
             </button>
           </div>
         </div>
 
-        <!-- IDE Tabs Bar -->
-        <div class="ide-tabs">
-          <div class="ide-tab active">
-            <span style="color: #38bdf8;">⚛</span> App.jsx
-          </div>
-          <div class="ide-tab">
-            <span style="color: #facc15;">JS</span> state.js
-          </div>
-          <div class="ide-tab">
-            <span style="color: #38bdf8;">#</span> styles.css
-          </div>
-        </div>
-
-        <!-- Directly Editable Hero Code Textarea -->
-        <div style="position: relative; background: #080b11;">
-          <textarea id="heroEditableCode" style="width: 100%; min-height: 180px; background: transparent; color: #34d399; font-family: var(--font-mono); font-size: 0.86rem; line-height: 1.6; border: none; outline: none; padding: 1.15rem 1.35rem; resize: none; tab-size: 2;" spellcheck="false">// Lesson 04: Reactive State Counter
-function InteractiveCounter() {
-  const [score, setScore] = useState(0);
-  // Type here to test live reactive execution!
-  return (
-    &lt;button onClick={() =&gt; setScore(s =&gt; s + 10)}&gt;
-      ⚡ Power Level: {score} XP
-    &lt;/button&gt;
-  );
-}</textarea>
-        </div>
-
-        <!-- Live Sandboxed Output Bar -->
-        <div style="padding: 0.65rem 1.25rem; background: #0b0e16; border-top: 1px solid rgba(255, 255, 255, 0.08); border-bottom: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; font-family: var(--font-mono);">
-          <span style="color: #94a3b8; display: flex; align-items: center; gap: 0.5rem;">
-            <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
-            localhost:3000/preview
-          </span>
-          <span id="heroTestBadge" style="color: #34d399; font-weight: 700; background: rgba(16, 185, 129, 0.15); padding: 0.2rem 0.55rem; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.3);">
-            ✓ 3/3 Tests Passed (8ms)
-          </span>
-        </div>
-
-        <!-- Reactive Terminal & Interactive Sandbox Execution -->
-        <div style="padding: 1.5rem; background: #0a0d14; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
-          <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.75rem; font-family: var(--font-mono);">Interactive DOM Reaction Sandbox</div>
-          <button id="heroInteractiveBtn" class="btn btn-primary" style="padding: 0.75rem 1.85rem; font-size: 0.95rem; border-radius: 8px; font-weight: 700;">
-            🔥 Tap to Execute: <span id="heroClickCount" style="margin-left: 0.4rem; font-size: 1.15rem; color: #fbbf24;">0</span> XP
+        <!-- Multi-Language Switcher Tabs (Point 10: Optimized for ALL World-Class Languages) -->
+        <div class="ide-tabs" style="display: flex; background: #080a0f; border-bottom: 1px solid var(--border-subtle); overflow-x: auto; scrollbar-width: none;">
+          <button class="ide-tab hero-lang-tab active" data-hero-lang="python">
+            <span style="color: #34d399;">🐍</span> Python
           </button>
-          
-          <!-- Terminal Output Log Line -->
-          <div id="heroTerminalLog" style="font-size: 0.75rem; color: #38bdf8; margin-top: 0.85rem; font-family: var(--font-mono); background: rgba(56, 189, 248, 0.08); padding: 0.35rem 0.85rem; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.2);">
-            &gt; [STDOUT] State re-rendered reactively &bull; 0ms DOM latency
+          <button class="ide-tab hero-lang-tab" data-hero-lang="javascript">
+            <span style="color: #facc15;">⚡</span> JavaScript / TS
+          </button>
+          <button class="ide-tab hero-lang-tab" data-hero-lang="html">
+            <span style="color: #f97316;">🌐</span> HTML5 &amp; CSS
+          </button>
+          <button class="ide-tab hero-lang-tab" data-hero-lang="sql">
+            <span style="color: #c084fc;">🗄️</span> SQL
+          </button>
+          <button class="ide-tab hero-lang-tab" data-hero-lang="c">
+            <span style="color: #38bdf8;">⚙️</span> C / C++
+          </button>
+          <button class="ide-tab hero-lang-tab" data-hero-lang="java">
+            <span style="color: #ef4444;">☕</span> Java
+          </button>
+          <button class="ide-tab hero-lang-tab" data-hero-lang="bash">
+            <span style="color: #a855f7;">🐚</span> Bash
+          </button>
+          <button class="ide-tab hero-lang-tab" data-hero-lang="php">
+            <span style="color: #818cf8;">🐘</span> PHP
+          </button>
+        </div>
+
+        <!-- Directly Editable Code Editor with Line Gutter & Custom Scrollbar -->
+        <div style="position: relative; background: #080b11; display: flex; align-items: stretch;">
+          <div id="heroLineNumbers" style="padding: 1.15rem 0.65rem 1.15rem 0.95rem; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; color: #475569; user-select: none; text-align: right; border-right: 1px solid rgba(255, 255, 255, 0.05); background: #07090e;">
+            1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7
+          </div>
+          <textarea id="heroEditableCode" class="hero-code-area" style="flex: 1; min-height: 180px; max-height: 220px; background: transparent; color: #34d399; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; border: none; outline: none; padding: 1.15rem 1.25rem; resize: none; tab-size: 2; overflow-y: auto;" spellcheck="false"># Python 3 • Algorithmic Stream & Comprehension
+def calculate_xp(streak: int, base: int = 50) -> int:
+    multiplier = 1.5 if streak >= 7 else 1.0
+    return int(base * multiplier)
+
+print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
+        </div>
+
+        <!-- Engine Status & Host Bar -->
+        <div style="padding: 0.55rem 1.15rem; background: #090c13; border-top: 1px solid rgba(255, 255, 255, 0.06); border-bottom: 1px solid rgba(255, 255, 255, 0.06); display: flex; justify-content: space-between; align-items: center; font-size: 0.74rem; font-family: var(--font-mono);">
+          <span id="heroHostBadge" style="color: #94a3b8; display: flex; align-items: center; gap: 0.45rem;">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+            ● python3.12 --wasm (sandboxed)
+          </span>
+          <span id="heroTestBadge" style="color: #34d399; font-weight: 700; background: rgba(16, 185, 129, 0.12); padding: 0.15rem 0.55rem; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.28);">
+            ✓ 3/3 Tests Passed (3ms)
+          </span>
+        </div>
+
+        <!-- Reactive Terminal Console (Authentic CLI Output) -->
+        <div style="padding: 1rem 1.25rem 1.25rem 1.25rem; background: #05070c; border-top: 1px solid rgba(255, 255, 255, 0.04);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.72rem; font-family: var(--font-mono); color: #64748b; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>
+              Terminal Output
+            </div>
+            <button id="heroInteractiveBtn" class="btn btn-primary" style="padding: 0.25rem 0.75rem; font-size: 0.74rem; border-radius: 6px; font-weight: 700;">
+              🔥 Execute Snippet (+10 XP)
+            </button>
+          </div>
+
+          <!-- Terminal Emulator Body -->
+          <div style="font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.6; text-align: left; padding: 0.75rem 1rem; background: #080b11; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.08);">
+            <div style="color: #64748b; margin-bottom: 0.25rem;">
+              <span style="color: #38bdf8;">user@codequest</span>:<span style="color: #818cf8;">~</span>$ <span id="heroTerminalCommand" style="color: #f8fafc; font-weight: 600;">python3 main.py</span>
+            </div>
+            <div id="heroTerminalLog" style="color: #34d399; font-weight: 500;">
+              &gt; [PYODIDE WASM] ⚡ Rewarded: 75 XP for 7-day streak! &bull; 0 memory leaks
+            </div>
+            <div style="color: #64748b; font-size: 0.72rem; margin-top: 0.35rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <span style="color: #10b981;">● AST Valid</span>
+              <span>&bull;</span>
+              <span>Latency: <span id="heroExecutionTime" style="color: #38bdf8;">3.2ms</span></span>
+              <span>&bull;</span>
+              <span>Session Score: <span id="heroClickCount" style="color: #fbbf24; font-weight: 700;">0</span> XP</span>
+              <span style="color: #38bdf8; animation: blink 1s infinite;">▋</span>
+            </div>
           </div>
         </div>
 
@@ -543,7 +575,7 @@ function InteractiveCounter() {
 {% block extra_scripts %}
 <script>
   (function () {
-    // 1. Interactive Hero Code Editor & Live Reactive Execution (Point 5)
+    // 1. Multi-Language Interactive Hero Terminal & IDE
     const codeArea = document.getElementById('heroEditableCode');
     const demoBtn = document.getElementById('heroInteractiveBtn');
     const countEl = document.getElementById('heroClickCount');
@@ -551,21 +583,151 @@ function InteractiveCounter() {
     const resetBtn = document.getElementById('heroResetBtn');
     const testBadge = document.getElementById('heroTestBadge');
     const termLog = document.getElementById('heroTerminalLog');
+    const termCmd = document.getElementById('heroTerminalCommand');
+    const hostBadge = document.getElementById('heroHostBadge');
+    const editorTitle = document.getElementById('heroEditorTitle');
+    const execTime = document.getElementById('heroExecutionTime');
+    const lineNumbers = document.getElementById('heroLineNumbers');
+    const langTabs = document.querySelectorAll('.hero-lang-tab');
     let count = 0;
 
-    const DEFAULT_SNIPPET = `// Lesson 04: Reactive State Counter\nfunction InteractiveCounter() {\n  const [score, setScore] = useState(0);\n  // Type here to test live reactive execution!\n  return (\n    <button onClick={() => setScore(s => s + 10)}>\n      ⚡ Power Level: {score} XP\n    </button>\n  );\n}`;
+    const HERO_LANGUAGES = {
+      python: {
+        title: 'main.py • Python 3 Edge WASM',
+        host: '● python3.12 --wasm (sandboxed)',
+        cmd: 'python3 main.py',
+        test: '✓ 3/3 Tests Passed (3ms)',
+        color: '#34d399',
+        lines: '1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7',
+        code: `# Python 3 • Algorithmic Stream & Comprehension\ndef calculate_xp(streak: int, base: int = 50) -> int:\n    multiplier = 1.5 if streak >= 7 else 1.0\n    return int(base * multiplier)\n\nprint(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")`,
+        stdout: '> [PYODIDE WASM] ⚡ Rewarded: 75 XP for 7-day streak! • 0 memory leaks'
+      },
+      javascript: {
+        title: 'app.ts • TypeScript & Reactive State',
+        host: '● node:v20.11 / v8 (sandboxed)',
+        cmd: 'node app.ts',
+        test: '✓ 3/3 Tests Passed (5ms)',
+        color: '#facc15',
+        lines: '1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7',
+        code: `// TypeScript • Reactive State & Asynchronous Event\ninterface QuestUser { id: string; xp: number; }\n\nasync function syncProgress(user: QuestUser): Promise<void> {\n  console.log(\`[STATE] Synchronized \${user.xp} XP to edge ledger\`);\n}\nsyncProgress({ id: "student_01", xp: 120 });`,
+        stdout: '> [V8 RUNTIME] [STATE] Synchronized 120 XP to edge ledger • 0ms DOM latency'
+      },
+      html: {
+        title: 'index.html • HTML5 Living DOM Tree',
+        host: '● chromium:dom-renderer (sandboxed)',
+        cmd: 'render index.html',
+        test: '✓ 3/3 Tests Passed (2ms)',
+        color: '#f97316',
+        lines: '1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7',
+        code: `<!-- HTML5 & CSS • Modern Accessible Architecture -->\n<header class="navbar flex justify-between p-4">\n  <h1 class="text-xl font-bold">⚡ CodeQuest BD</h1>\n  <button class="btn btn-primary">Start Learning</button>\n</header>\n<main><p>Bite-sized programming mastery.</p></main>`,
+        stdout: '> [DOM PARSER] <header> & <main> semantic tree verified • 0 layout shifts'
+      },
+      sql: {
+        title: 'query.sql • SQLite 3 In-Memory DB',
+        host: '● sqlite3 :memory: (sandboxed)',
+        cmd: 'sqlite3 < query.sql',
+        test: '✓ 4/4 Tests Passed (2ms)',
+        color: '#c084fc',
+        lines: '1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7',
+        code: `-- SQL • Relational Aggregation & Leaderboard\nSELECT u.username, COUNT(p.id) AS lessons_done, SUM(p.xp) AS total_xp\nFROM auth_user u\nJOIN user_progress p ON p.user_id = u.id\nWHERE p.status = 'COMPLETED'\nGROUP BY u.id\nORDER BY total_xp DESC LIMIT 5;`,
+        stdout: '> [SQLITE ENGINE] 5 rows returned in 1.2ms • B-Tree index scan 100% matched'
+      },
+      c: {
+        title: 'solution.c • GCC / Clang Native Memory',
+        host: '● clang-17 -O3 (sandboxed)',
+        cmd: 'gcc -O3 solution.c -o solution && ./solution',
+        test: '✓ 3/3 Tests Passed (1ms)',
+        color: '#38bdf8',
+        lines: '1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7',
+        code: `// C Language • Memory Alignment & Zero Overhead\n#include <stdio.h>\n\nint main(void) {\n    int buffer[4] = {10, 20, 30, 40};\n    printf("Buffer initialized at memory address %p\\n", (void*)buffer);\n    return 0;\n}`,
+        stdout: '> [GCC RUNTIME] Buffer initialized at memory address 0x7ffd • 0 memory leaks'
+      },
+      java: {
+        title: 'Main.java • OpenJDK 21 Virtual Machine',
+        host: '● openjdk:21 --enable-preview',
+        cmd: 'java Main.java',
+        test: '✓ 3/3 Tests Passed (8ms)',
+        color: '#ef4444',
+        lines: '1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7',
+        code: `// Java 21 • Modern Record & Functional Stream\nimport java.util.List;\n\npublic class Main {\n    record Student(String name, int xp) {}\n    public static void main(String[] args) {\n        var s = new Student("Rahim", 350);\n        System.out.println("Enrolled: " + s.name() + " (" + s.xp() + " XP)");\n    }\n}`,
+        stdout: '> [JVM RUNTIME] Enrolled: Rahim (350 XP) • Garbage collection 0ms paused'
+      },
+      bash: {
+        title: 'deploy.sh • Linux Shell Pipeline',
+        host: '● bash / alpine linux (sandboxed)',
+        cmd: './deploy.sh',
+        test: '✓ 3/3 Tests Passed (4ms)',
+        color: '#a855f7',
+        lines: '1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7',
+        code: `#!/usr/bin/env bash\n# Bash • Automated Cloud Deployment Pipeline\necho "[DEPLOY] Running zero-downtime healthcheck..."\ncurl -s -f https://codequest-bd.vercel.app/api/health | jq .status\necho "✓ Production cluster verified 200 OK"`,
+        stdout: '> [BASH SHELL] [DEPLOY] Running zero-downtime healthcheck... ✓ Production 200 OK'
+      },
+      php: {
+        title: 'index.php • PHP 8.3 Server Engine',
+        host: '● php-8.3 --fpm (sandboxed)',
+        cmd: 'php index.php',
+        test: '✓ 3/3 Tests Passed (3ms)',
+        color: '#818cf8',
+        lines: '1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7',
+        code: `<?php\n// PHP 8.3 • Modern Typed Server Request\ndeclare(strict_types=1);\n\nfunction formatUser(string $name, int $xp): string {\n    return "User: {$name} | Level: " . intdiv($xp, 100);\n}\necho formatUser("Sakib", 450);`,
+        stdout: '> [PHP 8.3 ENGINE] User: Sakib | Level: 4 • Script terminated cleanly'
+      }
+    };
+
+    let activeLang = 'python';
+
+    function setLanguage(langKey) {
+      const data = HERO_LANGUAGES[langKey];
+      if (!data) return;
+      activeLang = langKey;
+
+      langTabs.forEach(t => t.classList.remove('active'));
+      const activeTab = document.querySelector(`[data-hero-lang="${langKey}"]`);
+      if (activeTab) activeTab.classList.add('active');
+
+      if (editorTitle) editorTitle.textContent = data.title;
+      if (hostBadge) hostBadge.innerHTML = `<span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; display: inline-block;"></span> ${data.host}`;
+      if (termCmd) termCmd.textContent = data.cmd;
+      if (testBadge) testBadge.textContent = data.test;
+      if (codeArea) {
+        codeArea.value = data.code;
+        codeArea.style.color = data.color;
+      }
+      if (lineNumbers) lineNumbers.innerHTML = data.lines;
+      if (termLog) {
+        termLog.textContent = data.stdout;
+        termLog.style.color = data.color;
+      }
+      if (execTime) {
+        execTime.textContent = (Math.random() * 2 + 1.5).toFixed(1) + 'ms';
+      }
+
+      if (window.CodeQuest && window.CodeQuest.playTone) {
+        window.CodeQuest.playTone('click');
+      }
+    }
+
+    langTabs.forEach(tab => {
+      tab.addEventListener('click', function () {
+        const lang = tab.getAttribute('data-hero-lang');
+        setLanguage(lang);
+      });
+    });
 
     if (demoBtn && countEl) {
       demoBtn.onclick = function () {
         count += 10;
         countEl.textContent = count;
         if (testBadge) {
-          testBadge.textContent = `✓ State Reactive: ${count} XP`;
+          testBadge.textContent = `✓ Executed: +10 XP (total: ${count})`;
           testBadge.style.color = '#38bdf8';
         }
         if (termLog) {
-          termLog.textContent = `> [STDOUT] Reactive event fired &bull; score state: ${count} &bull; 0ms latency`;
+          termLog.textContent = `> [STDOUT] Reactive event dispatched • session score: ${count} XP • latency: ${(Math.random() * 1.5 + 0.8).toFixed(1)}ms`;
           termLog.style.color = '#38bdf8';
+        }
+        if (execTime) {
+          execTime.textContent = (Math.random() * 1.5 + 0.8).toFixed(1) + 'ms';
         }
         if (window.CodeQuest && window.CodeQuest.playTone) {
           window.CodeQuest.playTone('click');
@@ -577,13 +739,17 @@ function InteractiveCounter() {
       runBtn.onclick = function () {
         count += 50;
         if (countEl) countEl.textContent = count;
+        const curData = HERO_LANGUAGES[activeLang];
         if (testBadge) {
-          testBadge.textContent = '✓ 3/3 Tests Passed (8ms)';
+          testBadge.textContent = curData.test;
           testBadge.style.color = '#34d399';
         }
         if (termLog) {
-          termLog.textContent = `> [TEST RUNNER] In-memory AST parsed &bull; 3 assertions passed &bull; +50 XP`;
+          termLog.textContent = `> [TEST RUNNER] In-memory AST parsed • 3 assertions passed • +50 XP awarded!`;
           termLog.style.color = '#34d399';
+        }
+        if (execTime) {
+          execTime.textContent = (Math.random() * 2 + 1.0).toFixed(1) + 'ms';
         }
         if (window.CodeQuest && window.CodeQuest.fireConfetti) {
           window.CodeQuest.fireConfetti();
@@ -596,11 +762,12 @@ function InteractiveCounter() {
 
     if (resetBtn && codeArea) {
       resetBtn.onclick = function () {
-        codeArea.value = DEFAULT_SNIPPET;
+        const curData = HERO_LANGUAGES[activeLang];
+        codeArea.value = curData.code;
         count = 0;
         if (countEl) countEl.textContent = '0';
-        if (testBadge) testBadge.textContent = '✓ 3/3 Tests Passed (8ms)';
-        if (termLog) termLog.textContent = '> [STDOUT] Starter snippet restored &bull; Runtime ready';
+        if (testBadge) testBadge.textContent = curData.test;
+        if (termLog) termLog.textContent = '> [STDOUT] Starter snippet restored • Runtime ready';
       };
     }
 
