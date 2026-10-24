@@ -518,6 +518,65 @@
     }
   }
 
+
+  // Autonomous Pathfinding Algorithm to generate code for mission crystals
+  function autoSolveMission() {
+    const mission = MISSIONS[currentMissionIdx];
+    if (!mission || !mission.gems) return;
+
+    let cx = 0;
+    let cz = 0;
+    let ca = 0; // heading angle: 0=N, 90=W, 180=S, 270=E
+    const commands = ['// Auto-Generated Autonomous Path for ' + mission.title];
+
+    // Greedy visit remaining crystals
+    const unvisited = mission.gems.map(g => ({ x: g.x, z: g.z }));
+
+    while (unvisited.length > 0) {
+      // Find nearest
+      let nearestIdx = 0;
+      let minDst = Infinity;
+      unvisited.forEach((g, idx) => {
+        const dst = Math.abs(g.x - cx) + Math.abs(g.z - cz);
+        if (dst < minDst) { minDst = dst; nearestIdx = idx; }
+      });
+
+      const target = unvisited.splice(nearestIdx, 1)[0];
+
+      // Navigate X axis
+      while (cx !== target.x) {
+        const neededAngle = target.x > cx ? 270 : 90; // 270=E (+x), 90=W (-x)
+        while (ca !== neededAngle) {
+          const diff = (neededAngle - ca + 360) % 360;
+          if (diff === 90) { commands.push('rover.turnLeft();'); ca = (ca + 90) % 360; }
+          else { commands.push('rover.turnRight();'); ca = (ca - 90 + 360) % 360; }
+        }
+        commands.push('rover.forward();');
+        cx += (target.x > cx ? 1 : -1);
+      }
+
+      // Navigate Z axis
+      while (cz !== target.z) {
+        const neededAngle = target.z > cz ? 180 : 0; // 180=S (+z), 0=N (-z)
+        while (ca !== neededAngle) {
+          const diff = (neededAngle - ca + 360) % 360;
+          if (diff === 90) { commands.push('rover.turnLeft();'); ca = (ca + 90) % 360; }
+          else { commands.push('rover.turnRight();'); ca = (ca - 90 + 360) % 360; }
+        }
+        commands.push('rover.forward();');
+        cz += (target.z > cz ? 1 : -1);
+      }
+
+      commands.push('rover.collect();');
+    }
+
+    const codeInput = document.getElementById('roverCodeInput');
+    if (codeInput) {
+      codeInput.value = commands.join('\n');
+      logStatus('⚡ Auto-Solve path generated with ' + commands.length + ' operations. Click Execute Script to run!');
+    }
+  }
+
   function bindControls() {
     const btnFwd = document.getElementById('dpadFwd');
     const btnLeft = document.getElementById('dpadLeft');
@@ -576,6 +635,30 @@
         });
       };
     }
+
+    // Auto-Solve Button
+    const btnAutoSolve = document.getElementById('btnAutoSolveRover');
+    if (btnAutoSolve) {
+      btnAutoSolve.onclick = autoSolveMission;
+    }
+
+    // Full Keyboard Controls (Arrow Keys, WASD, Spacebar)
+    window.addEventListener('keydown', function (e) {
+      if (['TEXTAREA', 'INPUT'].includes(document.activeElement.tagName)) return;
+      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+        e.preventDefault();
+        roverAPI.forward();
+      } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        e.preventDefault();
+        roverAPI.turnLeft();
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        e.preventDefault();
+        roverAPI.turnRight();
+      } else if (e.key === ' ' || e.key === 'e' || e.key === 'E' || e.key === 'Enter') {
+        e.preventDefault();
+        roverAPI.collect();
+      }
+    });
   }
 
   function onWindowResize() {
