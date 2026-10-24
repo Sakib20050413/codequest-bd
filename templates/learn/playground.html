@@ -76,6 +76,49 @@
     </div>
   </div>
 
+  {% if selected_task %}
+  <!-- Active Coding Task HUD Banner -->
+  <div class="cq-card" style="margin-bottom: 1.25rem; padding: 1.25rem 1.5rem; border: 1px solid rgba(99, 102, 241, 0.4); background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.1), var(--bg-surface) 75%);">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 0.65rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #ffffff; background: var(--accent-gradient-btn); padding: 0.2rem 0.55rem; border-radius: 4px;">
+          ACTIVE TASK: {{ selected_task.id|upper }}
+        </span>
+        <span style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--accent-secondary); font-weight: 600;">
+          {{ selected_task.cat_label }}
+        </span>
+        <span class="task-badge-{{ selected_task.diff }}">{{ selected_task.diff_label }}</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.6rem;">
+        <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.5rem; border-radius: 4px;">
+          +{{ selected_task.xp }} XP Bounty
+        </span>
+        <a href="{% url 'games_hub' %}?mode=tasks" class="btn btn-ghost" style="padding: 0.2rem 0.65rem; font-size: 0.75rem;">
+          &larr; Back to Tasks Arena
+        </a>
+      </div>
+    </div>
+
+    <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.35rem; letter-spacing: -0.015em;">
+      {{ selected_task.title }}
+    </h2>
+    <p style="font-size: 0.88rem; color: var(--text-muted); margin: 0 0 0.85rem; line-height: 1.55;">
+      {{ selected_task.desc }}
+    </p>
+
+    <!-- Key Acceptance Criteria -->
+    <div style="display: flex; flex-wrap: wrap; gap: 0.65rem; font-size: 0.78rem; color: var(--text-secondary); background: rgba(0, 0, 0, 0.25); padding: 0.55rem 0.85rem; border-radius: 6px; border: 1px solid var(--border-subtle);">
+      <span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent);">Criteria:</span>
+      {% for item in selected_task.criteria %}
+      <span style="display: inline-flex; align-items: center; gap: 0.35rem;">
+        <span style="color: var(--success); font-weight: 700;">✓</span> {{ item }}
+      </span>
+      {% if not forloop.last %}&bull;{% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
   <!-- Workspace Container (Adjustable Side-by-Side or Stacked) -->
   <div id="playgroundWorkspace" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1.25rem; align-items: stretch;">
     

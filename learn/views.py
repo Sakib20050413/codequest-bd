@@ -1,3 +1,4 @@
+from .tasks_data import CODING_TASKS
 import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, Http404
@@ -184,12 +185,25 @@ def api_sync_guest_progress(request):
 
 def playground(request):
     """Free-form interactive playground with iframe live preview."""
-    return render(request, "learn/playground.html")
+    task_id = request.GET.get("task")
+    selected_task = None
+    if task_id:
+        for t in CODING_TASKS:
+            if t["id"] == task_id:
+                selected_task = t
+                break
+    return render(request, "learn/playground.html", {"selected_task": selected_task})
 
 
 def games_hub(request):
     games = Game.objects.all()
-    return render(request, "games/hub.html", {"games": games})
+    active_mode = request.GET.get("mode", "tasks")
+    return render(request, "games/hub.html", {
+        "games": games,
+        "tasks": CODING_TASKS,
+        "active_mode": active_mode,
+        "total_tasks_xp": sum(t["xp"] for t in CODING_TASKS),
+    })
 
 
 def game_play(request, game_slug):

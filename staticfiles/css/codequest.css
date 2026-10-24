@@ -1537,3 +1537,184 @@ body.is-fluid-layout .shell-wide {
 [data-theme="light"] .track-companion-card:hover {
   box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.12), 0 0 20px -2px rgba(13, 148, 136, 0.2);
 }
+
+/* ==========================================================================
+   Practice Arena: Practical Coding Tasks & Mode Switcher
+   ========================================================================== */
+
+.arena-mode-nav {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding: 0.4rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+[data-theme="light"] .arena-mode-nav {
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+
+.arena-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  white-space: nowrap;
+}
+
+.arena-mode-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-panel);
+}
+
+.arena-mode-btn.active {
+  color: #ffffff;
+  background: var(--accent-gradient-btn);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+[data-theme="light"] .arena-mode-btn.active {
+  color: #ffffff;
+}
+
+/* Task Cards */
+.arena-task-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.65rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-medium);
+  background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.05), var(--bg-surface) 75%);
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+[data-theme="light"] .arena-task-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 18px -2px rgba(15, 23, 42, 0.06);
+}
+
+.arena-task-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 14px 32px -6px rgba(0, 0, 0, 0.4), 0 0 18px -2px var(--accent-glow);
+}
+
+[data-theme="light"] .arena-task-card:hover {
+  box-shadow: 0 14px 30px -6px rgba(15, 23, 42, 0.12), 0 0 18px -2px rgba(79, 70, 229, 0.15);
+}
+
+.task-badge-easy {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.task-badge-medium {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.task-badge-hard {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.task-criteria-box {
+  margin: 1rem 0;
+  padding: 0.75rem 0.85rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .task-criteria-box {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #334155;
+}
+
+.task-criteria-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.35rem;
+}
+
+.task-criteria-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Modal styles */
+.task-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.task-modal-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  max-width: 720px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 35px var(--accent-glow);
+  padding: 2.25rem;
+  position: relative;
+  animation: modalScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] .task-modal-box {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+}
+
+@keyframes modalScaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

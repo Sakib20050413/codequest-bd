@@ -10,7 +10,7 @@
   <div style="margin-bottom: 2.5rem;">
     <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem;">
       <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">
-        🎯 115 IN-BROWSER PLAYABLE CHALLENGES &bull; 6 AAA ENGINES
+        🎯 28 REAL-WORLD CODING TASKS &bull; 115 IN-BROWSER CHALLENGES
       </div>
       <div style="display: flex; gap: 0.65rem; align-items: center;">
         <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
@@ -23,57 +23,225 @@
     </div>
 
     <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; margin-bottom: 0.75rem;">
-      Practice Arena &amp; 115 Coding Challenges
+      Practice Arena: Coding Tasks &amp; 115 Challenges
     </h1>
     <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 800px; line-height: 1.6;">
-      Reinforce language syntax, memory mental models, and algorithmic reflexes through 115 active, playable challenges. Jump directly into any level across our 6 browser engines.
+      Master real-world engineering through 28 practical coding tasks and 115 fast-paced interactive challenges. Build accessible UI components, write optimized algorithms, execute SQL aggregations, and debug memory pointers with automated test verification.
     </p>
   </div>
 
-  <!-- Interactive Search & Engine Filter Tabs -->
-  <div class="cq-card" style="margin-bottom: 2.5rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border-medium); background: var(--bg-surface);">
-    
-    <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-      <!-- Search Input -->
-      <div style="flex: 1; min-width: 280px; position: relative;">
-        <input type="text" id="arenaSearchInput" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; font-size: 0.92rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;" placeholder="Search 115 challenges by language (python, js, css, sql, c) or concept...">
-        <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted);">🔍</span>
+
+  <!-- TOP PRIMARY MODE SWITCHER -->
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+    <div class="arena-mode-nav" role="tablist" aria-label="Practice Arena Modes">
+      <button id="modeBtnTasks" class="arena-mode-btn {% if active_mode == 'tasks' %}active{% endif %}" onclick="switchArenaMode('tasks')">
+        ⚡ Practical Coding Tasks (28)
+      </button>
+      <button id="modeBtnArcade" class="arena-mode-btn {% if active_mode == 'arcade' %}active{% endif %}" onclick="switchArenaMode('arcade')">
+        🎮 Gamified Arcade &amp; Drills (115)
+      </button>
+      <button id="modeBtnQuests" class="arena-mode-btn {% if active_mode == 'quests' %}active{% endif %}" onclick="switchArenaMode('quests')">
+        🔥 Daily Quests &amp; Bounties
+      </button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.45rem 1rem; font-size: 0.82rem; font-family: var(--font-mono);">
+        💻 Open Full Browser IDE &rarr;
+      </a>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       SECTION 1: PRACTICAL CODING TASKS & PROBLEM SETS (28 Real-World Specs)
+       ===================================================================== -->
+  <div id="tasksArenaSection" style="display: {% if active_mode == 'tasks' %}block{% else %}none{% endif %}; margin-bottom: 4rem;">
+
+    <!-- Task Filter & Search Dock -->
+    <div class="cq-card" style="margin-bottom: 2.25rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border-medium); background: var(--bg-surface);">
+      <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        
+        <!-- Search Input -->
+        <div style="flex: 1; min-width: 280px; position: relative;">
+          <input type="text" id="taskSearchInput" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; font-size: 0.92rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;" placeholder="Search 28 coding tasks by title, skill, or keyword (e.g. navbar, two-sum, join, pointer)..." aria-label="Search coding tasks">
+          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted); pointer-events: none;">🔍</span>
+        </div>
+
+        <!-- Task Live Counter -->
+        <div id="taskCounterDisplay" style="font-size: 0.84rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent);">
+          Showing 28 of 28 Practical Tasks
+        </div>
       </div>
 
-      <!-- Result Counter -->
-      <div id="arenaFilterCount" style="font-size: 0.84rem; font-family: var(--font-mono); font-weight: 600; color: var(--accent);">
-        Showing 115 of 115 Playable Challenges
+      <!-- Category Filter Pills & Difficulty Filter Row -->
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+        
+        <!-- Category Filters -->
+        <div id="taskCategoryFilters" style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+          <button class="btn task-filter-pill active" data-task-cat="all" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
+            All Tasks (28)
+          </button>
+          <button class="btn btn-ghost task-filter-pill" data-task-cat="frontend" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
+            🌐 Frontend Web (8)
+          </button>
+          <button class="btn btn-ghost task-filter-pill" data-task-cat="algorithms" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
+            🐍 Algorithms &amp; Data Logic (8)
+          </button>
+          <button class="btn btn-ghost task-filter-pill" data-task-cat="sql" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
+            🗄️ SQL Databases (6)
+          </button>
+          <button class="btn btn-ghost task-filter-pill" data-task-cat="systems" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
+            ⚙️ Systems &amp; C (6)
+          </button>
+        </div>
+
+        <!-- Difficulty Pills -->
+        <div id="taskDifficultyFilters" style="display: flex; gap: 0.35rem; align-items: center; font-size: 0.78rem; font-family: var(--font-mono);">
+          <span style="color: var(--text-muted); margin-right: 0.25rem;">Level:</span>
+          <button class="btn task-diff-pill active" data-task-diff="all" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px;">All</button>
+          <button class="btn btn-ghost task-diff-pill" data-task-diff="easy" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: #10b981;">Easy</button>
+          <button class="btn btn-ghost task-diff-pill" data-task-diff="medium" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: #f59e0b;">Medium</button>
+          <button class="btn btn-ghost task-diff-pill" data-task-diff="hard" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: #ef4444;">Hard</button>
+        </div>
+
       </div>
     </div>
 
-    <!-- Category Filter Tabs -->
-    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-      <button class="btn arena-filter-tab active" data-filter="all" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-        All (115)
-      </button>
-      <button class="btn btn-ghost arena-filter-tab" data-filter="code-typer" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-        🏎️ Keystroke Racing (20)
-      </button>
-      <button class="btn btn-ghost arena-filter-tab" data-filter="flexbox-pond" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-        🐸 Flexbox &amp; Grid (20)
-      </button>
-      <button class="btn btn-ghost arena-filter-tab" data-filter="bug-hunt" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-        🐛 Bug Hunt (20)
-      </button>
-      <button class="btn btn-ghost arena-filter-tab" data-filter="output-predictor" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-        🔮 Output Predictor (20)
-      </button>
-      <button class="btn btn-ghost arena-filter-tab" data-filter="tag-match" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-        ⚡ Tag &amp; Syntax (20)
-      </button>
-      <button class="btn btn-ghost arena-filter-tab" data-filter="rover-3d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-        🤖 Cyber Rover 3D (15)
-      </button>
+    <!-- 28 Tasks Grid -->
+    <div id="tasksGridContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.5rem;">
+      {% for task in tasks %}
+      <div class="arena-task-card task-card-item" data-task-id="{{ task.id }}" data-task-cat="{{ task.cat }}" data-task-diff="{{ task.diff }}" data-task-title="{{ task.title|lower }}" data-task-desc="{{ task.desc|lower }}" data-task-tags="{{ task.tags|join:' '|lower }}">
+        
+        <div>
+          <!-- Header Row -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); padding: 0.15rem 0.45rem; border-radius: 4px;">
+                {{ task.id|upper }}
+              </span>
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); font-weight: 600;">
+                {{ task.cat_label }}
+              </span>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 0.45rem;">
+              {% if task.diff == 'easy' %}
+                <span class="task-badge-easy">Easy</span>
+              {% elif task.diff == 'medium' %}
+                <span class="task-badge-medium">Medium</span>
+              {% else %}
+                <span class="task-badge-hard">Hard</span>
+              {% endif %}
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.45rem; border-radius: 4px;">
+                +{{ task.xp }} XP
+              </span>
+            </div>
+          </div>
+
+          <!-- Title & Description -->
+          <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; letter-spacing: -0.015em; line-height: 1.4;">
+            {{ task.title }}
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 0.75rem;">
+            {{ task.desc }}
+          </p>
+
+          <!-- Acceptance Criteria Checklist -->
+          <div class="task-criteria-box">
+            <div style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.45rem;">
+              Key Acceptance Criteria:
+            </div>
+            {% for item in task.criteria %}
+            <div class="task-criteria-item">
+              <span style="color: var(--accent); font-size: 0.8rem; font-weight: 700;">✓</span>
+              <span>{{ item }}</span>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Tags -->
+          <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
+            {% for tag in task.tags %}
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">
+              #{{ tag }}
+            </span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); gap: 0.75rem;">
+          <button type="button" class="btn btn-ghost" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="openTaskModal('{{ task.id }}')">
+            Spec &amp; Tests 📋
+          </button>
+          <a href="{% url 'playground' %}?task={{ task.id }}" class="btn btn-primary" style="padding: 0.4rem 0.95rem; font-size: 0.8rem;">
+            Solve in IDE ⚡ &rarr;
+          </a>
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Empty Results Fallback -->
+    <div id="noTasksFoundMsg" style="display: none; text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
+      <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+      <div style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">No matching coding tasks found</div>
+      <p style="font-size: 0.88rem;">Try adjusting your keyword search or category filters.</p>
     </div>
 
   </div>
 
-  <!-- 6 FLAGSHIP ENGINE SECTIONS WITH 115 PLAYABLE LEVEL CARDS -->
+  <!-- =====================================================================
+       SECTION 2: GAMIFIED ARCADE & 115 PLAYABLE LEVELS (Existing 6 Engines)
+       ===================================================================== -->
+  <div id="arcadeArenaSection" style="display: {% if active_mode == 'arcade' %}block{% else %}none{% endif %};">
+
+    <!-- Interactive Search & Engine Filter Tabs -->
+    <div class="cq-card" style="margin-bottom: 2.5rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border-medium); background: var(--bg-surface);">
+
+      <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <!-- Search Input -->
+        <div style="flex: 1; min-width: 280px; position: relative;">
+          <input type="text" id="arenaSearchInput" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; font-size: 0.92rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;" placeholder="Search 115 challenges by language (python, js, css, sql, c) or concept...">
+          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted);">🔍</span>
+        </div>
+
+        <!-- Result Counter -->
+        <div id="arenaFilterCount" style="font-size: 0.84rem; font-family: var(--font-mono); font-weight: 600; color: var(--accent);">
+          Showing 115 of 115 Playable Challenges
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+        <button class="btn arena-filter-tab active" data-filter="all" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          All (115)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="code-typer" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          🏎️ Keystroke Racing (20)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="flexbox-pond" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          🐸 Flexbox &amp; Grid (20)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="bug-hunt" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          🐛 Bug Hunt (20)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="output-predictor" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          🔮 Output Predictor (20)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="tag-match" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          ⚡ Tag &amp; Syntax (20)
+        </button>
+        <button class="btn btn-ghost arena-filter-tab" data-filter="rover-3d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
+          🤖 Cyber Rover 3D (15)
+        </button>
+      </div>
+
+    </div>
+
+
+<!-- 6 FLAGSHIP ENGINE SECTIONS WITH 115 PLAYABLE LEVEL CARDS -->
 
   <!-- ENGINE 1: Code TypeRacer 3D (20 Tracks) -->
   <section class="arena-engine-section" data-engine="code-typer" style="margin-bottom: 3.5rem;">
@@ -447,6 +615,157 @@
 
     </div>
   </section>
+  </div>
+
+
+  <!-- =====================================================================
+       SECTION 3: DAILY QUESTS & REPUTATION BOUNTIES
+       ===================================================================== -->
+  <div id="questsArenaSection" style="display: {% if active_mode == 'quests' %}block{% else %}none{% endif %}; margin-bottom: 4rem;">
+    
+    <div style="margin-bottom: 2rem;">
+      <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
+        🔥 Daily Quests &amp; Streak Bounties
+      </h2>
+      <p style="font-size: 0.92rem; color: var(--text-muted); max-width: 640px; line-height: 1.6;">
+        Complete daily challenges to maintain your daily streak multiplier, earn bonus developer XP, and level up your engineering rank.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+      
+      <!-- Quest 1 -->
+      <div class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-medium); display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); padding: 0.2rem 0.55rem; border-radius: 4px;">Daily Active</span>
+            <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24;">+50 XP</span>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
+            Sprint: Complete 1 Keystroke Race
+          </h3>
+          <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+            Hit at least 45 Words Per Minute on any typing circuit without making more than 3 consecutive errors.
+          </p>
+        </div>
+        <a href="{% url 'game_play' 'code-typer' %}" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.82rem; width: 100%; text-align: center;">
+          Launch TypeRacer &rarr;
+        </a>
+      </div>
+
+      <!-- Quest 2 -->
+      <div class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-medium); display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4; background: rgba(6, 182, 212, 0.1); padding: 0.2rem 0.55rem; border-radius: 4px;">Algorithm Bounty</span>
+            <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24;">+75 XP</span>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
+            Logic: Solve Any Array / Stack Task
+          </h3>
+          <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+            Submit a passing solution for Two-Sum, Balanced Parentheses, or Anagram Grouping in the in-browser IDE.
+          </p>
+        </div>
+        <button type="button" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.82rem; width: 100%; text-align: center;" onclick="switchArenaMode('tasks')">
+          Browse Algorithm Tasks &rarr;
+        </button>
+      </div>
+
+      <!-- Quest 3 -->
+      <div class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-medium); display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <span style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b; background: rgba(245, 158, 11, 0.1); padding: 0.2rem 0.55rem; border-radius: 4px;">Consistency Bonus</span>
+            <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24;">+100 XP</span>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
+            Habit: 3-Day Coding Streak
+          </h3>
+          <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+            Check in for 3 consecutive days to activate the Fire Streak Multiplier and lock in double XP rewards.
+          </p>
+        </div>
+        <a href="{% url 'catalogue' %}" class="btn btn-ghost" style="padding: 0.45rem 1rem; font-size: 0.82rem; width: 100%; text-align: center;">
+          Explore Course Roadmap &rarr;
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- =====================================================================
+       INTERACTIVE TASK DETAIL & SPEC MODAL
+       ===================================================================== -->
+  <div id="taskModalBackdrop" class="task-modal-backdrop" onclick="handleModalBackdropClick(event)">
+    <div class="task-modal-box">
+      
+      <!-- Modal Header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+            <span id="modalTaskId" style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); padding: 0.15rem 0.45rem; border-radius: 4px;">TASK</span>
+            <span id="modalTaskCat" style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">Category</span>
+            <span id="modalTaskDiff" class="task-badge-easy">Easy</span>
+            <span id="modalTaskXp" style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); padding: 0.15rem 0.45rem; border-radius: 4px;">+0 XP</span>
+          </div>
+          <h2 id="modalTaskTitle" style="font-size: 1.45rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.02em;">
+            Task Title
+          </h2>
+        </div>
+        
+        <button type="button" class="btn btn-icon" onclick="closeTaskModal()" style="font-size: 1.1rem; width: 34px; height: 34px;" title="Close Modal">
+          ✕
+        </button>
+      </div>
+
+      <!-- Problem Statement -->
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 0.35rem;">
+          Problem Statement &bull; Specification
+        </div>
+        <p id="modalTaskDesc" style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+          Description
+        </p>
+      </div>
+
+      <!-- Acceptance Criteria -->
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 0.45rem;">
+          Automated Acceptance Criteria Checklist:
+        </div>
+        <div id="modalTaskCriteria" class="task-criteria-box">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+
+      <!-- Starter Code Snippet Box -->
+      <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
+          <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); font-family: var(--font-mono);">
+            Starter Implementation Blueprint
+          </span>
+          <button id="copyStarterSnippetBtn" class="btn btn-ghost" style="padding: 0.2rem 0.55rem; font-size: 0.72rem;" onclick="copyModalStarterCode()">
+            Copy Snippet 📋
+          </button>
+        </div>
+        <pre id="modalTaskStarter" style="padding: 1rem; border-radius: 8px; background: #080b11; border: 1px solid rgba(255, 255, 255, 0.08); font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.5; color: #e2e8f0; overflow-x: auto; max-height: 180px;"></pre>
+      </div>
+
+      <!-- Modal Footer -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); gap: 1rem;">
+        <span style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
+          Client-Side In-Browser Execution &bull; 0ms Latency
+        </span>
+        <a id="modalSolveLink" href="#" class="btn btn-primary" style="padding: 0.55rem 1.4rem; font-size: 0.88rem;">
+          Solve in Browser IDE ⚡ &rarr;
+        </a>
+      </div>
+
+    </div>
+  </div>
+
 
 </div>
 {% endblock %}
@@ -455,22 +774,202 @@
 <script>
   (function () {
     'use strict';
-    const searchInput = document.getElementById('arenaSearchInput');
-    const filterTabs = document.querySelectorAll('.arena-filter-tab');
-    const sections = document.querySelectorAll('.arena-engine-section');
-    const levelCards = document.querySelectorAll('.arena-level-card');
+
+    // TASKS DATA CACHE FOR MODAL
+    const tasksData = [
+      {% if tasks %}
+      {% for task in tasks %}
+      {
+        id: "{{ task.id }}",
+        cat: "{{ task.cat }}",
+        cat_label: "{{ task.cat_label }}",
+        diff: "{{ task.diff }}",
+        diff_label: "{{ task.diff_label }}",
+        xp: {{ task.xp }},
+        time: "{{ task.time }}",
+        title: "{{ task.title|escapejs }}",
+        desc: "{{ task.desc|escapejs }}",
+        criteria: [{% for c in task.criteria %}"{{ c|escapejs }}",{% endfor %}],
+        tags: [{% for t in task.tags %}"{{ t|escapejs }}",{% endfor %}],
+        starter: "{{ task.starter|escapejs }}"
+      },
+      {% endfor %}
+      {% endif %}
+    ];
+
+    // 1. PRIMARY ARENA MODE SWITCHER (Tasks vs Arcade vs Quests)
+    window.switchArenaMode = function (mode) {
+      const secTasks = document.getElementById('tasksArenaSection');
+      const secArcade = document.getElementById('arcadeArenaSection');
+      const secQuests = document.getElementById('questsArenaSection');
+
+      const btnTasks = document.getElementById('modeBtnTasks');
+      const btnArcade = document.getElementById('modeBtnArcade');
+      const btnQuests = document.getElementById('modeBtnQuests');
+
+      if (secTasks) secTasks.style.display = mode === 'tasks' ? 'block' : 'none';
+      if (secArcade) secArcade.style.display = mode === 'arcade' ? 'block' : 'none';
+      if (secQuests) secQuests.style.display = mode === 'quests' ? 'block' : 'none';
+
+      [btnTasks, btnArcade, btnQuests].forEach(b => {
+        if (b) b.classList.remove('active');
+      });
+
+      if (mode === 'tasks' && btnTasks) btnTasks.classList.add('active');
+      if (mode === 'arcade' && btnArcade) btnArcade.classList.add('active');
+      if (mode === 'quests' && btnQuests) btnQuests.classList.add('active');
+
+      if (history.replaceState) {
+        const url = new URL(window.location);
+        url.searchParams.set('mode', mode);
+        window.history.replaceState({}, '', url);
+      }
+    };
+
+    // 2. TASK FILTERING & REAL-TIME SEARCH
+    const taskSearch = document.getElementById('taskSearchInput');
+    const taskCatPills = document.querySelectorAll('.task-filter-pill');
+    const taskDiffPills = document.querySelectorAll('.task-diff-pill');
+    const taskCards = document.querySelectorAll('.task-card-item');
+    const taskCounter = document.getElementById('taskCounterDisplay');
+    const noTasksMsg = document.getElementById('noTasksFoundMsg');
+
+    let activeTaskCat = 'all';
+    let activeTaskDiff = 'all';
+
+    function filterTasks() {
+      const q = (taskSearch ? taskSearch.value : '').toLowerCase().trim();
+      let visible = 0;
+
+      taskCards.forEach(function (card) {
+        const cat = card.getAttribute('data-task-cat') || '';
+        const diff = card.getAttribute('data-task-diff') || '';
+        const title = card.getAttribute('data-task-title') || '';
+        const desc = card.getAttribute('data-task-desc') || '';
+        const tags = card.getAttribute('data-task-tags') || '';
+
+        const matchCat = (activeTaskCat === 'all' || cat === activeTaskCat);
+        const matchDiff = (activeTaskDiff === 'all' || diff === activeTaskDiff);
+        const matchQuery = !q || title.includes(q) || desc.includes(q) || tags.includes(q);
+
+        if (matchCat && matchDiff && matchQuery) {
+          card.style.display = 'flex';
+          visible++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (taskCounter) {
+        taskCounter.textContent = `Showing ${visible} of ${taskCards.length} Practical Tasks`;
+      }
+      if (noTasksMsg) {
+        noTasksMsg.style.display = visible === 0 ? 'block' : 'none';
+      }
+    }
+
+    if (taskSearch) {
+      taskSearch.addEventListener('input', filterTasks);
+    }
+
+    taskCatPills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        taskCatPills.forEach(p => {
+          p.classList.remove('active');
+          p.classList.add('btn-ghost');
+        });
+        pill.classList.add('active');
+        pill.classList.remove('btn-ghost');
+        activeTaskCat = pill.getAttribute('data-task-cat');
+        filterTasks();
+      });
+    });
+
+    taskDiffPills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        taskDiffPills.forEach(p => {
+          p.classList.remove('active');
+          p.classList.add('btn-ghost');
+        });
+        pill.classList.add('active');
+        pill.classList.remove('btn-ghost');
+        activeTaskDiff = pill.getAttribute('data-task-diff');
+        filterTasks();
+      });
+    });
+
+    // 3. TASK MODAL OPEN & CLOSE
+    window.openTaskModal = function (taskId) {
+      const task = tasksData.find(t => t.id === taskId);
+      if (!task) return;
+
+      document.getElementById('modalTaskId').textContent = task.id.toUpperCase();
+      document.getElementById('modalTaskCat').textContent = task.cat_label;
+      
+      const diffBadge = document.getElementById('modalTaskDiff');
+      diffBadge.className = `task-badge-${task.diff}`;
+      diffBadge.textContent = task.diff_label;
+
+      document.getElementById('modalTaskXp').textContent = `+${task.xp} XP`;
+      document.getElementById('modalTaskTitle').textContent = task.title;
+      document.getElementById('modalTaskDesc').textContent = task.desc;
+
+      const critBox = document.getElementById('modalTaskCriteria');
+      critBox.innerHTML = task.criteria.map(c => `
+        <div class="task-criteria-item">
+          <span style="color: var(--accent); font-weight: 700;">✓</span>
+          <span>${c}</span>
+        </div>
+      `).join('');
+
+      document.getElementById('modalTaskStarter').textContent = task.starter.replace(/\\n/g, '\n');
+      document.getElementById('modalSolveLink').href = `/playground/?task=${task.id}`;
+
+      const backdrop = document.getElementById('taskModalBackdrop');
+      backdrop.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closeTaskModal = function () {
+      const backdrop = document.getElementById('taskModalBackdrop');
+      if (backdrop) backdrop.style.display = 'none';
+      document.body.style.overflow = '';
+    };
+
+    window.handleModalBackdropClick = function (e) {
+      if (e.target && e.target.id === 'taskModalBackdrop') {
+        closeTaskModal();
+      }
+    };
+
+    window.copyModalStarterCode = function () {
+      const code = document.getElementById('modalTaskStarter').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById('copyStarterSnippetBtn');
+        btn.textContent = 'Copied! ✓';
+        setTimeout(() => { btn.textContent = 'Copy Snippet 📋'; }, 2000);
+      });
+    };
+
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeTaskModal();
+    });
+
+    // 4. ARCADE ENGINE & 115 CHALLENGES SEARCH & FILTER (PRESERVED)
+    const arenaSearch = document.getElementById('arenaSearchInput');
+    const arenaTabs = document.querySelectorAll('.arena-filter-tab');
+    const arenaSections = document.querySelectorAll('.arena-engine-section');
     const countDisplay = document.getElementById('arenaFilterCount');
 
-    let activeFilter = 'all';
-    let searchQuery = '';
+    let activeArenaFilter = 'all';
 
     function filterArena() {
       let visibleCount = 0;
-      const q = searchQuery.toLowerCase().trim();
+      const q = (arenaSearch ? arenaSearch.value : '').toLowerCase().trim();
 
-      sections.forEach(function (sec) {
+      arenaSections.forEach(function (sec) {
         const engine = sec.getAttribute('data-engine');
-        const matchesTab = (activeFilter === 'all' || activeFilter === engine);
+        const matchesTab = (activeArenaFilter === 'all' || activeArenaFilter === engine);
 
         let sectionHasVisible = false;
         const cards = sec.querySelectorAll('.arena-level-card');
@@ -497,25 +996,23 @@
       }
     }
 
-    if (searchInput) {
-      searchInput.addEventListener('input', function () {
-        searchQuery = searchInput.value;
-        filterArena();
-      });
+    if (arenaSearch) {
+      arenaSearch.addEventListener('input', filterArena);
     }
 
-    filterTabs.forEach(function (tab) {
+    arenaTabs.forEach(function (tab) {
       tab.addEventListener('click', function () {
-        filterTabs.forEach(t => {
+        arenaTabs.forEach(t => {
           t.classList.remove('active');
           t.classList.add('btn-ghost');
         });
         tab.classList.add('active');
         tab.classList.remove('btn-ghost');
-        activeFilter = tab.getAttribute('data-filter');
+        activeArenaFilter = tab.getAttribute('data-filter');
         filterArena();
       });
     });
+
   })();
 </script>
 {% endblock %}
