@@ -207,74 +207,127 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
     </div>
   </div>
 
-  <!-- Interactive Global Language Matrix (Points 10 & 11) -->
-  <section style="margin: 5rem 0; padding: 3rem 2rem; background: var(--bg-surface); border-radius: var(--radius-xl); border: 1px solid var(--border-medium); box-shadow: var(--shadow-card);">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; gap: 1rem;">
+  <!-- Interactive Global Language Matrix (Point 10 & 11: World-Class Living Visual Lab) -->
+  <section style="margin: 5rem 0; padding: 3rem 2.25rem; background: radial-gradient(circle at top left, rgba(99, 102, 241, 0.08), var(--bg-surface) 60%); border-radius: var(--radius-xl); border: 1px solid var(--border-medium); box-shadow: var(--shadow-card);">
+    
+    <!-- Section Header & Filter Dock -->
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; gap: 1.5rem;">
       <div>
-        <div style="font-size: 0.82rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">
-          World-Class Language Curriculum
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.45rem; background: var(--accent-subtle); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(99, 102, 241, 0.25);">
+          <span>✨</span> Living Visual Lab &bull; Mental Models
         </div>
-        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.4rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em;">
-          Select a Language &bull; Test Live Code
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.5rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; margin: 0;">
+          Select a Language &bull; <span class="accent-gradient">Explore Living Architectures</span>
         </h2>
-        <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0.4rem; max-width: 620px;">
-          Explore essential programming languages with clear beginner mental models. No confusing jargon—just intuitive analogies, real code snippets, and automated test runners.
+        <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0.5rem; max-width: 660px; line-height: 1.6;">
+          Watch code translate into real-time interactive diagrams, memory layouts, and DOM trees. No confusing academic jargon—just intuitive visual analogies and instant live execution.
         </p>
       </div>
 
-      <!-- Tech Tabs (8 Top World-Class Languages) -->
+      <!-- Tech Tabs (8 Top World-Class Languages with Color Accents) -->
       <div id="techMatrixTabs" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-        <button class="btn btn-ghost tech-tab active" data-tech="html" style="font-family: var(--font-mono); font-size: 0.84rem; padding: 0.4rem 0.85rem;">🌐 HTML5</button>
-        <button class="btn btn-ghost tech-tab" data-tech="css" style="font-family: var(--font-mono); font-size: 0.84rem; padding: 0.4rem 0.85rem;">🎨 CSS3</button>
-        <button class="btn btn-ghost tech-tab" data-tech="js" style="font-family: var(--font-mono); font-size: 0.84rem; padding: 0.4rem 0.85rem;">⚡ JavaScript</button>
-        <button class="btn btn-ghost tech-tab" data-tech="py" style="font-family: var(--font-mono); font-size: 0.84rem; padding: 0.4rem 0.85rem;">🐍 Python 3</button>
-        <button class="btn btn-ghost tech-tab" data-tech="sql" style="font-family: var(--font-mono); font-size: 0.84rem; padding: 0.4rem 0.85rem;">🗄️ SQL</button>
-        <button class="btn btn-ghost tech-tab" data-tech="ts" style="font-family: var(--font-mono); font-size: 0.84rem; padding: 0.4rem 0.85rem;">🛡️ TypeScript</button>
-        <button class="btn btn-ghost tech-tab" data-tech="rust" style="font-family: var(--font-mono); font-size: 0.84rem; padding: 0.4rem 0.85rem;">🦀 Rust</button>
-        <button class="btn btn-ghost tech-tab" data-tech="go" style="font-family: var(--font-mono); font-size: 0.84rem; padding: 0.4rem 0.85rem;">🐹 Go</button>
+        <button class="btn btn-ghost tech-tab active" data-tech="html" style="font-family: var(--font-mono); font-size: 0.82rem; padding: 0.45rem 0.9rem; border-radius: 8px;">
+          <span style="color: #f97316;">🌐</span> HTML5
+        </button>
+        <button class="btn btn-ghost tech-tab" data-tech="css" style="font-family: var(--font-mono); font-size: 0.82rem; padding: 0.45rem 0.9rem; border-radius: 8px;">
+          <span style="color: #38bdf8;">🎨</span> CSS3
+        </button>
+        <button class="btn btn-ghost tech-tab" data-tech="js" style="font-family: var(--font-mono); font-size: 0.82rem; padding: 0.45rem 0.9rem; border-radius: 8px;">
+          <span style="color: #facc15;">⚡</span> JavaScript
+        </button>
+        <button class="btn btn-ghost tech-tab" data-tech="py" style="font-family: var(--font-mono); font-size: 0.82rem; padding: 0.45rem 0.9rem; border-radius: 8px;">
+          <span style="color: #34d399;">🐍</span> Python 3
+        </button>
+        <button class="btn btn-ghost tech-tab" data-tech="sql" style="font-family: var(--font-mono); font-size: 0.82rem; padding: 0.45rem 0.9rem; border-radius: 8px;">
+          <span style="color: #c084fc;">🗄️</span> SQL
+        </button>
+        <button class="btn btn-ghost tech-tab" data-tech="ts" style="font-family: var(--font-mono); font-size: 0.82rem; padding: 0.45rem 0.9rem; border-radius: 8px;">
+          <span style="color: #38bdf8;">🛡️</span> TypeScript
+        </button>
+        <button class="btn btn-ghost tech-tab" data-tech="rust" style="font-family: var(--font-mono); font-size: 0.82rem; padding: 0.45rem 0.9rem; border-radius: 8px;">
+          <span style="color: #f97316;">🦀</span> Rust
+        </button>
+        <button class="btn btn-ghost tech-tab" data-tech="go" style="font-family: var(--font-mono); font-size: 0.82rem; padding: 0.45rem 0.9rem; border-radius: 8px;">
+          <span style="color: #00add8;">🐹</span> Go
+        </button>
       </div>
     </div>
 
-    <!-- Dynamic Tech Display Container -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; align-items: stretch;">
-      <!-- Code Representation (Always Authentic Dark Developer Look) -->
-      <div class="cq-card" style="padding: 1.5rem; background: #080b11; font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.6; border: 1px solid var(--border-strong);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.78rem; color: #94a3b8;">
-          <span id="techFileName">index.html</span>
-          <span id="techBadge" style="color: var(--lang-html); font-weight: 700;">Web Skeleton</span>
+    <!-- Dynamic Tech Display Container (Split: Live Code Studio vs Living Visual Architecture) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; align-items: stretch;">
+      
+      <!-- Left Card: Interactive Code Studio & Live AST Simulator -->
+      <div class="cq-card" style="padding: 0; background: #080b11; font-family: var(--font-mono); border: 1px solid var(--border-strong); overflow: hidden; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; background: #0c0f17; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.78rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
+            <span id="techFileName" style="color: #f8fafc; font-weight: 600;">index.html</span>
+            <span id="techBadge" style="color: var(--lang-html); font-weight: 700; background: rgba(249, 115, 22, 0.12); padding: 0.15rem 0.45rem; border-radius: 4px; border: 1px solid rgba(249, 115, 22, 0.25);">Web Skeleton</span>
+          </div>
+          <button id="techRunSimulationBtn" class="btn btn-primary" style="padding: 0.25rem 0.75rem; font-size: 0.74rem; border-radius: 6px; font-weight: 700;">
+            ▶ Run Simulation
+          </button>
         </div>
-        <pre id="techCodeSnippet" style="margin: 0; white-space: pre-wrap; color: #f8fafc;">&lt;article class="card"&gt;
+
+        <!-- Code Snippet Area with Line Numbers -->
+        <div style="position: relative; flex: 1; display: flex; align-items: stretch; background: #080b11;">
+          <div style="padding: 1.25rem 0.65rem 1.25rem 0.95rem; font-size: 0.84rem; line-height: 1.65; color: #475569; user-select: none; text-align: right; border-right: 1px solid rgba(255, 255, 255, 0.05); background: #06080d;">
+            1<br/>2<br/>3<br/>4<br/>5<br/>6
+          </div>
+          <pre id="techCodeSnippet" style="margin: 0; padding: 1.25rem 1.35rem; white-space: pre-wrap; color: #f8fafc; font-size: 0.85rem; line-height: 1.65; flex: 1; overflow-x: auto;">&lt;article class="card"&gt;
   &lt;header&gt;
     &lt;h2&gt;Modern Web Semantics&lt;/h2&gt;
   &lt;/header&gt;
   &lt;p&gt;Living Document Tree Structure.&lt;/p&gt;
 &lt;/article&gt;</pre>
-      </div>
+        </div>
 
-      <!-- Live Mental Model & Learning Outcomes (Point 11) -->
-      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-        <div class="cq-card" style="padding: 1.75rem; border-color: rgba(99, 102, 241, 0.35); height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 0.4rem;">
-              Beginner Mental Model &bull; Real-World Analogy
-            </div>
-            <h3 id="techConceptTitle" style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.65rem;">
-              The Living Web Document Tree
-            </h3>
-            <p id="techConceptDesc" style="font-size: 0.94rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.5rem;">
-              Think of HTML as the architectural blue-print of a building. It establishes the foundations, walls, and rooms before styling adds color or JavaScript installs lighting.
-            </p>
+        <!-- Live Simulated Output Bar -->
+        <div style="padding: 0.75rem 1.25rem; background: #05070c; border-top: 1px solid rgba(255, 255, 255, 0.06); font-size: 0.76rem;">
+          <div style="color: #64748b; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; margin-bottom: 0.25rem;">
+            Simulation Stream
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
-            <a id="techLaunchLink" href="{% url 'course_detail' 'html-core' %}" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1.25rem;">
-              Launch Track &rarr;
-            </a>
-            <span style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--success); font-weight: 600;">
-              ✓ Automated Verification
-            </span>
+          <div id="techSimOutput" style="color: #38bdf8; font-weight: 500; display: flex; align-items: center; gap: 0.4rem;">
+            <span>&gt;</span> <span id="techSimText">[DOM PARSER] HTML Tree parsed successfully &bull; 2 semantic children attached</span>
           </div>
         </div>
       </div>
+
+      <!-- Right Card: Living Visual Architecture & Feynman Mental Model -->
+      <div class="cq-card" style="padding: 1.75rem; border-color: rgba(99, 102, 241, 0.35); display: flex; flex-direction: column; justify-content: space-between; background: var(--bg-surface-elevated);">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+              Interactive Architecture &bull; Mental Model
+            </div>
+            <span id="techStageTag" style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--success); font-weight: 700;">
+              ● Interactive
+            </span>
+          </div>
+
+          <h3 id="techConceptTitle" style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.65rem; letter-spacing: -0.015em;">
+            The Living Web Document Tree
+          </h3>
+          <p id="techConceptDesc" style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem;">
+            Think of HTML as the architectural blueprint of a building. It establishes the foundations, walls, and rooms before styling adds color or JavaScript installs lighting.
+          </p>
+
+          <!-- Dynamic Visual Architecture Stage (Changes visually per language!) -->
+          <div id="techVisualStage" style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem; min-height: 140px; display: flex; align-items: center; justify-content: center;">
+            <!-- Rendered dynamically by script -->
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 0.75rem;">
+          <a id="techLaunchLink" href="/courses/html-core/" class="btn btn-primary" style="font-size: 0.84rem; padding: 0.45rem 1.15rem; font-weight: 700;">
+            Launch Track &rarr;
+          </a>
+          <span style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--success); font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
+            ✓ Automated Verification
+          </span>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -770,8 +823,7 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
         if (termLog) termLog.textContent = '> [STDOUT] Starter snippet restored • Runtime ready';
       };
     }
-
-    // 2. Interactive Global Curriculum Tech Matrix (Points 10 & 11)
+    // 2. Interactive Global Curriculum Tech Matrix & Living Visual Stage
     const techTabs = document.querySelectorAll('.tech-tab');
     const techFileName = document.getElementById('techFileName');
     const techBadge = document.getElementById('techBadge');
@@ -779,104 +831,194 @@ print(f"⚡ Rewarded: {calculate_xp(7)} XP for 7-day streak!")</textarea>
     const techTitle = document.getElementById('techConceptTitle');
     const techDesc = document.getElementById('techConceptDesc');
     const techLink = document.getElementById('techLaunchLink');
+    const techSimBtn = document.getElementById('techRunSimulationBtn');
+    const techSimText = document.getElementById('techSimText');
+    const techVisualStage = document.getElementById('techVisualStage');
 
     const TECH_DATA = {
       html: {
         file: 'index.html',
         badge: 'Web Skeleton',
-        color: 'var(--lang-html)',
+        color: '#f97316',
         title: 'The Living Web Document Tree',
         desc: 'Think of HTML as the architectural blue-print of a building. It establishes the foundations, walls, and rooms before styling adds color or JavaScript installs lighting.',
         code: `<article class="card">\n  <header>\n    <h2>Modern Web Semantics</h2>\n  </header>\n  <p>Living Document Tree Structure.</p>\n</article>`,
-        link: '/courses/html-core/'
+        sim: '[DOM PARSER] <article class="card"> rendered • 2 child branches attached (0ms latency)',
+        link: '/courses/html-core/',
+        visualHtml: `<div style="display:flex; flex-direction:column; align-items:center; gap:0.5rem; width:100%;">
+          <div style="background:rgba(249,115,22,0.15); border:1px solid #f97316; color:#f97316; padding:0.25rem 0.75rem; border-radius:6px; font-family:var(--font-mono); font-size:0.76rem; font-weight:700;">&lt;article&gt; Root Container</div>
+          <div style="display:flex; gap:1.25rem; width:100%; justify-content:center;">
+            <div style="background:rgba(56,189,248,0.15); border:1px solid #38bdf8; color:#38bdf8; padding:0.25rem 0.65rem; border-radius:6px; font-family:var(--font-mono); font-size:0.72rem; text-align:center;">&lt;header&gt;<br/><span style="color:#f8fafc; font-size:0.68rem;">&lt;h2&gt; Title &bull;</span></div>
+            <div style="background:rgba(52,211,153,0.15); border:1px solid #34d399; color:#34d399; padding:0.25rem 0.65rem; border-radius:6px; font-family:var(--font-mono); font-size:0.72rem; text-align:center;">&lt;p&gt; Paragraph<br/><span style="color:#f8fafc; font-size:0.68rem;">Text node</span></div>
+          </div>
+        </div>`
       },
       css: {
         file: 'styles.css',
         badge: 'Visual Skin & Layout',
-        color: 'var(--lang-css)',
-        title: 'Smart Layout Rails & Responsive Grid',
-        desc: 'CSS is the visual skin and clothing of your application. Flexbox and Grid act as intelligent magnetic rails that arrange your components across any device display.',
-        code: `.container {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 1.5rem;\n  padding: clamp(1rem, 2vw, 2.5rem);\n}`,
-        link: '/courses/css-core/'
+        color: '#38bdf8',
+        title: 'Smart Layout Rails & Responsive Flexbox',
+        desc: 'CSS is the visual skin and clothing of your application. Flexbox and Grid act as intelligent magnetic rails that arrange components dynamically across any device display.',
+        code: `.container {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 1.5rem;\n  padding: 1.5rem;\n}`,
+        sim: '[CSS ENGINE] Flexbox recalculated • 3 cards positioned with justify-content: space-between',
+        link: '/courses/css-core/',
+        visualHtml: `<div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:0.65rem; background:rgba(56,189,248,0.06); padding:0.75rem; border-radius:8px; border:1px dashed #38bdf8;">
+          <div style="background:#38bdf8; color:#07080c; padding:0.4rem 0.65rem; border-radius:6px; font-size:0.72rem; font-weight:700; font-family:var(--font-mono);">Flex Card 1</div>
+          <div style="background:#818cf8; color:#07080c; padding:0.4rem 0.65rem; border-radius:6px; font-size:0.72rem; font-weight:700; font-family:var(--font-mono);">Flex Card 2</div>
+          <div style="background:#c084fc; color:#07080c; padding:0.4rem 0.65rem; border-radius:6px; font-size:0.72rem; font-weight:700; font-family:var(--font-mono);">Flex Card 3</div>
+        </div>`
       },
       js: {
         file: 'engine.js',
         badge: 'Brain & State Loops',
-        color: 'var(--lang-js)',
-        title: 'Dynamic Brain & Asynchronous Logic',
+        color: '#facc15',
+        title: 'Dynamic Brain & Asynchronous Event Loops',
         desc: 'JavaScript is the thinking brain and muscle of the webpage. It listens to user interactions, updates memory states, and fetches live cloud data without refreshing.',
         code: `const button = document.querySelector('#actionBtn');\nbutton.addEventListener('click', async () => {\n  const res = await fetch('/api/data');\n  const data = await res.json();\n  renderList(data.items);\n});`,
-        link: '/courses/javascript-core/'
+        sim: '[V8 RUNTIME] Event Listener dispatched • Promise resolved • DOM State updated',
+        link: '/courses/javascript-core/',
+        visualHtml: `<div style="display:flex; align-items:center; justify-content:space-around; width:100%; font-family:var(--font-mono); font-size:0.72rem;">
+          <div style="background:rgba(250,204,21,0.15); border:1px solid #facc15; color:#facc15; padding:0.35rem 0.65rem; border-radius:6px; text-align:center;">Call Stack<br/><span style="color:#f8fafc;">fetch()</span></div>
+          <div style="color:#facc15; font-size:1.1rem;">➔</div>
+          <div style="background:rgba(56,189,248,0.15); border:1px solid #38bdf8; color:#38bdf8; padding:0.35rem 0.65rem; border-radius:6px; text-align:center;">Microtask<br/><span style="color:#f8fafc;">Promise</span></div>
+          <div style="color:#facc15; font-size:1.1rem;">➔</div>
+          <div style="background:rgba(52,211,153,0.15); border:1px solid #34d399; color:#34d399; padding:0.35rem 0.65rem; border-radius:6px; text-align:center;">DOM Update<br/><span style="color:#f8fafc;">render()</span></div>
+        </div>`
       },
       py: {
         file: 'algorithms.py',
         badge: 'Automation & Data',
-        color: 'var(--lang-py)',
-        title: 'Python Algorithmic Computing',
+        color: '#34d399',
+        title: 'Python Algorithmic Data Transformations',
         desc: 'Python translates human logic into fast computing workflows. Ideal for processing datasets, automating repetitive tasks, and powering artificial intelligence.',
         code: `def process_records(items):\n    # Filter & transform data in client WebAssembly\n    return [\n        item["name"].upper()\n        for item in items\n        if item.get("is_active")\n    ]`,
-        link: '/courses/python-core/'
+        sim: '[PYODIDE WASM] 5 items processed • 3 active records transformed to uppercase in 1.8ms',
+        link: '/courses/python-core/',
+        visualHtml: `<div style="display:flex; align-items:center; justify-content:space-between; width:100%; font-family:var(--font-mono); font-size:0.72rem;">
+          <div style="background:rgba(255,255,255,0.06); padding:0.35rem 0.65rem; border-radius:6px; border:1px solid rgba(255,255,255,0.12); color:#cbd5e1;">Raw Data [5]</div>
+          <div style="color:#34d399;">Filter (is_active) ➔</div>
+          <div style="background:rgba(52,211,153,0.15); border:1px solid #34d399; color:#34d399; padding:0.35rem 0.65rem; border-radius:6px; font-weight:700;">Transformed [3]</div>
+        </div>`
       },
       sql: {
         file: 'queries.sql',
         badge: 'Persistent Memory',
-        color: 'var(--lang-sql)',
-        title: 'SQL Relational Schemas & Tables',
+        color: '#c084fc',
+        title: 'SQL Relational Schemas & Table JOINs',
         desc: 'SQL is how software securely stores and recalls structured information. It connects related tables like users, orders, and lesson scores with mathematical precision.',
         code: `SELECT u.username, COUNT(p.id) AS completed_lessons\nFROM auth_user u\nJOIN learn_userprogress p ON p.user_id = u.id\nWHERE p.status = 'COMPLETED'\nGROUP BY u.id\nORDER BY completed_lessons DESC LIMIT 10;`,
-        link: '/courses/sql-core/'
+        sim: '[SQLITE ENGINE] Relational B-Tree index scan • 10 rows matched across 2 tables',
+        link: '/courses/sql-core/',
+        visualHtml: `<div style="display:flex; justify-content:center; align-items:center; gap:0.75rem; width:100%; font-family:var(--font-mono); font-size:0.72rem;">
+          <div style="background:rgba(192,132,252,0.15); border:1px solid #c084fc; color:#c084fc; padding:0.35rem 0.65rem; border-radius:6px; text-align:center;">Table: auth_user<br/><span style="color:#f8fafc; font-size:0.68rem;">id (PK) &bull; username</span></div>
+          <div style="color:#c084fc; font-weight:700;">🔗 JOIN</div>
+          <div style="background:rgba(56,189,248,0.15); border:1px solid #38bdf8; color:#38bdf8; padding:0.35rem 0.65rem; border-radius:6px; text-align:center;">Table: userprogress<br/><span style="color:#f8fafc; font-size:0.68rem;">user_id (FK) &bull; xp</span></div>
+        </div>`
       },
       ts: {
         file: 'application.ts',
         badge: 'Type Safety Guard',
         color: '#38bdf8',
-        title: 'TypeScript Type-Safe Architecture',
+        title: 'TypeScript Compile-Time Contract Shield',
         desc: 'TypeScript acts as a real-time contract auditor for JavaScript, preventing runtime crashes before your code ever leaves your developer workspace.',
         code: `interface LearnerProfile {\n  id: string;\n  xp: number;\n  streakDays: number;\n  completedLessons: string[];\n}\n\nfunction awardBadge(user: LearnerProfile): boolean {\n  return user.xp >= 100;\n}`,
-        link: '/courses/javascript-core/'
+        sim: '[TSC COMPILER] Type audit passed: LearnerProfile contract 100% sound • 0 type errors',
+        link: '/courses/javascript-core/',
+        visualHtml: `<div style="display:flex; align-items:center; justify-content:center; gap:0.85rem; width:100%; font-family:var(--font-mono); font-size:0.72rem;">
+          <div style="background:rgba(56,189,248,0.12); border:1px solid #38bdf8; color:#38bdf8; padding:0.4rem 0.75rem; border-radius:6px;">Interface Contract</div>
+          <div style="color:#10b981; font-weight:700;">🛡️ Type Verified</div>
+          <div style="background:rgba(16,185,129,0.15); border:1px solid #10b981; color:#10b981; padding:0.4rem 0.75rem; border-radius:6px;">0 Runtime Bugs</div>
+        </div>`
       },
       rust: {
         file: 'main.rs',
         badge: 'Zero-Cost Memory',
         color: '#f97316',
-        title: 'Rust Memory Safety & High Performance',
+        title: 'Rust Memory Safety & Borrow Checker',
         desc: 'Rust delivers bare-metal hardware speed with guaranteed memory safety without needing a garbage collector. The language of modern operating systems and WebAssembly.',
         code: `fn calculate_wpm(characters: usize, seconds: f64) -> f64 {\n    let words = characters as f64 / 5.0;\n    (words / seconds) * 60.0\n}`,
-        link: '/games/code-typer/'
+        sim: '[RUSTC BORROW CHECKER] Ownership lifecycle verified • Stack memory allocated • Zero leaks',
+        link: '/games/code-typer/',
+        visualHtml: `<div style="display:flex; align-items:center; justify-content:space-around; width:100%; font-family:var(--font-mono); font-size:0.72rem;">
+          <div style="background:rgba(249,115,22,0.15); border:1px solid #f97316; color:#f97316; padding:0.35rem 0.65rem; border-radius:6px; text-align:center;">Stack Memory<br/><span style="color:#f8fafc;">words: 24</span></div>
+          <div style="color:#f97316; font-weight:700;">🔒 Ownership</div>
+          <div style="background:rgba(16,185,129,0.15); border:1px solid #10b981; color:#10b981; padding:0.35rem 0.65rem; border-radius:6px; text-align:center;">Zero GC Pause<br/><span style="color:#f8fafc;">Auto Dropped</span></div>
+        </div>`
       },
       go: {
         file: 'server.go',
         badge: 'Cloud Concurrency',
         color: '#00add8',
-        title: 'Go Cloud Microservices & Goroutines',
+        title: 'Go Goroutines & High-Scale Microservices',
         desc: 'Built by Google for hyper-scale backend infrastructure. Simple syntax, blazing-fast compilation, and first-class concurrent goroutines.',
         code: `package main\nimport ("fmt"; "net/http")\n\nfunc handler(w http.ResponseWriter, r *http.Request) {\n    fmt.Fprintf(w, "CodeQuest BD API 200 OK")\n}`,
-        link: '/catalogue/'
+        sim: '[GO RUNTIME] Goroutine worker spawned • HTTP Microservice listening on :8080 (0.9ms)',
+        link: '/catalogue/',
+        visualHtml: `<div style="display:flex; align-items:center; justify-content:center; gap:0.85rem; width:100%; font-family:var(--font-mono); font-size:0.72rem;">
+          <div style="background:rgba(0,173,216,0.15); border:1px solid #00add8; color:#00add8; padding:0.35rem 0.65rem; border-radius:6px; text-align:center;">Goroutine 1<br/><span style="color:#f8fafc;">Worker A</span></div>
+          <div style="color:#00add8; font-weight:700;">&lt;- Channel -&gt;</div>
+          <div style="background:rgba(0,173,216,0.15); border:1px solid #00add8; color:#00add8; padding:0.35rem 0.65rem; border-radius:6px; text-align:center;">Goroutine 2<br/><span style="color:#f8fafc;">Worker B</span></div>
+        </div>`
       }
     };
 
-    techTabs.forEach(function (tab) {
-      tab.onclick = function () {
-        techTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
+    let activeTech = 'html';
 
-        const key = tab.getAttribute('data-tech');
-        const data = TECH_DATA[key];
-        if (!data) return;
+    function setTech(key) {
+      const data = TECH_DATA[key];
+      if (!data) return;
+      activeTech = key;
 
-        techFileName.textContent = data.file;
+      techTabs.forEach(t => t.classList.remove('active'));
+      const activeTab = document.querySelector(`[data-tech="${key}"]`);
+      if (activeTab) activeTab.classList.add('active');
+
+      if (techFileName) techFileName.textContent = data.file;
+      if (techBadge) {
         techBadge.textContent = data.badge;
         techBadge.style.color = data.color;
-        techTitle.textContent = data.title;
-        techDesc.textContent = data.desc;
-        techSnippet.textContent = data.code;
-        techLink.href = data.link;
+        techBadge.style.borderColor = data.color + '40';
+        techBadge.style.background = data.color + '15';
+      }
+      if (techSnippet) techSnippet.textContent = data.code;
+      if (techTitle) techTitle.textContent = data.title;
+      if (techDesc) techDesc.textContent = data.desc;
+      if (techLink) techLink.href = data.link;
+      if (techSimText) techSimText.textContent = data.sim;
+      if (techVisualStage) techVisualStage.innerHTML = data.visualHtml;
 
-        if (window.CodeQuest && window.CodeQuest.playTone) {
-          window.CodeQuest.playTone('click');
-        }
+      if (window.CodeQuest && window.CodeQuest.playTone) {
+        window.CodeQuest.playTone('click');
+      }
+    }
+
+    techTabs.forEach(function (tab) {
+      tab.onclick = function () {
+        const key = tab.getAttribute('data-tech');
+        setTech(key);
       };
     });
+
+    if (techSimBtn) {
+      techSimBtn.onclick = function () {
+        const data = TECH_DATA[activeTech];
+        techSimText.textContent = 'Executing AST simulation...';
+        techSimText.style.color = '#facc15';
+        setTimeout(() => {
+          techSimText.textContent = data.sim;
+          techSimText.style.color = '#38bdf8';
+          if (window.CodeQuest && window.CodeQuest.fireConfetti) {
+            window.CodeQuest.fireConfetti();
+          }
+          if (window.CodeQuest && window.CodeQuest.playTone) {
+            window.CodeQuest.playTone('success');
+          }
+        }, 150);
+      };
+    }
+
+    // Initial render of HTML visual stage
+    setTech('html');
 
     // 3. 100+ Games Taxonomy Modal Controls (Point 16)
     const taxonomyModal = document.getElementById('gamesTaxonomyModal');
