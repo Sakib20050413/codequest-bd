@@ -321,3 +321,29 @@ Benchmarked against Frontend Masters, Scrimba, Brilliant, and Codecademy:
   - `live_city_builder_autobuilt.png`: 3D Voxel City Architect with 3-step guide and auto-build.
   - `live_lesson_simplified.png` & `live_lesson_green_passed.png`: Simplified LMS lesson with 3/3 automated test pass.
 - **Django Test Suite**: Executed `python manage.py test learn` with 14/14 tests passing.
+
+---
+
+## 16. TURN 20: UNIVERSITY LAB SESSIONAL PROJECT DEFENSE & PRESENTATION DECK (2026-10-25)
+
+### 1. Lab Sessional Context & Teacher Defense Objectives
+- **Academic Context**: The user registered `https://github.com/Sakib20050413/codequest-bd` as their University Computer Science & Engineering (CSE) Lab Sessional Project.
+- **Primary Objective**: Present a complete, zero-bug, working prototype to their course instructor / professor (স্যার), demonstrating:
+  1. In-browser client-side compilation and AST DOM test runner.
+  2. 9 curriculum tracks, 88 interactive micro-lessons, and inline architectural mental models.
+  3. Gamified practice arena featuring 108 games across 10 domains, including 3D WebGL physics engines (Drone Flight 3D, Solar System 3D, Mars Rover 3D, Voxel City Architect).
+  4. Full academic documentation, viva defense preparation, and an interactive Figma-style presentation deck.
+
+### 2. Deliverables & Presentation Artifacts
+1. **Academic Lab Sessional Defense Report (`codequest_bd_lab_sessional_report.md`)**:
+   - Comprehensive university report in Bengali detailing problem statement, tech stack (Django 5, SQLite, Vanilla ES6+, Three.js WebGL, CodeMirror 5), system architecture flowchart, complete curriculum breakdown, sandbox testing audit, and 4 tactical viva defense questions with model answers.
+2. **Interactive Design System & Figma Specification Deck (`codequest_design_system_prototype.html`)**:
+   - Standalone browser-ready interactive presentation prototype featuring:
+     - Live verified screen blueprints (Landing, 3D WebGL Engines, Practice Arena).
+     - Standardized design tokens (Electric Cyan, Royal Indigo, Emerald Pulse, Void Dark, typography scales, glassmorphism recipes).
+     - Figma auto-layout specifications (frame dimensions, padding, gap, constraints).
+     - Live interactive viewport simulator (Desktop 1440px vs Mobile 390px) and dark/light theme switch.
+3. **End-to-End Sandbox Verification**:
+   - Local dev server active on `http://127.0.0.1:8000`.
+   - All interactive UI flows, 3D engines, automated AST test assertions, and playground studios verified 100% operational.
+
