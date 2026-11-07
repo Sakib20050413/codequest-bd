@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeQuest BD — Human-Crafted UI/UX Architecture & Database Blueprint</title>
+  <style>
+    :root {
+      --bg-base: #0b0f19;
+      --bg-surface: #111827;
+      --bg-surface-elevated: #1f2937;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-medium: rgba(255, 255, 255, 0.14);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --accent-blue: #3b82f6;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --border-subtle: rgba(0, 0, 0, 0.08);
+      --border-medium: rgba(0, 0, 0, 0.15);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
+    /* Top Sticky Bar */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .badge-pill {
+      background: var(--bg-surface-elevated);
+      color: var(--accent-blue);
+      border: 1px solid var(--border-medium);
+      font-size: 11px;
+      font-family: var(--font-mono);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .nav-btn-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+      max-width: 800px;
+    }
+
+    /* Tab Switchers */
+    .view-panel {
+      display: none;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+    .view-panel.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Wireframe Presentation Frames */
+    .wireframe-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: 10px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+
+    .wireframe-header {
+      background: var(--bg-surface-elevated);
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wireframe-title {
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .wireframe-body {
+      padding: 24px;
+    }
+
+    /* Mini Mockup Components */
+    .mock-navbar {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      font-size: 12px;
+    }
+
+    .mock-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .mock-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 16px;
+      font-size: 12px;
+    }
+
+    .mock-split-view {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 16px;
+      min-height: 400px;
+    }
+
+    .mock-pane {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .code-box {
+      background: #000;
+      color: #38bdf8;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.06);
+      line-height: 1.6;
+    }
+
+    /* ERD Diagram Container */
+    .erd-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: 10px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    table.schema-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 16px;
+    }
+
+    table.schema-table th, table.schema-table td {
+      border: 1px solid var(--border-subtle);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    table.schema-table th {
+      background: var(--bg-surface-elevated);
+      font-weight: 700;
+    }
+
+    .pill-pk {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .pill-fk {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent-blue);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Navigation -->
+  <header class="top-nav">
+    <div class="brand">
+      <span>CodeQuest BD</span>
+      <span class="badge-pill">Human-Crafted System Architecture</span>
+    </div>
+    <div class="nav-btn-group">
+      <button class="nav-btn active" onclick="switchTab('wireframes')">📱 5 Clean UI Wireframes</button>
+      <button class="nav-btn" onclick="switchTab('database')">🗄️ Relational Database & ERD</button>
+      <button class="nav-btn" onclick="switchTab('roadmap')">🛠️ Scratch-to-Production Roadmap</button>
+      <button class="nav-btn" onclick="toggleTheme()">🌓 Toggle Light/Dark</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ==========================================
+         TAB 1: 5 CLEAN UI WIREFRAMES
+         ========================================== -->
+    <section id="tab-wireframes" class="view-panel active">
+      <h2 class="section-title">Clean, Human-Engineered UI/UX Architecture</h2>
+      <p class="section-desc">
+        কৃত্রিম এবং অতি-রঙ্গিন গিজিবিলি এআই ইন্টারফেস বাদ দিয়ে গিটহাব, লিনিয়ার ও স্ট্রাইপ স্ট্যান্ডার্ডের মতো হাই-কনট্রাস্ট, ক্লিন ও প্রফেশনাল আর্কিটেকচার। স্যারকে সরাসরি এই ৫টি পৃষ্ঠার স্ক্রিন লেআউট বুঝিয়ে দেওয়া যাবে।
+      </p>
+
+      <!-- Page 1: Landing Page -->
+      <div class="wireframe-card">
+        <div class="wireframe-header">
+          <span class="wireframe-title">📄 Page 1: Landing Page (হোমপেইজ ও লাইভ কোড ডেমো)</span>
+          <span class="badge-pill">Route: /</span>
+        </div>
+        <div class="wireframe-body">
+          <div class="mock-navbar">
+            <span style="font-weight:700;">CodeQuest BD</span>
+            <div style="display:flex; gap:12px; color:var(--text-muted);">
+              <span>Tracks</span>
+              <span>Practice Arena</span>
+              <span>Playground</span>
+            </div>
+            <button style="background:var(--accent-blue); color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:11px;">Sign In</button>
+          </div>
+
+          <div style="text-align:center; padding: 24px 0 16px 0;">
+            <span style="font-size:11px; text-transform:uppercase; color:var(--accent-emerald); font-weight:700; letter-spacing:1px;">Zero-Setup • In-Browser Coding Lab</span>
+            <h1 style="font-size:24px; font-weight:800; margin:6px 0 10px 0;">Master Programming with Immediate Hands-On Feedback</h1>
+            <p style="font-size:13px; color:var(--text-muted); max-width:600px; margin:0 auto;">Learn HTML5, CSS3, JavaScript, Python 3, and SQL through bite-sized interactive units (<150 words) with live test evaluation.</p>
+          </div>
+
+          <!-- Hero Code Runner Demonstration -->
+          <div style="max-width:700px; margin:0 auto; background:var(--bg-surface-elevated); border:1px solid var(--border-medium); border-radius:8px; overflow:hidden;">
+            <div style="background:#000; padding:8px 14px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.08);">
+              <span style="font-family:var(--font-mono); font-size:11px; color:#9ca3af;">hello_world.py (Interactive Python Runner)</span>
+              <button style="background:var(--accent-emerald); color:#000; border:none; padding:3px 10px; border-radius:4px; font-size:11px; font-weight:700;">▶ Run Code (+50 XP)</button>
+            </div>
+            <div class="code-box">
+              <span style="color:#f59e0b;">def</span> <span style="color:#38bdf8;">greet_student</span>(name):<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f59e0b;">return</span> <span style="color:#10b981;">f"Welcome to CodeQuest BD, {name}! Let's build real software."</span><br><br>
+              print(greet_student(<span style="color:#10b981;">"Cadet"</span>))
+            </div>
+            <div style="padding:10px 14px; background:rgba(16,185,129,0.08); border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; font-size:11px;">
+              <span style="color:var(--accent-emerald);">✔ Execution Success: Output received in 8ms</span>
+              <span style="font-weight:700; color:var(--accent-emerald);">+50 XP Earned</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page 2: Course Catalogue -->
+      <div class="wireframe-card">
+        <div class="wireframe-header">
+          <span class="wireframe-title">📄 Page 2: Course Catalogue & Roadmap (কোর্স কারিকুলাম ও ট্র্যাকস)</span>
+          <span class="badge-pill">Route: /courses/</span>
+        </div>
+        <div class="wireframe-body">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div>
+              <h3 style="font-size:16px; font-weight:700;">9 Structured Curriculum Tracks</h3>
+              <p style="font-size:12px; color:var(--text-muted);">From web foundations to low-level pointers and algorithms.</p>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <span class="badge-pill" style="color:var(--text-main);">All (9)</span>
+              <span class="badge-pill">Web Foundations</span>
+              <span class="badge-pill">Scripting</span>
+              <span class="badge-pill">Systems & C</span>
+            </div>
+          </div>
+
+          <div class="mock-grid-3">
+            <div class="mock-card">
+              <span style="font-size:10px; font-weight:700; color:#f97316;">FRONTEND</span>
+              <h4 style="font-size:14px; margin:4px 0;">HTML5 Foundations</h4>
+              <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">Semantic elements, forms, accessibility, and modern DOM tree architecture.</p>
+              <div style="font-size:11px; color:var(--text-dim); display:flex; justify-content:space-between;">
+                <span>12 Lessons</span>
+                <span>100% Hands-On</span>
+              </div>
+            </div>
+
+            <div class="mock-card">
+              <span style="font-size:10px; font-weight:700; color:#38bdf8;">STYLING</span>
+              <h4 style="font-size:14px; margin:4px 0;">CSS3 Styling & Grid</h4>
+              <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">Box model mechanics, flexbox alignment, and CSS grid responsive matrices.</p>
+              <div style="font-size:11px; color:var(--text-dim); display:flex; justify-content:space-between;">
+                <span>12 Lessons</span>
+                <span>100% Hands-On</span>
+              </div>
+            </div>
+
+            <div class="mock-card">
+              <span style="font-size:10px; font-weight:700; color:#10b981;">CORE LOGIC</span>
+              <h4 style="font-size:14px; margin:4px 0;">Python 3 Algorithmic Core</h4>
+              <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">Data structures, loops, list comprehensions, and object-oriented foundations.</p>
+              <div style="font-size:11px; color:var(--text-dim); display:flex; justify-content:space-between;">
+                <span>12 Lessons</span>
+                <span>100% Hands-On</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page 3: Lesson Studio HUD -->
+      <div class="wireframe-card">
+        <div class="wireframe-header">
+          <span class="wireframe-title">📄 Page 3: Lesson Studio HUD (ইন্টারেক্টিভ ল্যাব এডিটর ও টেস্ট রানার)</span>
+          <span class="badge-pill">Route: /learn/&lt;course&gt;/&lt;lesson&gt;/</span>
+        </div>
+        <div class="wireframe-body">
+          <div class="mock-split-view">
+            <!-- Left Pane: Lesson & Tasks -->
+            <div class="mock-pane">
+              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:8px;">
+                <span style="font-size:11px; font-weight:700; color:var(--accent-blue);">HTML5 Foundations • Lesson #1</span>
+                <span class="badge-pill">150 Words Concept</span>
+              </div>
+              <h3 style="font-size:15px; font-weight:700;">The HTML5 Document Skeleton</h3>
+              <p style="font-size:12px; color:var(--text-muted); line-height:1.5;">
+                Every web document begins with a <code>&lt;!DOCTYPE html&gt;</code> declaration instructing the browser to render standard HTML5. Inside, the root <code>&lt;html&gt;</code> wraps both <code>&lt;head&gt;</code> (metadata) and <code>&lt;body&gt;</code> (visible content).
+              </p>
+              <div style="background:rgba(59,130,246,0.06); border:1px solid var(--border-medium); border-radius:6px; padding:12px;">
+                <h5 style="font-size:11px; font-weight:700; color:var(--accent-blue); margin-bottom:4px;">🎯 Target Challenge</h5>
+                <p style="font-size:11px; color:var(--text-muted);">Create an &lt;h1&gt; heading inside the &lt;body&gt; tag with text "Hello CodeQuest".</p>
+              </div>
+              <button style="background:var(--bg-surface); border:1px solid var(--border-medium); color:var(--text-main); font-size:11px; padding:6px; border-radius:4px; font-weight:600; cursor:pointer;">⚡ Auto-Fill Solution for Verification</button>
+            </div>
+
+            <!-- Right Pane: CodeMirror Editor & Test Result Output -->
+            <div class="mock-pane">
+              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:8px;">
+                <div style="display:flex; gap:8px; font-size:11px; font-family:var(--font-mono);">
+                  <span style="color:var(--text-main); font-weight:700;">index.html</span>
+                </div>
+                <button style="background:var(--accent-emerald); color:#000; border:none; padding:4px 12px; border-radius:4px; font-size:11px; font-weight:700; cursor:pointer;">▶ Verify Solution</button>
+              </div>
+              <div class="code-box" style="flex:1;">
+                &lt;!DOCTYPE html&gt;<br>
+                &lt;html lang="en"&gt;<br>
+                &nbsp;&nbsp;&lt;head&gt;&lt;title&gt;My Lab&lt;/title&gt;&lt;/head&gt;<br>
+                &nbsp;&nbsp;&lt;body&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;Hello CodeQuest&lt;/h1&gt;<br>
+                &nbsp;&nbsp;&lt;/body&gt;<br>
+                &lt;/html&gt;
+              </div>
+              <!-- Automated Test Suite Box -->
+              <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3); border-radius:6px; padding:10px; font-size:11px;">
+                <strong style="color:var(--accent-emerald);">Automated Test Runner (3/3 Passed):</strong>
+                <div style="color:var(--text-muted); margin-top:4px;">✔ Test 1: Root &lt;html&gt; element properly declared.</div>
+                <div style="color:var(--text-muted);">✔ Test 2: Visible &lt;body&gt; element present.</div>
+                <div style="color:var(--text-muted);">✔ Test 3: &lt;h1&gt; contains string "Hello CodeQuest".</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page 4 & 5: Practice Arena & Multi-Language Playground -->
+      <div class="wireframe-card">
+        <div class="wireframe-header">
+          <span class="wireframe-title">📄 Page 4 & 5: Practice Arena (108 Games) & Playground Studio</span>
+          <span class="badge-pill">Route: /games/ & /playground/</span>
+        </div>
+        <div class="wireframe-body">
+          <div class="mock-grid-3">
+            <div class="mock-card" style="border-top:2px solid var(--accent-blue);">
+              <h4 style="font-size:13px; font-weight:700;">🎮 Three.js Martian Rover 3D</h4>
+              <p style="font-size:11px; color:var(--text-muted); margin:6px 0;">3D WebGL coordinate exploration controlled by loops and algorithmic turns.</p>
+              <span class="badge-pill">Three.js WebGL</span>
+            </div>
+            <div class="mock-card" style="border-top:2px solid var(--accent-emerald);">
+              <h4 style="font-size:13px; font-weight:700;">🐸 Flexbox Pond Alignment</h4>
+              <p style="font-size:11px; color:var(--text-muted); margin:6px 0;">Align interactive DOM targets using justify-content and align-items.</p>
+              <span class="badge-pill">DOM Physics</span>
+            </div>
+            <div class="mock-card" style="border-top:2px solid var(--accent-amber);">
+              <h4 style="font-size:13px; font-weight:700;">💻 Universal 5-Language Playground</h4>
+              <p style="font-size:11px; color:var(--text-muted); margin:6px 0;">Instant execution scratchpad for Web, Python, SQL, C, and Bash.</p>
+              <span class="badge-pill">Multi-Language IDE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TAB 2: RELATIONAL DATABASE & ERD
+         ========================================== -->
+    <section id="tab-database" class="view-panel">
+      <h2 class="section-title">Relational Database Architecture (ERD & Schema)</h2>
+      <p class="section-desc">
+        ফুল-স্ট্যাক ওয়েব অ্যাপ্লিকেশনের জন্য নরমালাইজড রিলেশনাল ডেটাবেজ মডেল। এটি SQLite ও PostgreSQL উভয়ের জন্য সরাসরি প্রযোজ্য।
+      </p>
+
+      <div class="erd-container">
+        <!-- SVG ERD Diagram -->
+        <svg viewBox="0 0 940 380" style="width:100%; height:auto;" xmlns="http://www.w3.org/2000/svg">
+          <!-- User Profile Entity -->
+          <rect x="20" y="20" width="220" height="150" rx="6" fill="#1f2937" stroke="#4b5563" stroke-width="1.5"/>
+          <text x="130" y="42" fill="#f9fafb" font-size="12" font-weight="bold" text-anchor="middle">auth_user / user_profile</text>
+          <line x1="20" y1="52" x2="240" y2="52" stroke="#4b5563"/>
+          <text x="32" y="72" fill="#10b981" font-size="10" font-family="monospace">PK id (INT)</text>
+          <text x="32" y="92" fill="#d1d5db" font-size="10" font-family="monospace">username (VARCHAR 150)</text>
+          <text x="32" y="112" fill="#d1d5db" font-size="10" font-family="monospace">total_xp (INT)</text>
+          <text x="32" y="132" fill="#d1d5db" font-size="10" font-family="monospace">current_streak (INT)</text>
+          <text x="32" y="152" fill="#d1d5db" font-size="10" font-family="monospace">last_activity (DATE)</text>
+
+          <!-- Course Entity -->
+          <rect x="360" y="20" width="220" height="140" rx="6" fill="#1f2937" stroke="#4b5563" stroke-width="1.5"/>
+          <text x="470" y="42" fill="#f9fafb" font-size="12" font-weight="bold" text-anchor="middle">courses</text>
+          <line x1="360" y1="52" x2="580" y2="52" stroke="#4b5563"/>
+          <text x="372" y="72" fill="#10b981" font-size="10" font-family="monospace">PK id (INT)</text>
+          <text x="372" y="92" fill="#d1d5db" font-size="10" font-family="monospace">slug (VARCHAR 60 UNIQUE)</text>
+          <text x="372" y="112" fill="#d1d5db" font-size="10" font-family="monospace">title (VARCHAR 120)</text>
+          <text x="372" y="132" fill="#d1d5db" font-size="10" font-family="monospace">language_family (VARCHAR)</text>
+          <text x="372" y="150" fill="#d1d5db" font-size="10" font-family="monospace">order_index (INT)</text>
+
+          <!-- Lesson Entity -->
+          <rect x="700" y="20" width="220" height="170" rx="6" fill="#1f2937" stroke="#4b5563" stroke-width="1.5"/>
+          <text x="810" y="42" fill="#f9fafb" font-size="12" font-weight="bold" text-anchor="middle">lessons</text>
+          <line x1="700" y1="52" x2="920" y2="52" stroke="#4b5563"/>
+          <text x="712" y="72" fill="#10b981" font-size="10" font-family="monospace">PK id (INT)</text>
+          <text x="712" y="92" fill="#3b82f6" font-size="10" font-family="monospace">FK course_id (INT)</text>
+          <text x="712" y="112" fill="#d1d5db" font-size="10" font-family="monospace">slug (VARCHAR 80)</text>
+          <text x="712" y="132" fill="#d1d5db" font-size="10" font-family="monospace">title (VARCHAR 150)</text>
+          <text x="712" y="152" fill="#d1d5db" font-size="10" font-family="monospace">starter_code (TEXT)</text>
+          <text x="712" y="172" fill="#d1d5db" font-size="10" font-family="monospace">tests_json (JSON/TEXT)</text>
+
+          <!-- User Lesson Progress Entity -->
+          <rect x="360" y="220" width="220" height="130" rx="6" fill="#1f2937" stroke="#4b5563" stroke-width="1.5"/>
+          <text x="470" y="242" fill="#f9fafb" font-size="12" font-weight="bold" text-anchor="middle">user_lesson_progress</text>
+          <line x1="360" y1="252" x2="580" y2="252" stroke="#4b5563"/>
+          <text x="372" y="272" fill="#10b981" font-size="10" font-family="monospace">PK id (INT)</text>
+          <text x="372" y="292" fill="#3b82f6" font-size="10" font-family="monospace">FK user_id (INT)</text>
+          <text x="372" y="312" fill="#3b82f6" font-size="10" font-family="monospace">FK lesson_id (INT)</text>
+          <text x="372" y="332" fill="#d1d5db" font-size="10" font-family="monospace">completed (BOOLEAN)</text>
+
+          <!-- Arcade Game Entity -->
+          <rect x="20" y="220" width="220" height="130" rx="6" fill="#1f2937" stroke="#4b5563" stroke-width="1.5"/>
+          <text x="130" y="242" fill="#f9fafb" font-size="12" font-weight="bold" text-anchor="middle">arcade_games</text>
+          <line x1="20" y1="252" x2="240" y2="252" stroke="#4b5563"/>
+          <text x="32" y="272" fill="#10b981" font-size="10" font-family="monospace">PK id (INT)</text>
+          <text x="32" y="292" fill="#d1d5db" font-size="10" font-family="monospace">slug (VARCHAR 60 UNIQUE)</text>
+          <text x="32" y="312" fill="#d1d5db" font-size="10" font-family="monospace">domain (VARCHAR 50)</text>
+          <text x="32" y="332" fill="#d1d5db" font-size="10" font-family="monospace">max_levels (INT)</text>
+
+          <!-- Relationship Connectors -->
+          <!-- Course to Lesson (1 to Many) -->
+          <path d="M 580 90 L 700 90" stroke="#3b82f6" stroke-width="2"/>
+          <circle cx="585" cy="90" r="3" fill="#3b82f6"/>
+          <polygon points="695,86 700,90 695,94" fill="#3b82f6"/>
+          <text x="640" y="82" fill="#9ca3af" font-size="9" text-anchor="middle">1:N</text>
+
+          <!-- User to Progress (1 to Many) -->
+          <path d="M 130 170 L 130 195 L 470 195 L 470 220" stroke="#10b981" stroke-width="1.5" fill="none"/>
+          <polygon points="466,215 470,220 474,215" fill="#10b981"/>
+
+          <!-- Lesson to Progress (1 to Many) -->
+          <path d="M 810 190 L 810 205 L 530 205 L 530 220" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+          <polygon points="526,215 530,220 534,215" fill="#3b82f6"/>
+        </svg>
+
+        <h3 style="font-size:14px; font-weight:700; margin-top:24px;">Core Entity Schema Definitions</h3>
+        <table class="schema-table">
+          <thead>
+            <tr>
+              <th>Table Name</th>
+              <th>Field Name</th>
+              <th>Data Type</th>
+              <th>Key / Constraint</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>courses</code></td>
+              <td><code>slug</code></td>
+              <td>VARCHAR(60)</td>
+              <td><span class="pill-pk">UNIQUE</span></td>
+              <td>Canonical URL identifier (e.g., <code>html-core</code>, <code>python-core</code>).</td>
+            </tr>
+            <tr>
+              <td><code>lessons</code></td>
+              <td><code>course_id</code></td>
+              <td>INTEGER</td>
+              <td><span class="pill-fk">FK -> courses.id</span></td>
+              <td>Cascading foreign key mapping lesson to its parent curriculum.</td>
+            </tr>
+            <tr>
+              <td><code>lessons</code></td>
+              <td><code>tests_json</code></td>
+              <td>JSON / TEXT</td>
+              <td><span>NOT NULL</span></td>
+              <td>Structured regex rules and assertion matchers executed by client runner.</td>
+            </tr>
+            <tr>
+              <td><code>user_lesson_progress</code></td>
+              <td><code>user_id, lesson_id</code></td>
+              <td>INTEGER</td>
+              <td><span class="pill-fk">UNIQUE(user, lesson)</span></td>
+              <td>Tracks completion state, earned XP, and submission timestamps.</td>
+            </tr>
+            <tr>
+              <td><code>arcade_games</code></td>
+              <td><code>domain</code></td>
+              <td>VARCHAR(50)</td>
+              <td><span>INDEXED</span></td>
+              <td>Categorizes 108 games across 10 domains (3D WebGL, 2D Canvas, SQL, CTF).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TAB 3: SCRATCH-TO-PRODUCTION ROADMAP
+         ========================================== -->
+    <section id="tab-roadmap" class="view-panel">
+      <h2 class="section-title">Scratch-to-Production Implementation Roadmap</h2>
+      <p class="section-desc">
+        ব্ল্যাক-বক্স এআই বা জটিল ফ্রেমওয়ার্ক ছাড়া একদম শুরু থেকে ধাপে ধাপে একটি ফুল-স্ট্যাক কোডিং প্ল্যাটফর্ম তৈরি করার প্রফেশনাল ইঞ্জিনিয়ারিং গাইড।
+      </p>
+
+      <div class="wireframe-card">
+        <div class="wireframe-body" style="line-height:1.7; font-size:13px;">
+          <h3 style="font-size:15px; font-weight:700; color:var(--accent-blue); margin-bottom:8px;">Step 1: Environment Initialization & Django Core Setup</h3>
+          <p style="color:var(--text-muted); margin-bottom:12px;">
+            Python virtual environment তৈরি করে Django 5.x ইনস্টল করা এবং প্রজেক্ট কনফিগার করা:
+          </p>
+          <div class="code-box">
+            python -m venv venv<br>
+            .\venv\Scripts\activate<br>
+            pip install django django-cors-headers<br>
+            django-admin startproject config .<br>
+            python manage.py startapp learn<br>
+            python manage.py startapp games
+          </div>
+
+          <h3 style="font-size:15px; font-weight:700; color:var(--accent-emerald); margin:20px 0 8px 0;">Step 2: Database Schema & Management Commands</h3>
+          <p style="color:var(--text-muted); margin-bottom:12px;">
+            <code>learn/models.py</code> ফাইলে Course, Lesson এবং Progress মডেল তৈরি করে ডেটাবেজ মাইগ্রেট ও সিড করা:
+          </p>
+          <div class="code-box">
+            python manage.py makemigrations<br>
+            python manage.py migrate<br>
+            python manage.py seed_lessons  # 88 atomic lessons injected with starter code & tests
+          </div>
+
+          <h3 style="font-size:15px; font-weight:700; color:var(--accent-amber); margin:20px 0 8px 0;">Step 3: Client-Side AST Test Runner (web_runner.js)</h3>
+          <p style="color:var(--text-muted); margin-bottom:12px;">
+            সার্ভারে কোড না পাঠিয়ে ব্রাউজারেই নিরাপদ স্যান্ডবক্সে কোড পার্স ও অ্যাসারশন যাচাই করা:
+          </p>
+          <div class="code-box">
+            // Client-Side AST evaluation via DOMParser<br>
+            function verifySolution(userHtml, testRules) {<br>
+            &nbsp;&nbsp;const doc = new DOMParser().parseFromString(userHtml, 'text/html');<br>
+            &nbsp;&nbsp;return testRules.map(rule => {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const el = doc.querySelector(rule.selector);<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;const pass = el && (!rule.text || el.textContent.includes(rule.text));<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;return { title: rule.title, pass: !!pass };<br>
+            &nbsp;&nbsp;});<br>
+            }
+          </div>
+
+          <h3 style="font-size:15px; font-weight:700; color:var(--accent-blue); margin:20px 0 8px 0;">Step 4: Three.js WebGL Simulation Engine</h3>
+          <p style="color:var(--text-muted); margin-bottom:12px;">
+            গেম কার্টিজ হিসেবে Three.js সিন, ক্যামেরা, লাইটিং এবং রেন্ডারার ইনিশিয়ালাইজেশন:
+          </p>
+          <div class="code-box">
+            const scene = new THREE.Scene();<br>
+            const camera = new THREE.PerspectiveCamera(60, canvas.width / canvas.height, 0.1, 1000);<br>
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+          </div>
+
+          <h3 style="font-size:15px; font-weight:700; color:var(--accent-emerald); margin:20px 0 8px 0;">Step 5: Cloud Deployment on Vercel</h3>
+          <p style="color:var(--text-muted); margin-bottom:12px;">
+            <code>vercel.json</code> কনফিগার করে গিটহাবে পুশ করলেই স্বয়ংক্রিয়ভাবে লাইভ ডিপ্লয়মেন্ট তৈরি হয়:
+          </p>
+          <div class="code-box">
+            git add .<br>
+            git commit -m "feat: complete full-stack CodeQuest BD architecture"<br>
+            git push origin main  # Vercel deploys to https://codequest-bd.vercel.app
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
+
+      const clickedBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      if (clickedBtn) clickedBtn.classList.add('active');
+    }
+
+    function toggleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      document.documentElement.setAttribute('data-theme', cur === 'light' ? 'dark' : 'light');
+    }
+  </script>
+</body>
+</html>
