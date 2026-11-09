@@ -106,6 +106,17 @@ class Lesson(models.Model):
         blank=True,
         help_text="Hint ladder: ['Hint 1: Check your syntax', 'Hint 2: Use display: flex']"
     )
+    tips_tricks = models.TextField(
+        blank=True,
+        default="",
+        help_text="Pro Shortcuts, Interview Tips and Common Traps Memory Box"
+    )
+    full_syntax_game_slug = models.CharField(
+        max_length=60,
+        blank=True,
+        default="",
+        help_text="Slug of associated Full-Syntax Game"
+    )
 
     class Meta:
         ordering = ["course__order", "order", "id"]
@@ -140,6 +151,10 @@ class UserProfile(models.Model):
     last_active = models.DateField(default=timezone.now)
     theme_pref = models.CharField(max_length=10, default="dark", choices=[("dark", "Dark"), ("light", "Light")])
     sound_enabled = models.BooleanField(default=True)
+    daily_goal_minutes = models.PositiveIntegerField(default=15)
+    daily_goal_xp = models.PositiveIntegerField(default=100)
+    freeze_shields = models.PositiveIntegerField(default=1)
+    activity_heatmap_json = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return f"{self.user.username} ({self.xp} XP, {self.streak}d streak)"
@@ -210,3 +225,97 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f"[{self.category}] {self.message[:40]}"
+
+
+class MicroTask(models.Model):
+    TASK_TYPES = [
+        ("CORE_SYNTAX", "Task 1: Core Syntax Implementation (+30 XP)"),
+        ("EDGE_CASE_OPT", "Task 2: Edge-Case and Optimization (+40 XP)"),
+        ("MINI_BOSS", "Task 3: Mini Boss Challenge (+50 XP)"),
+    ]
+
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="micro_tasks")
+    task_number = models.PositiveSmallIntegerField(default=1)
+    task_type = models.CharField(max_length=30, choices=TASK_TYPES, default="CORE_SYNTAX")
+    title = models.CharField(max_length=160)
+    instructions = models.TextField()
+    starter_code = models.TextField(blank=True, default="")
+    solution_code = models.TextField(blank=True, default="")
+    xp_reward = models.PositiveIntegerField(default=30)
+    test_cases_json = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="List of 3 automated test cases: Normal, Edge, Stress"
+    )
+
+    class Meta:
+        ordering = ["lesson", "task_number", "id"]
+        unique_together = ("lesson", "task_number")
+
+    def __str__(self):
+        return f"{self.lesson.title} - Task {self.task_number}: {self.title}"
+
+
+class Certificate(models.Model):
+    credential_id = models.CharField(max_length=64, unique=True, db_index=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="certificates")
+    student_name = models.CharField(max_length=150)
+    student_id_str = models.CharField(max_length=40, default="1119003")
+    track_slug = models.CharField(max_length=80, db_index=True)
+    track_title = models.CharField(max_length=160)
+    mastery_score = models.PositiveIntegerField(default=96)
+    issued_at = models.DateTimeField(default=timezone.now)
+    is_verified = models.BooleanField(default=True)
+    qr_data = models.TextField(blank=True, default="")
+
+    class Meta:
+        ordering = ["-issued_at"]
+
+    def __str__(self):
+        return f"{self.credential_id} - {self.student_name} ({self.track_title})"
+
+
+class Contest(models.Model):
+    CATEGORY_CHOICES = [
+        ("ALGO_SPRINT", "Algorithm Sprint"),
+        ("SQL_MYSTERY", "SQL Detective Mystery"),
+        ("UI_SHOWDOWN", "UI Layout Showdown"),
+        ("GAME_SPEEDRUN", "Full-Syntax Game Speedrun"),
+    ]
+
+    slug = models.SlugField(max_length=100, unique=True)
+    title = models.CharField(max_length=160)
+    category = models.CharField(max_length=40, choices=CATEGORY_CHOICES, default="ALGO_SPRINT")
+    description = models.TextField()
+    language_slug = models.CharField(max_length=40, default="python")
+    duration_minutes = models.PositiveIntegerField(default=45)
+    xp_reward = models.PositiveIntegerField(default=500)
+    is_active = models.BooleanField(default=True)
+    starts_at = models.DateTimeField(default=timezone.now)
+    ends_at = models.DateTimeField()
+    starter_code = models.TextField(blank=True, default="")
+    solution_code = models.TextField(blank=True, default="")
+    test_cases_json = models.JSONField(default=list, blank=True)
+
+    class Meta:
+        ordering = ["-is_active", "starts_at"]
+
+    def __str__(self):
+        return f"[{self.get_category_display()}] {self.title}"
+
+
+class ContestSubmission(models.Model):
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="submissions")
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="contest_submissions")
+    username = models.CharField(max_length=150)
+    university_batch = models.CharField(max_length=100, default="BAIUST CSE Batch 11")
+    score = models.PositiveIntegerField(default=100)
+    execution_time_ms = models.PositiveIntegerField(default=15)
+    rank = models.PositiveIntegerField(default=1)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-score", "execution_time_ms", "submitted_at"]
+
+    def __str__(self):
+        return f"{self.username} - {self.contest.title} (Score: {self.score}, Time: {self.execution_time_ms}ms)"

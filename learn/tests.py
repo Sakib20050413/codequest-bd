@@ -2,7 +2,7 @@ import json
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
-from learn.models import Language, Course, Lesson, Game, Badge, UserProfile, UserProgress
+from learn.models import Language, Course, Lesson, Game, Badge, UserProfile, UserProgress, MicroTask, Certificate, Contest, ContestSubmission
 
 
 class CodeQuestCoreTests(TestCase):
@@ -187,3 +187,123 @@ class CodeQuestCoreTests(TestCase):
         self.assertIn("status", data)
         self.assertIn("persistence_mode", data)
         self.assertIn("tables_count", data)
+
+    def test_contests_hub_and_detail(self):
+        from django.utils import timezone
+        import datetime
+        contest = Contest.objects.create(
+            title="Weekly Syntax Battle #1",
+            slug="syntax-battle-1",
+            description="Algorithmic problem solving",
+            category="ALGO_SPRINT",
+            duration_minutes=30,
+            xp_reward=200,
+            starts_at=timezone.now(),
+            ends_at=timezone.now() + datetime.timedelta(days=7),
+            is_active=True
+        )
+        res = self.client.get(reverse("contests_hub"))
+        self.assertEqual(res.status_code, 200)
+        self.assertContains(res, "Weekly Coding")
+        self.assertContains(res, "Weekly Syntax Battle #1")
+
+        detail_res = self.client.get(reverse("contest_detail", args=[contest.slug]))
+        self.assertEqual(detail_res.status_code, 200)
+        self.assertContains(detail_res, "Weekly Syntax Battle #1")
+
+    def test_contest_submission_api(self):
+        from django.utils import timezone
+        import datetime
+        contest = Contest.objects.create(
+            title="Speed Sorting Challenge",
+            slug="speed-sort",
+            duration_minutes=25,
+            xp_reward=150,
+            starts_at=timezone.now(),
+            ends_at=timezone.now() + datetime.timedelta(days=7),
+            is_active=True
+        )
+        self.client.login(username="testlearner", password="password123")
+        payload = {"code": "def solve(data): return sorted(data)"}
+        res = self.client.post(
+            reverse("api_submit_contest", args=[contest.slug]),
+            data=json.dumps(payload),
+            content_type="application/json"
+        )
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(data["status"], "PASSED")
+        self.assertEqual(data["score"], 100)
+        self.assertEqual(data["xp_awarded"], 150)
+
+    def test_certificates_hub_and_verify(self):
+        cert = Certificate.objects.create(
+            credential_id="CQ-BD-2026-TEST-1119003",
+            user=self.user,
+            student_name="Test Learner",
+            track_slug="python",
+            track_title="Python 3 Foundations",
+            mastery_score=95,
+            is_verified=True,
+            qr_data="https://codequest-bd.vercel.app/verify/CQ-BD-2026-TEST-1119003"
+        )
+        res = self.client.get(reverse("certificates_hub"))
+        self.assertEqual(res.status_code, 200)
+        self.assertContains(res, "Verifiable Professional")
+
+        verify_res = self.client.get(reverse("verify_certificate_view", args=[cert.credential_id]))
+        self.assertEqual(verify_res.status_code, 200)
+        self.assertContains(verify_res, "CQ-BD-2026-TEST-1119003")
+        self.assertContains(verify_res, "Test Learner")
+        self.assertContains(verify_res, "95%")
+
+    def test_claim_certificate_api(self):
+        self.client.login(username="testlearner", password="password123")
+        payload = {
+            "student_name": "Md Najmus Sakib",
+            "student_id": "1119003",
+            "track_slug": "python"
+        }
+        res = self.client.post(
+            reverse("api_claim_certificate"),
+            data=json.dumps(payload),
+            content_type="application/json"
+        )
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertTrue(data["success"])
+        self.assertIn("credential_id", data)
+
+    def test_micro_task_check_api(self):
+        mt = MicroTask.objects.create(
+            lesson=self.lesson1,
+            task_type="CORE_SYNTAX",
+            task_number=1,
+            title="Micro Task: Heading Attributes",
+            instructions="Add class attribute to heading",
+            xp_reward=30
+        )
+        self.client.login(username="testlearner", password="password123")
+        payload = {"task_id": mt.id, "code": "<h1 class='title'>Hello</h1>"}
+        res = self.client.post(
+            reverse("api_check_micro_task"),
+            data=json.dumps(payload),
+            content_type="application/json"
+        )
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertTrue(data["passed"])
+        self.assertEqual(data["xp_awarded"], 30)
+
+    def test_admin_panel_view(self):
+        res = self.client.get(reverse("admin_panel"))
+        self.assertEqual(res.status_code, 200)
+        self.assertContains(res, "Command Center")
+        self.assertContains(res, "Active Tracks")
+
+        stats_res = self.client.get(reverse("api_admin_stats"))
+        self.assertEqual(stats_res.status_code, 200)
+        data = stats_res.json()
+        self.assertIn("languages", data)
+        self.assertIn("courses", data)
+        self.assertIn("certificates", data)

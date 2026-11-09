@@ -160,6 +160,28 @@
             {{ lesson.body_md|render_md }}
           </div>
 
+          <!-- Pillar 2: "Tips & Tricks" Memory Box (Pro Shortcuts & Common Traps) -->
+          <div class="cq-memory-box" style="margin: 1.5rem 0; padding: 1.15rem 1.35rem; border-radius: var(--radius-lg); background: rgba(245, 158, 11, 0.08); border: 1.5px solid rgba(245, 158, 11, 0.4); position: relative;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.15rem;">💡</span>
+                <span style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #fbbf24;">
+                  Tips &amp; Tricks &bull; Pro Shortcuts &amp; Common Traps
+                </span>
+              </div>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; background: rgba(245, 158, 11, 0.15); padding: 0.15rem 0.45rem; border-radius: 4px;">
+                Memory Anchor
+              </span>
+            </div>
+            <div style="font-size: 0.88rem; color: #e2e8f0; line-height: 1.62;">
+              {% if lesson.tips_tricks %}
+                {{ lesson.tips_tricks|linebreaksbr }}
+              {% else %}
+                <strong>Pro Shortcut:</strong> Always verify boundary conditions (empty values, off-by-one errors). In competitive coding and technical interviews, explicitly stating time complexity O(n) and edge cases before typing code distinguishes top-tier engineers.
+              {% endif %}
+            </div>
+          </div>
+
           <!-- Optional Diagram SVG -->
           {% if lesson.diagram_svg %}
           <div style="margin: 1.5rem 0; padding: 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); text-align: center;">
@@ -200,6 +222,68 @@
                 💡 Need a hint? Show solution snippet
               </button>
             </div>
+
+          <!-- Pillar 4: Post-Lesson Micro-Tasks (3 Automated Tiers) -->
+          <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+              <div style="font-size: 0.8rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
+                <span>⚡</span> <span>Post-Lesson Micro-Tasks (Automated Multi-Case)</span>
+              </div>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; background: rgba(245, 158, 11, 0.1); padding: 0.15rem 0.45rem; border-radius: 4px;">
+                +120 XP Pool
+              </span>
+            </div>
+
+            <div id="microTasksContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
+              {% if micro_tasks %}
+                {% for mt in micro_tasks %}
+                <div class="cq-card" id="mtCard_{{ mt.id }}" style="padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated);">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.35rem;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">
+                      {{ mt.title }}
+                    </div>
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 0.15rem 0.4rem; border-radius: 4px;">
+                      +{{ mt.xp_reward }} XP
+                    </span>
+                  </div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.5rem;">
+                    {{ mt.description }}
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="mtBadge_{{ mt.id }}" style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">
+                      Normal &bull; Edge &bull; Stress
+                    </span>
+                    <button onclick="runMicroTask({{ mt.id }})" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">
+                      Evaluate &rarr;
+                    </button>
+                  </div>
+                </div>
+                {% endfor %}
+              {% else %}
+                <div class="cq-card" id="mtCard_t1" style="padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Task 1: Core Syntax Check</div>
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">+30 XP</span>
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Deterministic validation of core syntax patterns.</div>
+                </div>
+                <div class="cq-card" id="mtCard_t2" style="padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Task 2: Boundary Edge Case</div>
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">+40 XP</span>
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Empty values and extreme array boundaries guarded.</div>
+                </div>
+                <div class="cq-card" id="mtCard_t3" style="padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Task 3: Mini Boss Stress Test</div>
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #ec4899; font-weight: 700;">+50 XP</span>
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Sub-10ms latency execution verification.</div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
             <div id="inlineHintBox" style="display: none; margin-top: 0.65rem; padding: 0.75rem 1rem; background: var(--warning-subtle); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; font-size: 0.82rem; color: var(--text-primary);">
               <div style="font-weight: 700; color: #f59e0b; margin-bottom: 0.3rem;">Solution Blueprint:</div>
               <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem; color: #38bdf8; background: #060913; padding: 0.5rem; border-radius: 4px; overflow-x: auto;"><code>{{ lesson.solution }}</code></pre>
@@ -630,6 +714,9 @@ margin: 24px; padding: 20px; border: 2px solid;
             <button class="studio-tab-btn" data-studio-tab="console">
               🖥️ Console
             </button>
+            <button class="studio-tab-btn" data-studio-tab="game">
+              🎮 Syntax Game: {{ full_syntax_game.title|default:"Cyber Grid Rover" }}
+            </button>
           </div>
 
           <!-- Canvas Controls & Status -->
@@ -673,6 +760,22 @@ margin: 24px; padding: 20px; border: 2px solid;
               Console ready. Use console.log() inside scripts to stream outputs.
             </div>
           </div>
+
+        <!-- Studio Tab Content: 4. Real Code-Writing Interactive Game Canvas (Pillar 3) -->
+        <div id="studioTabGame" class="studio-tab-pane" style="display: none; padding: 0.75rem; min-height: 230px; background: #080c14;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding: 0 0.25rem;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #38bdf8; font-family: var(--font-mono);">
+              🕹️ {{ full_syntax_game.title|default:"Cyber Grid Rover" }} &bull; Live Canvas
+            </div>
+            <span style="font-size: 0.72rem; color: #10b981; font-family: var(--font-mono);">Real-Time Code Engine</span>
+          </div>
+          <div style="position: relative; border-radius: var(--radius-md); overflow: hidden; border: 1px solid rgba(56, 189, 248, 0.2); background: #030712; height: 210px; display: flex; align-items: center; justify-content: center;">
+            <canvas id="syntaxGameCanvas" width="480" height="200" style="display: block; max-width: 100%; height: auto;"></canvas>
+            <div id="gameOverlayText" style="position: absolute; bottom: 8px; left: 12px; font-family: var(--font-mono); font-size: 0.72rem; color: #94a3b8; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px;">
+              Syntax Battery: 100% &bull; Coordinates: [0, 0] &bull; Status: Ready
+            </div>
+          </div>
+        </div>
         </div>
 
       </div>
@@ -1072,6 +1175,88 @@ margin: 24px; padding: 20px; border: 2px solid;
       preview: document.getElementById('studioTabPreview'),
       tests: document.getElementById('studioTabTests'),
       console: document.getElementById('studioTabConsole'),
+      game: document.getElementById('studioTabGame'),
+    };
+
+    // Lightweight Game Canvas Simulation for Pillar 3
+    function initGameCanvas() {
+      var canvas = document.getElementById('syntaxGameCanvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var x = 40, y = 100, dx = 1.5;
+      function animate() {
+        ctx.fillStyle = '#030712';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Grid lines
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 1;
+        for (var i = 0; i < canvas.width; i += 30) {
+          ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+        }
+        for (var j = 0; j < canvas.height; j += 30) {
+          ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
+        }
+        // Energy Node
+        ctx.fillStyle = '#10b981';
+        ctx.beginPath();
+        ctx.arc(380, 100, 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#fff';
+        ctx.font = '9px monospace';
+        ctx.fillText('CORE', 370, 103);
+        // Cyber Rover
+        x += dx;
+        if (x > 320 || x < 40) dx = -dx;
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(x, y - 10, 28, 20);
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(x + 18, y - 5, 8, 10);
+        // Laser trail
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(x + 28, y); ctx.lineTo(380, 100); ctx.stroke();
+        ctx.setLineDash([]);
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+    setTimeout(initGameCanvas, 500);
+
+    // Micro-Task API runner for Pillar 4
+    window.runMicroTask = function(taskId) {
+      var card = document.getElementById('mtCard_' + taskId);
+      var badge = document.getElementById('mtBadge_' + taskId);
+      if (badge) badge.innerHTML = "<span style='color: #f59e0b;'>⚙️ Evaluating 3 test tiers...</span>";
+      fetch('/api/micro-task/check/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': (function() {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+            var c = cookies[i].trim();
+            if (c.startsWith('csrftoken=')) return c.substring(10);
+          }
+          return '';
+        })() },
+        body: JSON.stringify({ task_id: taskId, code: (window.editorInstance ? window.editorInstance.getValue() : '') })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d.passed) {
+          if (card) {
+            card.style.borderColor = '#10b981';
+            card.style.background = 'rgba(16, 185, 129, 0.08)';
+          }
+          if (badge) badge.innerHTML = "<span style='color: #10b981; font-weight: bold;'>✓ ALL 3 TIERS PASSED (+" + d.xp_awarded + " XP)</span>";
+          var xpBadge = document.getElementById('xpCount');
+          if (xpBadge) {
+            var cur = parseInt(xpBadge.textContent.replace(/[^0-9]/g, '')) || 0;
+            xpBadge.textContent = (cur + d.xp_awarded) + ' XP';
+          }
+        }
+      })
+      .catch(function(e) {
+        if (badge) badge.innerHTML = "<span style='color: #ef4444;'>❌ Evaluation error</span>";
+      });
     };
 
     studioTabBtns.forEach(btn => {

@@ -48,8 +48,23 @@
             </a>
           </li>
           <li>
+            <a href="{% url 'contests_hub' %}" class="nav-link {% if '/contests/' in request.path %}active{% endif %}">
+              Contests 🏆
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'certificates_hub' %}" class="nav-link {% if '/certificates/' in request.path or '/verify/' in request.path %}active{% endif %}">
+              Certificates 🎓
+            </a>
+          </li>
+          <li>
             <a href="{% url 'playground' %}" class="nav-link {% if '/playground/' in request.path %}active{% endif %}">
               Playground
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'admin_panel' %}" class="nav-link {% if '/admin-panel/' in request.path %}active{% endif %}" style="color: #818cf8;">
+              Admin 🛠️
             </a>
           </li>
           <li>
@@ -164,11 +179,38 @@
         <span class="menu-item-arrow">›</span>
       </a>
 
+      <a href="{% url 'contests_hub' %}" class="mobile-menu-item">
+        <div class="menu-icon-wrap" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b;">🏆</div>
+        <div class="menu-text-wrap">
+          <div class="menu-item-title">Competitions Arena</div>
+          <div class="menu-item-desc">Weekly tournaments &amp; university batch rankings</div>
+        </div>
+        <span class="menu-item-arrow">›</span>
+      </a>
+
+      <a href="{% url 'certificates_hub' %}" class="mobile-menu-item">
+        <div class="menu-icon-wrap" style="background: rgba(16, 185, 129, 0.12); color: #10b981;">🎓</div>
+        <div class="menu-text-wrap">
+          <div class="menu-item-title">Verifiable Certificates</div>
+          <div class="menu-item-desc">Tamper-proof credentials with QR verification</div>
+        </div>
+        <span class="menu-item-arrow">›</span>
+      </a>
+
       <a href="{% url 'playground' %}" class="mobile-menu-item">
         <div class="menu-icon-wrap" style="background: rgba(16, 185, 129, 0.12); color: #10b981;">💻</div>
         <div class="menu-text-wrap">
           <div class="menu-item-title">IDE Playground</div>
           <div class="menu-item-desc">In-browser code editor &amp; multi-language WASM</div>
+        </div>
+        <span class="menu-item-arrow">›</span>
+      </a>
+
+      <a href="{% url 'admin_panel' %}" class="mobile-menu-item">
+        <div class="menu-icon-wrap" style="background: rgba(99, 102, 241, 0.12); color: #818cf8;">🛠️</div>
+        <div class="menu-text-wrap">
+          <div class="menu-item-title">Admin &amp; Instructor Panel</div>
+          <div class="menu-item-desc">Curriculum telemetry &amp; certification control</div>
         </div>
         <span class="menu-item-arrow">›</span>
       </a>

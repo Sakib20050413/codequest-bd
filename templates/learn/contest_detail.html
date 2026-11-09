@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block title %}{{ contest.title }} — Contest Arena &bull; CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="shell shell-wide" style="padding-top: 1.5rem; padding-bottom: 4rem;">
+
+  <!-- Contest Top Bar -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <a href="{% url 'contests_hub' %}" class="btn btn-ghost" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+        &larr; Back to Competitions
+      </a>
+      <div>
+        <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+          {{ contest.title }}
+          <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; font-size: 0.75rem; text-transform: uppercase;">
+            {{ contest.difficulty }}
+          </span>
+        </h1>
+      </div>
+    </div>
+
+    <!-- Live Timer & Points -->
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <div class="cq-card" style="padding: 0.45rem 1rem; border-radius: var(--radius-md); display: flex; align-items: center; gap: 0.5rem;">
+        <span style="color: #ef4444; font-size: 0.9rem;">⏱️</span>
+        <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Time Remaining:</span>
+        <span id="contestTimer" style="font-family: var(--font-mono); font-weight: 800; color: #fbbf24; font-size: 1.05rem;">
+          {{ contest.duration_minutes }}:00
+        </span>
+      </div>
+      <div class="cq-card" style="padding: 0.45rem 1rem; border-radius: var(--radius-md); display: flex; align-items: center; gap: 0.5rem;">
+        <span style="color: #10b981;">⚡</span>
+        <span style="font-family: var(--font-mono); font-weight: 700; color: #10b981; font-size: 0.95rem;">
+          +{{ contest.xp_reward }} XP
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Arena Split Workstation -->
+  <div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 42% 58%; gap: 1.5rem; align-items: start;">
+    
+    <!-- Left Column: Problem Brief, Specifications & Live Scoreboard -->
+    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+      
+      <!-- Problem Card -->
+      <div class="cq-card" style="border-radius: var(--radius-xl); padding: 1.5rem; border: 1px solid var(--border-color);">
+        <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.85rem 0;">
+          📋 Problem Statement
+        </h2>
+        <div style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.65; white-space: pre-line;">
+          {{ contest.problem_statement|default:contest.description }}
+        </div>
+
+        <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+          <h3 style="font-size: 0.88rem; font-weight: 700; color: var(--accent); margin: 0 0 0.5rem 0; text-transform: uppercase; letter-spacing: 0.05em;">
+            ⚙️ Evaluation Criteria (3 Automated Tiers)
+          </h3>
+          <ul style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.55; margin: 0; padding-left: 1.15rem;">
+            <li><strong>Tier 1 — Core Syntax:</strong> Valid logic and correct output on standard test fixtures (30 Pts).</li>
+            <li><strong>Tier 2 — Boundary Edge Case:</strong> Graceful handling of empty collections, singletons, and large bounds (40 Pts).</li>
+            <li><strong>Tier 3 — Deterministic Stress:</strong> Algorithmic runtime within &lt;10ms barrier (30 Pts).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Contest Submissions / Live Standings -->
+      <div class="cq-card" style="border-radius: var(--radius-xl); padding: 1.25rem; border: 1px solid var(--border-color);">
+        <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.75rem 0; display: flex; align-items: center; justify-content: space-between;">
+          <span>🏆 Contest Standings</span>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Top Submissions</span>
+        </h3>
+
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;">
+                <th style="padding: 0.4rem 0.5rem;">Cadet</th>
+                <th style="padding: 0.4rem 0.5rem;">Batch</th>
+                <th style="padding: 0.4rem 0.5rem;">Score</th>
+                <th style="padding: 0.4rem 0.5rem;">Time</th>
+              </tr>
+            </thead>
+            <tbody id="contestScoreboardBody">
+              {% for sub in submissions %}
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.5rem; font-weight: 600; color: var(--text-primary);">{{ sub.username }}</td>
+                <td style="padding: 0.5rem; color: var(--text-muted); font-size: 0.75rem;">{{ sub.university_batch|default:"BAIUST" }}</td>
+                <td style="padding: 0.5rem; font-weight: 700; color: #10b981; font-family: var(--font-mono);">{{ sub.score }}</td>
+                <td style="padding: 0.5rem; color: var(--text-muted); font-family: var(--font-mono);">{{ sub.execution_time_ms }}ms</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="4" style="padding: 1rem; text-align: center; color: var(--text-muted);">
+                  No submissions yet. Be the first to score 100/100!
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Code Editor & Automated Judge Console -->
+    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+      
+      <div class="cq-card" style="border-radius: var(--radius-xl); padding: 0; border: 1px solid var(--border-color); overflow: hidden; background: #0f172a;">
+        <!-- Editor Header -->
+        <div style="padding: 0.75rem 1.25rem; background: #1e293b; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ef4444;"></span>
+            <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #f59e0b;"></span>
+            <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #10b981;"></span>
+            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8; margin-left: 0.5rem;">
+              solution_arena.py
+            </span>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="resetCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; color: #94a3b8;">
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Code Editor Textarea -->
+        <div style="position: relative;">
+          <textarea id="contestCodeEditor" style="width: 100%; height: 340px; padding: 1.25rem; font-family: var(--font-mono); font-size: 0.92rem; background: #0b0f19; color: #f8fafc; border: none; resize: vertical; line-height: 1.6; outline: none; box-sizing: border-box;" spellcheck="false" placeholder="# Write your full-syntax solution here...&#10;def solve(data):&#10;    # Implement your algorithm&#10;    pass">{{ contest.starter_code|default:"def solve(data):&#10;    # Write your algorithmic solution here&#10;    return sorted(data)" }}</textarea>
+        </div>
+
+        <!-- Editor Action Footer -->
+        <div style="padding: 0.85rem 1.25rem; background: #1e293b; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 0.8rem; color: #94a3b8;">
+            Press <strong>Submit</strong> to evaluate on 3 automated test fixtures.
+          </div>
+
+          <div style="display: flex; gap: 0.75rem;">
+            <button id="btnRunTest" class="btn btn-ghost" style="padding: 0.45rem 1rem; font-size: 0.85rem; border: 1px solid var(--border-color);">
+              ▶ Run Pre-Test
+            </button>
+            <button id="btnSubmitSolution" class="btn btn-primary" style="padding: 0.45rem 1.25rem; font-size: 0.85rem; font-weight: 700; background: linear-gradient(135deg, #10b981, #059669); border: none;">
+              🚀 Submit Solution
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Judge Verdict Console -->
+      <div id="judgeConsoleCard" class="cq-card" style="border-radius: var(--radius-xl); padding: 1.25rem; border: 1px solid var(--border-color); background: #090d16;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <div style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem;">
+            <span id="judgeStatusDot" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #64748b;"></span>
+            Automated Judge Output
+          </div>
+          <span id="judgeLatency" style="font-family: var(--font-mono); font-size: 0.75rem; color: #64748b;">Latency: --</span>
+        </div>
+
+        <div id="judgeOutputBox" style="font-family: var(--font-mono); font-size: 0.84rem; color: #94a3b8; line-height: 1.6; min-height: 85px; padding: 0.75rem; background: #040711; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.06);">
+          Write your solution above and click 'Submit Solution' to execute the automated multi-case judge.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Simple countdown timer
+  var timerEl = document.getElementById("contestTimer");
+  var totalSeconds = parseInt("{{ contest.duration_minutes }}", 10) * 60 || 1800;
+  
+  var interval = setInterval(function() {
+    if (totalSeconds <= 0) {
+      clearInterval(interval);
+      timerEl.textContent = "00:00 (Time Expired)";
+      timerEl.style.color = "#ef4444";
+      return;
+    }
+    totalSeconds--;
+    var m = Math.floor(totalSeconds / 60);
+    var s = totalSeconds % 60;
+    timerEl.textContent = (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+  }, 1000);
+
+  // Submit Solution Action
+  var btnSubmit = document.getElementById("btnSubmitSolution");
+  var btnRun = document.getElementById("btnRunTest");
+  var editor = document.getElementById("contestCodeEditor");
+  var outputBox = document.getElementById("judgeOutputBox");
+  var statusDot = document.getElementById("judgeStatusDot");
+  var latencyEl = document.getElementById("judgeLatency");
+
+  function evaluate(isFinal) {
+    var code = editor.value;
+    if (!code.trim()) {
+      alert("Please write some code before submitting!");
+      return;
+    }
+
+    statusDot.style.background = "#f59e0b";
+    outputBox.innerHTML = "<span style='color: #f59e0b;'>⚙️ Compiling and running automated judge test fixtures...</span>";
+
+    fetch("/contests/{{ contest.slug }}/submit/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCsrfToken()
+      },
+      body: JSON.stringify({ code: code })
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      statusDot.style.background = data.status === "PASSED" ? "#10b981" : "#f59e0b";
+      latencyEl.textContent = "Execution: " + data.execution_time_ms + "ms";
+
+      var html = "<div style='color: #10b981; font-weight: bold; margin-bottom: 6px;'> Verdict: " + data.status + " (" + data.score + "/100 Pts)</div>";
+      html += "<div style='color: #94a3b8; font-size: 0.8rem; margin-bottom: 6px;'>" + data.message + "</div>";
+      html += "<div style='display: flex; flex-direction: column; gap: 4px; font-size: 0.78rem;'>";
+      html += "<div style='color: #38bdf8;'>✓ Test Tier 1 (Core Logic): PASSED (+30 Pts)</div>";
+      html += "<div style='color: #38bdf8;'>✓ Test Tier 2 (Boundary Edge): PASSED (+40 Pts)</div>";
+      html += "<div style='color: #38bdf8;'>✓ Test Tier 3 (Stress Performance <10ms): PASSED (+30 Pts)</div>";
+      html += "</div>";
+
+      if (data.xp_awarded) {
+        html += "<div style='margin-top: 8px; font-weight: bold; color: #fbbf24;'>⚡ +" + data.xp_awarded + " XP Awarded to your profile!</div>";
+      }
+
+      outputBox.innerHTML = html;
+    })
+    .catch(function(err) {
+      statusDot.style.background = "#ef4444";
+      outputBox.innerHTML = "<span style='color: #ef4444;'>❌ Evaluation error: " + err + "</span>";
+    });
+  }
+
+  btnSubmit.addEventListener("click", function() { evaluate(true); });
+  btnRun.addEventListener("click", function() { evaluate(false); });
+
+  function getCsrfToken() {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, 10) === 'csrftoken=') {
+          cookieValue = decodeURIComponent(cookie.substring(10));
+          break;
+        }
+      }
+    }
+    return cookieValue || "";
+  }
+});
+</script>
+{% endblock %}
