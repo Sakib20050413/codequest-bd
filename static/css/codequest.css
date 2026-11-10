@@ -3147,26 +3147,179 @@ body.zen-locked .floating-zen-exit-pill,
   }
 }
 
-.ambient-flare {
-  animation: ambientBreathe 6s ease-in-out infinite;
+/* ==========================================================================
+   Clean Human Educational & Developer Design System Overrides (v7.0)
+   Zero AI Glows, Zero 3D Card Tilt, Crisp 1px Borders, Clean Tables
+   ========================================================================== */
+
+.ambient-glow-top,
+.ambient-grid,
+.pill-pulse-dot,
+.cq-card::before,
+.cq-card::after {
+  display: none !important;
 }
 
-/* Hero IDE Halo Glow */
-.hero-ide-halo {
-  box-shadow: 0 25px 60px -15px rgba(99, 102, 241, 0.28), 0 0 80px -20px rgba(6, 182, 212, 0.16);
-  transition: box-shadow 0.35s var(--ease-out);
+.cq-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
 }
 
-.hero-ide-halo:hover {
-  box-shadow: 0 30px 75px -15px rgba(99, 102, 241, 0.38), 0 0 100px -15px rgba(6, 182, 212, 0.25);
+:root,
+[data-theme="light"] {
+  --bg-canvas: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f1f5f9;
+  --bg-panel: #f8fafc;
+  --bg-card-hover: #f1f5f9;
+  --bg-input: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --border-subtle: #e2e8f0;
+  --border-medium: #cbd5e1;
+  --border-strong: #94a3b8;
+  --accent: #047857;
+  --accent-hover: #065f46;
+  --accent-subtle: #ecfdf5;
+  --accent-glow: rgba(4, 120, 87, 0.12);
+  --accent-gradient-btn: #047857;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 8px;
 }
 
-[data-theme="light"] .hero-ide-halo {
-  box-shadow: 0 20px 45px -10px rgba(79, 70, 229, 0.12), 0 0 40px -10px rgba(2, 132, 199, 0.08);
+[data-theme="dark"] {
+  --bg-canvas: #0f172a;
+  --bg-surface: #1e293b;
+  --bg-surface-elevated: #334155;
+  --bg-panel: #0f172a;
+  --bg-card-hover: #334155;
+  --bg-input: #0f172a;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border-subtle: #334155;
+  --border-medium: #475569;
+  --border-strong: #64748b;
+  --accent: #10b981;
+  --accent-hover: #059669;
+  --accent-subtle: rgba(16, 185, 129, 0.12);
+  --accent-glow: rgba(16, 185, 129, 0.15);
+  --accent-gradient-btn: #059669;
 }
 
-[data-theme="light"] .hero-ide-halo:hover {
-  box-shadow: 0 25px 55px -10px rgba(79, 70, 229, 0.18), 0 0 60px -10px rgba(2, 132, 199, 0.12);
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
 }
+
+.cq-header {
+  background: var(--bg-surface) !important;
+  border-bottom: 1px solid var(--border-medium) !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.cq-card,
+.course-card-enhanced,
+.track-companion-card,
+.arena-task-card,
+.arcade-game-card,
+.arena-level-card,
+.bento-tile,
+.hero-stat-card {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border-medium) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+  transform: none !important;
+}
+
+.cq-card:hover,
+.course-card-enhanced:hover,
+.track-companion-card:hover,
+.arena-task-card:hover,
+.arcade-game-card:hover {
+  border-color: var(--border-strong) !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.07) !important;
+  transform: none !important;
+}
+
+.btn-primary {
+  background: #047857 !important;
+  color: #ffffff !important;
+  border: 1px solid #047857 !important;
+  box-shadow: none !important;
+  border-radius: 5px !important;
+}
+
+.btn-primary:hover {
+  background: #065f46 !important;
+  border-color: #065f46 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-ghost {
+  background: var(--bg-surface) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-medium) !important;
+  border-radius: 5px !important;
+  box-shadow: none !important;
+}
+
+.btn-ghost:hover {
+  background: var(--bg-surface-elevated) !important;
+  color: var(--text-primary) !important;
+}
+
+.section-eyebrow-pill {
+  background: var(--bg-surface-elevated) !important;
+  border: 1px solid var(--border-medium) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+  padding: 0.2rem 0.6rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+}
+
+/* Standard Clean HTML Data Table */
+.cq-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  background: var(--bg-surface);
+}
+
+.cq-table th {
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  background: var(--bg-surface-elevated);
+  border-bottom: 1px solid var(--border-medium);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+.cq-table td {
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.cq-table tr:last-child td {
+  border-bottom: none;
+}
+
+.cq-table tr:hover td {
+  background: var(--bg-panel);
+}
+
 
 

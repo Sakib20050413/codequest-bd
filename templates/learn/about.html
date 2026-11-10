@@ -1,132 +1,114 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}About, Trademark &amp; Architecture — CodeQuest BD{% endblock %}
+{% block title %}About CodeQuest — CSE 324 Web Technologies Sessional Project{% endblock %}
 
 {% block content %}
-<div class="shell" style="padding-top: 3.5rem; padding-bottom: 5rem; max-width: 860px;">
+<div class="shell" style="padding-top: 2rem; padding-bottom: 4rem; max-width: 960px;">
 
-  <!-- Header Header -->
-  <div style="margin-bottom: 3rem;">
-    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-      <img src="{% static 'img/logo-icon.svg' %}" alt="CodeQuest BD" width="32" height="32" />
-      <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono);">
-        PLATFORM CHARTER &bull; EST. 2024
-      </span>
-    </div>
-    <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem;">
-      Architected for Real Software Mastery.
+  <!-- Project Title & Academic Metadata -->
+  <div class="cq-card" style="padding: 1.5rem 1.75rem; margin-bottom: 1.5rem;">
+    <h1 style="font-size: 1.55rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.5rem 0;">
+      About CodeQuest — Interactive Programming Tutorial &amp; Coding Game Platform
     </h1>
-    <p style="font-size: 1.12rem; color: var(--text-secondary); line-height: 1.65;">
-      CodeQuest BD is Bangladesh's open developer education initiative founded by <strong>Sakib</strong>. Built on a singular premise: software engineering cannot be learned by passively watching video lectures. It is forged by writing code, breaking mental models, and inspecting runtime outputs in real time.
+    <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin: 0 0 1.15rem 0;">
+      CodeQuest is a full-stack web application developed for <strong>CSE 324 (Web Technologies Sessional)</strong> at Bangladesh Army International University of Science and Technology (BAIUST). The objective of this project is to help students learn programming languages quickly through short lessons, 1-minute concept videos, an online multi-language code compiler, and interactive coding games.
     </p>
+
+    <table class="cq-table" style="border: 1px solid var(--border-subtle);">
+      <tbody>
+        <tr>
+          <th style="width: 220px;">Project Name</th>
+          <td>CodeQuest — Short Tutorials, Online Compiler &amp; Coding Games</td>
+        </tr>
+        <tr>
+          <th>Course Code &amp; Title</th>
+          <td>CSE 324 — Web Technologies Sessional</td>
+        </tr>
+        <tr>
+          <th>Submitted By</th>
+          <td><strong>Md Najmus Sakib Rahatul</strong> (Student ID: <code>1119003</code>)</td>
+        </tr>
+        <tr>
+          <th>Course Instructor</th>
+          <td><strong>Md Yeakob Ali</strong>, Department of Computer Science &amp; Engineering, BAIUST</td>
+        </tr>
+        <tr>
+          <th>Source Repository</th>
+          <td><a href="https://github.com/Sakib20050413/codequest-bd" target="_blank" rel="noopener">https://github.com/Sakib20050413/codequest-bd</a></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <div style="display: flex; flex-direction: column; gap: 2.25rem;">
-    
-    <!-- Principle 1 -->
-    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
-        <span style="font-size: 1.5rem;">⏱️</span>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-          1. Focused 3–7 Minute Micro-Lessons
-        </h2>
-      </div>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; margin: 0;">
-        Long multi-hour tutorials encourage passive consumption and prompt fatigue. Every CodeQuest module isolates one conceptual invariant (e.g. the DOM tree, flexbox alignment axes, closure scope, Python list comprehensions, SQL relational joins). You read the mental model, inspect the interactive playground, and immediately write verified code.
-      </p>
-    </div>
+  <!-- Key Features Implemented -->
+  <div class="cq-card" style="padding: 1.5rem 1.75rem; margin-bottom: 1.5rem;">
+    <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.75rem 0;">
+      Key Features Implemented in This Project
+    </h2>
+    <table class="cq-table" style="border: 1px solid var(--border-subtle);">
+      <thead>
+        <tr>
+          <th style="width: 240px;">Feature</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. Short Lessons &amp; 1-Minute Video Guides</strong></td>
+          <td>Instead of long 10-hour video courses, each lesson provides a concise reading guide and a 1-minute chaptered concept video so students can quickly understand the topic before writing code.</td>
+        </tr>
+        <tr>
+          <td><strong>2. 16 Programming Languages &amp; Databases</strong></td>
+          <td>Covers HTML5, CSS3, JavaScript, React, Python 3, Django, PHP, C, C++, Java, Rust, SQL, MySQL, PostgreSQL, MongoDB, and AI/Machine Learning basics.</td>
+        </tr>
+        <tr>
+          <td><strong>3. Online Multi-Language Compiler</strong></td>
+          <td>Students can write and execute code or CLI commands directly in the browser via the backend execution endpoint (<code>/api/terminal/execute/</code>).</td>
+        </tr>
+        <tr>
+          <td><strong>4. Learn by Playing Coding Games</strong></td>
+          <td>Each language includes interactive visual coding games where running code in the terminal controls the game state (bridge alignment, rover pathfinding, database tables, and circuit nodes).</td>
+        </tr>
+        <tr>
+          <td><strong>5. Dual Streak System &amp; Open Contests</strong></td>
+          <td>Tracks both <strong>Course Streak</strong> (daily lesson completion) and <strong>Game Streak</strong> (daily coding game completion), alongside open coding contests (IUPC, Hackathon, Game Contest, SQL Contest).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <!-- Principle 2 -->
-    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
-        <span style="font-size: 1.5rem;">🛡️</span>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-          2. 100% Client-Side Sandboxed Security Architecture
-        </h2>
-      </div>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 1rem;">
-        CodeQuest BD rejects heavy server-side execution queues that introduce network latency and operational vulnerability. All code execution runs strictly on the client device inside secure isolation boundaries:
-      </p>
-      <ul style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.9rem; color: var(--text-secondary); padding-left: 1.25rem; margin: 0;">
-        <li><strong style="color: var(--text-primary);">Web Engine (HTML/CSS/JS):</strong> Rendered in isolated <code style="color: var(--accent); font-family: var(--font-mono);">iframe sandbox="allow-scripts"</code> with origin isolation.</li>
-        <li><strong style="color: var(--text-primary);">Python Runtime:</strong> Compiled WebAssembly via official Pyodide CPython 3.12 engine.</li>
-        <li><strong style="color: var(--text-primary);">Relational Database:</strong> SQLite3 compiled to WebAssembly via sql.js with in-memory virtual schemas.</li>
-      </ul>
-    </div>
+  <!-- 4-Layer Technical Stack & PHP Database Connection -->
+  <div class="cq-card" style="padding: 1.5rem 1.75rem;">
+    <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.5rem 0;">
+      Full-Stack Architecture &amp; PHP Database Connection
+    </h2>
+    <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin: 0 0 1rem 0;">
+      This project integrates HTML5, CSS3, and JavaScript on the frontend with Python Django on the backend, an SQL relational database, and a standalone PHP <code>mysqli</code> database module located in <code>php_sessional_crud/db.php</code> and <code>php_sessional_crud/index.php</code>.
+    </p>
 
-    <!-- Principle 3 -->
-    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
-        <span style="font-size: 1.5rem;">🎮</span>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-          3. Targeted Coding Challenges &amp; 100+ Game Taxonomy
-        </h2>
+    <div style="background: #0f172a; border: 1px solid var(--border-medium); border-radius: 6px; padding: 1rem; overflow-x: auto;">
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.5rem;">
+        php_sessional_crud/db.php — PHP 8 MySQLi Database Connection &amp; Prepared Statement Example
       </div>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; margin: 0;">
-        Gamification in CodeQuest BD is not artificial decoration. It is cognitive reinforcement. Our Practice Arena features interactive drills like <em>Cyber Rover 3D</em> (spatial pathfinding), <em>Code TypeRacer 3D</em> (muscle memory and syntax fluency), and <em>Flexbox Pond</em> (layout coordinate navigation), supported by an extensive 100+ game curriculum roadmap spanning algorithms, cybersecurity, and systems architecture.
-      </p>
-    </div>
+      <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.55; color: #e2e8f0;">&lt;?php
+$host = '127.0.0.1';
+$user = 'root';
+$pass = '';
+$db   = 'codequest_sessional_db';
 
-    <!-- Principle 4 -->
-    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
-        <span style="font-size: 1.5rem;">🔒</span>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-          4. Privacy-First &amp; Local-First Data Sovereignty
-        </h2>
-      </div>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; margin: 0;">
-        We enforce zero commercial surveillance. No behavioral tracking cookies, no third-party ad pixels. Learners can start solving exercises completely anonymously; progress is stored locally in <code style="color: var(--accent); font-family: var(--font-mono);">localStorage</code>. When an account is created, local state syncs directly to your cloud profile so your progress is preserved across any device.
-      </p>
-    </div>
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn-&gt;connect_error) {
+    die("Database connection failed: " . $conn-&gt;connect_error);
+}
+$conn-&gt;set_charset("utf8mb4");
 
-    <!-- Principle 5: Handcrafted Craftsmanship -->
-    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
-        <span style="font-size: 1.5rem;">✍️</span>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-          5. Handcrafted Curriculum &bull; Zero AI Filler Slop
-        </h2>
-      </div>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; margin: 0;">
-        CodeQuest BD is deliberately built by human engineers for human minds. Every explanation, architecture mental model, test suite assertion, and debugging challenge is authored with pedagogical care. We explicitly reject synthetic AI filler, hallucinated code snippets, and superficial buzzwords. What you practice here reflects real production patterns used by professional engineering teams.
-      </p>
+// Prepared statement query for student progress records
+$stmt = $conn-&gt;prepare("SELECT student_id, full_name, department, xp FROM students ORDER BY xp DESC");
+$stmt-&gt;execute();
+$result = $stmt-&gt;get_result();
+?&gt;</pre>
     </div>
-
-    <!-- Founder & Trademark Charter -->
-    <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong); background: radial-gradient(ellipse at bottom right, rgba(99, 102, 241, 0.08), var(--bg-surface) 70%);">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
-        <span style="font-size: 1.5rem;">🇧🇩</span>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-          Founder Attribution &amp; Trademark Charter
-        </h2>
-      </div>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 1.25rem;">
-        <strong>CodeQuest BD™</strong> is a registered open-source education project founded and led by <strong>Sakib</strong> to democratize computer science and web engineering for learners across Bangladesh and worldwide.
-      </p>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; padding: 1.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 0.85rem;">
-        <div>
-          <div style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Initiative Founder</div>
-          <div style="color: var(--text-primary); font-weight: 700; margin-top: 0.2rem;">Sakib</div>
-          <div style="color: var(--text-muted); font-size: 0.78rem;">Lead Architect &amp; Maintainer</div>
-        </div>
-        <div>
-          <div style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Trademark &amp; Brand</div>
-          <div style="color: var(--text-primary); font-weight: 700; margin-top: 0.2rem;">CodeQuest BD™</div>
-          <div style="color: var(--text-muted); font-size: 0.78rem;">All Rights Reserved &bull; MIT Core</div>
-        </div>
-        <div>
-          <div style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Codebase &amp; Contributions</div>
-          <div style="color: var(--accent); font-weight: 700; margin-top: 0.2rem;">
-            <a href="https://github.com/Sakib20050413/codequest-bd" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">GitHub Repository ↗</a>
-          </div>
-          <div style="color: var(--text-muted); font-size: 0.78rem;">Open Issue Tracker &amp; PRs</div>
-        </div>
-      </div>
-    </div>
-
   </div>
 
 </div>

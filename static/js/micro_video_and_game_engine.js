@@ -240,11 +240,11 @@
     const meta = LANG_META[langKey] || LANG_META.python;
     const isWon = progressState >= 0.8;
 
-    // Crisp Dark Carbon Studio Viewport
-    ctx.fillStyle = "#090d16";
+    // Clean Studio Viewport
+    ctx.fillStyle = "#0f172a";
     ctx.fillRect(0, 0, w, h);
 
-    // Subtle Engineering Coordinate Grid
+    // Subtle Grid
     ctx.strokeStyle = "rgba(148, 163, 184, 0.08)";
     ctx.lineWidth = 1;
     for (let gx = 0; gx < w; gx += 28) {
@@ -260,16 +260,16 @@
       ctx.stroke();
     }
 
-    // Top HUD Bar inside Canvas
-    ctx.fillStyle = "rgba(15, 23, 42, 0.9)";
+    // Top Header Bar inside Canvas
+    ctx.fillStyle = "#1e293b";
     ctx.fillRect(0, 0, w, 34);
-    ctx.fillStyle = isWon ? "#10b981" : meta.color;
-    ctx.font = "700 11px 'JetBrains Mono', monospace";
-    ctx.fillText("GAME ENGINE // " + meta.gameTitle.toUpperCase() + " [" + meta.name + "]", 12, 21);
+    ctx.fillStyle = "#f8fafc";
+    ctx.font = "600 11.5px 'Inter', sans-serif";
+    ctx.fillText(meta.gameTitle + " (" + meta.name + ")", 12, 21);
 
-    ctx.fillStyle = isWon ? "#10b981" : "#f59e0b";
+    ctx.fillStyle = isWon ? "#34d399" : "#fbbf24";
     ctx.textAlign = "right";
-    ctx.fillText(isWon ? "STATUS: MISSION CLEARED (+XP & GAME STREAK)" : "STATUS: READY FOR TERMINAL CODE", w - 12, 21);
+    ctx.fillText(isWon ? "Passed (+XP & Game Streak)" : "Run Code to Solve", w - 12, 21);
     ctx.textAlign = "left";
 
     if (langKey === "html" || langKey === "css") {
@@ -377,37 +377,36 @@
 
     const langKey = resolveLangKey(rawLang);
     const meta = LANG_META[langKey] || LANG_META.python;
-    const titleText = lessonTitle || (meta.name + " — 60-Second Concept Walkthrough");
+    const titleText = lessonTitle || (meta.name + " — 1-Minute Video Guide");
 
     root.innerHTML = `
-      <div class="cq-micro-video-box" style="background:#090d16; border:1px solid var(--border-medium); border-radius:12px; overflow:hidden; margin-bottom:1.25rem;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:10px 14px; background:#0f172a; border-bottom:1px solid rgba(255,255,255,0.08); font-family:var(--font-mono); font-size:0.76rem;">
+      <div class="cq-micro-video-box" style="background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:6px; overflow:hidden; margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 12px; background:var(--bg-surface-elevated); border-bottom:1px solid var(--border-medium); font-size:0.8rem;">
           <div style="display:flex; align-items:center; gap:8px;">
-            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981;"></span>
-            <strong style="color:#f8fafc;">60s SHORT VIDEO LESSON // ${meta.name.toUpperCase()}</strong>
+            <strong style="color:var(--text-primary);">Short Video Guide (1:00) — ${meta.name}</strong>
           </div>
           <div style="display:flex; gap:6px; align-items:center;">
-            <span id="${containerId}_timer" style="color:#94a3b8;">0:00 / 1:00</span>
-            <button type="button" id="${containerId}_voiceBtn" class="btn btn-ghost" style="padding:2px 8px; font-size:0.72rem; color:#e2e8f0;">🔊 Voice: ON</button>
-            <button type="button" id="${containerId}_speedBtn" class="btn btn-ghost" style="padding:2px 8px; font-size:0.72rem; color:#e2e8f0;">1.0x</button>
+            <span id="${containerId}_timer" style="color:var(--text-muted); font-family:var(--font-mono); font-size:0.75rem;">0:00 / 1:00</span>
+            <button type="button" id="${containerId}_voiceBtn" class="btn btn-ghost" style="padding:2px 8px; font-size:0.74rem;">Audio: ON</button>
+            <button type="button" id="${containerId}_speedBtn" class="btn btn-ghost" style="padding:2px 8px; font-size:0.74rem;">1.0x</button>
           </div>
         </div>
 
         <div style="position:relative;">
           <canvas id="${containerId}_canvas" height="185" style="width:100%; height:185px; display:block;"></canvas>
-          <div id="${containerId}_caption" style="padding:10px 14px; background:rgba(15,23,42,0.95); border-top:1px solid rgba(255,255,255,0.07); color:#e2e8f0; font-size:0.84rem; line-height:1.5;">
+          <div id="${containerId}_caption" style="padding:10px 14px; background:var(--bg-surface); border-top:1px solid var(--border-subtle); color:var(--text-primary); font-size:0.84rem; line-height:1.5;">
             <strong>${meta.videoChapters[0].title}:</strong> ${meta.videoChapters[0].caption}
           </div>
         </div>
 
-        <div style="padding:10px 14px; background:#0b0f17; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
+        <div style="padding:8px 12px; background:var(--bg-surface-elevated); border-top:1px solid var(--border-subtle); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
           <div style="display:flex; gap:6px; align-items:center;">
-            <button type="button" id="${containerId}_playBtn" class="btn btn-primary" style="padding:5px 14px; font-size:0.78rem; font-weight:700;">▶ Play 60s Short Video</button>
+            <button type="button" id="${containerId}_playBtn" class="btn btn-primary" style="padding:4px 12px; font-size:0.78rem; font-weight:600;">Play Video (1:00)</button>
             <div style="display:flex; gap:4px;" id="${containerId}_chapters">
-              ${meta.videoChapters.map((c, idx) => `<button type="button" data-ch="${idx}" class="btn btn-ghost" style="padding:4px 8px; font-size:0.72rem; font-family:var(--font-mono);">${c.t}</button>`).join("")}
+              ${meta.videoChapters.map((c, idx) => `<button type="button" data-ch="${idx}" class="btn btn-ghost" style="padding:3px 8px; font-size:0.72rem; font-family:var(--font-mono);">${c.t}</button>`).join("")}
             </div>
           </div>
-          <input type="range" id="${containerId}_scrub" min="0" max="60" value="0" style="width:140px; accent-color:#10b981; cursor:pointer;" aria-label="Video timeline">
+          <input type="range" id="${containerId}_scrub" min="0" max="60" value="0" style="width:140px; accent-color:#047857; cursor:pointer;" aria-label="Video timeline">
         </div>
       </div>
     `;
@@ -447,41 +446,41 @@
       canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      ctx.fillStyle = "#070b12";
+      ctx.fillStyle = "#0f172a";
       ctx.fillRect(0, 0, w, h);
 
       const chIdx = Math.min(3, Math.floor(sec / 15));
       const ch = meta.videoChapters[chIdx];
 
-      // Header Pill
-      ctx.fillStyle = meta.color;
-      ctx.font = "700 11px 'JetBrains Mono', monospace";
-      ctx.fillText("CHAPTER 0" + (chIdx + 1) + " // " + ch.title.toUpperCase(), 16, 26);
+      // Header Label
+      ctx.fillStyle = "#38bdf8";
+      ctx.font = "600 11.5px 'Inter', sans-serif";
+      ctx.fillText("Part " + (chIdx + 1) + " of 4 — " + ch.title, 16, 26);
 
       // Lesson Title
       ctx.fillStyle = "#f8fafc";
-      ctx.font = "700 14px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillText(titleText.slice(0, 58), 16, 50);
+      ctx.font = "600 13.5px 'Inter', sans-serif";
+      ctx.fillText(titleText.slice(0, 62), 16, 48);
 
-      // Animated Code / Architecture Visual Box
-      ctx.fillStyle = "#0f172a";
-      ctx.fillRect(16, 64, w - 32, 92);
-      ctx.strokeStyle = meta.color;
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(16, 64, w - 32, 92);
+      // Code Preview Box
+      ctx.fillStyle = "#1e293b";
+      ctx.fillRect(16, 62, w - 32, 96);
+      ctx.strokeStyle = "#475569";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(16, 62, w - 32, 96);
 
       const codeLines = meta.starter.split("\n").slice(0, 4);
       ctx.font = "500 11.5px 'JetBrains Mono', monospace";
       codeLines.forEach(function (ln, idx) {
-        ctx.fillStyle = idx === (chIdx % codeLines.length) ? "#34d399" : "#cbd5e1";
-        ctx.fillText((idx + 1) + "  " + ln.slice(0, 68), 28, 86 + idx * 18);
+        ctx.fillStyle = idx === (chIdx % codeLines.length) ? "#34d399" : "#e2e8f0";
+        ctx.fillText((idx + 1) + "  " + ln.slice(0, 68), 28, 84 + idx * 18);
       });
 
       // Progress Bar at bottom of canvas
-      ctx.fillStyle = "#1e293b";
-      ctx.fillRect(0, h - 5, w, 5);
+      ctx.fillStyle = "#334155";
+      ctx.fillRect(0, h - 4, w, 4);
       ctx.fillStyle = "#10b981";
-      ctx.fillRect(0, h - 5, (sec / 60) * w, 5);
+      ctx.fillRect(0, h - 4, (sec / 60) * w, 4);
 
       captionEl.innerHTML = "<strong>" + ch.title + ":</strong> " + ch.caption;
       const sPad = sec < 10 ? "0" + sec : sec;
@@ -492,7 +491,7 @@
     playBtn.addEventListener("click", function () {
       playing = !playing;
       if (playing) {
-        playBtn.textContent = "⏸ Pause Video";
+        playBtn.textContent = "Pause Video";
         speakChapter(Math.min(3, Math.floor(sec / 15)));
         timerId = setInterval(function () {
           sec += 1;
@@ -502,13 +501,13 @@
           if (sec >= 60) {
             sec = 60;
             playing = false;
-            playBtn.textContent = "↺ Replay 60s Video";
+            playBtn.textContent = "Replay Video";
             clearInterval(timerId);
           }
           drawFrame();
         }, Math.round(1000 / speed));
       } else {
-        playBtn.textContent = "▶ Resume Video";
+        playBtn.textContent = "Resume Video";
         clearInterval(timerId);
         if ("speechSynthesis" in window) window.speechSynthesis.cancel();
       }
@@ -530,7 +529,7 @@
 
     voiceBtn.addEventListener("click", function () {
       voiceOn = !voiceOn;
-      this.textContent = voiceOn ? "🔊 Voice: ON" : "🔇 Voice: OFF";
+      this.textContent = voiceOn ? "Audio: ON" : "Audio: OFF";
       if (!voiceOn && "speechSynthesis" in window) window.speechSynthesis.cancel();
     });
 

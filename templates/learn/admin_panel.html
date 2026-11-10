@@ -6,27 +6,23 @@
 <div class="shell shell-wide" style="padding-top: 2rem; padding-bottom: 5rem;">
 
   <!-- Admin Header -->
-  <div style="margin-bottom: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+  <div style="margin-bottom: 1.75rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1.25rem;">
     <div>
-      <div class="section-eyebrow-pill" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3);">
-        <span class="pill-pulse-dot" style="background: #6366f1; box-shadow: 0 0 10px #6366f1;"></span>
-        <span style="color: #818cf8; font-weight: 700;">Academic CMS &bull; Evaluation Control &bull; BAIUST CSE 324</span>
-      </div>
-      <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.035em; line-height: 1.15; margin: 0 0 0.5rem 0;">
-        Instructor &amp; Admin <span style="background: linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Command Center</span>
+      <h1 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); line-height: 1.25; margin: 0 0 0.4rem 0;">
+        Database Records &amp; PHP Connection Overview
       </h1>
-      <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 650px; line-height: 1.6; margin: 0;">
-        Real-time telemetry, curriculum content management, multi-tier micro-task verification, competitive contest monitoring, and cryptographic certificate issuance.
+      <p style="font-size: 0.92rem; color: var(--text-secondary); max-width: 680px; line-height: 1.6; margin: 0;">
+        View database records for courses, lessons, coding games, contests, and certificates, along with the PHP <code>mysqli</code> database connection module.
       </p>
     </div>
 
     <!-- Quick Operations -->
-    <div style="display: flex; gap: 0.75rem;">
-      <a href="/admin/" target="_blank" class="btn btn-ghost" style="font-size: 0.85rem; padding: 0.5rem 1rem; border: 1px solid var(--border-color);">
-        Django Admin &nearr;
+    <div style="display: flex; gap: 0.65rem;">
+      <a href="/admin/" target="_blank" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.45rem 0.9rem;">
+        Django Admin
       </a>
-      <a href="{% url 'certificates_hub' %}" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1.1rem; background: #3b82f6;">
-        Verify Credentials &rarr;
+      <a href="{% url 'certificates_hub' %}" class="btn btn-primary" style="font-size: 0.82rem; padding: 0.45rem 0.95rem;">
+        Certificates
       </a>
     </div>
   </div>

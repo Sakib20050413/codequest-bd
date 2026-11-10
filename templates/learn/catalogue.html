@@ -5,17 +5,13 @@
 {% block content %}
 <div class="shell shell-wide" style="padding-top: 2.5rem; padding-bottom: 5rem;">
   
-  <!-- Sleek Header & Breadcrumb -->
-  <div style="margin-bottom: 2.25rem;">
-    <div class="section-eyebrow-pill" style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25);">
-      <span class="pill-pulse-dot" style="background: #38bdf8; box-shadow: 0 0 10px #38bdf8;"></span>
-      <span style="color: #7dd3fc;">Curriculum Roadmap &bull; In-Browser Labs</span>
-    </div>
-    <h1 style="font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.035em; line-height: 1.15; margin: 0 0 0.75rem 0;">
-      Programming Courses &amp; <span style="background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Guided Tracks</span>
+  <!-- Page Header -->
+  <div style="margin-bottom: 1.75rem;">
+    <h1 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); line-height: 1.25; margin: 0 0 0.45rem 0;">
+      Programming Tutorials &amp; Courses ({{ courses|length }} Tracks)
     </h1>
-    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 680px; line-height: 1.65; margin: 0;">
-      Master foundational software engineering through bite-sized, interactive browser lessons. Every course pairs an intuitive mental model with an instant coding sandbox.
+    <p style="font-size: 0.94rem; color: var(--text-secondary); max-width: 720px; line-height: 1.6; margin: 0;">
+      Each course includes short reading notes, a 1-minute video explanation, and an in-browser compiler exercise.
     </p>
   </div>
 

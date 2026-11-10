@@ -1,73 +1,59 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Practice Arena: 175 Playable Coding Challenges, 2D/3D Games &amp; Drills — CodeQuest BD{% endblock %}
+{% block title %}Coding Games &amp; Practice Problems — CodeQuest{% endblock %}
 
 {% block content %}
-<div class="shell" style="padding-top: 2.5rem; padding-bottom: 5rem;">
+<div class="shell" style="padding-top: 2rem; padding-bottom: 4rem;">
   
-  <!-- Header & Telemetry -->
-  <div style="margin-bottom: 2.5rem;">
-    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem;">
-      <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">
-        🎯 28 REAL-WORLD CODING TASKS &bull; 108 MASTER CODING GAMES (1,080 LEVELS)
-      </div>
-      <div style="display: flex; gap: 0.65rem; align-items: center;">
-        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
-          ⚡ Earn 54,000+ Total XP
-        </span>
-        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
-          108 Master Games &bull; 2D/3D Simulators
-        </span>
-      </div>
-    </div>
-
-    <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; margin-bottom: 0.75rem;">
-      Learn by Playing Games: Multi-Language Terminal Game Studio &amp; Tasks
+  <!-- Page Header -->
+  <div style="margin-bottom: 1.75rem;">
+    <h1 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.45rem 0;">
+      Coding Games &amp; Practice Problems
     </h1>
-    <p style="font-size: 1.02rem; color: var(--text-secondary); max-width: 840px; line-height: 1.6;">
-      Build real programming habits by playing games controlled directly from the code terminal across HTML5, CSS3, JavaScript, React, Python, Django, PHP, C, C++, Java, Rust, SQL/MySQL/PostgreSQL, MongoDB, and AI/ML.
+    <p style="font-size: 0.94rem; color: var(--text-secondary); max-width: 820px; line-height: 1.6; margin: 0;">
+      Practice programming by writing code in the terminal to control interactive visual games across HTML5, CSS3, JavaScript, React, Python, Django, PHP, C, C++, Java, Rust, SQL, and MongoDB.
     </p>
   </div>
 
-  <!-- MULTI-LANGUAGE TERMINAL GAME CONTROLLER -->
-  <div class="cq-card" style="padding: 1.5rem; margin-bottom: 2.5rem; border: 1px solid var(--border-strong); background: var(--bg-surface);">
+  <!-- Interactive Code-to-Game Terminal -->
+  <div class="cq-card" style="padding: 1.35rem; margin-bottom: 2rem;">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
       <div>
-        <div style="font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700; color: #f59e0b;">
-          LEARN BY GAMING // SELECT ANY LANGUAGE ENVIRONMENT &amp; RUN CODE IN TERMINAL
-        </div>
-        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
-          Live Code-to-Game Terminal Environment (Game Streak: {{ game_streak }}d)
+        <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.2rem 0;">
+          Interactive Terminal Game (Current Game Streak: {{ game_streak }} Days)
         </h2>
+        <p style="font-size: 0.83rem; color: var(--text-secondary); margin: 0;">
+          Select a language below and click "Run Code" to execute the game task.
+        </p>
       </div>
       <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;" id="hubLangGameBtns">
-        <button type="button" class="btn btn-ghost hub-lang-btn active" data-lang="python" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">Python / AI</button>
-        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="html" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">HTML5</button>
-        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="css" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">CSS3</button>
-        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="javascript" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">JavaScript</button>
-        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="react" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">React</button>
-        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="c" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">C</button>
-        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="cpp" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">C++20</button>
-        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="java" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">Java</button>
-        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="rust" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">Rust</button>
-        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="php" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">PHP + MySQL</button>
-        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="sql" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">SQL / Postgres</button>
-        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="mongodb" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">MongoDB</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn active" data-lang="python" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">Python 3</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="html" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">HTML5</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="css" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">CSS3</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="javascript" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">JavaScript</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="react" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">React</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="c" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">C</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="cpp" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">C++</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="java" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">Java</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="rust" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">Rust</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="php" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">PHP + MySQL</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="sql" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">SQL / Postgres</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="mongodb" style="padding: 0.3rem 0.65rem; font-size: 0.76rem;">MongoDB</button>
       </div>
     </div>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 1.25rem; align-items: stretch;">
-      <div style="background: #060911; border: 1px solid var(--border-medium); border-radius: 10px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.65rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.74rem; color: #94a3b8;">
-          <span id="hubGameCliLabel">$ python3 main.py</span>
-          <button type="button" onclick="runHubLangGame()" class="btn btn-primary" style="padding: 0.3rem 0.85rem; font-size: 0.74rem; font-weight: 700;">▶ Run Code &amp; Execute Game Move (+35 XP)</button>
+      <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-medium); border-radius: 6px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.65rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary);">
+          <span id="hubGameCliLabel">Command: python3 main.py</span>
+          <button type="button" onclick="runHubLangGame()" class="btn btn-primary" style="padding: 0.3rem 0.8rem; font-size: 0.76rem; font-weight: 600;">Run Code (+35 XP)</button>
         </div>
-        <textarea id="hubGameCodeArea" rows="6" spellcheck="false" style="width: 100%; background: #090d16; color: #34d399; font-family: var(--font-mono); font-size: 0.82rem; padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; outline: none;"></textarea>
-        <pre id="hubGameTermOut" style="margin: 0; padding: 0.65rem; background: #05070c; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color: #e2e8f0; font-family: var(--font-mono); font-size: 0.75rem; max-height: 95px; overflow-y: auto; white-space: pre-wrap;">Ready.</pre>
+        <textarea id="hubGameCodeArea" rows="6" spellcheck="false" style="width: 100%; background: #0f172a; color: #f8fafc; font-family: var(--font-mono); font-size: 0.82rem; padding: 0.75rem; border: 1px solid var(--border-medium); border-radius: 5px; outline: none;"></textarea>
+        <pre id="hubGameTermOut" style="margin: 0; padding: 0.65rem; background: #0f172a; border: 1px solid var(--border-medium); border-radius: 5px; color: #e2e8f0; font-family: var(--font-mono); font-size: 0.76rem; max-height: 95px; overflow-y: auto; white-space: pre-wrap;">Ready.</pre>
       </div>
 
-      <div style="border: 1px solid var(--border-medium); border-radius: 10px; overflow: hidden; background: #090d16;">
+      <div style="border: 1px solid var(--border-medium); border-radius: 6px; overflow: hidden; background: #0f172a;">
         <canvas id="hubLiveGameCanvas" height="260" style="width: 100%; height: 260px; display: block;"></canvas>
       </div>
     </div>
@@ -81,7 +67,7 @@
       document.querySelectorAll(".hub-lang-btn").forEach(function (b) {
         b.classList.toggle("active", b.getAttribute("data-lang") === langKey);
       });
-      document.getElementById("hubGameCliLabel").textContent = "$ " + meta.cli;
+      document.getElementById("hubGameCliLabel").textContent = "Command: " + meta.cli;
       document.getElementById("hubGameCodeArea").value = meta.starter;
       runHubLangGame();
     }
@@ -105,23 +91,23 @@
   </script>
 
 
-  <!-- TOP PRIMARY MODE SWITCHER -->
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
-    <div class="arena-mode-nav" role="tablist" aria-label="Practice Arena Modes">
+  <!-- Mode Switcher -->
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+    <div class="arena-mode-nav" role="tablist" aria-label="Practice Modes">
       <button id="modeBtnTasks" class="arena-mode-btn {% if active_mode == 'tasks' %}active{% endif %}" onclick="switchArenaMode('tasks')">
-        ⚡ Practical Coding Tasks (28)
+        Coding Tasks (28)
       </button>
       <button id="modeBtnArcade" class="arena-mode-btn {% if active_mode == 'arcade' %}active{% endif %}" onclick="switchArenaMode('arcade')">
-        🎮 108 Master Games (1,080 Levels)
+        Interactive Coding Games
       </button>
       <button id="modeBtnQuests" class="arena-mode-btn {% if active_mode == 'quests' %}active{% endif %}" onclick="switchArenaMode('quests')">
-        🔥 Daily Quests &amp; Bounties (24)
+        Daily Practice Quests
       </button>
     </div>
 
     <div style="display: flex; align-items: center; gap: 0.75rem;">
-      <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.45rem 1rem; font-size: 0.82rem; font-family: var(--font-mono);">
-        💻 Open Full Browser IDE &rarr;
+      <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.4rem 0.9rem; font-size: 0.82rem;">
+        Open Online Compiler
       </a>
     </div>
   </div>
