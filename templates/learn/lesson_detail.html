@@ -155,6 +155,9 @@
             </span>
           </div>
 
+          <!-- Short 60-Second Interactive Micro-Video Lesson Player -->
+          <div id="lessonShortVideoPlayer"></div>
+
           <!-- Conceptual Markdown -->
           <div class="prose" style="font-size: 0.94rem; line-height: 1.68; color: var(--text-primary); margin-bottom: 1.5rem;">
             {{ lesson.body_md|render_md }}
@@ -1634,4 +1637,15 @@ margin: 24px; padding: 20px; border: 2px solid;
   </div>
 </div>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (typeof window.CQInitMicroVideo === "function") {
+      window.CQInitMicroVideo(
+        "lessonShortVideoPlayer",
+        "{{ course.language.slug|default:course.language.name|escapejs }}",
+        "{{ lesson.title|escapejs }}"
+      );
+    }
+  });
+</script>
 {% endblock %}

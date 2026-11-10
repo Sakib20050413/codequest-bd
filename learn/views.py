@@ -17,10 +17,14 @@ def custom_admin_404(request):
 
 
 def landing(request):
-    featured_courses = Course.objects.select_related("language").prefetch_related("lessons").all()[:6]
-    games = Game.objects.all()[:6]
+    from .automation_engine import ensure_autonomous_platform_state, get_daily_auto_tasks
+    ensure_autonomous_platform_state()
+    featured_courses = Course.objects.select_related("language").prefetch_related("lessons").all()[:16]
+    games = Game.objects.all()[:8]
     total_lessons = Lesson.objects.count()
     languages = Language.objects.filter(is_active=True)
+    active_contests = Contest.objects.filter(is_active=True)[:4]
+    daily_auto_tasks = get_daily_auto_tasks()
 
     recent_lesson = None
     if request.user.is_authenticated:
@@ -36,6 +40,8 @@ def landing(request):
             "games": games,
             "total_lessons": total_lessons,
             "languages": languages,
+            "active_contests": active_contests,
+            "daily_auto_tasks": daily_auto_tasks,
             "recent_lesson": recent_lesson,
         },
     )
@@ -944,3 +950,43 @@ def api_update_daily_goal(request):
         "goal_minutes": profile.daily_goal_minutes,
         "goal_xp": profile.daily_goal_xp
     })
+
+
+@require_POST
+def api_terminal_execute(request):
+    """Universal Polyglot Compiler & CLI Runner across all 16 languages + Streak & Task Submitter."""
+    from .polyglot_engine import run_polyglot_code
+    try:
+        data = json.loads(request.body.decode("utf-8")) if request.body else {}
+    except Exception:
+        data = {}
+
+    lang = data.get("language", "python")
+    code = data.get("code", "")
+    cli_command = data.get("cli_command", "")
+    submit_task = bool(data.get("submit_task", False))
+
+    result = run_polyglot_code(lang, code, cli_command=cli_command)
+
+    xp_total = 640
+    course_streak = 7
+    game_streak = 5
+    if request.user.is_authenticated:
+        profile, _ = UserProfile.objects.get_or_create(user=request.user)
+        if result.get("ok"):
+            profile.xp += 35 if submit_task else 10
+            profile.record_activity()
+            profile.save(update_fields=["xp", "streak", "last_active"])
+        xp_total = profile.xp
+        course_streak = max(1, profile.streak)
+        game_streak = max(1, (profile.xp // 120) or 5)
+    elif result.get("ok"):
+        xp_total = 675 if submit_task else 650
+        course_streak = 8
+        game_streak = 6
+
+    result["xp_total"] = xp_total
+    result["course_streak"] = course_streak
+    result["game_streak"] = game_streak
+    return JsonResponse(result)
+

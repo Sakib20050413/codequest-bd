@@ -23,12 +23,86 @@
     </div>
 
     <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; margin-bottom: 0.75rem;">
-      Practice Arena: Coding Tasks &amp; 108 Master Games (1,080 Levels)
+      Learn by Playing Games: Multi-Language Terminal Game Studio &amp; Tasks
     </h1>
-    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 840px; line-height: 1.6;">
-      Master software engineering through 28 practical coding tasks and 108 high-attraction coding games across 10 specialized domains. Explore 3D WebGL space exploration, 2D vector physics, CSS design battles, algorithm duels, SQL crime mysteries, cybersecurity CTFs, DevOps cloud simulators, hardware logic gates, keystroke speed circuits, and autonomous AI neural networks.
+    <p style="font-size: 1.02rem; color: var(--text-secondary); max-width: 840px; line-height: 1.6;">
+      Build real programming habits by playing games controlled directly from the code terminal across HTML5, CSS3, JavaScript, React, Python, Django, PHP, C, C++, Java, Rust, SQL/MySQL/PostgreSQL, MongoDB, and AI/ML.
     </p>
   </div>
+
+  <!-- MULTI-LANGUAGE TERMINAL GAME CONTROLLER -->
+  <div class="cq-card" style="padding: 1.5rem; margin-bottom: 2.5rem; border: 1px solid var(--border-strong); background: var(--bg-surface);">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+      <div>
+        <div style="font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700; color: #f59e0b;">
+          LEARN BY GAMING // SELECT ANY LANGUAGE ENVIRONMENT &amp; RUN CODE IN TERMINAL
+        </div>
+        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
+          Live Code-to-Game Terminal Environment (Game Streak: {{ game_streak }}d)
+        </h2>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;" id="hubLangGameBtns">
+        <button type="button" class="btn btn-ghost hub-lang-btn active" data-lang="python" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">Python / AI</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="html" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">HTML5</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="css" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">CSS3</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="javascript" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">JavaScript</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="react" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">React</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="c" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">C</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="cpp" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">C++20</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="java" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">Java</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="rust" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">Rust</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="php" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">PHP + MySQL</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="sql" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">SQL / Postgres</button>
+        <button type="button" class="btn btn-ghost hub-lang-btn" data-lang="mongodb" style="padding: 0.3rem 0.65rem; font-size: 0.74rem; font-family: var(--font-mono);">MongoDB</button>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 1.25rem; align-items: stretch;">
+      <div style="background: #060911; border: 1px solid var(--border-medium); border-radius: 10px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.65rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.74rem; color: #94a3b8;">
+          <span id="hubGameCliLabel">$ python3 main.py</span>
+          <button type="button" onclick="runHubLangGame()" class="btn btn-primary" style="padding: 0.3rem 0.85rem; font-size: 0.74rem; font-weight: 700;">▶ Run Code &amp; Execute Game Move (+35 XP)</button>
+        </div>
+        <textarea id="hubGameCodeArea" rows="6" spellcheck="false" style="width: 100%; background: #090d16; color: #34d399; font-family: var(--font-mono); font-size: 0.82rem; padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; outline: none;"></textarea>
+        <pre id="hubGameTermOut" style="margin: 0; padding: 0.65rem; background: #05070c; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color: #e2e8f0; font-family: var(--font-mono); font-size: 0.75rem; max-height: 95px; overflow-y: auto; white-space: pre-wrap;">Ready.</pre>
+      </div>
+
+      <div style="border: 1px solid var(--border-medium); border-radius: 10px; overflow: hidden; background: #090d16;">
+        <canvas id="hubLiveGameCanvas" height="260" style="width: 100%; height: 260px; display: block;"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let activeHubGameLang = "python";
+    function switchHubGameLang(langKey) {
+      activeHubGameLang = langKey;
+      const meta = (window.CQLangMeta && window.CQLangMeta[langKey]) ? window.CQLangMeta[langKey] : window.CQLangMeta.python;
+      document.querySelectorAll(".hub-lang-btn").forEach(function (b) {
+        b.classList.toggle("active", b.getAttribute("data-lang") === langKey);
+      });
+      document.getElementById("hubGameCliLabel").textContent = "$ " + meta.cli;
+      document.getElementById("hubGameCodeArea").value = meta.starter;
+      runHubLangGame();
+    }
+    function runHubLangGame() {
+      window.CQExecuteTerminal({
+        language: activeHubGameLang,
+        code: document.getElementById("hubGameCodeArea").value,
+        submitTask: true,
+        outputEl: "hubGameTermOut",
+        canvasId: "hubLiveGameCanvas"
+      });
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll(".hub-lang-btn").forEach(function (b) {
+        b.addEventListener("click", function () {
+          switchHubGameLang(this.getAttribute("data-lang"));
+        });
+      });
+      switchHubGameLang("python");
+    });
+  </script>
 
 
   <!-- TOP PRIMARY MODE SWITCHER -->

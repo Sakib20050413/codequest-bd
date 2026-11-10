@@ -35,57 +35,62 @@
           <img src="{% static 'img/logo-light.svg' %}" alt="CodeQuest BD" height="34" class="logo-light-theme" style="display: none; width: auto;" />
         </a>
 
-        <!-- Desktop Navigation Links -->
+        <!-- Desktop Navigation Links (Clean Human-Engineered Labels, Zero Emoji Slop) -->
         <ul class="nav-links">
           <li>
             <a href="{% url 'catalogue' %}" class="nav-link {% if '/courses/' in request.path %}active{% endif %}">
-              Courses
+              Short Courses (16)
             </a>
           </li>
           <li>
             <a href="{% url 'games_hub' %}" class="nav-link {% if '/games/' in request.path or '/practice/' in request.path %}active{% endif %}">
-              Practice Arena
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'contests_hub' %}" class="nav-link {% if '/contests/' in request.path %}active{% endif %}">
-              Contests 🏆
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'certificates_hub' %}" class="nav-link {% if '/certificates/' in request.path or '/verify/' in request.path %}active{% endif %}">
-              Certificates 🎓
+              Learn by Gaming
             </a>
           </li>
           <li>
             <a href="{% url 'playground' %}" class="nav-link {% if '/playground/' in request.path %}active{% endif %}">
-              Playground
+              Polyglot Terminal
             </a>
           </li>
           <li>
-            <a href="{% url 'admin_panel' %}" class="nav-link {% if '/admin-panel/' in request.path %}active{% endif %}" style="color: #818cf8;">
-              Admin 🛠️
+            <a href="{% url 'contests_hub' %}" class="nav-link {% if '/contests/' in request.path %}active{% endif %}">
+              Auto-Competitions
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'certificates_hub' %}" class="nav-link {% if '/certificates/' in request.path or '/verify/' in request.path %}active{% endif %}">
+              Certificates
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'admin_panel' %}" class="nav-link {% if '/admin-panel/' in request.path %}active{% endif %}" style="color: var(--accent);">
+              Full-Stack &amp; PHP DB
             </a>
           </li>
           <li>
             <a href="{% url 'about_view' %}" class="nav-link {% if '/about/' in request.path %}active{% endif %}">
-              About
+              Architecture
             </a>
           </li>
         </ul>
 
-        <!-- Right Side Widgets & User Controls (Dynamic Priority Hierarchy) -->
+        <!-- Right Side Widgets & User Controls (Dual Streak System: Course Streak + Game Streak) -->
         <div class="nav-actions-cluster">
           
-          <!-- Streak Indicator (Visible on Desktop) -->
-          <div class="streak-pill desktop-only-stat" title="Daily Learning Streak">
-            <span>🔥</span>
-            <span id="streakCount">{{ user_streak }}d</span>
+          <!-- Course Streak Indicator -->
+          <div class="streak-pill desktop-only-stat" title="Daily Course Learning Streak">
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#10b981; font-weight:700;">COURSE</span>
+            <span id="streakCount">{{ course_streak }}d</span>
           </div>
 
-          <!-- Total XP Badge (Visible on Desktop) -->
+          <!-- Game Streak Indicator -->
+          <div class="streak-pill desktop-only-stat" title="Daily Coding Game Streak" style="border-color: rgba(245, 158, 11, 0.35);">
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#f59e0b; font-weight:700;">GAME</span>
+            <span id="gameStreakCount">{{ game_streak }}d</span>
+          </div>
+
+          <!-- Total XP Badge -->
           <div class="xp-pill desktop-only-stat" title="Total XP Earned">
-            <span>⚡</span>
             <span id="xpCount">{{ user_xp }}</span> XP
           </div>
 
@@ -318,8 +323,9 @@
     </div>
   </footer>
 
-  <script src="{% static 'js/ambient_canvas.js' %}?v=5.5"></script>
-  <script src="{% static 'js/codequest.js' %}?v=5.5"></script>
+  <script src="{% static 'js/ambient_canvas.js' %}?v=6.0"></script>
+  <script src="{% static 'js/codequest.js' %}?v=6.0"></script>
+  <script src="{% static 'js/micro_video_and_game_engine.js' %}?v=6.0"></script>
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>

@@ -37,6 +37,7 @@ urlpatterns = [
     # Micro-Tasks & Daily Goals APIs
     path("api/micro-task/check/", views.api_check_micro_task, name="api_check_micro_task"),
     path("api/profile/daily-goal/", views.api_update_daily_goal, name="api_update_daily_goal"),
+    path("api/terminal/execute/", views.api_terminal_execute, name="api_terminal_execute"),
 
     # Auto-Checking & Guest Progress Sync
     path("api/lesson/<int:lesson_id>/check/", views.api_check_lesson, name="api_check_lesson"),
