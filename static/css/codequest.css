@@ -3712,9 +3712,33 @@ body {
   display: block;
 }
 
-@media (max-width: 980px) {
-  .cq-main-nav,
+.prose pre {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+  padding: 14px 16px !important;
+  border-radius: 8px !important;
+  border: 1px solid #334155 !important;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.prose pre code {
+  background: transparent !important;
+  color: #34d399 !important;
+  border: none !important;
+  padding: 0 !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.85rem !important;
+}
+
+@media (max-width: 1120px) {
   .cq-streak-badges {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .cq-main-nav {
     display: none;
   }
   .cq-mobile-menu-btn {

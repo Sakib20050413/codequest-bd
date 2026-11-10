@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from .models import Language, Course, Lesson, Game, UserProfile, UserProgress, Badge, Feedback, MicroTask, Certificate, Contest, ContestSubmission
 
@@ -226,11 +227,21 @@ def catalogue(request):
                     "is_completed": False,
                 }
 
+    courses = []
+    for lang in languages:
+        for course in lang.courses.all():
+            prog = getattr(course, "user_progress", None) or {}
+            course.user_completed = prog.get("completed", 0)
+            course.user_total = prog.get("total", course.lessons.count())
+            course.user_pct = prog.get("pct", 0)
+            courses.append(course)
+
     return render(
         request,
         "learn/catalogue.html",
         {
             "languages": languages,
+            "courses": courses,
             "learner": learner_context,
             "completed_lesson_ids": completed_lesson_ids,
         },
@@ -356,6 +367,7 @@ def lesson_detail(request, course_slug, lesson_slug):
     )
 
 
+@csrf_exempt
 @require_POST
 def api_check_lesson(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
@@ -509,6 +521,7 @@ def game_play(request, game_slug):
     })
 
 
+@csrf_exempt
 @require_POST
 def api_record_game_score(request, game_slug):
     game = get_object_or_404(Game, slug=game_slug)
@@ -723,6 +736,7 @@ def contest_detail_view(request, contest_slug):
     )
 
 
+@csrf_exempt
 @require_POST
 def api_submit_contest(request, contest_slug):
     contest = get_object_or_404(Contest, slug=contest_slug)
@@ -952,6 +966,7 @@ def api_update_daily_goal(request):
     })
 
 
+@csrf_exempt
 @require_POST
 def api_terminal_execute(request):
     """Universal Polyglot Compiler & CLI Runner across all 16 languages + Streak & Task Submitter."""

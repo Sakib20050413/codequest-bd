@@ -197,34 +197,60 @@ Step 4: Rover executed DOCK_PORTAL -> OK</pre>
 </section>
 
 <!-- ==========================================================================
-     SECTION 3: LEARN CODING BY PLAYING GAMES — VISUAL GAMES SHOWCASE GRID
+     SECTION 3: LEARN CODING BY PLAYING 2D & 3D GAMES — VISUAL SHOWCASE GRID
      ========================================================================== -->
 <section style="margin-bottom:32px;">
   <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px; margin-bottom:16px;">
     <div>
       <span style="font-size:0.76rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:#d97706;">
-        🕹️ Learn Programming by Playing Games
+        🕹️ 2D Arcade Games + 🌐 3D WebGL Coding Games
       </span>
       <h2 style="font-size:1.5rem; font-weight:800; margin:2px 0 4px 0; color:var(--text-primary);">
-        Interactive Coding Games — Pick a Game to Learn a Language
+        Play 2D &amp; 3D Coding Games — Learn Languages by Playing
       </h2>
       <p style="font-size:0.92rem; color:var(--text-secondary); margin:0;">
-        Every game below teaches a real programming skill. Write CSS, Python, SQL, HTML, or JavaScript code to solve puzzles and win XP!
+        Choose from both <strong>3D WebGL simulation games</strong> and <strong>2D visual puzzle games</strong>. Every game teaches real programming concepts!
       </p>
     </div>
     <a href="{% url 'games_hub' %}" class="cq-btn-primary">
-      🕹️ View All Coding Games &rarr;
+      🕹️ View All 119 2D &amp; 3D Games &rarr;
     </a>
   </div>
 
   <div class="cq-visual-grid">
-    <!-- Game 1: Flexbox Frog Pond (CSS) -->
+    <!-- Game 1: 3D Cyber Rover Explorer (3D WebGL + Python) -->
+    <div class="cq-game-card">
+      <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:2rem;">🤖</span>
+          <div>
+            <div style="display:flex; gap:4px; flex-wrap:wrap;">
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#0f172a; color:#38bdf8;">🌐 3D WebGL</span>
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#2563eb; color:#ffffff;">Teaches: Python Loops</span>
+            </div>
+            <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">Cyber Rover 3D Explorer</h3>
+          </div>
+        </div>
+        <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#1d4ed8;">+75 XP</span>
+      </div>
+      <div class="cq-game-card-body">
+        <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
+          <strong>3D + 2D Game:</strong> Program Python loops or use arrow keys to drive the 3D Mars Rover across craters and collect 3 glowing energy crystals!
+        </p>
+        <a href="/games/rover-3d/" class="cq-btn-primary" style="width:100%; background:#2563eb; border-color:#1d4ed8;">▶ Play 3D Rover Game</a>
+      </div>
+    </div>
+
+    <!-- Game 2: Flexbox Frog Pond (2D CSS Game) -->
     <div class="cq-game-card">
       <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);">
         <div style="display:flex; align-items:center; gap:10px;">
           <span style="font-size:2rem;">🐸</span>
           <div>
-            <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; padding:2px 8px; border-radius:999px; background:#059669; color:#ffffff;">Teaches: CSS3 Flexbox</span>
+            <div style="display:flex; gap:4px; flex-wrap:wrap;">
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#065f46; color:#ffffff;">🕹️ 2D Arcade</span>
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#059669; color:#ffffff;">Teaches: CSS3 Flexbox</span>
+            </div>
             <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">Flexbox Frog Pond</h3>
           </div>
         </div>
@@ -232,39 +258,45 @@ Step 4: Rover executed DOCK_PORTAL -> OK</pre>
       </div>
       <div class="cq-game-card-body">
         <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
-          <strong>How you learn:</strong> Write CSS rules like <code>justify-content: center;</code> and <code>align-items: flex-end;</code> to guide the frog onto the green lilypad!
+          <strong>2D Layout Game:</strong> Write CSS rules like <code>justify-content: center;</code> and <code>align-items: flex-end;</code> to help the frog land on the lilypad!
         </p>
-        <a href="/games/flexbox-pond/" class="cq-btn-primary" style="width:100%;">▶ Play CSS Frog Game</a>
+        <a href="/games/flexbox-pond/" class="cq-btn-primary" style="width:100%;">▶ Play 2D CSS Frog Game</a>
       </div>
     </div>
 
-    <!-- Game 2: Cyber Rover Maze (Python) -->
+    <!-- Game 3: Voxel City 3D Architect (3D WebGL + Java/JS/OOP) -->
     <div class="cq-game-card">
-      <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);">
+      <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);">
         <div style="display:flex; align-items:center; gap:10px;">
-          <span style="font-size:2rem;">🤖</span>
+          <span style="font-size:2rem;">🏙️</span>
           <div>
-            <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; padding:2px 8px; border-radius:999px; background:#2563eb; color:#ffffff;">Teaches: Python Loops &amp; Logic</span>
-            <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">Cyber Rover Maze</h3>
+            <div style="display:flex; gap:4px; flex-wrap:wrap;">
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#0f172a; color:#38bdf8;">🌐 3D WebGL</span>
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#7c3aed; color:#ffffff;">Teaches: JS / Java OOP</span>
+            </div>
+            <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">Voxel City 3D Builder</h3>
           </div>
         </div>
-        <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#1d4ed8;">+75 XP</span>
+        <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#6d28d9;">+80 XP</span>
       </div>
       <div class="cq-game-card-body">
         <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
-          <strong>How you learn:</strong> Write Python <code>for</code> loops and movement functions to navigate the rover through the grid maze to the goal flag!
+          <strong>3D City Game:</strong> Write nested loops and object coordinates to construct 3D smart-city towers and power grids in WebGL!
         </p>
-        <a href="/games/cyber-grid-rover/" class="cq-btn-primary" style="width:100%; background:#2563eb; border-color:#1d4ed8;">▶ Play Python Rover Game</a>
+        <a href="/games/city-builder-3d/" class="cq-btn-primary" style="width:100%; background:#7c3aed; border-color:#6d28d9;">▶ Play 3D City Builder</a>
       </div>
     </div>
 
-    <!-- Game 3: SQL Murder Mystery (SQL Database) -->
+    <!-- Game 4: SQL Database Detective (2D & 3D SQL Game) -->
     <div class="cq-game-card">
       <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
         <div style="display:flex; align-items:center; gap:10px;">
           <span style="font-size:2rem;">🕵️</span>
           <div>
-            <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; padding:2px 8px; border-radius:999px; background:#d97706; color:#ffffff;">Teaches: SQL SELECT &amp; WHERE</span>
+            <div style="display:flex; gap:4px; flex-wrap:wrap;">
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#0f172a; color:#fbbf24;">🕹️ 2D + 🌐 3D</span>
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#d97706; color:#ffffff;">Teaches: SQL Queries</span>
+            </div>
             <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">SQL Database Detective</h3>
           </div>
         </div>
@@ -272,99 +304,91 @@ Step 4: Rover executed DOCK_PORTAL -> OK</pre>
       </div>
       <div class="cq-game-card-body">
         <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
-          <strong>How you learn:</strong> Write real SQL queries (<code>SELECT * FROM suspects WHERE ...</code>) to search police database tables and catch the suspect!
+          <strong>Database Game:</strong> Write real SQL queries (<code>SELECT * FROM suspects WHERE ...</code>) to unlock encrypted records in 2D &amp; 3D!
         </p>
         <a href="/games/cyber-crime-detective/" class="cq-btn-primary" style="width:100%; background:#d97706; border-color:#b45309;">▶ Play SQL Detective Game</a>
       </div>
     </div>
 
-    <!-- Game 4: HTML5 Tag Match Builder (HTML5) -->
-    <div class="cq-game-card">
-      <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <span style="font-size:2rem;">🏗️</span>
-          <div>
-            <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; padding:2px 8px; border-radius:999px; background:#ea580c; color:#ffffff;">Teaches: HTML5 Tags &amp; Forms</span>
-            <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">HTML Tag Builder</h3>
-          </div>
-        </div>
-        <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#c2410c;">+45 XP</span>
-      </div>
-      <div class="cq-game-card-body">
-        <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
-          <strong>How you learn:</strong> Assemble opening and closing HTML5 tags (<code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;form&gt;</code>) to build a complete webpage structure!
-        </p>
-        <a href="/games/tag-match/" class="cq-btn-primary" style="width:100%; background:#ea580c; border-color:#c2410c;">▶ Play HTML Builder Game</a>
-      </div>
-    </div>
-
-    <!-- Game 5: CSS Grid & Flexbox Bridge -->
-    <div class="cq-game-card">
-      <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <span style="font-size:2rem;">🌉</span>
-          <div>
-            <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; padding:2px 8px; border-radius:999px; background:#16a34a; color:#ffffff;">Teaches: CSS Grid &amp; Flexbox</span>
-            <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">CSS Grid &amp; Bridge Builder</h3>
-          </div>
-        </div>
-        <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#15803d;">+55 XP</span>
-      </div>
-      <div class="cq-game-card-body">
-        <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
-          <strong>How you learn:</strong> Use CSS Grid and Flexbox layout properties to align bridge panels across the canyon!
-        </p>
-        <a href="/games/flexbox-grid-bridge/" class="cq-btn-primary" style="width:100%; background:#16a34a; border-color:#15803d;">▶ Play CSS Bridge Game</a>
-      </div>
-    </div>
-
-    <!-- Game 6: JS Signal Tower Defense -->
-    <div class="cq-game-card">
-      <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #fefce8 0%, #fef08a 100%);">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <span style="font-size:2rem;">⚡</span>
-          <div>
-            <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; padding:2px 8px; border-radius:999px; background:#ca8a04; color:#ffffff;">Teaches: JavaScript Arrays &amp; Functions</span>
-            <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">JS Signal Tower Defense</h3>
-          </div>
-        </div>
-        <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#a16207;">+65 XP</span>
-      </div>
-      <div class="cq-game-card-body">
-        <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
-          <strong>How you learn:</strong> Master JavaScript array methods, loops, and functions by programming signal defense towers!
-        </p>
-        <a href="/games/signal-tower-defense/" class="cq-btn-primary" style="width:100%; background:#ca8a04; border-color:#a16207;">▶ Play JavaScript Game</a>
-      </div>
-    </div>
-
-    <!-- Game 7: C Memory Sector Defragmenter -->
+    <!-- Game 5: 3D Drone Delivery Flight (3D WebGL + C++/Vectors) -->
     <div class="cq-game-card">
       <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #f0f9ff 0%, #bae6fd 100%);">
         <div style="display:flex; align-items:center; gap:10px;">
-          <span style="font-size:2rem;">⚙️</span>
+          <span style="font-size:2rem;">🚁</span>
           <div>
-            <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; padding:2px 8px; border-radius:999px; background:#0284c7; color:#ffffff;">Teaches: C Arrays &amp; Pointers</span>
-            <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">C Memory Defragmenter</h3>
+            <div style="display:flex; gap:4px; flex-wrap:wrap;">
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#0f172a; color:#38bdf8;">🌐 3D WebGL</span>
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#0284c7; color:#ffffff;">Teaches: C / C++ Vectors</span>
+            </div>
+            <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">3D Drone Vector Flight</h3>
           </div>
         </div>
         <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#0369a1;">+70 XP</span>
       </div>
       <div class="cq-game-card-body">
         <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
-          <strong>How you learn:</strong> Write C loops and pointer arithmetic to organize memory blocks and unlock hardware sectors!
+          <strong>3D Flight Game:</strong> Control 3D altitude, thrust, and `(x, y, z)` coordinates to fly the delivery drone through sky rings!
         </p>
-        <a href="/games/memory-defrag/" class="cq-btn-primary" style="width:100%; background:#0284c7; border-color:#0369a1;">▶ Play C Programming Game</a>
+        <a href="/games/drone-flight-3d/" class="cq-btn-primary" style="width:100%; background:#0284c7; border-color:#0369a1;">▶ Play 3D Drone Game</a>
       </div>
     </div>
 
-    <!-- Game 8: Full-Stack Bug Hunt -->
+    <!-- Game 6: HTML5 Tag Match Builder (2D HTML5 Game) -->
+    <div class="cq-game-card">
+      <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:2rem;">🏗️</span>
+          <div>
+            <div style="display:flex; gap:4px; flex-wrap:wrap;">
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#9a3412; color:#ffffff;">🕹️ 2D Arcade</span>
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#ea580c; color:#ffffff;">Teaches: HTML5 Tags</span>
+            </div>
+            <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">HTML5 Tag Builder</h3>
+          </div>
+        </div>
+        <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#c2410c;">+45 XP</span>
+      </div>
+      <div class="cq-game-card-body">
+        <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
+          <strong>2D Web Builder:</strong> Assemble opening and closing HTML5 tags (<code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;form&gt;</code>) to construct web pages!
+        </p>
+        <a href="/games/tag-match/" class="cq-btn-primary" style="width:100%; background:#ea580c; border-color:#c2410c;">▶ Play 2D HTML Game</a>
+      </div>
+    </div>
+
+    <!-- Game 7: 3D Solar System Physics (3D WebGL) -->
+    <div class="cq-game-card">
+      <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #fefce8 0%, #fef08a 100%);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:2rem;">🪐</span>
+          <div>
+            <div style="display:flex; gap:4px; flex-wrap:wrap;">
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#0f172a; color:#38bdf8;">🌐 3D WebGL</span>
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#ca8a04; color:#ffffff;">Teaches: JS &amp; Math</span>
+            </div>
+            <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">3D Solar Orbit Simulator</h3>
+          </div>
+        </div>
+        <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#a16207;">+75 XP</span>
+      </div>
+      <div class="cq-game-card-body">
+        <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
+          <strong>3D Space Sim:</strong> Adjust orbital velocity and gravity parameters in code to keep planets in stable 3D orbits!
+        </p>
+        <a href="/games/solar-system-3d/" class="cq-btn-primary" style="width:100%; background:#ca8a04; border-color:#a16207;">▶ Play 3D Orbit Game</a>
+      </div>
+    </div>
+
+    <!-- Game 8: Full-Stack Bug Hunt (2D Arcade) -->
     <div class="cq-game-card">
       <div class="cq-game-card-banner" style="background:linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);">
         <div style="display:flex; align-items:center; gap:10px;">
           <span style="font-size:2rem;">🐞</span>
           <div>
-            <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; padding:2px 8px; border-radius:999px; background:#dc2626; color:#ffffff;">Teaches: Code Debugging</span>
+            <div style="display:flex; gap:4px; flex-wrap:wrap;">
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#991b1b; color:#ffffff;">🕹️ 2D Arcade</span>
+              <span style="font-size:0.66rem; font-weight:800; text-transform:uppercase; padding:2px 7px; border-radius:999px; background:#dc2626; color:#ffffff;">Teaches: Debugging</span>
+            </div>
             <h3 style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">Full-Stack Bug Hunt</h3>
           </div>
         </div>
@@ -372,9 +396,9 @@ Step 4: Rover executed DOCK_PORTAL -> OK</pre>
       </div>
       <div class="cq-game-card-body">
         <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
-          <strong>How you learn:</strong> Find and fix real syntax errors and broken logic across Python, JavaScript, C, and SQL code snippets!
+          <strong>2D Debugging Game:</strong> Find and fix real syntax errors and broken logic across Python, JavaScript, C, and SQL code snippets!
         </p>
-        <a href="/games/bug-hunt/" class="cq-btn-primary" style="width:100%; background:#dc2626; border-color:#b91c1c;">▶ Play Bug Hunt Game</a>
+        <a href="/games/bug-hunt/" class="cq-btn-primary" style="width:100%; background:#dc2626; border-color:#b91c1c;">▶ Play 2D Bug Hunt</a>
       </div>
     </div>
   </div>
@@ -524,7 +548,7 @@ Step 4: Rover executed DOCK_PORTAL -> OK</pre>
         Full-Stack System Architecture (HTML/CSS/JS + Python Django + SQL + PHP <code>mysqli</code>)
       </h2>
     </div>
-    <button type="button" onclick="loadDailyTaskIntoHero('php', '<?php\n$conn = mysqli_connect(\'localhost\', \'root\', \'\', \'codequest_sql\');\necho \"[PHP 8.3 MySQLi] Connected to SQL Database Successfully!\";\n$sql = \"SELECT student_id, name, department, cgpa, xp FROM students ORDER BY xp DESC\";\n?>')" class="cq-btn-primary" style="font-size:0.8rem;">
+    <button type="button" onclick="testPhpMysqlBridge()" class="cq-btn-primary" style="font-size:0.8rem;">
       🗄️ Test PHP &amp; MySQL Connection
     </button>
   </div>
@@ -618,6 +642,11 @@ Step 4: Rover executed DOCK_PORTAL -> OK</pre>
     selectHeroLanguage(langKey, starterCode);
     const studio = document.getElementById("liveGameStudio");
     if (studio) studio.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function testPhpMysqlBridge() {
+    const phpCode = "<?php\n$conn = mysqli_connect('localhost', 'root', '', 'codequest_sql');\necho '[PHP 8.3 MySQLi] Connected to SQL Database Successfully!';\n?>";
+    loadDailyTaskIntoHero("php", phpCode);
   }
 
   document.addEventListener("DOMContentLoaded", function () {
