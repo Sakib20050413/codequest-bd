@@ -1,79 +1,100 @@
 {% extends "base.html" %}
 
-{% block title %}All Programming Tutorials &amp; Courses — CodeQuest{% endblock %}
+{% block title %}All 16 Programming Language Courses — CodeQuest{% endblock %}
 
 {% block content %}
 
-<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
-  <h1 style="font-size:1.75rem; font-weight:700; margin:0; color:var(--text-primary);">
-    Programming Tutorials &amp; Course Directory ({{ courses|length }} Courses)
-  </h1>
-  <a href="{% url 'playground' %}" class="w3-btn-green">Open Online Compiler &raquo;</a>
-</div>
+<!-- Header Banner -->
+<section class="cq-panel-card" style="background:linear-gradient(135deg, #eff6ff 0%, #ecfdf5 100%); border:1px solid #bfdbfe; padding:24px 28px; margin-bottom:24px;">
+  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px;">
+    <div style="max-width:760px;">
+      <div style="display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:999px; background:#ffffff; border:1px solid #93c5fd; color:#1d4ed8; font-size:0.76rem; font-weight:800; margin-bottom:10px;">
+        📘 16 Programming Languages &bull; Bite-Sized 3-Minute Units
+      </div>
+      <h1 style="font-size:clamp(1.55rem, 2.6vw, 2.1rem); font-weight:800; color:#0f172a; margin:0 0 8px 0;">
+        All {{ courses|length }} Programming Language Courses
+      </h1>
+      <p style="font-size:0.95rem; line-height:1.6; color:#334155; margin:0;">
+        No 10-hour lectures. Every course is divided into short, beginner-friendly lessons with a <strong>1-minute visual guide</strong>, an <strong>in-browser code compiler</strong>, and an <strong>interactive coding game</strong>.
+      </p>
+    </div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <a href="{% url 'games_hub' %}" class="cq-btn-primary">🕹️ Play Coding Games</a>
+      <a href="{% url 'playground' %}" class="cq-btn-secondary" style="background:#ffffff; color:#0f172a !important;">💻 Online Compiler</a>
+    </div>
+  </div>
+</section>
 
-<p style="font-size:0.92rem; line-height:1.6; color:var(--text-secondary); margin:0 0 18px 0;">
-  Browse all {{ courses|length }} programming language tutorials below. Each course consists of short, focused lessons paired with a 1-minute concept video and an in-browser coding exercise.
-</p>
+<!-- Visual Course Cards Grid -->
+<div class="cq-visual-grid">
+  {% for course in courses %}
+  <div class="cq-game-card">
+    <div class="cq-game-card-banner" style="background:var(--bg-surface-elevated);">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="padding:4px 10px; border-radius:6px; background:#059669; color:#ffffff; font-family:var(--font-mono); font-size:0.76rem; font-weight:800;">
+          {{ course.language.name }}
+        </span>
+        <span style="font-size:0.76rem; font-weight:700; color:var(--text-secondary);">
+          {{ course.level }}
+        </span>
+      </div>
+      <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#059669;">
+        +{{ course.xp_reward }} XP
+      </span>
+    </div>
 
-<hr class="w3-hr" />
-
-<!-- Summary Table of All 16 Courses -->
-<h2 style="font-size:1.3rem; font-weight:700; margin:0 0 10px 0; color:var(--text-primary);">
-  Complete Course Index
-</h2>
-
-<div style="overflow-x:auto; margin-bottom:28px;">
-  <table class="cq-table">
-    <thead>
-      <tr>
-        <th style="width:130px;">Language</th>
-        <th style="width:230px;">Course Title</th>
-        <th style="width:110px;">Level</th>
-        <th>Lessons &amp; Topics</th>
-        <th style="width:95px;">Progress</th>
-        <th style="width:140px;">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for course in courses %}
-      <tr>
-        <td><strong>{{ course.language.name }}</strong></td>
-        <td>
-          <a href="{% url 'course_detail' course.slug %}" style="font-weight:700; color:#04aa6d; text-decoration:none;">
+    <div class="cq-game-card-body">
+      <div>
+        <h2 style="font-size:1.1rem; font-weight:800; color:var(--text-primary); margin:0 0 6px 0;">
+          <a href="{% url 'course_detail' course.slug %}" style="color:inherit; text-decoration:none;">
             {{ course.title }}
           </a>
-        </td>
-        <td style="font-size:0.82rem;">{{ course.level }}</td>
-        <td>
-          <div style="font-size:0.83rem; color:var(--text-secondary); margin-bottom:4px;">{{ course.description }}</div>
-          <div style="display:flex; flex-wrap:wrap; gap:6px;">
-            {% for l in course.lessons.all|slice:":5" %}
-              <a href="{% url 'lesson_detail' course.slug l.slug %}" style="font-size:0.76rem; padding:2px 6px; background:var(--bg-surface-elevated); border:1px solid var(--border-medium); border-radius:3px; color:var(--text-primary); text-decoration:none;">
-                {{ l.order }}. {{ l.title }}
+        </h2>
+        <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.55; margin:0 0 12px 0;">
+          {{ course.description }}
+        </p>
+
+        <!-- Progress Bar -->
+        <div style="margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">
+            <span>Progress: {{ course.user_completed }} / {{ course.user_total }} Lessons</span>
+            <span style="color:#059669;">{{ course.user_pct }}%</span>
+          </div>
+          <div style="height:6px; background:var(--bg-surface-elevated); border-radius:999px; overflow:hidden; border:1px solid var(--border-subtle);">
+            <div style="height:100%; width:{{ course.user_pct }}%; background:#059669;"></div>
+          </div>
+        </div>
+
+        <!-- Quick Lesson Links -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px;">
+            Included Short Lessons:
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:5px;">
+            {% for l in course.lessons.all|slice:":4" %}
+              <a href="{% url 'lesson_detail' course.slug l.slug %}" style="font-size:0.74rem; padding:3px 8px; background:var(--bg-surface-elevated); border:1px solid var(--border-medium); border-radius:6px; color:var(--text-primary); text-decoration:none; font-weight:600;">
+                {{ l.order }}. {{ l.title|truncatewords:4 }}
               </a>
             {% endfor %}
           </div>
-        </td>
-        <td style="font-family:var(--font-mono); font-size:0.8rem;">
-          {{ course.user_completed }}/{{ course.user_total }} ({{ course.user_pct }}%)
-        </td>
-        <td>
-          {% with first_l=course.lessons.first %}
-            {% if first_l %}
-              <a href="{% url 'lesson_detail' course.slug first_l.slug %}" class="w3-btn-green" style="padding:5px 10px; font-size:0.78rem;">
-                Start Tutorial &raquo;
-              </a>
-            {% else %}
-              <a href="{% url 'course_detail' course.slug %}" class="w3-btn-outline" style="padding:5px 10px; font-size:0.78rem;">
-                Syllabus
-              </a>
-            {% endif %}
-          {% endwith %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px;">
+        {% with first_l=course.lessons.first %}
+          {% if first_l %}
+            <a href="{% url 'lesson_detail' course.slug first_l.slug %}" class="cq-btn-primary" style="flex:1; font-size:0.82rem;">
+              ▶ Start Lesson 1
+            </a>
+          {% endif %}
+        {% endwith %}
+        <a href="{% url 'course_detail' course.slug %}" class="cq-btn-secondary" style="font-size:0.82rem;">
+          All Units ({{ course.lessons.count }})
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 </div>
 
 {% endblock %}

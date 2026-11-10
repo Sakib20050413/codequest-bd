@@ -1,104 +1,96 @@
 {% extends "base.html" %}
 
-{% block title %}{{ course.title }} — Tutorial Syllabus — CodeQuest{% endblock %}
+{% block title %}{{ course.title }} ({{ course.language.name }}) — CodeQuest{% endblock %}
 
 {% block content %}
 
-<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
-  <div>
-    <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:4px;">
-      <a href="{% url 'catalogue' %}" style="color:#04aa6d; text-decoration:none;">&laquo; All Tutorials</a> / {{ course.language.name }}
+<!-- Course Header Card -->
+<section class="cq-panel-card" style="background:linear-gradient(135deg, #ecfdf5 0%, #eff6ff 100%); border:1px solid #a7f3d0; padding:24px 28px; margin-bottom:24px;">
+  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px;">
+    <div style="max-width:760px;">
+      <div style="font-size:0.8rem; font-weight:700; color:#047857; margin-bottom:6px;">
+        <a href="{% url 'catalogue' %}" style="color:#047857; text-decoration:none;">&larr; All 16 Language Courses</a> / {{ course.language.name }}
+      </div>
+      <h1 style="font-size:clamp(1.55rem, 2.6vw, 2.1rem); font-weight:800; color:#0f172a; margin:0 0 8px 0;">
+        {{ course.title }} ({{ course.language.name }})
+      </h1>
+      <p style="font-size:0.95rem; line-height:1.6; color:#334155; margin:0;">
+        {{ course.description }}
+      </p>
     </div>
-    <h1 style="font-size:1.75rem; font-weight:700; margin:0; color:var(--text-primary);">
-      {{ course.title }} ({{ course.language.name }})
-    </h1>
-  </div>
 
-  {% if lessons %}
-    <a href="{% url 'lesson_detail' course.slug lessons.0.slug %}" class="w3-btn-green">
-      Start Lesson 1 &raquo;
-    </a>
-  {% endif %}
+    <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:12px; padding:16px 20px; min-width:240px;">
+      <div style="font-size:0.75rem; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:6px;">
+        Course Progress
+      </div>
+      <div style="font-size:1.25rem; font-weight:800; color:#059669; margin-bottom:8px;">
+        {{ completed_ids|length }} / {{ lessons|length }} Units Completed
+      </div>
+      {% if lessons %}
+        <a href="{% url 'lesson_detail' course.slug lessons.0.slug %}" class="cq-btn-primary" style="width:100%;">
+          ▶ Start Lesson 1
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Visual Lesson Cards Grid -->
+<div style="margin-bottom:14px;">
+  <h2 style="font-size:1.35rem; font-weight:800; margin:0 0 4px 0; color:var(--text-primary);">
+    📘 Step-by-Step Interactive Lessons ({{ lessons|length }} Units)
+  </h2>
+  <p style="font-size:0.9rem; color:var(--text-secondary); margin:0;">
+    Each lesson includes a <strong>1-minute visual guide</strong>, beginner-friendly notes, a live compiler, and a coding game:
+  </p>
 </div>
 
-<p style="font-size:0.92rem; line-height:1.6; color:var(--text-secondary); margin:0 0 16px 0;">
-  {{ course.description }}
-</p>
+<div class="cq-visual-grid">
+  {% for lesson in lessons %}
+  <div class="cq-game-card">
+    <div class="cq-game-card-banner" style="background:var(--bg-surface-elevated);">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="padding:3px 9px; border-radius:6px; background:#059669; color:#ffffff; font-family:var(--font-mono); font-size:0.75rem; font-weight:800;">
+          Unit {{ forloop.counter|stringformat:"02d" }}
+        </span>
+        <span style="font-size:0.76rem; color:var(--text-secondary); font-weight:700;">
+          ⏱️ {{ lesson.est_minutes }} mins
+        </span>
+      </div>
+      {% if lesson.id in completed_ids %}
+        <span style="padding:3px 8px; border-radius:999px; background:#ecfdf5; border:1px solid #a7f3d0; color:#047857; font-size:0.72rem; font-weight:800;">
+          ✔ Completed
+        </span>
+      {% else %}
+        <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#059669;">
+          +{{ lesson.xp }} XP
+        </span>
+      {% endif %}
+    </div>
 
-<!-- Course Overview Table -->
-<table class="cq-table" style="margin-bottom:22px;">
-  <thead>
-    <tr>
-      <th>Language</th>
-      <th>Difficulty Level</th>
-      <th>Total Lessons</th>
-      <th>Completed</th>
-      <th>Total XP Reward</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>{{ course.language.name }}</strong></td>
-      <td>{{ course.level }}</td>
-      <td style="font-family:var(--font-mono);">{{ lessons|length }} Lessons</td>
-      <td style="font-family:var(--font-mono); color:#04aa6d; font-weight:700;">{{ completed_ids|length }} / {{ lessons|length }}</td>
-      <td style="font-family:var(--font-mono);">+{{ course.xp_reward }} XP</td>
-    </tr>
-  </tbody>
-</table>
+    <div class="cq-game-card-body">
+      <div>
+        <h3 style="font-size:1.05rem; font-weight:800; color:var(--text-primary); margin:0 0 8px 0;">
+          {{ lesson.title }}
+        </h3>
+        <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.5; margin:0 0 12px 0;">
+          <strong>Mission:</strong> {{ lesson.task_prompt|truncatewords:18 }}
+        </p>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; font-size:0.72rem; font-weight:700; color:var(--text-secondary);">
+          <span style="background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); padding:2px 7px; border-radius:4px;">🎬 1-Min Visual Guide</span>
+          <span style="background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); padding:2px 7px; border-radius:4px;">💻 Code Editor</span>
+          <span style="background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); padding:2px 7px; border-radius:4px;">🎮 Game</span>
+        </div>
+      </div>
 
-<hr class="w3-hr" />
-
-<!-- Lesson Syllabus Table -->
-<h2 style="font-size:1.3rem; font-weight:700; margin:0 0 10px 0; color:var(--text-primary);">
-  Tutorial Lessons &amp; Practice Exercises
-</h2>
-
-<div style="overflow-x:auto;">
-  <table class="cq-table">
-    <thead>
-      <tr>
-        <th style="width:65px;">Unit</th>
-        <th>Lesson Title</th>
-        <th style="width:130px;">Format</th>
-        <th style="width:100px;">Est. Time</th>
-        <th style="width:90px;">Reward</th>
-        <th style="width:110px;">Status</th>
-        <th style="width:140px;">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for lesson in lessons %}
-      <tr>
-        <td style="font-family:var(--font-mono); font-weight:700;">{{ forloop.counter|stringformat:"02d" }}</td>
-        <td>
-          <a href="{% url 'lesson_detail' course.slug lesson.slug %}" style="font-weight:600; color:var(--text-primary); text-decoration:none;">
-            {{ lesson.title }}
-          </a>
-        </td>
-        <td style="font-size:0.8rem; color:var(--text-secondary);">1m Video + Code</td>
-        <td style="font-family:var(--font-mono); font-size:0.82rem;">{{ lesson.est_minutes }} mins</td>
-        <td style="font-family:var(--font-mono); font-size:0.82rem;">+{{ lesson.xp }} XP</td>
-        <td>
-          {% if lesson.id in completed_ids %}
-            <strong style="color:#04aa6d; font-size:0.8rem;">Completed</strong>
-          {% else %}
-            <span style="color:var(--text-muted); font-size:0.8rem;">Pending</span>
-          {% endif %}
-        </td>
-        <td>
-          <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="w3-btn-green" style="padding:4px 10px; font-size:0.78rem;">
-            {% if lesson.id in completed_ids %}Review{% else %}Open Lesson{% endif %} &raquo;
-          </a>
-        </td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="7" style="text-align:center; padding:20px;">No lessons available in this course yet.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="cq-btn-primary" style="width:100%; font-size:0.82rem;">
+        {% if lesson.id in completed_ids %}▶ Review Lesson &amp; Game{% else %}▶ Start Lesson {{ forloop.counter }}{% endif %}
+      </a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="cq-panel-card">No lessons available in this course yet.</div>
+  {% endfor %}
 </div>
 
 {% endblock %}

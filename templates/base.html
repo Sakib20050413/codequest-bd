@@ -4,169 +4,143 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}CodeQuest — Programming Tutorials, Online Compiler &amp; Coding Games{% endblock %}</title>
-  <meta name="description" content="Learn HTML, CSS, JavaScript, React, Python, Django, PHP, SQL, MySQL, PostgreSQL, MongoDB, C, C++, Java, Rust, and AI with short tutorials, 1-minute videos, and coding games." />
+  <title>{% block title %}CodeQuest — Learn Programming by Playing Visual Games &amp; 1-Minute Lessons{% endblock %}</title>
+  <meta name="description" content="Learn 16 programming languages (HTML, CSS, JavaScript, React, Python, Django, PHP, SQL, MySQL, PostgreSQL, MongoDB, C, C++, Java, Rust, AI) through 1-minute visual lessons and interactive coding games." />
   <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=8.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=9.0" />
   {% block extra_head %}{% endblock %}
 </head>
-<body class="w3-body">
+<body class="cq-modern-body">
 
-  <!-- 1. TOP HEADER BAR (White Bar like W3Schools / Programiz) -->
-  <header class="w3-topbar">
-    <div class="w3-topbar-left">
-      <button type="button" id="mobileMenuBtn" class="w3-sidebar-toggle" aria-label="Toggle Tutorials Menu">
-        &#9776; Tutorials
-      </button>
-      <a href="{% url 'landing' %}" class="w3-logo">
-        <span class="w3-logo-box">CQ</span>
-        <span class="w3-logo-text">CodeQuest<span style="color:#04aa6d;">.bd</span></span>
-      </a>
-      <nav class="w3-topnav-links" aria-label="Primary Navigation">
-        <a href="{% url 'catalogue' %}" class="w3-topnav-link {% if '/courses/' in request.path %}active{% endif %}">Tutorials</a>
-        <a href="{% url 'playground' %}" class="w3-topnav-link {% if '/playground/' in request.path %}active{% endif %}">Online Compiler</a>
-        <a href="{% url 'games_hub' %}" class="w3-topnav-link {% if '/games/' in request.path or '/practice/' in request.path %}active{% endif %}">Coding Games</a>
-        <a href="{% url 'contests_hub' %}" class="w3-topnav-link {% if '/contests/' in request.path %}active{% endif %}">Contests</a>
-        <a href="{% url 'certificates_hub' %}" class="w3-topnav-link {% if '/certificates/' in request.path or '/verify/' in request.path %}active{% endif %}">Certificates</a>
-        <a href="{% url 'admin_panel' %}" class="w3-topnav-link {% if '/admin-panel/' in request.path %}active{% endif %}">PHP &amp; SQL DB</a>
-        <a href="{% url 'about_view' %}" class="w3-topnav-link {% if '/about/' in request.path %}active{% endif %}">About</a>
-      </nav>
-    </div>
+  <!-- 1. MODERN HUMAN-FRIENDLY TOP NAVIGATION BAR -->
+  <header class="cq-modern-header">
+    <div class="cq-modern-header-inner">
+      <div style="display:flex; align-items:center; gap:18px;">
+        <button type="button" id="mobileMenuBtn" class="cq-mobile-menu-btn" aria-label="Open Navigation Menu">
+          &#9776; Menu
+        </button>
+        <a href="{% url 'landing' %}" class="cq-brand-link">
+          <span class="cq-brand-icon">🎮</span>
+          <div>
+            <span class="cq-brand-title">CodeQuest</span>
+            <span class="cq-brand-sub">Learn Coding by Playing Games</span>
+          </div>
+        </a>
 
-    <div class="w3-topbar-right">
-      <span class="w3-stat-item" title="Daily Course Streak">
-        Course Streak: <strong id="streakCount">{{ course_streak }}d</strong>
-      </span>
-      <span class="w3-stat-item" title="Daily Coding Game Streak">
-        Game Streak: <strong id="gameStreakCount">{{ game_streak }}d</strong>
-      </span>
-      <span class="w3-stat-item" title="Total Score">
-        Score: <strong id="xpCount">{{ user_xp }}</strong> XP
-      </span>
-      <button id="themeToggleBtn" type="button" class="w3-btn-outline" style="padding: 4px 10px; font-size: 12px;">
-        Dark Mode
-      </button>
-      {% if user.is_authenticated %}
-        <a href="{% url 'profile_view' %}" class="w3-btn-outline" style="padding: 4px 10px; font-size: 12px;">{{ user.username }}</a>
-        <a href="{% url 'logout_view' %}" class="w3-btn-outline" style="padding: 4px 10px; font-size: 12px;">Logout</a>
-      {% else %}
-        <a href="{% url 'login_view' %}" class="w3-btn-outline" style="padding: 4px 10px; font-size: 12px;">Log In</a>
-        <a href="{% url 'signup_view' %}" class="w3-btn-green" style="padding: 4px 12px; font-size: 12px;">Sign Up</a>
-      {% endif %}
+        <nav class="cq-main-nav" aria-label="Main Navigation">
+          <a href="{% url 'landing' %}" class="cq-nav-item {% if request.path == '/' %}active{% endif %}">🏠 Home</a>
+          <a href="{% url 'games_hub' %}" class="cq-nav-item {% if '/games/' in request.path or '/practice/' in request.path %}active{% endif %}">🎮 Coding Games</a>
+          <a href="{% url 'catalogue' %}" class="cq-nav-item {% if '/courses/' in request.path %}active{% endif %}">📘 16 Courses</a>
+          <a href="{% url 'playground' %}" class="cq-nav-item {% if '/playground/' in request.path %}active{% endif %}">💻 Code Compiler</a>
+          <a href="{% url 'contests_hub' %}" class="cq-nav-item {% if '/contests/' in request.path %}active{% endif %}">🏆 Contests</a>
+          <a href="{% url 'admin_panel' %}" class="cq-nav-item {% if '/admin-panel/' in request.path %}active{% endif %}">🗄️ PHP &amp; SQL</a>
+          <a href="{% url 'certificates_hub' %}" class="cq-nav-item {% if '/certificates/' in request.path or '/verify/' in request.path %}active{% endif %}">🎓 Certificates</a>
+        </nav>
+      </div>
+
+      <div class="cq-header-actions">
+        <div class="cq-streak-badges">
+          <span class="cq-badge-pill cq-badge-course" title="Daily Course Learning Streak">
+            📘 Course: <strong id="streakCount">{{ course_streak }}d</strong>
+          </span>
+          <span class="cq-badge-pill cq-badge-game" title="Daily Coding Game Streak">
+            🎮 Game: <strong id="gameStreakCount">{{ game_streak }}d</strong>
+          </span>
+          <span class="cq-badge-pill cq-badge-xp" title="Total Experience Points">
+            ⭐ <strong id="xpCount">{{ user_xp }}</strong> XP
+          </span>
+        </div>
+
+        <button id="themeToggleBtn" type="button" class="cq-btn-secondary" style="padding:6px 12px; font-size:0.78rem;">
+          Dark Mode
+        </button>
+
+        {% if user.is_authenticated %}
+          <a href="{% url 'profile_view' %}" class="cq-btn-secondary" style="padding:6px 12px; font-size:0.78rem;">👤 {{ user.username }}</a>
+          <a href="{% url 'logout_view' %}" class="cq-btn-secondary" style="padding:6px 12px; font-size:0.78rem;">Logout</a>
+        {% else %}
+          <a href="{% url 'login_view' %}" class="cq-btn-secondary" style="padding:6px 12px; font-size:0.78rem;">Log In</a>
+          <a href="{% url 'signup_view' %}" class="cq-btn-primary" style="padding:6px 14px; font-size:0.78rem;">Sign Up Free</a>
+        {% endif %}
+      </div>
     </div>
   </header>
 
-  <!-- 2. HORIZONTAL DARK LANGUAGE STRIP (Classic W3Schools Top Language Bar) -->
-  <div class="w3-langbar" role="navigation" aria-label="Programming Languages">
-    <a href="{% url 'course_detail' 'html-core' %}" class="w3-langbar-link">HTML</a>
-    <a href="{% url 'course_detail' 'css-core' %}" class="w3-langbar-link">CSS</a>
-    <a href="{% url 'course_detail' 'javascript-core' %}" class="w3-langbar-link">JAVASCRIPT</a>
-    <a href="{% url 'course_detail' 'react-core' %}" class="w3-langbar-link">REACT</a>
-    <a href="{% url 'course_detail' 'python-core' %}" class="w3-langbar-link">PYTHON</a>
-    <a href="{% url 'course_detail' 'django-core' %}" class="w3-langbar-link">DJANGO</a>
-    <a href="{% url 'course_detail' 'php-core' %}" class="w3-langbar-link">PHP</a>
-    <a href="{% url 'course_detail' 'sql-core' %}" class="w3-langbar-link">SQL</a>
-    <a href="{% url 'course_detail' 'mysql-core' %}" class="w3-langbar-link">MYSQL</a>
-    <a href="{% url 'course_detail' 'postgresql-core' %}" class="w3-langbar-link">POSTGRESQL</a>
-    <a href="{% url 'course_detail' 'mongodb-core' %}" class="w3-langbar-link">MONGODB</a>
-    <a href="{% url 'course_detail' 'c-core' %}" class="w3-langbar-link">C</a>
-    <a href="{% url 'course_detail' 'cpp-core' %}" class="w3-langbar-link">C++</a>
-    <a href="{% url 'course_detail' 'java-core' %}" class="w3-langbar-link">JAVA</a>
-    <a href="{% url 'course_detail' 'rust-core' %}" class="w3-langbar-link">RUST</a>
-    <a href="{% url 'course_detail' 'ai-ml-core' %}" class="w3-langbar-link">AI &amp; ML</a>
-    <a href="{% url 'playground' %}" class="w3-langbar-link" style="background:#04aa6d; color:#ffffff;">COMPILER</a>
-    <a href="{% url 'games_hub' %}" class="w3-langbar-link">CODING GAMES</a>
-  </div>
-
-  <!-- 3. CLASSIC 2-COLUMN DOCUMENT STRUCTURE: LEFT TUTORIAL SIDEBAR + MAIN PAGE -->
-  <div class="w3-layout">
-    
-    <!-- Left Vertical Sidebar (Classic W3Schools / Programiz Style) -->
-    <aside id="mobileNavDrawer" class="w3-sidebar" aria-label="Tutorials Sidebar">
-      <div class="w3-sidebar-mobile-head">
-        <strong>Tutorials &amp; Menu</strong>
-        <button type="button" id="mobileDrawerCloseBtn" style="background:none; border:none; font-size:18px; cursor:pointer;">&times;</button>
-      </div>
-
-      <div class="w3-sidebar-group">
-        <div class="w3-sidebar-heading">Web Development</div>
-        <a href="{% url 'course_detail' 'html-core' %}" class="w3-sidebar-link">Learn HTML5</a>
-        <a href="{% url 'course_detail' 'css-core' %}" class="w3-sidebar-link">Learn CSS3</a>
-        <a href="{% url 'course_detail' 'javascript-core' %}" class="w3-sidebar-link">Learn JavaScript</a>
-        <a href="{% url 'course_detail' 'react-core' %}" class="w3-sidebar-link">Learn React.js</a>
-      </div>
-
-      <div class="w3-sidebar-group">
-        <div class="w3-sidebar-heading">Backend &amp; Server</div>
-        <a href="{% url 'course_detail' 'python-core' %}" class="w3-sidebar-link">Learn Python 3</a>
-        <a href="{% url 'course_detail' 'django-core' %}" class="w3-sidebar-link">Learn Django 5</a>
-        <a href="{% url 'course_detail' 'php-core' %}" class="w3-sidebar-link">Learn PHP 8</a>
-        <a href="{% url 'course_detail' 'mysql-core' %}" class="w3-sidebar-link">PHP &amp; MySQL Bridge</a>
-      </div>
-
-      <div class="w3-sidebar-group">
-        <div class="w3-sidebar-heading">Databases &amp; NoSQL</div>
-        <a href="{% url 'course_detail' 'sql-core' %}" class="w3-sidebar-link">Learn SQL</a>
-        <a href="{% url 'course_detail' 'postgresql-core' %}" class="w3-sidebar-link">Learn PostgreSQL</a>
-        <a href="{% url 'course_detail' 'mongodb-core' %}" class="w3-sidebar-link">Learn MongoDB</a>
-      </div>
-
-      <div class="w3-sidebar-group">
-        <div class="w3-sidebar-heading">Systems, OOP &amp; AI</div>
-        <a href="{% url 'course_detail' 'c-core' %}" class="w3-sidebar-link">Learn C</a>
-        <a href="{% url 'course_detail' 'cpp-core' %}" class="w3-sidebar-link">Learn C++</a>
-        <a href="{% url 'course_detail' 'java-core' %}" class="w3-sidebar-link">Learn Java</a>
-        <a href="{% url 'course_detail' 'rust-core' %}" class="w3-sidebar-link">Learn Rust</a>
-        <a href="{% url 'course_detail' 'ai-ml-core' %}" class="w3-sidebar-link">Learn AI &amp; ML</a>
-        <a href="{% url 'course_detail' 'bash-core' %}" class="w3-sidebar-link">Learn Bash CLI</a>
-      </div>
-
-      <div class="w3-sidebar-group">
-        <div class="w3-sidebar-heading">Practice &amp; Contests</div>
-        <a href="{% url 'playground' %}" class="w3-sidebar-link">Online Code Compiler</a>
-        <a href="{% url 'games_hub' %}" class="w3-sidebar-link">Coding Games</a>
-        <a href="{% url 'contests_hub' %}" class="w3-sidebar-link">Open Contests (IUPC)</a>
-        <a href="{% url 'certificates_hub' %}" class="w3-sidebar-link">Course Certificates</a>
-        <a href="{% url 'admin_panel' %}" class="w3-sidebar-link">Database &amp; PHP View</a>
-        <a href="{% url 'about_view' %}" class="w3-sidebar-link">CSE 324 Project Info</a>
-      </div>
-    </aside>
-
-    <!-- Right Main Document Content -->
-    <div class="w3-main">
-      <main class="w3-content-area">
-        {% block content %}{% endblock %}
-      </main>
-
-      <!-- Clean Document Footer -->
-      <footer class="w3-footer">
-        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; margin-bottom:12px;">
-          <div>
-            <strong>CodeQuest — Programming Tutorials, Short Video Guides &amp; Coding Games</strong>
-            <div style="margin-top:4px; color:var(--text-muted);">
-              CSE 324 (Web Technologies Sessional) &bull; Submitted by <strong>Md Najmus Sakib Rahatul</strong> (ID: 1119003) &bull; Instructor: <strong>Md Yeakob Ali</strong>, Dept. of CSE, BAIUST.
-            </div>
-          </div>
-          <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:center;">
-            <a href="{% url 'catalogue' %}">All Tutorials</a>
-            <a href="{% url 'playground' %}">Online Compiler</a>
-            <a href="{% url 'games_hub' %}">Coding Games</a>
-            <a href="{% url 'contests_hub' %}">Contests</a>
-            <a href="{% url 'admin_panel' %}">PHP &amp; SQL</a>
-            <a href="https://github.com/Sakib20050413/codequest-bd" target="_blank" rel="noopener">GitHub Source</a>
-          </div>
-        </div>
-      </footer>
+  <!-- 2. QUICK 16-LANGUAGE PILL BAR (Friendly One-Click Access to Any Language) -->
+  <div class="cq-lang-ribbon" role="navigation" aria-label="16 Programming Languages">
+    <div class="cq-lang-ribbon-inner">
+      <span class="cq-lang-ribbon-label">Pick a Language:</span>
+      <a href="{% url 'course_detail' 'python-core' %}" class="cq-lang-chip">🐍 Python</a>
+      <a href="{% url 'course_detail' 'html-core' %}" class="cq-lang-chip">🌐 HTML5</a>
+      <a href="{% url 'course_detail' 'css-core' %}" class="cq-lang-chip">🎨 CSS3</a>
+      <a href="{% url 'course_detail' 'javascript-core' %}" class="cq-lang-chip">⚡ JavaScript</a>
+      <a href="{% url 'course_detail' 'react-core' %}" class="cq-lang-chip">⚛️ React</a>
+      <a href="{% url 'course_detail' 'c-core' %}" class="cq-lang-chip">⚙️ C</a>
+      <a href="{% url 'course_detail' 'cpp-core' %}" class="cq-lang-chip">🚀 C++</a>
+      <a href="{% url 'course_detail' 'java-core' %}" class="cq-lang-chip">☕ Java</a>
+      <a href="{% url 'course_detail' 'sql-core' %}" class="cq-lang-chip">🗄️ SQL</a>
+      <a href="{% url 'course_detail' 'mysql-core' %}" class="cq-lang-chip">🐬 MySQL</a>
+      <a href="{% url 'course_detail' 'php-core' %}" class="cq-lang-chip">🐘 PHP</a>
+      <a href="{% url 'course_detail' 'django-core' %}" class="cq-lang-chip">🎸 Django</a>
+      <a href="{% url 'course_detail' 'postgresql-core' %}" class="cq-lang-chip">🐘 PostgreSQL</a>
+      <a href="{% url 'course_detail' 'mongodb-core' %}" class="cq-lang-chip">🍃 MongoDB</a>
+      <a href="{% url 'course_detail' 'rust-core' %}" class="cq-lang-chip">🦀 Rust</a>
+      <a href="{% url 'course_detail' 'ai-ml-core' %}" class="cq-lang-chip">🤖 AI &amp; ML</a>
     </div>
-
   </div>
 
-  <script src="{% static 'js/ambient_canvas.js' %}?v=8.0"></script>
-  <script src="{% static 'js/codequest.js' %}?v=8.0"></script>
-  <script src="{% static 'js/micro_video_and_game_engine.js' %}?v=8.0"></script>
+  <!-- Mobile Drawer Navigation (Only visible on small mobile screens) -->
+  <aside id="mobileNavDrawer" class="cq-mobile-drawer" aria-label="Mobile Menu">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--border-medium); margin-bottom:12px;">
+      <strong>🎮 CodeQuest Menu</strong>
+      <button type="button" id="mobileDrawerCloseBtn" style="background:none; border:none; font-size:22px; cursor:pointer; color:var(--text-primary);">&times;</button>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <a href="{% url 'landing' %}" class="cq-nav-item">🏠 Home</a>
+      <a href="{% url 'games_hub' %}" class="cq-nav-item">🎮 Coding Games (Learn by Playing)</a>
+      <a href="{% url 'catalogue' %}" class="cq-nav-item">📘 All 16 Language Courses</a>
+      <a href="{% url 'playground' %}" class="cq-nav-item">💻 Online Code Compiler</a>
+      <a href="{% url 'contests_hub' %}" class="cq-nav-item">🏆 Contests &amp; IUPC</a>
+      <a href="{% url 'admin_panel' %}" class="cq-nav-item">🗄️ PHP &amp; SQL Database</a>
+      <a href="{% url 'certificates_hub' %}" class="cq-nav-item">🎓 Verified Certificates</a>
+      <a href="{% url 'about_view' %}" class="cq-nav-item">ℹ️ About CSE 324 Project</a>
+    </div>
+  </aside>
+
+  <!-- 3. MAIN PAGE CONTAINER (Clean Full-Width Modern Web App Layout) -->
+  <main class="cq-page-shell">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- 4. CLEAN HUMAN FOOTER -->
+  <footer class="cq-modern-footer">
+    <div class="cq-modern-footer-inner">
+      <div>
+        <div style="display:flex; align-items:center; gap:8px; font-weight:800; font-size:1rem; color:var(--text-primary);">
+          <span>🎮</span>
+          <span>CodeQuest — Learn Programming by Playing Visual Games &amp; 1-Minute Lessons</span>
+        </div>
+        <p style="margin:6px 0 0 0; font-size:0.84rem; color:var(--text-secondary);">
+          Developed for <strong>CSE 324 (Web Technologies Sessional)</strong> &bull; Submitted by <strong>Md Najmus Sakib Rahatul</strong> (ID: 1119003) &bull; Instructor: <strong>Md Yeakob Ali</strong>, Dept. of CSE, BAIUST.
+        </p>
+      </div>
+      <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center; font-size:0.85rem; font-weight:600;">
+        <a href="{% url 'games_hub' %}" style="color:var(--text-primary); text-decoration:none;">🎮 Coding Games</a>
+        <a href="{% url 'catalogue' %}" style="color:var(--text-primary); text-decoration:none;">📘 16 Courses</a>
+        <a href="{% url 'playground' %}" style="color:var(--text-primary); text-decoration:none;">💻 Online Compiler</a>
+        <a href="{% url 'contests_hub' %}" style="color:var(--text-primary); text-decoration:none;">🏆 Contests</a>
+        <a href="{% url 'admin_panel' %}" style="color:var(--text-primary); text-decoration:none;">🗄️ PHP &amp; SQL</a>
+        <a href="{% url 'about_view' %}" style="color:var(--text-primary); text-decoration:none;">ℹ️ Project Info</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/ambient_canvas.js' %}?v=9.0"></script>
+  <script src="{% static 'js/codequest.js' %}?v=9.0"></script>
+  <script src="{% static 'js/micro_video_and_game_engine.js' %}?v=9.0"></script>
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>

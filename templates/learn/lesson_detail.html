@@ -2,178 +2,164 @@
 {% load static %}
 {% load learn_extras %}
 
-{% block title %}{{ lesson.title }} — {{ course.title }} — CodeQuest{% endblock %}
+{% block title %}{{ lesson.title }} — {{ course.title }} | CodeQuest{% endblock %}
 
 {% block content %}
 
-<!-- W3Schools-Style Top Lesson Navigation -->
-<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px;">
-  <div>
+<!-- Top Lesson Progress & Navigation Bar -->
+<div class="cq-panel-card" style="padding:14px 20px; margin-bottom:20px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;">
+  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
     {% if prev_lesson %}
-      <a href="{% url 'lesson_detail' course.slug prev_lesson.slug %}" class="w3-btn-green">&laquo; Previous</a>
+      <a href="{% url 'lesson_detail' course.slug prev_lesson.slug %}" class="cq-btn-secondary" style="padding:6px 12px; font-size:0.8rem;">&larr; Previous</a>
     {% else %}
-      <a href="{% url 'course_detail' course.slug %}" class="w3-btn-outline">&laquo; Course Home</a>
+      <a href="{% url 'course_detail' course.slug %}" class="cq-btn-secondary" style="padding:6px 12px; font-size:0.8rem;">&larr; Course Syllabus</a>
     {% endif %}
+    <div>
+      <div style="font-size:0.75rem; font-weight:800; color:#059669; text-transform:uppercase;">
+        {{ course.language.name }} &bull; Unit {{ lesson.order }} of {{ all_lessons|length }}
+      </div>
+      <h1 style="font-size:1.35rem; font-weight:800; margin:0; color:var(--text-primary);">
+        {{ lesson.title }}
+      </h1>
+    </div>
   </div>
 
-  <div style="font-size:0.85rem; color:var(--text-secondary);">
-    <a href="{% url 'course_detail' course.slug %}" style="color:#04aa6d; font-weight:600; text-decoration:none;">{{ course.title }}</a>
-    &bull; Unit {{ lesson.order }} of {{ all_lessons|length }}
-  </div>
-
-  <div>
+  <div style="display:flex; align-items:center; gap:8px;">
+    <span style="padding:5px 10px; border-radius:999px; background:#ecfdf5; border:1px solid #a7f3d0; color:#047857; font-family:var(--font-mono); font-size:0.78rem; font-weight:800;">
+      Reward: +{{ lesson.xp }} XP
+    </span>
     {% if next_lesson %}
-      <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="w3-btn-green">Next &raquo;</a>
+      <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="cq-btn-primary" style="padding:7px 14px; font-size:0.8rem;">
+        Next Lesson &rarr;
+      </a>
     {% else %}
-      <a href="{% url 'certificates_hub' %}" class="w3-btn-green">Get Certificate &raquo;</a>
+      <a href="{% url 'certificates_hub' %}" class="cq-btn-primary" style="padding:7px 14px; font-size:0.8rem;">
+        🎓 Claim Certificate &rarr;
+      </a>
     {% endif %}
   </div>
 </div>
 
-<h1 style="font-size:1.8rem; font-weight:700; margin:0 0 10px 0; color:var(--text-primary);">
-  {{ course.language.name }} Tutorial: {{ lesson.title }}
-</h1>
+<!-- ==========================================================================
+     2-COLUMN INTERACTIVE LEARNING & CODING GAME WORKSPACE
+     Left: 1-Min Visual Guide + Concept Notes + Your Coding Mission
+     Right: Animated Coding Game + Code Editor + Output Console
+     ========================================================================== -->
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap:22px; align-items:start; margin-bottom:28px;">
 
-<hr class="w3-hr" />
-
-<!-- 1. Short 1-Minute Video Guide -->
-<div style="margin-bottom:20px;">
-  <div id="lessonShortVideoPlayer"></div>
-</div>
-
-<!-- 2. Short Lesson Reading Notes -->
-<div class="prose" style="font-size:0.95rem; line-height:1.7; color:var(--text-primary); margin-bottom:20px;">
-  {{ lesson.body_md|render_md }}
-</div>
-
-{% if lesson.diagram_svg %}
-<div style="margin:18px 0; padding:14px; background:var(--bg-surface-elevated); border:1px solid var(--border-medium); border-radius:4px; text-align:center;">
-  {{ lesson.diagram_svg|safe }}
-</div>
-{% endif %}
-
-<hr class="w3-hr" />
-
-<!-- 3. W3Schools-Style "Try It Yourself" Compiler & Coding Game Box -->
-<div class="w3-example-box">
-  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
-    <div>
-      <h2 style="font-size:1.2rem; font-weight:700; margin:0; color:var(--text-primary);">
-        Try It Yourself — Exercise &amp; Coding Game (+{{ lesson.xp }} XP)
-      </h2>
-      <div style="font-size:0.88rem; color:var(--text-secondary); margin-top:4px;">
-        <strong>Task:</strong> {{ lesson.task_prompt }}
+  <!-- LEFT COLUMN: 1-MINUTE VISUAL GUIDE + SIMPLE LESSON EXPLANATION + TASK -->
+  <div>
+    <!-- Step 1: 1-Minute Visual Guide -->
+    <div class="cq-panel-card" style="padding:18px; margin-bottom:18px;">
+      <div style="font-size:0.74rem; font-weight:800; text-transform:uppercase; color:#059669; margin-bottom:8px;">
+        🎬 Step 1 — Watch the 1-Minute Visual Guide
       </div>
+      <div id="lessonShortVideoPlayer"></div>
     </div>
 
-    <div style="display:flex; flex-wrap:wrap; gap:8px;">
-      <button type="button" onclick="runLessonCode(false)" class="w3-btn-green">
-        Run Code &raquo;
-      </button>
-      <button type="button" onclick="runLessonCode(true)" class="w3-btn-outline" style="background:#ffffff;">
-        Submit &amp; Complete (+{{ lesson.xp }} XP)
-      </button>
-      <button type="button" onclick="fillLessonSolution()" class="w3-btn-outline" style="background:#ffffff;">
-        Show Solution
-      </button>
+    <!-- Step 2: Simple Concept Explanation -->
+    <div class="cq-panel-card" style="padding:20px; margin-bottom:18px;">
+      <div style="font-size:0.74rem; font-weight:800; text-transform:uppercase; color:#0284c7; margin-bottom:8px;">
+        📘 Step 2 — Simple Concept Breakdown
+      </div>
+      <div class="prose" style="font-size:0.94rem; line-height:1.7; color:var(--text-primary);">
+        {{ lesson.body_md|render_md }}
+      </div>
+
+      {% if lesson.diagram_svg %}
+      <div style="margin-top:16px; padding:14px; background:var(--bg-surface-elevated); border:1px solid var(--border-medium); border-radius:8px; text-align:center;">
+        {{ lesson.diagram_svg|safe }}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Step 3: Your Coding & Game Mission -->
+    <div class="cq-panel-card" style="background:linear-gradient(135deg, #fef3c7 0%, #ecfdf5 100%); border:1px solid #fcd34d; padding:18px 20px; margin-bottom:0;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:6px;">
+        <span style="font-size:0.76rem; font-weight:800; text-transform:uppercase; color:#b45309;">
+          🎯 Step 3 — Your Coding &amp; Game Mission
+        </span>
+        <button type="button" onclick="fillLessonSolution()" class="cq-btn-secondary" style="background:#ffffff; color:#0f172a !important; padding:4px 10px; font-size:0.76rem;">
+          💡 Fill Solution Code
+        </button>
+      </div>
+      <p style="font-size:0.92rem; font-weight:600; color:#0f172a; line-height:1.55; margin:0;">
+        {{ lesson.task_prompt }}
+      </p>
     </div>
   </div>
 
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap:14px; align-items:start;">
-    
-    <!-- Left: Source Code Editor + CLI Bar -->
-    <div>
-      <div class="w3-code-panel" style="padding:0; overflow:hidden; margin-top:0;">
-        <div style="padding:6px 12px; background:#f1f5f9; border-bottom:1px solid #d1d5db; display:flex; justify-content:space-between; font-size:0.75rem; color:#334155; font-family:var(--font-mono);">
-          <span>{{ course.language.name }} Source Editor</span>
-          <span>Unit {{ lesson.order }}</span>
+  <!-- RIGHT COLUMN: LIVE CODING GAME + CODE EDITOR + OUTPUT -->
+  <div>
+    <div class="cq-panel-card" style="padding:18px; margin-bottom:0;">
+      
+      <!-- 1. Interactive Coding Game Canvas -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <span style="font-size:0.84rem; font-weight:800; color:var(--text-primary);">
+          🕹️ Interactive Coding Game (Controlled by Your Code):
+        </span>
+        <span style="font-size:0.75rem; font-weight:700; color:#059669;">Run code below to animate!</span>
+      </div>
+      <div style="border:2px solid #059669; border-radius:10px; overflow:hidden; background:#0f172a; margin-bottom:16px;">
+        <canvas id="lessonGameCanvas" height="205" style="width:100%; height:205px; display:block;"></canvas>
+      </div>
+
+      <!-- 2. Action Toolbar -->
+      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; margin-bottom:10px;">
+        <span style="font-size:0.82rem; font-weight:800; color:var(--text-primary);">
+          💻 Write Your {{ course.language.name }} Code:
+        </span>
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          <button type="button" onclick="runLessonCode(false)" class="cq-btn-primary" style="padding:7px 14px; font-size:0.82rem;">
+            ▶ Run Code &amp; Play Game
+          </button>
+          <button type="button" onclick="runLessonCode(true)" class="cq-btn-secondary" style="padding:7px 14px; font-size:0.82rem;">
+            ✔ Complete Lesson (+{{ lesson.xp }} XP)
+          </button>
         </div>
-        <textarea id="lessonCodeEditor" rows="9" spellcheck="false" style="width:100%; background:#ffffff; color:#0f172a; font-family:var(--font-mono); font-size:0.84rem; line-height:1.55; padding:10px 12px; border:none; outline:none; resize:vertical;">{{ lesson.starter_code }}</textarea>
       </div>
 
-      <form onsubmit="event.preventDefault(); runLessonCliCommand();" style="display:flex; gap:6px; align-items:center; background:#ffffff; border:1px solid #cbd5e1; padding:5px 10px; border-radius:4px; font-family:var(--font-mono); margin-top:8px;">
-        <span style="color:#04aa6d; font-weight:700; font-size:0.8rem;">$</span>
-        <input type="text" id="lessonCliInput" placeholder="Terminal command (e.g. help, submit, gcc, python3, mysql)..." style="flex:1; background:transparent; border:none; color:#0f172a; font-family:inherit; font-size:0.78rem; outline:none;" />
-        <button type="submit" class="w3-btn-outline" style="padding:3px 10px; font-size:0.75rem;">Execute</button>
+      <!-- 3. Code Editor -->
+      <div style="border:1px solid var(--border-medium); border-radius:10px; overflow:hidden; background:#0f172a; margin-bottom:12px;">
+        <div style="padding:7px 14px; background:#1e293b; border-bottom:1px solid #334155; display:flex; justify-content:space-between; font-size:0.75rem; color:#cbd5e1; font-family:var(--font-mono);">
+          <span>{{ course.language.name }} Editor</span>
+          <span style="color:#34d399;">Unit {{ lesson.order }}</span>
+        </div>
+        <textarea id="lessonCodeEditor" rows="8" spellcheck="false" style="width:100%; background:#0f172a; color:#f8fafc; font-family:var(--font-mono); font-size:0.85rem; line-height:1.6; padding:12px 14px; border:none; outline:none; resize:vertical;">{{ lesson.starter_code }}</textarea>
+      </div>
+
+      <!-- Optional CLI Command Bar -->
+      <form onsubmit="event.preventDefault(); runLessonCliCommand();" style="display:flex; gap:8px; align-items:center; background:var(--bg-surface-elevated); border:1px solid var(--border-medium); padding:6px 12px; border-radius:8px; font-family:var(--font-mono); margin-bottom:14px;">
+        <span style="color:#059669; font-weight:800; font-size:0.85rem;">$</span>
+        <input type="text" id="lessonCliInput" placeholder="Terminal command (e.g. help, submit, python3, gcc, mysql)..." style="flex:1; background:transparent; border:none; color:var(--text-primary); font-family:inherit; font-size:0.78rem; outline:none;" />
+        <button type="submit" class="cq-btn-secondary" style="padding:4px 10px; font-size:0.75rem;">Execute</button>
       </form>
+
+      <!-- 4. Program Output Console -->
+      <div style="font-size:0.82rem; font-weight:800; color:var(--text-primary); margin-bottom:6px;">
+        📟 Program Output / Compiler Result:
+      </div>
+      <pre id="lessonTermOutput" style="margin:0; padding:12px 14px; background:#0f172a; border:1px solid #334155; border-left:4px solid #10b981; border-radius:8px; color:#f8fafc; font-family:var(--font-mono); font-size:0.8rem; line-height:1.55; min-height:95px; max-height:145px; overflow-y:auto; white-space:pre-wrap;">Click "Run Code &amp; Play Game" to test your program.</pre>
+
+      <div id="lessonStatusBanner" style="display:none; margin-top:12px; padding:12px 14px; background:#ecfdf5; border:1px solid #059669; border-radius:8px; color:#065f46; font-weight:700; font-size:0.86rem;"></div>
     </div>
-
-    <!-- Right: Terminal Output + Visual Game Canvas -->
-    <div>
-      <div style="font-size:0.8rem; font-weight:700; color:var(--text-primary); margin-bottom:4px;">
-        Terminal Output:
-      </div>
-      <pre id="lessonTermOutput" style="margin:0 0 12px 0; padding:10px 12px; background:#1e293b; border-left:4px solid #04aa6d; color:#f8fafc; font-family:var(--font-mono); font-size:0.8rem; line-height:1.5; min-height:90px; max-height:130px; overflow-y:auto; white-space:pre-wrap;">Click "Run Code" to test your program.</pre>
-
-      <div style="font-size:0.8rem; font-weight:700; color:var(--text-primary); margin-bottom:4px;">
-        Interactive Coding Game View:
-      </div>
-      <div style="border:1px solid #cbd5e1; border-radius:4px; overflow:hidden; background:#0f172a;">
-        <canvas id="lessonGameCanvas" height="190" style="width:100%; height:190px; display:block;"></canvas>
-      </div>
-    </div>
-
   </div>
 
-  <div id="lessonStatusBanner" style="display:none; margin-top:12px; padding:10px 14px; background:#ecfdf5; border:1px solid #04aa6d; border-radius:4px; color:#065f46; font-weight:600; font-size:0.86rem;"></div>
 </div>
 
-<hr class="w3-hr" />
-
-<!-- 4. Course Syllabus Table -->
-<h2 style="font-size:1.25rem; font-weight:700; margin:0 0 10px 0; color:var(--text-primary);">
-  All Lessons in {{ course.title }}
-</h2>
-
-<div style="overflow-x:auto; margin-bottom:20px;">
-  <table class="cq-table">
-    <thead>
-      <tr>
-        <th style="width:65px;">Unit</th>
-        <th>Lesson Title</th>
-        <th style="width:100px;">Duration</th>
-        <th style="width:100px;">XP</th>
-        <th style="width:130px;">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for l in all_lessons %}
-      <tr>
-        <td style="font-family:var(--font-mono); font-weight:700;">{{ l.order|stringformat:"02d" }}</td>
-        <td>
-          {% if l.id == lesson.id %}
-            <strong style="color:#04aa6d;">{{ l.title }} (Current Lesson)</strong>
-          {% else %}
-            <a href="{% url 'lesson_detail' course.slug l.slug %}" style="color:var(--text-primary); text-decoration:none;">{{ l.title }}</a>
-          {% endif %}
-        </td>
-        <td style="font-family:var(--font-mono); font-size:0.82rem;">{{ l.est_minutes }} mins</td>
-        <td style="font-family:var(--font-mono); font-size:0.82rem;">+{{ l.xp }} XP</td>
-        <td>
-          <a href="{% url 'lesson_detail' course.slug l.slug %}" class="w3-btn-outline" style="padding:3px 10px; font-size:0.76rem;">
-            {% if l.id == lesson.id %}Current{% else %}Open{% endif %}
-          </a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-
-<!-- Bottom Navigation Buttons -->
-<div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
-  {% if prev_lesson %}
-    <a href="{% url 'lesson_detail' course.slug prev_lesson.slug %}" class="w3-btn-green">&laquo; Previous Lesson</a>
-  {% else %}
-    <a href="{% url 'course_detail' course.slug %}" class="w3-btn-outline">&laquo; Course Syllabus</a>
-  {% endif %}
-
-  {% if next_lesson %}
-    <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="w3-btn-green">Next Lesson &raquo;</a>
-  {% else %}
-    <a href="{% url 'certificates_hub' %}" class="w3-btn-green">Claim Certificate &raquo;</a>
-  {% endif %}
-</div>
+<!-- All Units in This Course (Quick Switcher Chips) -->
+<section class="cq-panel-card" style="margin-bottom:0;">
+  <div style="font-size:0.88rem; font-weight:800; color:var(--text-primary); margin-bottom:10px;">
+    📋 All Units in {{ course.title }}:
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px;">
+    {% for l in all_lessons %}
+      <a href="{% url 'lesson_detail' course.slug l.slug %}" class="{% if l.id == lesson.id %}cq-btn-primary{% else %}cq-btn-secondary{% endif %}" style="padding:6px 12px; font-size:0.78rem;">
+        Unit {{ l.order|stringformat:"02d" }}: {{ l.title }}
+      </a>
+    {% endfor %}
+  </div>
+</section>
 
 <textarea id="lessonHiddenSolution" style="display:none;">{{ lesson.solution }}</textarea>
 
@@ -189,7 +175,7 @@
       taskTitle: "{{ lesson.title|escapejs }}",
       outputEl: "lessonTermOutput",
       canvasId: "lessonGameCanvas"
-    }).then(function (data) {
+    }).then(function () {
       if (submitLesson) {
         const token = (document.cookie.match(/csrftoken=([^;]+)/) || [])[1] || "";
         fetch("{% url 'api_check_lesson' lesson.id %}", {
@@ -202,7 +188,7 @@
         });
         const banner = document.getElementById("lessonStatusBanner");
         banner.style.display = "block";
-        banner.textContent = "Lesson Completed! Earned +{{ lesson.xp }} XP and updated your Course Streak & Game Streak.";
+        banner.textContent = "🎉 Lesson & Game Completed! Earned +{{ lesson.xp }} XP and updated your Course Streak & Game Streak.";
       }
     });
   }

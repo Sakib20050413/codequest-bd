@@ -1,160 +1,214 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Coding Games &amp; Practice Problems — CodeQuest{% endblock %}
+{% block title %}Coding Games Hub — Learn Programming by Playing Games | CodeQuest{% endblock %}
 
 {% block content %}
 
-<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
-  <h1 style="font-size:1.75rem; font-weight:700; margin:0; color:var(--text-primary);">
-    Learn by Playing Coding Games &amp; Practice Problems
-  </h1>
-  <div style="display:flex; gap:8px; align-items:center;">
-    <span class="w3-stat-item">Game Streak: <strong style="color:#b45309;">{{ game_streak }} Days</strong></span>
-    <a href="{% url 'playground' %}" class="w3-btn-outline">Open Online Compiler</a>
+<!-- ==========================================================================
+     1. CODING GAMES HERO BANNER
+     ========================================================================== -->
+<section class="cq-panel-card" style="background:linear-gradient(135deg, #fef3c7 0%, #ecfdf5 100%); border:1px solid #fde68a; padding:24px 28px; margin-bottom:24px;">
+  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px;">
+    <div style="max-width:760px;">
+      <div style="display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:999px; background:#ffffff; border:1px solid #f59e0b; color:#b45309; font-size:0.76rem; font-weight:800; margin-bottom:10px;">
+        🕹️ Learn Programming by Playing Visual Games
+      </div>
+      <h1 style="font-size:clamp(1.55rem, 2.6vw, 2.1rem); font-weight:800; color:#0f172a; margin:0 0 8px 0;">
+        CodeQuest Coding Games Arena ({{ games|length }} Playable Games)
+      </h1>
+      <p style="font-size:0.95rem; line-height:1.6; color:#334155; margin:0;">
+        Every game below teaches a specific programming language or concept. Write real code (Python, CSS, HTML, SQL, JavaScript, C, C++, Java, PHP) to move characters, build bridges, query databases, and earn your daily <strong>Game Streak</strong>!
+      </p>
+    </div>
+
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <div style="background:#ffffff; border:1px solid #fcd34d; border-radius:10px; padding:10px 16px; text-align:center;">
+        <div style="font-size:0.72rem; font-weight:800; color:#92400e; text-transform:uppercase;">🎮 Game Streak</div>
+        <div style="font-size:1.25rem; font-weight:800; color:#b45309;">{{ game_streak }} Days</div>
+      </div>
+      <a href="{% url 'catalogue' %}" class="cq-btn-secondary" style="background:#ffffff; color:#0f172a !important;">
+        📘 16 Language Courses
+      </a>
+    </div>
   </div>
-</div>
+</section>
 
-<p style="font-size:0.92rem; line-height:1.6; color:var(--text-secondary); margin:0 0 16px 0;">
-  Write and run code in the terminal below to control the interactive coding game for each language, or choose from the coding games and practice problems listed in the tables below.
-</p>
-
-<!-- W3Schools-Style Example Box: Live Code-to-Game Terminal -->
-<div class="w3-example-box">
-  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
-    <h2 style="font-size:1.15rem; font-weight:700; margin:0; color:var(--text-primary);">
-      Interactive Terminal Game Studio
-    </h2>
-    <button type="button" onclick="runHubLangGame()" class="w3-btn-green">
-      Run Code &amp; Execute Game Move (+35 XP) &raquo;
+<!-- ==========================================================================
+     2. INTERACTIVE MULTI-LANGUAGE CODE-TO-GAME STUDIO
+     ========================================================================== -->
+<section class="cq-panel-card" style="margin-bottom:28px;">
+  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px;">
+    <div>
+      <span style="font-size:0.74rem; font-weight:800; text-transform:uppercase; color:#059669;">
+        ⚡ Instant Code-to-Game Sandbox
+      </span>
+      <h2 id="hubActiveGameTitle" style="font-size:1.25rem; font-weight:800; margin:2px 0 0 0; color:var(--text-primary);">
+        🐍 Python 3.12 — Rover Grid Navigation Game
+      </h2>
+    </div>
+    <button type="button" onclick="runHubLangGame()" class="cq-btn-primary">
+      ▶ Run Code &amp; Animate Game (+35 XP)
     </button>
   </div>
 
-  <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:12px;" id="hubLangGameBtns">
-    <button type="button" class="w3-btn-outline hub-lang-btn active" data-lang="python" style="padding:4px 10px; font-size:0.78rem;">Python 3</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="html" style="padding:4px 10px; font-size:0.78rem;">HTML5</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="css" style="padding:4px 10px; font-size:0.78rem;">CSS3</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="javascript" style="padding:4px 10px; font-size:0.78rem;">JavaScript</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="react" style="padding:4px 10px; font-size:0.78rem;">React</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="c" style="padding:4px 10px; font-size:0.78rem;">C</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="cpp" style="padding:4px 10px; font-size:0.78rem;">C++</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="java" style="padding:4px 10px; font-size:0.78rem;">Java</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="rust" style="padding:4px 10px; font-size:0.78rem;">Rust</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="php" style="padding:4px 10px; font-size:0.78rem;">PHP + MySQL</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="sql" style="padding:4px 10px; font-size:0.78rem;">SQL / Postgres</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="mongodb" style="padding:4px 10px; font-size:0.78rem;">MongoDB</button>
-    <button type="button" class="w3-btn-outline hub-lang-btn" data-lang="ai-ml" style="padding:4px 10px; font-size:0.78rem;">AI &amp; ML</button>
+  <!-- Language Selector Buttons -->
+  <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;" id="hubLangGameBtns">
+    <button type="button" class="cq-btn-secondary hub-lang-btn active" data-lang="python" style="padding:6px 12px; font-size:0.78rem;">🐍 Python (Rover Maze)</button>
+    <button type="button" class="cq-btn-secondary hub-lang-btn" data-lang="css" style="padding:6px 12px; font-size:0.78rem;">🎨 CSS3 (Bridge Alignment)</button>
+    <button type="button" class="cq-btn-secondary hub-lang-btn" data-lang="html" style="padding:6px 12px; font-size:0.78rem;">🌐 HTML5 (Bridge Builder)</button>
+    <button type="button" class="cq-btn-secondary hub-lang-btn" data-lang="sql" style="padding:6px 12px; font-size:0.78rem;">🗄️ SQL (DB Detective)</button>
+    <button type="button" class="cq-btn-secondary hub-lang-btn" data-lang="php" style="padding:6px 12px; font-size:0.78rem;">🐘 PHP + MySQL (Data Vault)</button>
+    <button type="button" class="cq-btn-secondary hub-lang-btn" data-lang="javascript" style="padding:6px 12px; font-size:0.78rem;">⚡ JavaScript (Energy Core)</button>
+    <button type="button" class="cq-btn-secondary hub-lang-btn" data-lang="c" style="padding:6px 12px; font-size:0.78rem;">⚙️ C (Reactor Core)</button>
+    <button type="button" class="cq-btn-secondary hub-lang-btn" data-lang="cpp" style="padding:6px 12px; font-size:0.78rem;">🚀 C++ (Orbital Engine)</button>
+    <button type="button" class="cq-btn-secondary hub-lang-btn" data-lang="java" style="padding:6px 12px; font-size:0.78rem;">☕ Java</button>
+    <button type="button" class="cq-btn-secondary hub-lang-btn" data-lang="rust" style="padding:6px 12px; font-size:0.78rem;">🦀 Rust</button>
+    <button type="button" class="cq-btn-secondary hub-lang-btn" data-lang="mongodb" style="padding:6px 12px; font-size:0.78rem;">🍃 MongoDB</button>
+    <button type="button" class="cq-btn-secondary hub-lang-btn" data-lang="ai-ml" style="padding:6px 12px; font-size:0.78rem;">🤖 AI &amp; ML</button>
   </div>
 
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap:14px; align-items:start;">
+  <!-- Mission Goal Explanation Banner -->
+  <div style="background:var(--bg-surface-elevated); border:1px solid var(--border-medium); border-left:4px solid #d97706; border-radius:8px; padding:10px 14px; margin-bottom:14px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px;">
     <div>
-      <div class="w3-code-panel" style="padding:0; overflow:hidden; margin-top:0;">
-        <div style="padding:6px 12px; background:#f1f5f9; border-bottom:1px solid #d1d5db; display:flex; justify-content:space-between; font-size:0.75rem; color:#334155; font-family:var(--font-mono);">
-          <span id="hubGameCliLabel">Command: python3 main.py</span>
-          <span>Terminal Game Script</span>
+      <strong style="font-size:0.8rem; color:#d97706;">🎯 Game Mission:</strong>
+      <span id="hubGameGoalText" style="font-size:0.86rem; color:var(--text-primary); margin-left:6px;">
+        Run the Python loop to move the Rover 4 steps across the grid to the Goal Flag!
+      </span>
+    </div>
+    <span style="font-size:0.78rem; font-family:var(--font-mono); color:#059669; font-weight:700;">Reward: +35 XP &amp; Game Streak</span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap:16px; align-items:start;">
+    <div>
+      <div style="border:1px solid var(--border-medium); border-radius:10px; overflow:hidden; background:#0f172a;">
+        <div style="padding:8px 14px; background:#1e293b; border-bottom:1px solid #334155; display:flex; justify-content:space-between; font-size:0.76rem; color:#cbd5e1; font-family:var(--font-mono);">
+          <span id="hubGameCliLabel">💻 Command: python3 main.py</span>
+          <span style="color:#34d399; font-weight:700;">Game Control Code</span>
         </div>
-        <textarea id="hubGameCodeArea" rows="6" spellcheck="false" style="width:100%; background:#ffffff; color:#0f172a; font-family:var(--font-mono); font-size:0.84rem; line-height:1.55; padding:10px 12px; border:none; outline:none; resize:vertical;"></textarea>
+        <textarea id="hubGameCodeArea" rows="6" spellcheck="false" style="width:100%; background:#0f172a; color:#f8fafc; font-family:var(--font-mono); font-size:0.85rem; line-height:1.55; padding:12px 14px; border:none; outline:none; resize:vertical;"></textarea>
       </div>
-      <div style="font-size:0.78rem; font-weight:700; margin:8px 0 4px 0;">Terminal Output:</div>
-      <pre id="hubGameTermOut" style="margin:0; padding:8px 12px; background:#1e293b; border-left:4px solid #04aa6d; color:#f8fafc; font-family:var(--font-mono); font-size:0.78rem; max-height:95px; overflow-y:auto; white-space:pre-wrap;">Ready.</pre>
+      <div style="font-size:0.8rem; font-weight:800; margin:10px 0 4px 0; color:var(--text-primary);">📟 Execution Log:</div>
+      <pre id="hubGameTermOut" style="margin:0; padding:10px 12px; background:#0f172a; border:1px solid #334155; border-left:4px solid #10b981; border-radius:8px; color:#f8fafc; font-family:var(--font-mono); font-size:0.78rem; max-height:100px; overflow-y:auto; white-space:pre-wrap;">Ready.</pre>
     </div>
 
     <div>
-      <div style="font-size:0.78rem; font-weight:700; margin-bottom:4px;">Visual Game Canvas:</div>
-      <div style="border:1px solid #cbd5e1; border-radius:4px; overflow:hidden; background:#0f172a;">
-        <canvas id="hubLiveGameCanvas" height="250" style="width:100%; height:250px; display:block;"></canvas>
+      <div style="font-size:0.82rem; font-weight:800; margin-bottom:6px; color:var(--text-primary);">
+        🕹️ Live Animated Game Canvas:
+      </div>
+      <div style="border:2px solid #059669; border-radius:10px; overflow:hidden; background:#0f172a;">
+        <canvas id="hubLiveGameCanvas" height="255" style="width:100%; height:255px; display:block;"></canvas>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<hr class="w3-hr" />
+<!-- ==========================================================================
+     3. VISUAL CODING GAMES DIRECTORY (CARDS WITH LANGUAGE BADGES)
+     ========================================================================== -->
+<section style="margin-bottom:32px;">
+  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px;">
+    <div>
+      <h2 style="font-size:1.45rem; font-weight:800; margin:0 0 4px 0; color:var(--text-primary);">
+        🕹️ All Interactive Coding Games
+      </h2>
+      <p style="font-size:0.9rem; color:var(--text-secondary); margin:0;">
+        Click <strong>Play Coding Game</strong> on any card below to launch its dedicated visual game level:
+      </p>
+    </div>
 
-<!-- Section 1: Interactive Coding Games Table -->
-<h2 style="font-size:1.35rem; font-weight:700; margin:0 0 8px 0; color:var(--text-primary);">
-  Interactive Coding Games ({{ games|length }} Games)
-</h2>
-<p style="font-size:0.88rem; color:var(--text-secondary); margin:0 0 12px 0;">
-  Click "Play Game" on any row below to launch the interactive browser coding game:
-</p>
+    <!-- Category Filter Buttons -->
+    <div style="display:flex; flex-wrap:wrap; gap:6px;" id="gameCatFilters">
+      <button type="button" class="cq-btn-secondary game-cat-btn active" data-cat="all" style="padding:6px 12px; font-size:0.78rem;">All Games</button>
+      <button type="button" class="cq-btn-secondary game-cat-btn" data-cat="css" style="padding:6px 12px; font-size:0.78rem;">🎨 CSS Layout</button>
+      <button type="button" class="cq-btn-secondary game-cat-btn" data-cat="html" style="padding:6px 12px; font-size:0.78rem;">🌐 HTML5</button>
+      <button type="button" class="cq-btn-secondary game-cat-btn" data-cat="js" style="padding:6px 12px; font-size:0.78rem;">⚡ JavaScript</button>
+      <button type="button" class="cq-btn-secondary game-cat-btn" data-cat="python" style="padding:6px 12px; font-size:0.78rem;">🐍 Python &amp; Logic</button>
+      <button type="button" class="cq-btn-secondary game-cat-btn" data-cat="sql" style="padding:6px 12px; font-size:0.78rem;">🗄️ SQL &amp; DB</button>
+    </div>
+  </div>
 
-<div style="overflow-x:auto; margin-bottom:28px;">
-  <table class="cq-table">
-    <thead>
-      <tr>
-        <th style="width:55px;">#</th>
-        <th style="width:230px;">Game Title</th>
-        <th style="width:130px;">Category</th>
-        <th>Concept Practiced</th>
-        <th style="width:95px;">Reward</th>
-        <th style="width:130px;">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for game in games|slice:":24" %}
-      <tr>
-        <td style="font-family:var(--font-mono);">{{ forloop.counter }}</td>
-        <td><strong>{{ game.title }}</strong></td>
-        <td style="font-size:0.82rem;">{{ game.get_category_display|default:game.category }}</td>
-        <td style="font-size:0.83rem; color:var(--text-secondary);">{{ game.tagline|default:game.description|truncatewords:14 }}</td>
-        <td style="font-family:var(--font-mono); font-size:0.82rem;">+{{ game.xp_per_win }} XP</td>
-        <td>
-          <a href="{% url 'game_play' game.slug %}" class="w3-btn-green" style="padding:4px 10px; font-size:0.78rem;">
-            Play Game &raquo;
-          </a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+  <div class="cq-visual-grid" id="visualGamesGrid">
+    {% for game in games|slice:":36" %}
+    <div class="cq-game-card game-filter-item" data-category="{{ game.category|lower }}">
+      <div class="cq-game-card-banner" style="background:var(--bg-surface-elevated);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:1.55rem;">🎮</span>
+          <div>
+            <span style="display:inline-block; padding:2px 8px; border-radius:999px; background:#059669; color:#ffffff; font-size:0.68rem; font-weight:800; text-transform:uppercase;">
+              Teaches: {{ game.get_category_display|default:game.category|upper }}
+            </span>
+            <h3 style="font-size:1rem; font-weight:800; color:var(--text-primary); margin:4px 0 0 0;">
+              {{ game.title }}
+            </h3>
+          </div>
+        </div>
+        <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#059669;">
+          +{{ game.xp_per_win }} XP
+        </span>
+      </div>
 
-<hr class="w3-hr" />
+      <div class="cq-game-card-body">
+        <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.55; margin:0 0 14px 0;">
+          {{ game.tagline|default:game.description|truncatewords:18 }}
+        </p>
+        <a href="{% url 'game_play' game.slug %}" class="cq-btn-primary" style="width:100%; font-size:0.82rem;">
+          ▶ Play Coding Game
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
 
-<!-- Section 2: Practical Coding Tasks Table -->
-<h2 style="font-size:1.35rem; font-weight:700; margin:0 0 8px 0; color:var(--text-primary);">
-  Practical Coding Problems ({{ tasks|length }} Tasks)
-</h2>
-<p style="font-size:0.88rem; color:var(--text-secondary); margin:0 0 12px 0;">
-  Structured programming tasks across Web Development, Python, SQL, and C/Systems:
-</p>
+<!-- ==========================================================================
+     4. PRACTICAL CODING CHALLENGES GRID
+     ========================================================================== -->
+<section>
+  <div style="margin-bottom:16px;">
+    <h2 style="font-size:1.4rem; font-weight:800; margin:0 0 4px 0; color:var(--text-primary);">
+      💻 Practical Coding Problems ({{ tasks|length }} Challenges)
+    </h2>
+    <p style="font-size:0.9rem; color:var(--text-secondary); margin:0;">
+      Solve hands-on coding exercises in the Online Compiler to earn extra XP:
+    </p>
+  </div>
 
-<div style="overflow-x:auto;">
-  <table class="cq-table">
-    <thead>
-      <tr>
-        <th style="width:240px;">Problem Title</th>
-        <th style="width:120px;">Track</th>
-        <th style="width:100px;">Difficulty</th>
-        <th>Problem Specification</th>
-        <th style="width:90px;">XP</th>
-        <th style="width:135px;">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for task in tasks %}
-      <tr>
-        <td><strong>{{ task.title }}</strong></td>
-        <td style="font-family:var(--font-mono); font-size:0.8rem;">{{ task.lang|default:task.cat|upper }}</td>
-        <td style="font-size:0.82rem;">{{ task.difficulty|title }}</td>
-        <td style="font-size:0.83rem; color:var(--text-secondary);">{{ task.desc|truncatewords:16 }}</td>
-        <td style="font-family:var(--font-mono); font-size:0.82rem;">+{{ task.xp }} XP</td>
-        <td>
-          <a href="{% url 'playground' %}?task={{ task.id }}" class="w3-btn-outline" style="padding:4px 10px; font-size:0.78rem;">
-            Solve in IDE &raquo;
-          </a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+  <div class="cq-visual-grid">
+    {% for task in tasks %}
+    <div class="cq-game-card">
+      <div class="cq-game-card-banner" style="background:var(--bg-surface-elevated);">
+        <span style="padding:3px 9px; border-radius:6px; background:#0284c7; color:#ffffff; font-family:var(--font-mono); font-size:0.74rem; font-weight:800;">
+          {{ task.lang|default:task.cat|upper }}
+        </span>
+        <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#059669;">
+          +{{ task.xp }} XP &bull; {{ task.difficulty|title }}
+        </span>
+      </div>
+      <div class="cq-game-card-body">
+        <div>
+          <h3 style="font-size:0.98rem; font-weight:800; color:var(--text-primary); margin:0 0 6px 0;">
+            {{ task.title }}
+          </h3>
+          <p style="font-size:0.83rem; color:var(--text-secondary); line-height:1.5; margin:0 0 14px 0;">
+            {{ task.desc|truncatewords:18 }}
+          </p>
+        </div>
+        <a href="{% url 'playground' %}?task={{ task.id }}" class="cq-btn-secondary" style="width:100%; font-size:0.8rem;">
+          💻 Solve in Online Compiler &rarr;
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
 
 <style>
-  .hub-lang-btn.active {
-    background: #04aa6d !important;
+  .hub-lang-btn.active,
+  .game-cat-btn.active {
+    background: #059669 !important;
     color: #ffffff !important;
-    border-color: #04aa6d !important;
+    border-color: #047857 !important;
   }
 </style>
 
@@ -166,7 +220,11 @@
     document.querySelectorAll(".hub-lang-btn").forEach(function (b) {
       b.classList.toggle("active", b.getAttribute("data-lang") === langKey);
     });
-    document.getElementById("hubGameCliLabel").textContent = "Command: " + meta.cli;
+    const titleEl = document.getElementById("hubActiveGameTitle");
+    if (titleEl) titleEl.textContent = meta.name + " — Interactive Coding Game";
+    const goalEl = document.getElementById("hubGameGoalText");
+    if (goalEl && meta.gameGoal) goalEl.textContent = meta.gameGoal;
+    document.getElementById("hubGameCliLabel").textContent = "💻 Command: " + meta.cli;
     document.getElementById("hubGameCodeArea").value = meta.starter;
     runHubLangGame();
   }
@@ -185,6 +243,24 @@
         switchHubGameLang(this.getAttribute("data-lang"));
       });
     });
+
+    document.querySelectorAll(".game-cat-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const cat = this.getAttribute("data-cat");
+        document.querySelectorAll(".game-cat-btn").forEach(function (b) {
+          b.classList.toggle("active", b === btn);
+        });
+        document.querySelectorAll(".game-filter-item").forEach(function (card) {
+          const itemCat = (card.getAttribute("data-category") || "").toLowerCase();
+          if (cat === "all" || itemCat.indexOf(cat) !== -1) {
+            card.style.display = "flex";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      });
+    });
+
     switchHubGameLang("python");
   });
 </script>
