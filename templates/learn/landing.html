@@ -1,371 +1,314 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}CodeQuest — Learn Programming with Short Tutorials, Video Guides &amp; Coding Games{% endblock %}
+{% block title %}CodeQuest — Programming Tutorials, Short Video Guides &amp; Coding Games{% endblock %}
 
 {% block content %}
-<div class="shell shell-wide" style="padding-top: 1.5rem; padding-bottom: 4rem;">
 
-  <!-- Top Intro Banner (Clean W3Schools / Programiz Style) -->
-  <section style="background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: 6px; padding: 1.5rem 1.75rem; margin-bottom: 1.75rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.25rem;">
-      <div style="max-width: 760px;">
-        <h1 style="font-size: 1.65rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.45rem 0; line-height: 1.25;">
-          Learn Programming with Short Tutorials, 1-Minute Videos &amp; Coding Games
-        </h1>
-        <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
-          Instead of watching 10-hour video lectures, learn each programming topic through a short reading guide, a 1-minute concept video, an online code compiler, and a playable coding game. Supports 16 languages and databases including HTML5, CSS3, JavaScript, React, Python, Django, PHP, C, C++, Java, Rust, SQL, MySQL, PostgreSQL, MongoDB, and AI/ML.
-        </p>
-      </div>
+<!-- Document Title & W3Schools-Style Top Next/Action Buttons -->
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
+  <h1 style="font-size:1.85rem; font-weight:700; margin:0; color:var(--text-primary);">
+    CodeQuest Programming Tutorials &amp; Online Compiler
+  </h1>
+  <div style="display:flex; gap:8px;">
+    <a href="{% url 'catalogue' %}" class="w3-btn-green">Start Tutorials &raquo;</a>
+    <a href="{% url 'games_hub' %}" class="w3-btn-outline">Coding Games</a>
+  </div>
+</div>
 
-      <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
-        <a href="{% url 'catalogue' %}" class="btn btn-primary" style="padding: 0.55rem 1.1rem; font-size: 0.85rem; font-weight: 600;">
-          Browse All 16 Tutorials
-        </a>
-        <a href="{% url 'games_hub' %}" class="btn btn-ghost" style="padding: 0.55rem 1rem; font-size: 0.85rem; font-weight: 600;">
-          Coding Games
-        </a>
-        <a href="{% url 'contests_hub' %}" class="btn btn-ghost" style="padding: 0.55rem 1rem; font-size: 0.85rem; font-weight: 600;">
-          Open Contests
-        </a>
+<p style="font-size:0.95rem; line-height:1.65; color:var(--text-secondary); margin:0 0 14px 0;">
+  Learn programming languages step-by-step without watching 10-hour video lectures. Every tutorial provides short reading notes, a <strong>1-minute concept video</strong>, an <strong>online multi-language compiler</strong>, and an <strong>interactive coding game</strong>.
+</p>
+
+<!-- Student Daily Progress Summary Bar -->
+<table class="cq-table" style="margin-bottom:20px;">
+  <thead>
+    <tr>
+      <th>Course Streak (Daily Lessons)</th>
+      <th>Game Streak (Coding Games)</th>
+      <th>Total Student Score</th>
+      <th>Supported Languages</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong id="heroCourseStreak" style="color:#04aa6d; font-family:var(--font-mono);">{{ course_streak }} Days</strong></td>
+      <td><strong id="heroGameStreak" style="color:#b45309; font-family:var(--font-mono);">{{ game_streak }} Days</strong></td>
+      <td><strong style="font-family:var(--font-mono);">{{ user_xp }} XP</strong></td>
+      <td>16 Languages (HTML, CSS, JS, React, Python, Django, PHP, SQL, MySQL, Postgres, MongoDB, C, C++, Java, Rust, AI)</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr class="w3-hr" />
+
+<!-- W3Schools-Style "Try It Yourself" Grey Box: Short Video + Compiler + Coding Game -->
+<div class="w3-example-box">
+  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px;">
+    <div>
+      <h2 id="heroActiveLangLabel" style="font-size:1.2rem; font-weight:700; margin:0; color:var(--text-primary);">
+        Example: Python 3.12 — 1-Minute Video, Compiler &amp; Coding Game
+      </h2>
+      <div style="font-size:0.82rem; color:var(--text-secondary); margin-top:2px;">
+        Select any language tab below to watch its 1-minute video guide, edit the code, and run it in the terminal:
       </div>
     </div>
-  </section>
+    <div style="display:flex; gap:8px;">
+      <button type="button" onclick="runHeroPolyglot(false)" class="w3-btn-green">
+        Run Code &raquo;
+      </button>
+      <button type="button" onclick="runHeroPolyglot(true)" class="w3-btn-outline" style="background:#ffffff;">
+        Submit Task (+35 XP)
+      </button>
+    </div>
+  </div>
 
-  <!-- Main 2-Column Workspace: Left = Language Selector & Quick Topics, Right = Online Compiler + Video + Game -->
-  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.25rem;">
+  <!-- Language Selection Buttons -->
+  <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:12px;" id="heroQuickLangPills">
+    <button type="button" class="w3-btn-outline hero-lang-switch active" data-lang="python" style="padding:4px 10px; font-size:0.78rem;">Python 3</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="html" style="padding:4px 10px; font-size:0.78rem;">HTML5</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="css" style="padding:4px 10px; font-size:0.78rem;">CSS3</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="javascript" style="padding:4px 10px; font-size:0.78rem;">JavaScript</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="react" style="padding:4px 10px; font-size:0.78rem;">React</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="c" style="padding:4px 10px; font-size:0.78rem;">C</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="cpp" style="padding:4px 10px; font-size:0.78rem;">C++</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="java" style="padding:4px 10px; font-size:0.78rem;">Java</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="rust" style="padding:4px 10px; font-size:0.78rem;">Rust</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="django" style="padding:4px 10px; font-size:0.78rem;">Django</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="php" style="padding:4px 10px; font-size:0.78rem;">PHP + MySQL</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="sql" style="padding:4px 10px; font-size:0.78rem;">SQL / Postgres</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="mongodb" style="padding:4px 10px; font-size:0.78rem;">MongoDB</button>
+    <button type="button" class="w3-btn-outline hero-lang-switch" data-lang="ai-ml" style="padding:4px 10px; font-size:0.78rem;">AI &amp; ML</button>
+  </div>
+
+  <!-- 2-Column Split Inside the Example Box -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap:14px; align-items:start;">
     
-    <!-- Left Column: Language Directory & Student Progress Summary -->
-    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-      
-      <!-- Student Activity & Streak Table -->
-      <div class="cq-card" style="padding: 1.15rem 1.25rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <h2 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-            Daily Learning &amp; Game Progress
-          </h2>
-          <span style="font-size: 0.78rem; color: var(--text-muted);">Updated Automatically</span>
+    <!-- Left Side: 1-Minute Video Guide + Code Editor -->
+    <div>
+      <div id="heroShortVideoMount"></div>
+
+      <div class="w3-code-panel" style="padding:0; overflow:hidden;">
+        <div style="padding:6px 12px; background:#f1f5f9; border-bottom:1px solid #d1d5db; display:flex; justify-content:space-between; font-size:0.75rem; color:#334155; font-family:var(--font-mono);">
+          <span id="heroCliHeader">Command: python3 main.py</span>
+          <span>Source Code</span>
         </div>
-        <table class="cq-table" style="border: 1px solid var(--border-subtle);">
-          <thead>
-            <tr>
-              <th>Metric</th>
-              <th>Current Status</th>
-              <th>How It Updates</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Course Streak</strong></td>
-              <td><span id="heroCourseStreak" style="color: #047857; font-weight: 700; font-family: var(--font-mono);">{{ course_streak }} Days</span></td>
-              <td style="color: var(--text-secondary); font-size: 0.8rem;">Complete any short tutorial lesson</td>
-            </tr>
-            <tr>
-              <td><strong>Game Streak</strong></td>
-              <td><span id="heroGameStreak" style="color: #b45309; font-weight: 700; font-family: var(--font-mono);">{{ game_streak }} Days</span></td>
-              <td style="color: var(--text-secondary); font-size: 0.8rem;">Solve any coding game or terminal task</td>
-            </tr>
-            <tr>
-              <td><strong>Total Score</strong></td>
-              <td><span style="font-weight: 700; font-family: var(--font-mono);">{{ user_xp }} XP</span></td>
-              <td style="color: var(--text-secondary); font-size: 0.8rem;">Lessons, games, and open contests</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Select a Language to Practice -->
-      <div class="cq-card" style="padding: 1.25rem;">
-        <h2 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.35rem 0;">
-          Select a Programming Language to Try
-        </h2>
-        <p style="font-size: 0.83rem; color: var(--text-secondary); margin: 0 0 0.85rem 0;">
-          Click any language below to load its 1-minute video guide, sample code, and interactive coding game in the compiler on the right:
-        </p>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); gap: 0.45rem;" id="heroQuickLangPills">
-          <button type="button" class="btn btn-ghost hero-lang-switch active" data-lang="python" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">Python 3</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="html" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">HTML5</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="css" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">CSS3</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="javascript" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">JavaScript</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="react" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">React.js</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="c" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">C</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="cpp" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">C++</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="java" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">Java</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="rust" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">Rust</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="django" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">Django</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="php" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">PHP + MySQL</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="sql" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">SQL / Postgres</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="mongodb" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">MongoDB</button>
-          <button type="button" class="btn btn-ghost hero-lang-switch" data-lang="ai-ml" style="justify-content: flex-start; padding: 0.45rem 0.65rem; font-size: 0.8rem;">AI &amp; ML</button>
-        </div>
-      </div>
-
-      <!-- Today's Daily Practice Tasks Table -->
-      <div class="cq-card" style="padding: 1.25rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-          <h2 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-            Daily Practice Tasks
-          </h2>
-          <span style="font-size: 0.76rem; color: var(--text-muted);">Refreshes Daily</span>
-        </div>
-        <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0 0 0.75rem 0;">
-          Click "Load Task" to open the starter code in the compiler and submit it for points.
-        </p>
-        <div style="overflow-x: auto;">
-          <table class="cq-table" style="border: 1px solid var(--border-subtle);">
-            <thead>
-              <tr>
-                <th>Task</th>
-                <th>Language</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for dtask in daily_auto_tasks %}
-              <tr>
-                <td>
-                  <div style="font-weight: 600; font-size: 0.84rem;">{{ dtask.title }}</div>
-                  <div style="font-size: 0.74rem; color: var(--text-muted);">{{ dtask.streak_target }}</div>
-                </td>
-                <td style="font-family: var(--font-mono); font-size: 0.78rem;">{{ dtask.lang }}</td>
-                <td>
-                  <button type="button" onclick="loadDailyTaskIntoHero('{{ dtask.lang_key|escapejs }}', '{{ dtask.starter|escapejs }}')" class="btn btn-primary" style="padding: 0.3rem 0.65rem; font-size: 0.75rem; white-space: nowrap;">
-                    Load Task (+{{ dtask.xp }} XP)
-                  </button>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Right Column: Online Compiler, 1-Minute Video Guide & Coding Game -->
-    <div class="cq-card" style="padding: 0; overflow: hidden;">
-      
-      <!-- Top Compiler Bar -->
-      <div style="padding: 0.75rem 1rem; background: var(--bg-surface-elevated); border-bottom: 1px solid var(--border-medium); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem;">
-        <div>
-          <strong id="heroActiveLangLabel" style="font-size: 0.9rem; color: var(--text-primary);">Python 3.12 — Online Compiler &amp; Coding Game</strong>
-        </div>
-        <div style="display: flex; gap: 0.45rem;">
-          <button type="button" onclick="runHeroPolyglot(false)" class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600;">
-            Run Code
-          </button>
-          <button type="button" onclick="runHeroPolyglot(true)" class="btn btn-ghost" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600;">
-            Submit Task (+35 XP)
-          </button>
-        </div>
-      </div>
-
-      <!-- 1-Minute Short Video Player -->
-      <div style="padding: 0.85rem 0.85rem 0 0.85rem;">
-        <div id="heroShortVideoMount"></div>
-      </div>
-
-      <!-- Code Editor Area -->
-      <div style="padding: 0 0.85rem;">
-        <div style="border: 1px solid var(--border-medium); border-radius: 6px; overflow: hidden;">
-          <div style="padding: 0.4rem 0.75rem; background: var(--bg-surface-elevated); border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-secondary);">
-            <span id="heroCliHeader">Command: python3 main.py</span>
-            <span>Source Code Editor</span>
-          </div>
-          <textarea id="heroPolyglotCode" rows="5" spellcheck="false" style="width: 100%; background: #0f172a; color: #f8fafc; font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.55; padding: 0.75rem; border: none; outline: none; resize: vertical;">steps = ['MOVE_EAST', 'MOVE_EAST', 'SCAN_CORE', 'DOCK_PORTAL']
+        <textarea id="heroPolyglotCode" rows="5" spellcheck="false" style="width:100%; background:#ffffff; color:#0f172a; font-family:var(--font-mono); font-size:0.84rem; line-height:1.55; padding:10px 12px; border:none; outline:none; resize:vertical;">steps = ['MOVE_EAST', 'MOVE_EAST', 'SCAN_CORE', 'DOCK_PORTAL']
 for idx, action in enumerate(steps, 1):
     print(f'Step {idx}: Rover executed {action} -> OK')</textarea>
-        </div>
       </div>
 
-      <!-- Terminal Command Input + Output + Visual Game Canvas -->
-      <div style="padding: 0.85rem; display: grid; grid-template-columns: 1fr; gap: 0.75rem;">
-        <form onsubmit="event.preventDefault(); runHeroCliCommand();" style="display: flex; gap: 0.5rem; align-items: center; background: var(--bg-surface-elevated); border: 1px solid var(--border-medium); padding: 0.35rem 0.65rem; border-radius: 5px; font-family: var(--font-mono);">
-          <span style="color: #047857; font-weight: 700; font-size: 0.78rem;">$</span>
-          <input type="text" id="heroCliInput" placeholder="Enter terminal command (e.g. help, gcc main.c, mysql -e 'SELECT * FROM students', mongosh)..." style="flex: 1; background: transparent; border: none; color: var(--text-primary); font-family: inherit; font-size: 0.78rem; outline: none;" />
-          <button type="submit" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem;">Run Command</button>
-        </form>
+      <!-- Optional CLI Command Input -->
+      <form onsubmit="event.preventDefault(); runHeroCliCommand();" style="display:flex; gap:6px; align-items:center; background:#ffffff; border:1px solid #cbd5e1; padding:5px 10px; border-radius:4px; font-family:var(--font-mono); margin-top:8px;">
+        <span style="color:#04aa6d; font-weight:700; font-size:0.8rem;">$</span>
+        <input type="text" id="heroCliInput" placeholder="Terminal command (e.g. help, gcc main.c, mysql -e 'SELECT * FROM students', mongosh)..." style="flex:1; background:transparent; border:none; color:#0f172a; font-family:inherit; font-size:0.78rem; outline:none;" />
+        <button type="submit" class="w3-btn-outline" style="padding:3px 10px; font-size:0.75rem;">Execute</button>
+      </form>
+    </div>
 
-        <div>
-          <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.25rem;">Terminal Output:</div>
-          <pre id="heroPolyglotOutput" style="margin: 0; padding: 0.7rem; background: #0f172a; border: 1px solid var(--border-medium); border-radius: 5px; color: #e2e8f0; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.5; max-height: 120px; overflow-y: auto; white-space: pre-wrap;">Step 1: Rover executed MOVE_EAST -> OK
+    <!-- Right Side: Terminal Output + Visual Coding Game -->
+    <div>
+      <div style="font-size:0.8rem; font-weight:700; color:var(--text-primary); margin-bottom:4px;">
+        Result / Terminal Output:
+      </div>
+      <pre id="heroPolyglotOutput" style="margin:0 0 12px 0; padding:10px 12px; background:#1e293b; border-left:4px solid #04aa6d; color:#f8fafc; font-family:var(--font-mono); font-size:0.8rem; line-height:1.5; min-height:95px; max-height:135px; overflow-y:auto; white-space:pre-wrap;">Step 1: Rover executed MOVE_EAST -> OK
 Step 2: Rover executed MOVE_EAST -> OK
 Step 3: Rover executed SCAN_CORE -> OK
 Step 4: Rover executed DOCK_PORTAL -> OK</pre>
-        </div>
 
-        <div>
-          <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.25rem;">Interactive Coding Game Output:</div>
-          <div style="border: 1px solid var(--border-medium); border-radius: 5px; overflow: hidden;">
-            <canvas id="heroLiveGameCanvas" height="190" style="width: 100%; height: 190px; display: block;"></canvas>
-          </div>
-        </div>
+      <div style="font-size:0.8rem; font-weight:700; color:var(--text-primary); margin-bottom:4px;">
+        Interactive Coding Game View:
       </div>
-
-    </div>
-  </section>
-
-  <!-- Section 2: All 16 Programming Tutorials & Short Video Courses -->
-  <section style="margin-bottom: 2.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-      <div>
-        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.2rem 0;">
-          Programming Tutorials ({{ featured_courses|length }} Courses)
-        </h2>
-        <p style="font-size: 0.86rem; color: var(--text-secondary); margin: 0;">
-          Each tutorial includes short reading notes, a 1-minute video explanation, and an in-browser coding exercise.
-        </p>
+      <div style="border:1px solid #cbd5e1; border-radius:4px; overflow:hidden; background:#0f172a;">
+        <canvas id="heroLiveGameCanvas" height="205" style="width:100%; height:205px; display:block;"></canvas>
       </div>
-      <a href="{% url 'catalogue' %}" class="btn btn-ghost" style="font-size: 0.82rem;">
-        View Full Course List
-      </a>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1rem;">
+  </div>
+</div>
+
+<hr class="w3-hr" />
+
+<!-- Section 2: All 16 Programming Tutorials Table (Clean W3Schools / Programiz Directory Table) -->
+<h2 style="font-size:1.4rem; font-weight:700; margin:0 0 8px 0; color:var(--text-primary);">
+  All 16 Programming Tutorials &amp; Short Video Courses
+</h2>
+<p style="font-size:0.9rem; color:var(--text-secondary); margin:0 0 12px 0;">
+  Click any tutorial below to read the short lesson notes, watch the 1-minute video explanation, and practice in the compiler:
+</p>
+
+<div style="overflow-x:auto; margin-bottom:24px;">
+  <table class="cq-table">
+    <thead>
+      <tr>
+        <th style="width:140px;">Language</th>
+        <th style="width:240px;">Tutorial Title</th>
+        <th>Summary</th>
+        <th style="width:100px;">Lessons</th>
+        <th style="width:100px;">XP</th>
+        <th style="width:140px;">Action</th>
+      </tr>
+    </thead>
+    <tbody>
       {% for course in featured_courses %}
-      <div class="cq-card" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.85rem;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.75rem;">
-            <span style="padding: 0.15rem 0.5rem; border-radius: 4px; background: var(--bg-surface-elevated); color: var(--text-primary); font-weight: 600; border: 1px solid var(--border-medium); font-family: var(--font-mono);">
-              {{ course.language.name }}
-            </span>
-            <span style="color: var(--text-muted); font-family: var(--font-mono);">{{ course.lessons.count }} Lessons</span>
-          </div>
-          <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.35rem 0;">
-            {{ course.title }}
-          </h3>
-          <p style="font-size: 0.83rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
-            {{ course.description|truncatewords:18 }}
-          </p>
-        </div>
-
-        <div style="padding-top: 0.75rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">Reward: +{{ course.xp_reward }} XP</span>
+      <tr>
+        <td><strong>{{ course.language.name }}</strong></td>
+        <td><strong>{{ course.title }}</strong></td>
+        <td style="font-size:0.83rem; color:var(--text-secondary);">{{ course.description|truncatewords:16 }}</td>
+        <td style="font-family:var(--font-mono); font-size:0.82rem;">{{ course.lessons.count }} Lessons</td>
+        <td style="font-family:var(--font-mono); font-size:0.82rem;">+{{ course.xp_reward }} XP</td>
+        <td>
           {% with first_l=course.lessons.first %}
             {% if first_l %}
-              <a href="{% url 'lesson_detail' course.slug first_l.slug %}" class="btn btn-primary" style="padding: 0.35rem 0.75rem; font-size: 0.78rem; font-weight: 600;">
-                Start Tutorial
+              <a href="{% url 'lesson_detail' course.slug first_l.slug %}" class="w3-btn-green" style="padding:4px 10px; font-size:0.78rem;">
+                Learn {{ course.language.short_code }} &raquo;
               </a>
             {% else %}
-              <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary" style="padding: 0.35rem 0.75rem; font-size: 0.78rem; font-weight: 600;">
-                Open Course
+              <a href="{% url 'course_detail' course.slug %}" class="w3-btn-green" style="padding:4px 10px; font-size:0.78rem;">
+                Open &raquo;
               </a>
             {% endif %}
           {% endwith %}
-        </div>
-      </div>
+        </td>
+      </tr>
       {% endfor %}
-    </div>
-  </section>
+    </tbody>
+  </table>
+</div>
 
-  <!-- Section 3: Open Coding & Game Contests (Clean Table) -->
-  <section style="margin-bottom: 2.5rem;">
-    <div class="cq-card" style="padding: 1.35rem;">
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-        <div>
-          <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.2rem 0;">
-            Open Coding &amp; Game Contests
-          </h2>
-          <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
-            Open competitions for IUPC problem solving, web hackathons, coding games, and SQL database queries.
-          </p>
-        </div>
-        <a href="{% url 'contests_hub' %}" class="btn btn-ghost" style="font-size: 0.82rem;">
-          All Contests &amp; Standings
-        </a>
-      </div>
+<hr class="w3-hr" />
 
-      <div style="overflow-x: auto;">
-        <table class="cq-table" style="border: 1px solid var(--border-subtle);">
-          <thead>
-            <tr>
-              <th>Contest Title</th>
-              <th>Category</th>
-              <th>Duration</th>
-              <th>Participants</th>
-              <th>Reward</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for contest in active_contests %}
-            <tr>
-              <td>
-                <div style="font-weight: 600;">{{ contest.title }}</div>
-                <div style="font-size: 0.78rem; color: var(--text-secondary);">{{ contest.description|truncatewords:14 }}</div>
-              </td>
-              <td>{{ contest.get_category_display }}</td>
-              <td style="font-family: var(--font-mono); font-size: 0.8rem;">{{ contest.duration_minutes }} mins</td>
-              <td style="font-family: var(--font-mono); font-size: 0.8rem;">{{ contest.submissions.count }}</td>
-              <td style="font-family: var(--font-mono); font-size: 0.8rem; color: #047857; font-weight: 600;">+{{ contest.xp_reward }} XP</td>
-              <td>
-                <a href="{% url 'contest_detail' contest.slug %}" class="btn btn-ghost" style="padding: 0.3rem 0.75rem; font-size: 0.78rem;">
-                  Open Contest
-                </a>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+<!-- Section 3: Daily Practice Tasks & Open Contests -->
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap:24px; align-items:start; margin-bottom:24px;">
+  
+  <!-- Left Table: Daily Practice Tasks -->
+  <div>
+    <h2 style="font-size:1.3rem; font-weight:700; margin:0 0 6px 0; color:var(--text-primary);">
+      Daily Practice Tasks
+    </h2>
+    <p style="font-size:0.86rem; color:var(--text-secondary); margin:0 0 10px 0;">
+      Daily coding and game problems that update automatically every 24 hours:
+    </p>
+    <table class="cq-table">
+      <thead>
+        <tr>
+          <th>Task Title</th>
+          <th>Language</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dtask in daily_auto_tasks %}
+        <tr>
+          <td>
+            <strong>{{ dtask.title }}</strong>
+            <div style="font-size:0.75rem; color:var(--text-muted);">{{ dtask.streak_target }}</div>
+          </td>
+          <td style="font-family:var(--font-mono); font-size:0.8rem;">{{ dtask.lang }}</td>
+          <td>
+            <button type="button" onclick="loadDailyTaskIntoHero('{{ dtask.lang_key|escapejs }}', '{{ dtask.starter|escapejs }}')" class="w3-btn-green" style="padding:4px 10px; font-size:0.76rem;">
+              Try It (+{{ dtask.xp }} XP)
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-  <!-- Section 4: CSE 324 Web Technologies Sessional — Project Architecture -->
-  <section>
-    <div class="cq-card" style="padding: 1.35rem;">
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-        <div>
-          <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.2rem 0;">
-            CSE 324 Project Architecture (Frontend, Django Backend, SQL Database &amp; PHP Connection)
-          </h2>
-          <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
-            Summary of the 4 technical layers implemented in this project for CSE 324 Web Technologies Sessional.
-          </p>
-        </div>
-        <button type="button" onclick="loadDailyTaskIntoHero('php', '<?php\n$conn = mysqli_connect(\'localhost\', \'root\', \'\', \'codequest_sql\');\necho \"[PHP 8.3 MySQLi] Connected to SQL Database Successfully!\";\n$sql = \"SELECT student_id, name, department, cgpa, xp FROM students ORDER BY xp DESC\";\n?>')" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.45rem 0.9rem;">
-          Test PHP Database Connection in Compiler
-        </button>
-      </div>
-
-      <div style="overflow-x: auto;">
-        <table class="cq-table" style="border: 1px solid var(--border-subtle);">
-          <thead>
-            <tr>
-              <th>System Layer</th>
-              <th>Technologies Used</th>
-              <th>Project Files &amp; Implementation</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>1. Frontend UI</strong></td>
-              <td>HTML5, CSS3, JavaScript (ES6+)</td>
-              <td>Responsive templates in <code>templates/</code>, styles in <code>static/css/codequest.css</code>, and canvas video/game script in <code>static/js/micro_video_and_game_engine.js</code>.</td>
-            </tr>
-            <tr>
-              <td><strong>2. Backend Server</strong></td>
-              <td>Python 3.12, Django 5 (MVT)</td>
-              <td>URL routing, authentication, course/game views in <code>learn/views.py</code>, and multi-language execution API in <code>learn/polyglot_engine.py</code>.</td>
-            </tr>
-            <tr>
-              <td><strong>3. Relational &amp; NoSQL Database</strong></td>
-              <td>SQLite3 / MySQL / PostgreSQL &amp; MongoDB</td>
-              <td>Relational schema in <code>learn/models.py</code> (Courses, Lessons, Games, Contests, Certificates) plus live SQL and <code>mongosh</code> query execution.</td>
-            </tr>
-            <tr>
-              <td><strong>4. PHP Database Connector</strong></td>
-              <td>PHP 8 (<code>mysqli</code> &amp; PDO Prepared Statements)</td>
-              <td>Standalone PHP-to-MySQL CRUD module in <code>php_sessional_crud/db.php</code> and <code>php_sessional_crud/index.php</code>, plus live PHP-SQL execution in the compiler.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+  <!-- Right Table: Open Coding & Game Contests -->
+  <div>
+    <h2 style="font-size:1.3rem; font-weight:700; margin:0 0 6px 0; color:var(--text-primary);">
+      Open Coding &amp; Game Contests
+    </h2>
+    <p style="font-size:0.86rem; color:var(--text-secondary); margin:0 0 10px 0;">
+      Ongoing IUPC practice rounds, student hackathons, and coding game contests:
+    </p>
+    <table class="cq-table">
+      <thead>
+        <tr>
+          <th>Contest Name</th>
+          <th>Type</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for contest in active_contests %}
+        <tr>
+          <td>
+            <strong>{{ contest.title }}</strong>
+            <div style="font-size:0.75rem; color:var(--text-muted);">Duration: {{ contest.duration_minutes }}m &bull; +{{ contest.xp_reward }} XP</div>
+          </td>
+          <td style="font-size:0.8rem;">{{ contest.get_category_display }}</td>
+          <td>
+            <a href="{% url 'contest_detail' contest.slug %}" class="w3-btn-outline" style="padding:4px 10px; font-size:0.76rem;">
+              Enter &raquo;
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
 </div>
+
+<hr class="w3-hr" />
+
+<!-- Section 4: CSE 324 Project Architecture Table -->
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
+  <div>
+    <h2 style="font-size:1.3rem; font-weight:700; margin:0; color:var(--text-primary);">
+      CSE 324 Web Technologies Sessional — System Architecture
+    </h2>
+    <div style="font-size:0.85rem; color:var(--text-secondary);">
+      Integration of HTML5/CSS3/JS Frontend, Python Django Backend, SQL Database, and PHP <code>mysqli</code> Connector:
+    </div>
+  </div>
+  <button type="button" onclick="loadDailyTaskIntoHero('php', '<?php\n$conn = mysqli_connect(\'localhost\', \'root\', \'\', \'codequest_sql\');\necho \"[PHP 8.3 MySQLi] Connected to SQL Database Successfully!\";\n$sql = \"SELECT student_id, name, department, cgpa, xp FROM students ORDER BY xp DESC\";\n?>')" class="w3-btn-green" style="font-size:0.8rem;">
+    Test PHP &amp; MySQL Connection &raquo;
+  </button>
+</div>
+
+<table class="cq-table">
+  <thead>
+    <tr>
+      <th style="width:200px;">Layer</th>
+      <th style="width:220px;">Technologies</th>
+      <th>Implementation Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1. Frontend Layer</strong></td>
+      <td>HTML5, CSS3, JavaScript</td>
+      <td>W3Schools-style tutorial layout, 1-minute HTML5 Canvas video guide, interactive terminal, and 2D coding game canvas.</td>
+    </tr>
+    <tr>
+      <td><strong>2. Backend Framework</strong></td>
+      <td>Python 3.12, Django 5</td>
+      <td>MVT views, authentication, Course &amp; Game streak tracking, and multi-language code execution API (<code>/api/terminal/execute/</code>).</td>
+    </tr>
+    <tr>
+      <td><strong>3. Database Layer</strong></td>
+      <td>SQLite / MySQL / PostgreSQL &amp; MongoDB</td>
+      <td>Relational tables for <code>students</code>, <code>courses</code>, <code>lessons</code>, <code>games</code>, and <code>contests</code>, plus <code>mongosh</code> document queries.</td>
+    </tr>
+    <tr>
+      <td><strong>4. PHP Database Bridge</strong></td>
+      <td>PHP 8 (<code>mysqli</code> &amp; PDO)</td>
+      <td>Direct PHP-to-MySQL CRUD connection module in <code>php_sessional_crud/db.php</code> &amp; <code>index.php</code> using prepared statements.</td>
+    </tr>
+  </tbody>
+</table>
+
+<style>
+  .hero-lang-switch.active {
+    background: #04aa6d !important;
+    color: #ffffff !important;
+    border-color: #04aa6d !important;
+  }
+</style>
 
 <script>
   let activeHeroLang = "python";
@@ -378,7 +321,7 @@ Step 4: Rover executed DOCK_PORTAL -> OK</pre>
       btn.classList.toggle("active", btn.getAttribute("data-lang") === langKey);
     });
 
-    document.getElementById("heroActiveLangLabel").textContent = meta.name + " — Online Compiler & Coding Game";
+    document.getElementById("heroActiveLangLabel").textContent = "Example: " + meta.name + " — 1-Minute Video, Compiler & Coding Game";
     document.getElementById("heroCliHeader").textContent = "Command: " + meta.cli;
     document.getElementById("heroPolyglotCode").value = customStarter || meta.starter;
 

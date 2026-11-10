@@ -1,279 +1,107 @@
 {% extends "base.html" %}
 
-{% block title %}Verifiable Certificates &amp; Capstone Credentials — CodeQuest BD{% endblock %}
+{% block title %}Course Certificates &amp; Verification — CodeQuest{% endblock %}
 
 {% block content %}
-<div class="shell shell-wide" style="padding-top: 2.5rem; padding-bottom: 5rem;">
 
-  <!-- Header Section -->
-  <div style="margin-bottom: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem;">
-    <div>
-      <h1 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); line-height: 1.25; margin: 0 0 0.45rem 0;">
-        Course Completion Certificates
-      </h1>
-      <p style="font-size: 0.94rem; color: var(--text-secondary); max-width: 700px; line-height: 1.6; margin: 0;">
-        Download and verify course completion certificates by completing the course lessons and passing the course assessment.
-      </p>
-    </div>
-
-    <!-- Claim Certificate Action -->
-    <div>
-      <button id="openClaimModalBtn" class="btn btn-primary" style="padding: 0.6rem 1.25rem; font-size: 0.88rem; font-weight: 600;">
-        Issue / Claim Certificate
-      </button>
-    </div>
-  </div>
-
-  <!-- Capstone Evaluation Standards Notice -->
-  <div class="cq-card" style="margin-bottom: 2.75rem; border-radius: var(--radius-xl); padding: 1.5rem 1.75rem; border: 1px solid var(--border-color); background: rgba(15, 23, 42, 0.4); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;">
-    <div style="max-width: 650px;">
-      <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0; display: flex; align-items: center; gap: 0.5rem;">
-        <span>🛡️</span> Rigorous Capstone Quality Gate (80% Mastery Bar)
-      </h3>
-      <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.55; margin: 0;">
-        Unlike attendance-based certificates, CodeQuest credentials require executing real syntax, passing automated boundary test cases, and completing track capstones. Every certificate features a permanent URL and scannable QR verification code.
-      </p>
-    </div>
-    <div style="display: flex; gap: 1rem; align-items: center;">
-      <div style="text-align: center; padding: 0.6rem 1.2rem; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: var(--radius-md);">
-        <div style="font-size: 1.4rem; font-weight: 800; color: #60a5fa;">80%</div>
-        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Min Exam Bar</div>
-      </div>
-      <div style="text-align: center; padding: 0.6rem 1.2rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md);">
-        <div style="font-size: 1.4rem; font-weight: 800; color: #10b981;">100%</div>
-        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Tamper-Proof</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Your Earned Certificates -->
-  <div style="margin-bottom: 3.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-      <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-        <span>📜</span> Your Earned Credentials
-      </h2>
-      <span style="font-size: 0.85rem; color: var(--text-muted);">Personal Credential Vault</span>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
-      {% for cert in user_certs %}
-      <div class="cq-card" style="border-radius: var(--radius-xl); padding: 1.75rem; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;">
-        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #10b981, #3b82f6);"></div>
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; font-weight: 700; font-size: 0.75rem;">
-              ✓ VERIFIED AUTHENTIC
-            </span>
-            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">
-              {{ cert.issued_at|date:"M d, Y" }}
-            </span>
-          </div>
-
-          <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.35rem 0;">
-            {{ cert.track_title }}
-          </h3>
-          <div style="font-size: 0.9rem; color: var(--accent); font-weight: 600; margin-bottom: 1rem;">
-            Issued to: {{ cert.student_name }}
-          </div>
-
-          <div style="background: rgba(0,0,0,0.25); padding: 0.75rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8; margin-bottom: 1rem;">
-            <div>ID: <strong style="color: #f8fafc;">{{ cert.credential_id }}</strong></div>
-            <div>Score: <strong style="color: #10b981;">{{ cert.mastery_score }}% Mastery</strong></div>
-          </div>
-        </div>
-
-        <div style="border-top: 1px solid var(--border-color); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
-          <a href="/verify/{{ cert.credential_id }}/" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.4rem 0.8rem;">
-            Public Link &rarr;
-          </a>
-          <a href="/verify/{{ cert.credential_id }}/" class="btn btn-primary" style="font-size: 0.82rem; padding: 0.4rem 0.9rem;">
-            View Official Certificate
-          </a>
-        </div>
-      </div>
-      {% empty %}
-      <div class="cq-card" style="padding: 2.5rem; text-align: center; grid-column: 1 / -1;">
-        <p style="color: var(--text-muted); margin: 0 0 1rem 0;">
-          You haven't generated a certificate yet. Choose any completed track below or click <strong>Claim / Issue Certificate</strong> above to generate your verifiable BAIUST sessional certificate!
-        </p>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-
-  <!-- Available 11 Tracks & Certification Status -->
-  <div style="margin-bottom: 3.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-      <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-        <span>🎯</span> 11 Track Certification Standards
-      </h2>
-      <span style="font-size: 0.85rem; color: var(--text-muted);">Curriculum Completion &amp; Capstone Requirements</span>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
-      {% for course in courses %}
-      <div class="cq-card" style="border-radius: var(--radius-lg); padding: 1.25rem; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 1.3rem;">{{ course.language.icon|default:"💻" }}</span>
-            <span class="badge" style="background: rgba(59, 130, 246, 0.1); color: #60a5fa; font-size: 0.72rem;">
-              {{ course.lessons.count }} Lessons
-            </span>
-          </div>
-
-          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.35rem 0;">
-            {{ course.title }}
-          </h4>
-          <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 1rem 0;">
-            {{ course.description|truncatewords:15 }}
-          </p>
-        </div>
-
-        <div style="border-top: 1px solid var(--border-color); padding-top: 0.85rem; display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono);">
-            Min Bar: 80%
-          </span>
-          <button onclick="quickClaim('{{ course.slug }}', '{{ course.title }}')" class="btn btn-ghost" style="font-size: 0.78rem; padding: 0.35rem 0.7rem; color: #10b981;">
-            Issue Cert &rarr;
-          </button>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-
-  <!-- Public Registry Sample Certificates -->
-  <div>
-    <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0 0 1.25rem 0; display: flex; align-items: center; gap: 0.5rem;">
-      <span>🏛️</span> Public Verification Registry (Recently Validated)
-    </h2>
-
-    <div class="cq-card" style="border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--border-color); padding: 0;">
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
-          <thead>
-            <tr style="background: rgba(15, 23, 42, 0.4); border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;">
-              <th style="padding: 0.75rem 1rem;">Credential ID</th>
-              <th style="padding: 0.75rem 1rem;">Cadet / Student</th>
-              <th style="padding: 0.75rem 1rem;">Track</th>
-              <th style="padding: 0.75rem 1rem;">Score</th>
-              <th style="padding: 0.75rem 1rem;">Status</th>
-              <th style="padding: 0.75rem 1rem;">Verification URL</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for sc in sample_certs %}
-            <tr style="border-bottom: 1px solid var(--border-color);">
-              <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); font-weight: 700; color: #60a5fa;">
-                {{ sc.credential_id }}
-              </td>
-              <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-primary);">
-                {{ sc.student_name }}
-              </td>
-              <td style="padding: 0.75rem 1rem; color: var(--text-muted);">
-                {{ sc.track_title }}
-              </td>
-              <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); font-weight: 700; color: #10b981;">
-                {{ sc.mastery_score }}%
-              </td>
-              <td style="padding: 0.75rem 1rem;">
-                <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; font-size: 0.7rem;">
-                  ✓ VERIFIED
-                </span>
-              </td>
-              <td style="padding: 0.75rem 1rem;">
-                <a href="/verify/{{ sc.credential_id }}/" target="_blank" style="color: var(--accent); text-decoration: none; font-family: var(--font-mono); font-size: 0.8rem;">
-                  /verify/{{ sc.credential_id }}/ &nearr;
-                </a>
-              </td>
-            </tr>
-            {% empty %}
-            <tr>
-              <td colspan="6" style="padding: 1.5rem; text-align: center; color: var(--text-muted);">
-                No sample credentials registered yet.
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
+  <h1 style="font-size:1.75rem; font-weight:700; margin:0; color:var(--text-primary);">
+    Course Completion Certificates &amp; Verification
+  </h1>
+  <a href="{% url 'catalogue' %}" class="w3-btn-outline">Browse Courses</a>
 </div>
 
-<!-- Modal: Claim Certificate -->
-<div id="claimCertModal" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 1rem;">
-  <div class="cq-card" style="width: 100%; max-width: 500px; border-radius: var(--radius-xl); padding: 2rem; border: 1px solid var(--border-color); background: #0f172a; position: relative;">
-    <button id="closeClaimModalBtn" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer;">&times;</button>
-    
-    <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
-      <span>🎓</span> Issue Verifiable Certificate
-    </h3>
-    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 1.5rem 0;">
-      Enter your official name and university details. A cryptographically unique credential ID with QR verification will be generated immediately.
-    </p>
+<p style="font-size:0.92rem; line-height:1.6; color:var(--text-secondary); margin:0 0 18px 0;">
+  Generate a course completion certificate after finishing a tutorial track, or verify an existing certificate ID below.
+</p>
 
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <div>
-        <label style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1; display: block; margin-bottom: 0.35rem;">Full Name (As on Certificate)</label>
-        <input type="text" id="certStudentName" value="{{ request.user.get_full_name|default:'Md Najmus Sakib Rahatul' }}" style="width: 100%; padding: 0.65rem 0.85rem; background: #040711; border: 1px solid var(--border-color); border-radius: var(--radius-md); color: #fff; font-size: 0.9rem; box-sizing: border-box;" />
-      </div>
-
-      <div>
-        <label style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1; display: block; margin-bottom: 0.35rem;">Student ID / Registration</label>
-        <input type="text" id="certStudentID" value="1119003" style="width: 100%; padding: 0.65rem 0.85rem; background: #040711; border: 1px solid var(--border-color); border-radius: var(--radius-md); color: #fff; font-size: 0.9rem; box-sizing: border-box;" />
-      </div>
-
-      <div>
-        <label style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1; display: block; margin-bottom: 0.35rem;">Track to Certify</label>
-        <select id="certTrackSlug" style="width: 100%; padding: 0.65rem 0.85rem; background: #040711; border: 1px solid var(--border-color); border-radius: var(--radius-md); color: #fff; font-size: 0.9rem; box-sizing: border-box;">
-          {% for course in courses %}
-          <option value="{{ course.slug }}">{{ course.title }}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <div id="claimModalNotice" style="font-size: 0.82rem; color: #10b981; display: none;"></div>
-
-      <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
-        <button id="btnSubmitClaim" class="btn btn-primary" style="flex: 1; padding: 0.7rem; font-weight: 700; background: linear-gradient(135deg, #10b981, #059669); border: none;">
-          Generate &amp; Verify Now
-        </button>
-      </div>
+<!-- Issue / Claim Certificate Form Box -->
+<div class="w3-example-box">
+  <h2 style="font-size:1.15rem; font-weight:700; margin:0 0 10px 0; color:var(--text-primary);">
+    Issue Course Completion Certificate
+  </h2>
+  <form onsubmit="event.preventDefault(); issueCertificateNow();" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; align-items:end;">
+    <div>
+      <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:4px;">Student Full Name</label>
+      <input type="text" id="certStudentName" value="Md Najmus Sakib Rahatul" style="width:100%; padding:7px 10px; border:1px solid #cbd5e1; border-radius:4px; font-size:0.86rem;" required />
     </div>
-  </div>
+    <div>
+      <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:4px;">University / Student ID</label>
+      <input type="text" id="certStudentId" value="1119003" style="width:100%; padding:7px 10px; border:1px solid #cbd5e1; border-radius:4px; font-size:0.86rem;" required />
+    </div>
+    <div>
+      <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:4px;">Completed Course Track</label>
+      <select id="certTrackSlug" style="width:100%; padding:7px 10px; border:1px solid #cbd5e1; border-radius:4px; font-size:0.86rem; background:#ffffff;">
+        {% for course in courses %}
+          <option value="{{ course.slug }}">{{ course.title }} ({{ course.language.name }})</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <button type="submit" class="w3-btn-green" style="width:100%; padding:8px 14px;">
+        Generate Certificate &raquo;
+      </button>
+    </div>
+  </form>
+  <div id="certResultMsg" style="margin-top:10px; font-size:0.85rem; font-weight:600; color:#04aa6d; display:none;"></div>
+</div>
+
+<hr class="w3-hr" />
+
+<!-- Verified Certificates Table -->
+<h2 style="font-size:1.3rem; font-weight:700; margin:0 0 10px 0; color:var(--text-primary);">
+  Issued &amp; Verified Student Certificates
+</h2>
+
+<div style="overflow-x:auto;">
+  <table class="cq-table">
+    <thead>
+      <tr>
+        <th>Credential ID</th>
+        <th>Student Name</th>
+        <th>Student ID</th>
+        <th>Course Track</th>
+        <th>Score</th>
+        <th>Issue Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cert in sample_certs %}
+      <tr>
+        <td style="font-family:var(--font-mono); font-size:0.8rem; font-weight:600;">{{ cert.credential_id }}</td>
+        <td><strong>{{ cert.student_name }}</strong></td>
+        <td style="font-family:var(--font-mono); font-size:0.82rem;">{{ cert.student_id_str }}</td>
+        <td>{{ cert.track_title }}</td>
+        <td style="font-family:var(--font-mono); color:#04aa6d; font-weight:700;">{{ cert.mastery_score }}%</td>
+        <td style="font-size:0.82rem; color:var(--text-secondary);">{{ cert.issued_at|date:"Y-m-d" }}</td>
+        <td>
+          <a href="{% url 'verify_certificate_view' cert.credential_id %}" class="w3-btn-outline" style="padding:4px 10px; font-size:0.78rem;">
+            View / Print &raquo;
+          </a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" style="text-align:center; padding:18px;">No certificates issued yet. Use the form above to generate one.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  var modal = document.getElementById("claimCertModal");
-  var openBtn = document.getElementById("openClaimModalBtn");
-  var closeBtn = document.getElementById("closeClaimModalBtn");
-  var submitBtn = document.getElementById("btnSubmitClaim");
-  var noticeEl = document.getElementById("claimModalNotice");
+  function issueCertificateNow() {
+    const name = document.getElementById("certStudentName").value;
+    const sid = document.getElementById("certStudentId").value;
+    const track = document.getElementById("certTrackSlug").value;
+    const token = (document.cookie.match(/csrftoken=([^;]+)/) || [])[1] || "";
 
-  openBtn.addEventListener("click", function() { modal.style.display = "flex"; });
-  closeBtn.addEventListener("click", function() { modal.style.display = "none"; });
-
-  window.quickClaim = function(slug, title) {
-    document.getElementById("certTrackSlug").value = slug;
-    modal.style.display = "flex";
-  };
-
-  submitBtn.addEventListener("click", function() {
-    var name = document.getElementById("certStudentName").value;
-    var sid = document.getElementById("certStudentID").value;
-    var track = document.getElementById("certTrackSlug").value;
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Issuing...";
-
-    fetch("/api/certificates/claim/", {
+    fetch("{% url 'api_claim_certificate' %}", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": getCsrfToken()
+        "X-CSRFToken": token
       },
       body: JSON.stringify({
         student_name: name,
@@ -281,37 +109,16 @@ document.addEventListener("DOMContentLoaded", function() {
         track_slug: track
       })
     })
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
-      if (data.success) {
-        noticeEl.style.display = "block";
-        noticeEl.innerHTML = "🎉 Certificate issued! Credential ID: <strong>" + data.credential_id + "</strong>. Redirecting...";
-        setTimeout(function() {
-          window.location.href = data.verify_url;
-        }, 1200);
-      }
-    })
-    .catch(function(err) {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Generate & Verify Now";
-      alert("Error issuing certificate: " + err);
-    });
-  });
-
-  function getCsrfToken() {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      var cookies = document.cookie.split(';');
-      for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].trim();
-        if (cookie.substring(0, 10) === 'csrftoken=') {
-          cookieValue = decodeURIComponent(cookie.substring(10));
-          break;
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.success) {
+          const msg = document.getElementById("certResultMsg");
+          msg.style.display = "block";
+          msg.innerHTML = "Certificate Issued: <code>" + data.credential_id + "</code> — <a href='" + data.verify_url + "' style='color:#04aa6d; text-decoration:underline;'>Click here to view certificate</a>";
+          setTimeout(function () { window.location.href = data.verify_url; }, 900);
         }
-      }
-    }
-    return cookieValue || "";
+      });
   }
-});
 </script>
+
 {% endblock %}
