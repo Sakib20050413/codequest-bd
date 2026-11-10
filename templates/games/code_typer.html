@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Code TypeRacer: 20 Keystroke Racing Circuits — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem;">
+  
+  <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+    <a href="{% url 'games_hub' %}" style="font-size: 0.88rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;">
+      &larr; Back to Practice Arena
+    </a>
+    <span style="font-size: 0.82rem; font-family: var(--font-mono); color: #06b6d4; background: rgba(6, 182, 212, 0.12); padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid rgba(6, 182, 212, 0.3);">
+      20 Circuit Tracks &bull; +30 XP / Race
+    </span>
+  </div>
+
+  <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
+    
+    <!-- Topbar HUD -->
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle);">
+      <div>
+        <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">
+          Practice Arena Engine 04 &bull; Keystroke Velocity
+        </div>
+        <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0; letter-spacing: -0.02em;">
+          🏎️ Code TypeRacer 3D Circuit
+        </h1>
+      </div>
+
+      <!-- Live Telemetry Badges -->
+      <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+        
+        <!-- Live Position -->
+        <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.6rem 1rem; border-radius: var(--radius-md); text-align: center;">
+          <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Rank</div>
+          <div id="racerRank" style="font-size: 1.35rem; font-weight: 800; font-family: var(--font-mono); color: #fbbf24;">
+            1st
+          </div>
+        </div>
+
+        <!-- Live Speed WPM -->
+        <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.6rem 1.1rem; border-radius: var(--radius-md); text-align: center;">
+          <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Speed</div>
+          <div style="font-size: 1.35rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent-secondary);">
+            <span id="wpmScore">0</span> <span style="font-size: 0.75rem; font-weight: 600;">WPM</span>
+          </div>
+        </div>
+
+        <!-- Live Accuracy -->
+        <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.6rem 1rem; border-radius: var(--radius-md); text-align: center;">
+          <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Accuracy</div>
+          <div id="accuracyScore" style="font-size: 1.35rem; font-weight: 800; font-family: var(--font-mono); color: #10b981;">
+            100%
+          </div>
+        </div>
+
+        <button id="restartRaceBtn" class="btn btn-primary" style="padding: 0.6rem 1.1rem; font-size: 0.86rem;">
+          ↻ Reset Track
+        </button>
+
+      </div>
+    </div>
+
+    <!-- 20-Track Level Selector Bar -->
+    <div style="margin-bottom: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+        <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">
+          Select Track Circuit (1 – 20):
+        </span>
+        <span id="trackMissionTitle" style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          Track 1 of 20
+        </span>
+      </div>
+      <div id="trackPillsContainer" style="display: flex; gap: 0.35rem; flex-wrap: wrap; overflow-x: auto;">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- DYNAMIC 3-LANE RACING CIRCUIT -->
+    <div style="margin-bottom: 2rem; background: #080a10; border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 1.5rem; overflow: hidden; position: relative;">
+      
+      <!-- Track Header -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted);">
+        <span>🏁 STARTING GRID</span>
+        <span style="color: #fbbf24; font-weight: 700;">FINISH LINE 🏁</span>
+      </div>
+
+      <!-- Lane 1: Player (You) -->
+      <div style="margin-bottom: 1rem; position: relative;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.76rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.35rem; font-family: var(--font-mono);">
+          <span>LANE 1: YOU (Player)</span>
+          <span id="playerProgressPct">0%</span>
+        </div>
+        <div style="height: 38px; background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(255, 255, 255, 0.12); border-radius: 8px; position: relative; display: flex; align-items: center; padding: 0 8px;">
+          <div id="playerCar" style="position: absolute; left: 0; transition: left 0.15s ease-out; display: flex; align-items: center; gap: 0.4rem; z-index: 2;">
+            <div style="font-size: 1.5rem; filter: drop-shadow(0 0 8px #38bdf8);">🏎️</div>
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); background: #38bdf8; color: #040812; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px;">YOU</span>
+          </div>
+          <!-- Checkered Goal Flag -->
+          <div style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">🏁</div>
+        </div>
+      </div>
+
+      <!-- Lane 2: AI Bot Turing -->
+      <div style="margin-bottom: 1rem; position: relative;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.76rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.35rem; font-family: var(--font-mono);">
+          <span>LANE 2: Ghost Runner Turing (~52 WPM)</span>
+          <span id="bot1ProgressPct">0%</span>
+        </div>
+        <div style="height: 38px; background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(255, 255, 255, 0.12); border-radius: 8px; position: relative; display: flex; align-items: center; padding: 0 8px;">
+          <div id="bot1Car" style="position: absolute; left: 0; transition: left 0.25s linear; display: flex; align-items: center; gap: 0.4rem; z-index: 2;">
+            <div style="font-size: 1.5rem; filter: drop-shadow(0 0 8px #f59e0b);">🚗</div>
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); background: #f59e0b; color: #040812; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px;">TURING</span>
+          </div>
+          <div style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">🏁</div>
+        </div>
+      </div>
+
+      <!-- Lane 3: AI Bot Ada -->
+      <div style="position: relative;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.76rem; font-weight: 700; color: #a855f7; margin-bottom: 0.35rem; font-family: var(--font-mono);">
+          <span>LANE 3: Ghost Runner Ada (~38 WPM)</span>
+          <span id="bot2ProgressPct">0%</span>
+        </div>
+        <div style="height: 38px; background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(255, 255, 255, 0.12); border-radius: 8px; position: relative; display: flex; align-items: center; padding: 0 8px;">
+          <div id="bot2Car" style="position: absolute; left: 0; transition: left 0.25s linear; display: flex; align-items: center; gap: 0.4rem; z-index: 2;">
+            <div style="font-size: 1.5rem; filter: drop-shadow(0 0 8px #a855f7);">🏎️</div>
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); background: #a855f7; color: #ffffff; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px;">ADA</span>
+          </div>
+          <div style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">🏁</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CODE SNIPPET DISPLAY & INPUT -->
+    <div style="margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+          Target Syntax Snippet:
+        </div>
+        <div id="raceStatusText" style="font-size: 0.82rem; font-weight: 600; color: var(--accent);">
+          Waiting for your first keystroke...
+        </div>
+      </div>
+
+      <!-- Highlighted Snippet Container -->
+      <div style="background: #090d16; border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.25rem; font-family: var(--font-mono); font-size: 1.15rem; line-height: 1.7; min-height: 70px; letter-spacing: 0.02em;">
+        <div id="targetSnippetRender">Loading track syntax snippet...</div>
+      </div>
+    </div>
+
+    <!-- User Keystroke Input -->
+    <div>
+      <input type="text" id="typeInputBox" class="code-editor" style="width: 100%; padding: 1rem 1.25rem; font-size: 1.05rem; font-family: var(--font-mono); background: var(--bg-input); border: 2px solid var(--border-strong); border-radius: var(--radius-md); color: var(--text-primary); outline: none; transition: border-color 0.15s ease;" placeholder="Click here and start typing to race..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    </div>
+
+  </div>
+
+  <!-- VICTORY PODIUM MODAL -->
+  <div id="racePodiumModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 1rem;">
+    <div class="cq-card" style="max-width: 500px; width: 100%; text-align: center; padding: 2.5rem; border: 1px solid var(--border-strong); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);">
+      <div id="podiumIcon" style="font-size: 4rem; margin-bottom: 0.5rem;">🥇</div>
+      <h2 id="podiumTitle" style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
+        VICTORY! 1st Place Podium!
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        Track completed with peak typing velocity and syntactic accuracy.
+      </p>
+
+      <div id="podiumStats" style="background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.75rem; border: 1px solid var(--border-subtle);">
+        <!-- Injected by JS -->
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: center;">
+        <button id="modalRestartBtn" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">
+          Race Next Track &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/games/code_typer.js' %}"></script>
+{% endblock %}

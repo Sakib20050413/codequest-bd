@@ -1,0 +1,164 @@
+{% extends 'instructor_panel/base_admin.html' %}
+
+{% block title %}Bug Blitz Bank CRUD — Instructor CMS{% endblock %}
+
+{% block admin_content %}
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-800">
+        <div>
+            <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-bolt text-amber-400"></i> Bug-Hunter Blitz Bank (CRUD)
+            </h1>
+            <p class="text-xs text-slate-400">Manage 60-second quiz questions for CSE 324 Lab Continuous Evaluations</p>
+        </div>
+        <button onclick="openModal('create-quiz-modal')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition shadow-lg shadow-amber-500/20">
+            <i class="fa-solid fa-plus"></i> Add Question
+        </button>
+    </div>
+
+    <!-- Quizzes Table -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300">
+                <thead class="bg-slate-950/80 uppercase font-semibold text-slate-400 border-b border-slate-800">
+                    <tr>
+                        <th class="p-3.5 pl-5">Category</th>
+                        <th class="p-3.5">Question Text</th>
+                        <th class="p-3.5">Correct Option</th>
+                        <th class="p-3.5">Difficulty</th>
+                        <th class="p-3.5">Points</th>
+                        <th class="p-3.5 pr-5 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 font-sans">
+                    {% for q in quizzes %}
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="p-3.5 pl-5">
+                                <span class="bg-slate-800 px-2 py-0.5 rounded font-mono text-[10px] text-cyan-400">{{ q.category }}</span>
+                            </td>
+                            <td class="p-3.5 font-medium text-white max-w-md">
+                                <p class="line-clamp-2">{{ q.question_text }}</p>
+                                {% if q.code_snippet %}
+                                    <span class="text-[10px] font-mono text-emerald-400 block mt-0.5">&lt;with code snippet&gt;</span>
+                                {% endif %}
+                            </td>
+                            <td class="p-3.5 font-mono font-bold text-emerald-400">Option {{ q.correct_option }}</td>
+                            <td class="p-3.5 font-mono text-slate-400">{{ q.difficulty }}</td>
+                            <td class="p-3.5 font-mono font-bold text-amber-400">{{ q.points }} pts</td>
+                            <td class="p-3.5 pr-5 text-right space-x-2">
+                                <form method="POST" class="inline" onsubmit="return confirm('Delete this quiz question?');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="quiz_id" value="{{ q.id }}">
+                                    <button type="submit" class="text-rose-400 hover:text-rose-300 p-1.5 rounded-lg hover:bg-slate-800" title="Delete">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="6" class="p-8 text-center text-slate-500">No quiz questions in bank.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Create Question -->
+<div id="create-quiz-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+            <h3 class="text-base font-bold text-white">Add Quiz Question to Bug-Hunter Bank</h3>
+            <button onclick="closeModal('create-quiz-modal')" class="text-slate-400 hover:text-white">✕</button>
+        </div>
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Category *</label>
+                    <select name="category" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-amber-500">
+                        <option value="HTML5">HTML5 Semantic & Structure</option>
+                        <option value="CSS3">CSS3 Layout & Box Model</option>
+                        <option value="JAVASCRIPT_DOM">JavaScript & DOM Manipulation</option>
+                        <option value="PHP_MYSQL">PHP & MySQLi CRUD</option>
+                        <option value="C_CPP">C & C++ Pointer/Logic Output</option>
+                        <option value="PYTHON">Python Automation & Syntax</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Difficulty</label>
+                    <select name="difficulty" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-amber-500">
+                        <option value="Easy">Easy (+10 pts)</option>
+                        <option value="Medium" selected>Medium (+20 pts)</option>
+                        <option value="Hard">Hard (+30 pts)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Question Prompt *</label>
+                <textarea name="question_text" rows="2" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-amber-500" placeholder="e.g. Which function connects to MySQL in procedural PHP?"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Code Snippet (Optional)</label>
+                <textarea name="code_snippet" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 font-mono text-xs text-emerald-400 focus:outline-none focus:border-amber-500" placeholder="$conn = mysqli_connect('localhost', 'root', '', 'db');"></textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Option A *</label>
+                    <input type="text" name="option_a" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-white text-xs focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Option B *</label>
+                    <input type="text" name="option_b" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-white text-xs focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Option C *</label>
+                    <input type="text" name="option_c" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-white text-xs focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Option D *</label>
+                    <input type="text" name="option_d" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-white text-xs focus:outline-none focus:border-amber-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Correct Answer *</label>
+                    <select name="correct_option" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-amber-500 font-mono font-bold">
+                        <option value="A">Option A</option>
+                        <option value="B">Option B</option>
+                        <option value="C">Option C</option>
+                        <option value="D">Option D</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Points</label>
+                    <input type="number" name="points" value="20" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-amber-500">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1">Pedagogical Explanation *</label>
+                <textarea name="explanation" rows="2" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-amber-500" placeholder="Why this option is correct..."></textarea>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+                <button type="button" onclick="closeModal('create-quiz-modal')" class="px-4 py-2 rounded-xl text-slate-400 text-xs">Cancel</button>
+                <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-2 rounded-xl text-xs transition">Save Question</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openModal(id) { document.getElementById(id)?.classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id)?.classList.add('hidden'); }
+</script>
+{% endblock %}

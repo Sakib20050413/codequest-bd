@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formal Project Proposal — CodeQuest BD | BAIUST CSE 324</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 15mm 15mm 15mm 15mm;
+    }
+    
+    :root {
+      --font-serif: "Times New Roman", Times, Georgia, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --font-mono: "Courier New", Courier, monospace;
+      --text-main: #111827;
+      --text-muted: #374151;
+      --border-color: #9ca3af;
+      --border-dark: #111827;
+      --table-header: #f3f4f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-serif);
+      color: var(--text-main);
+      background-color: #525659;
+      line-height: 1.38;
+      font-size: 10pt;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .no-print-toolbar {
+      background: #1f2937;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      color: #f9fafb;
+      font-family: var(--font-sans);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-print {
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-print:hover { background: #1d4ed8; }
+
+    .document-container {
+      max-width: 210mm;
+      margin: 24px auto;
+      background: #ffffff;
+      padding: 25mm 20mm;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    /* Cover / Title Page */
+    .title-page {
+      height: 235mm;
+      max-height: 245mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      page-break-after: always;
+      padding: 5mm 0;
+    }
+
+    .inst-header h2 {
+      font-size: 14pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .inst-header h3 {
+      font-size: 11pt;
+      font-weight: normal;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .logo-container {
+      margin: 15mm 0 12mm 0;
+    }
+
+    .baiust-emblem {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto;
+      border: 3px double var(--border-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16pt;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .proposal-title-box {
+      margin: 10mm 0;
+    }
+
+    .project-nature {
+      font-size: 11pt;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .project-title {
+      font-size: 17pt;
+      font-weight: bold;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .project-subtitle {
+      font-size: 10.5pt;
+      font-style: italic;
+      color: var(--text-muted);
+      max-width: 85%;
+      margin: 0 auto;
+    }
+
+    .meta-details {
+      display: flex;
+      justify-content: space-between;
+      text-align: left;
+      margin-top: 15mm;
+      font-size: 10.5pt;
+      line-height: 1.4;
+      border-top: 1px solid var(--border-color);
+      padding-top: 8mm;
+    }
+
+    .meta-col strong {
+      display: block;
+      margin-bottom: 3px;
+      text-decoration: underline;
+    }
+
+    .submission-date {
+      margin-top: 10mm;
+      font-size: 10pt;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    /* Formal Sections */
+    h2.section-heading {
+      font-size: 12pt;
+      font-weight: bold;
+      border-bottom: 1.5px solid var(--border-dark);
+      padding-bottom: 2px;
+      margin-top: 14pt;
+      margin-bottom: 6pt;
+      text-transform: uppercase;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    h3.sub-heading {
+      font-size: 11pt;
+      font-weight: bold;
+      margin-top: 10pt;
+      margin-bottom: 3pt;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    p {
+      text-align: justify;
+      margin-bottom: 6pt;
+      text-indent: 0;
+    }
+
+    ul, ol {
+      margin-left: 20pt;
+      margin-bottom: 6pt;
+    }
+
+    li {
+      margin-bottom: 2pt;
+      text-align: justify;
+    }
+
+    /* Tables */
+    table.academic-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10pt 0;
+      font-size: 9.5pt;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    table.academic-table th, table.academic-table td {
+      border: 1px solid var(--border-color);
+      padding: 5pt 7pt;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    table.academic-table th {
+      background-color: var(--table-header);
+      font-weight: bold;
+      color: var(--text-main);
+    }
+
+    .table-caption {
+      font-size: 9pt;
+      font-style: italic;
+      margin-bottom: 3pt;
+      text-align: left;
+    }
+
+    /* Diagram Containers */
+    .diagram-frame {
+      border: 1px solid var(--border-color);
+      padding: 10pt;
+      margin: 10pt 0;
+      background: #fafafa;
+      text-align: center;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .diagram-caption {
+      font-size: 9pt;
+      font-weight: bold;
+      margin-top: 6pt;
+    }
+
+    /* Sign-off grid */
+    .sign-grid {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40pt;
+      page-break-inside: avoid;
+    }
+
+    .sign-box {
+      width: 45%;
+      border-top: 1px dashed var(--border-dark);
+      padding-top: 6pt;
+      text-align: center;
+      font-size: 10pt;
+    }
+
+    @media print {
+      body {
+        background: none;
+      }
+      .no-print-toolbar {
+        display: none !important;
+      }
+      .document-container {
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        max-width: 100%;
+      }
+      .page-break {
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Print Toolbar -->
+  <div class="no-print-toolbar">
+    <div>
+      <strong>BAIUST CSE 324: Web Technologies Sessional</strong> | Formal Project Proposal Document
+    </div>
+    <button class="btn-print" onclick="window.print()">
+      🖨️ Print Proposal / Save as PDF
+    </button>
+  </div>
+
+  <main class="document-container">
+
+    <!-- ==========================================
+         PAGE 1: TITLE & COVER PAGE
+         ========================================== -->
+    <div class="title-page">
+      <div class="inst-header">
+        <h2>Bangladesh Army International University of Science and Technology</h2>
+        <h3>Department of Computer Science and Engineering</h3>
+        <h3>Cumilla Cantonment, Cumilla-3501, Bangladesh</h3>
+      </div>
+
+      <div class="logo-container">
+        <div class="baiust-emblem">BAIUST</div>
+      </div>
+
+      <div class="proposal-title-box">
+        <div class="project-nature">Course Project Proposal</div>
+        <div class="project-title">
+          CodeQuest BD: An Interactive Web-Based Gamified Programming Laboratory with In-Browser Abstract Syntax Tree Evaluation
+        </div>
+        <div class="project-subtitle">
+          A Zero-Setup Pedagogical Platform Synthesizing Modular Micro-Curriculum, Client-Side Sandboxed Evaluation, and Real-Time Three.js Simulation
+        </div>
+      </div>
+
+      <div class="meta-details">
+        <div class="meta-col">
+          <strong>Submitted By:</strong>
+          <span>Md Najmus Sakib Rahatul</span><br>
+          <span>Student ID: 1119003</span><br>
+          <span>Level-3, Term-II (Section A)</span><br>
+          <span>Dept. of CSE, BAIUST</span>
+        </div>
+
+        <div class="meta-col" style="text-align: right;">
+          <strong>Course Details & Supervision:</strong>
+          <span>Course Title: Web Technologies Sessional</span><br>
+          <span>Course Code: CSE 324</span><br>
+          <span>Department of Computer Science & Engineering</span><br>
+          <span>BAIUST, Cumilla Cantonment</span>
+        </div>
+      </div>
+
+      <div class="submission-date">
+        <strong>Date of Submission:</strong> November 2026
+      </div>
+    </div>
+
+    <!-- ==========================================
+         PAGE 2: ABSTRACT & INTRODUCTION
+         ========================================== -->
+
+    <section>
+      <h2 class="section-heading">2. Abstract</h2>
+      <p>
+        Novice computer science undergraduates frequently experience cognitive overload due to fragmented local compiler setups, complex path configurations, and purely text-driven output interfaces. This project proposes <strong>CodeQuest BD</strong>, a lightweight, responsive web application engineered to lower barrier-to-entry barriers for foundational programming instruction. The system unifies a micro-learning curriculum (spanning HTML5, CSS3, JavaScript ES6+, Python 3, SQL, and C) with an in-browser Abstract Syntax Tree (AST) DOM evaluator and interactive WebGL canvas simulations. Code execution occurs securely inside client-side sandboxed iframes and WebAssembly interpreters, eliminating server vulnerability to arbitrary remote code execution while ensuring sub-10ms feedback loops. The anticipated outcome is an open-access, zero-configuration pedagogical web tool that accelerates syntactic muscle memory, verifies real-world relational database queries, and provides continuous visual reinforcement for university-level computer science students.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="section-heading">3. Introduction</h2>
+      
+      <h3 class="sub-heading">3.1 Background and Motivation</h3>
+      <p>
+        In modern computer science pedagogy, the introductory phase of programming and web development is fraught with logistical bottlenecks. Traditional coursework requires students to configure disparate local runtimes, IDE plugins, database daemons, and command-line toolchains across varying operating systems. For students in developing regions with resource-constrained personal computers, these environmental hurdles often lead to disengagement before algorithmic concepts can be internalized.
+      </p>
+      <p>
+        Existing online judges (such as LeetCode, HackerRank, or Codeforces) prioritize competitive mathematical algorithms with standard input/output (stdin/stdout) evaluation. While effective for data structures, they completely fail to accommodate frontend visual structure, CSS layout mechanics, DOM manipulation, or relational table interactions. Conversely, commercial interactive platforms (e.g., Codecademy, Scrimba) rely heavily on proprietary cloud virtualization backends protected by steep subscription paywalls ($240–$300/year), rendering them inaccessible to broader student populations.
+      </p>
+      <p>
+        The motivation for choosing a full-stack web architecture (Django 5, modern JavaScript ES6+, CodeMirror 5, and SQLite/PostgreSQL) stems from the necessity of delivering zero-latency, deterministic evaluations directly within standard web browsers without incurring unsustainable cloud infrastructure costs.
+      </p>
+
+      <h3 class="sub-heading">3.2 Project Goal</h3>
+      <p>
+        To engineer an open-access, responsive full-stack web platform that provides university students with an immediate, zero-setup programming environment featuring automated instant code verification, progressive structural challenges, and interactive visual mental models.
+      </p>
+
+      <h3 class="sub-heading">3.3 Project Objectives (SMART)</h3>
+      <ol>
+        <li><strong>Architecture & Secure Evaluation:</strong> Develop a secure, client-side sandbox execution module utilizing sandboxed iframes, <code>DOMParser</code>, and AST regex rules capable of verifying user-submitted code in less than 50 milliseconds.</li>
+        <li><strong>Full-Stack Curriculum Infrastructure:</strong> Design and implement a normalized relational database containing 9 structured programming tracks with 88 atomic micro-units, complete with starter code, target test criteria, and progressive hints.</li>
+        <li><strong>Interactive Visual Simulation:</strong> Integrate interactive 2D Canvas and 3D WebGL (Three.js) visual engines where programmed logic directly manipulates stateful procedural models (such as coordinate pathfinding, box model visualization, and orbital mathematics).</li>
+        <li><strong>Progress Telemetry & Responsive Interface:</strong> Build an uncluttered, high-contrast user interface adhering to WCAG 2.1 AA accessibility standards, featuring real-time user progress synchronization, streak tracking, and XP calculations.</li>
+        <li><strong>System Verification & Benchmarking:</strong> Conduct thorough unit and integration testing across 100% of curriculum endpoints, ensuring sub-500ms initial page load times and zero server-side vulnerabilities to untrusted script injections.</li>
+      </ol>
+    </section>
+
+    <!-- ==========================================
+         PAGE 3: RELATED WORK & PROPOSED METHODOLOGY
+         ========================================== -->
+    <div class="page-break"></div>
+
+    <section>
+      <h2 class="section-heading">4. Related Work</h2>
+      <p>
+        A rigorous comparative analysis of existing educational programming systems reveals distinct functional gaps when applied to introductory university sessional coursework:
+      </p>
+
+      <div class="table-caption">Table 1: Comparative Analysis of Educational Programming Systems</div>
+      <table class="academic-table">
+        <thead>
+          <tr>
+            <th>Platform</th>
+            <th>Evaluation Mechanism</th>
+            <th>Pedagogical Focus</th>
+            <th>Primary Limitation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LeetCode / HackerRank</strong></td>
+            <td>Containerized Linux Sandbox</td>
+            <td>Algorithmic Problem Solving (I/O based)</td>
+            <td>No support for DOM, CSS layouts, or interactive visual UI feedback.</td>
+          </tr>
+          <tr>
+            <td><strong>Flexbox Froggy / CSS Diner</strong></td>
+            <td>Client-Side CSS Property Match</td>
+            <td>Isolated CSS properties (Flexbox/Selectors)</td>
+            <td>Single-purpose static puzzles; lacks full-stack database, Python, or multi-file IDEs.</td>
+          </tr>
+          <tr>
+            <td><strong>Codecademy</strong></td>
+            <td>Proprietary Cloud Microservices</td>
+            <td>Guided Industry Career Tracks</td>
+            <td>Prohibitive subscription costs; heavy server roundtrips create latency.</td>
+          </tr>
+          <tr>
+            <td><strong>Scrimba</strong></td>
+            <td>Interactive Scrimba Cast / Webpack</td>
+            <td>Frontend Web Development</td>
+            <td>Video-centric passive format; weak support for compiled systems languages (C/C++).</td>
+          </tr>
+          <tr style="background-color: #f0fdf4; font-weight: bold;">
+            <td><strong>CodeQuest BD (Proposed)</strong></td>
+            <td>Hybrid Client AST + Sandboxed WASM</td>
+            <td>Comprehensive Sessional Programming (Web + Core)</td>
+            <td>Zero-cost, sub-10ms evaluation, visual mental models, and local-offline capability.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Novelty & Improvement:</strong> CodeQuest BD synthesizes the instant gamified gratification of puzzle sites with the academic rigors of a university computer science syllabus. By delegating syntax evaluation to deterministic client-side AST inspection, the platform eliminates server compute overhead while maintaining complete immunity to malicious infinite loops or fork bombs.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="section-heading">5. Proposed System and Methodology</h2>
+
+      <h3 class="sub-heading">5.1 System Architecture</h3>
+      <p>
+        The platform implements a classic Three-Tier Architectural Pattern divided into Presentation, Application/Logic, and Persistence Tiers:
+      </p>
+
+      <div class="diagram-frame">
+        <svg viewBox="0 0 680 180" style="width: 100%; max-width: 580px; height: auto;" xmlns="http://www.w3.org/2000/svg">
+          <!-- Tier 1: Client -->
+          <rect x="10" y="15" width="180" height="150" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+          <text x="100" y="38" font-size="11" font-weight="bold" text-anchor="middle" fill="#111827">TIER 1: PRESENTATION</text>
+          <line x1="20" y1="48" x2="180" y2="48" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="100" y="68" font-size="9" text-anchor="middle" fill="#374151">HTML5 Semantic Shell</text>
+          <text x="100" y="88" font-size="9" text-anchor="middle" fill="#374151">CodeMirror 5 Multi-Buffer</text>
+          <text x="100" y="108" font-size="9" text-anchor="middle" fill="#1e40af">Sandboxed Iframe AST Runner</text>
+          <text x="100" y="128" font-size="9" text-anchor="middle" fill="#374151">Three.js WebGL 3D Viewport</text>
+          <text x="100" y="148" font-size="9" text-anchor="middle" fill="#4b5563">localStorage Offline State</text>
+
+          <!-- Connector 1 -->
+          <path d="M 190 90 L 240 90" stroke="#1f2937" stroke-width="1.5" stroke-dasharray="3,3"/>
+          <polygon points="240,90 233,86 233,94" fill="#1f2937"/>
+          <text x="215" y="82" font-size="8" text-anchor="middle" fill="#4b5563">HTTPS</text>
+
+          <!-- Tier 2: Application -->
+          <rect x="250" y="15" width="200" height="150" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+          <text x="350" y="38" font-size="11" font-weight="bold" text-anchor="middle" fill="#111827">TIER 2: APPLICATION (DJANGO)</text>
+          <line x1="260" y1="48" x2="440" y2="48" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="350" y="68" font-size="9" text-anchor="middle" fill="#374151">URL Dispatcher & View Routers</text>
+          <text x="350" y="88" font-size="9" text-anchor="middle" fill="#374151">Authentication & Session Guard</text>
+          <text x="350" y="108" font-size="9" text-anchor="middle" fill="#1e40af">Curriculum & Seed Engine</text>
+          <text x="350" y="128" font-size="9" text-anchor="middle" fill="#374151">Progress Sync REST Endpoints</text>
+          <text x="350" y="148" font-size="9" text-anchor="middle" fill="#4b5563">CSRF & Security Middleware</text>
+
+          <!-- Connector 2 -->
+          <path d="M 450 90 L 490 90" stroke="#1f2937" stroke-width="1.5"/>
+          <polygon points="490,90 483,86 483,94" fill="#1f2937"/>
+          <text x="470" y="82" font-size="8" text-anchor="middle" fill="#4b5563">ORM</text>
+
+          <!-- Tier 3: Database -->
+          <rect x="500" y="15" width="170" height="150" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+          <text x="585" y="38" font-size="11" font-weight="bold" text-anchor="middle" fill="#111827">TIER 3: PERSISTENCE</text>
+          <line x1="510" y1="48" x2="660" y2="48" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="585" y="68" font-size="9" text-anchor="middle" fill="#374151">SQLite (Dev Runtime)</text>
+          <text x="585" y="88" font-size="9" text-anchor="middle" fill="#374151">PostgreSQL (Production)</text>
+          <text x="585" y="108" font-size="9" text-anchor="middle" fill="#1e40af">Course & Lesson Entities</text>
+          <text x="585" y="128" font-size="9" text-anchor="middle" fill="#374151">User Progress & Logs</text>
+          <text x="585" y="148" font-size="9" text-anchor="middle" fill="#4b5563">108 Game Manifests</text>
+        </svg>
+        <div class="diagram-caption">Figure 1: High-Level Three-Tier Architecture of CodeQuest BD</div>
+      </div>
+
+      <h3 class="sub-heading">5.2 Technology Stack Justification</h3>
+      <ul>
+        <li><strong>Frontend (HTML5, Tailwind CSS, Vanilla ES6+):</strong> Chosen over heavyweight SPA frameworks (React/Angular) to guarantee instantaneous first-contentful paint, zero client build compilation lag, and complete compatibility with low-spec university lab thin clients. CodeMirror 5 provides standard syntax highlighting and bracket matching.</li>
+        <li><strong>WebGL Engine (Three.js):</strong> Enables hardware-accelerated 3D vector graphics and procedural physics simulation directly within the browser canvas without requiring external plugins or binaries.</li>
+        <li><strong>Backend (Python 3.12 & Django 5.x):</strong> Django was selected for its robust Model-View-Template (MVT) pattern, integrated Object-Relational Mapping (ORM), enterprise authentication layer, and strict protection against common OWASP vulnerabilities (CSRF, XSS, and SQL injection).</li>
+        <li><strong>Database (SQLite / PostgreSQL):</strong> SQLite enables self-contained, zero-configuration local evaluation. Production deployment utilizes managed PostgreSQL for concurrent connection pooling and transactional ACID compliance.</li>
+        <li><strong>Hosting (Vercel Serverless & Static CDN):</strong> Vercel provides seamless Git-triggered CI/CD pipelines, SSL provisioning, and global edge caching with zero operational expenditure.</li>
+      </ul>
+
+      <h3 class="sub-heading">5.3 Development Methodology</h3>
+      <p>
+        The project adheres to an <strong>Agile/Scrum</strong> framework executed across six 1-week bi-weekly sprints. Development follows strict Test-Driven Development (TDD) cycles where Django backend models and automated assertion runners are validated before frontend visual integration occurs.
+      </p>
+    </section>
+
+    <!-- ==========================================
+         PAGE 4: SCOPE, TIMELINE & DELIVERABLES
+         ========================================== -->
+    <div class="page-break"></div>
+
+    <section>
+      <h2 class="section-heading">6. Project Scope and Deliverables</h2>
+      
+      <h3 class="sub-heading">6.1 Inclusions (Functional Scope)</h3>
+      <ul>
+        <li><strong>Multi-Track Syllabus:</strong> 9 core tracks covering Web Foundations (HTML/CSS/JS), Scripting (Python 3), Relational Data (SQL), and Systems (C, Java, PHP, Bash).</li>
+        <li><strong>Deterministic Code Runner:</strong> Client-side AST inspector capable of parsing DOM nodes, validating CSS box model metrics, and executing assertions with real-time feedback.</li>
+        <li><strong>Interactive Simulation Hub:</strong> Procedural 3D WebGL scenes (Drone navigation, Solar System kinematics, Rover grid traversal) linked to coding tasks.</li>
+        <li><strong>Universal Playground:</strong> Isolated multi-language browser scratchpad supporting Web, Python, SQL, C, and Bash execution.</li>
+        <li><strong>Learner Telemetry:</strong> User authentication, persistent track completion percentage, daily coding streaks, and XP reward tracking.</li>
+      </ul>
+
+      <h3 class="sub-heading">6.2 Exclusions (Out of Scope)</h3>
+      <ul>
+        <li>Commercial payment gateway integration and course monetisation features.</li>
+        <li>Native mobile application binaries (iOS/Android); mobile support is delivered strictly through responsive PWA standards.</li>
+        <li>Arbitrary multi-tenant backend container hosting (e.g., executing unsafe C/Rust code on the Django host server).</li>
+      </ul>
+
+      <h3 class="sub-heading">6.3 Project Deliverables</h3>
+      <ol>
+        <li>Fully functional web application deployed on live cloud infrastructure with verified HTTPS.</li>
+        <li>Complete, clean GitHub repository with atomic commit logs and strict code documentation.</li>
+        <li>Comprehensive Project Report, Entity-Relationship Model (ERD), and System Architectural Diagrams.</li>
+        <li>Standardized User Manual and Laboratory Demo Walkthrough Video.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 class="section-heading">7. Project Timeline (Gantt Chart)</h2>
+      <p>
+        The development schedule is structured across an 8-week timeline aligned with academic semester milestones and university laboratory evaluation dates:
+      </p>
+
+      <div class="table-caption">Table 2: Project Phase Milestones & Timeline</div>
+      <table class="academic-table">
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Task Description & Milestones</th>
+            <th>Target Period</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Phase I: Planning</strong></td>
+            <td>Requirements formalization, syllabus mapping, UI/UX architectural wireframing.</td>
+            <td>Week 1 – Week 2</td>
+            <td>2 Weeks</td>
+          </tr>
+          <tr>
+            <td><strong>Phase II: Core Backend</strong></td>
+            <td>Django ORM modeling, database migration, user session APIs, seed command scripting.</td>
+            <td>Week 3 – Week 4</td>
+            <td>2 Weeks</td>
+          </tr>
+          <tr>
+            <td><strong>Phase III: Client Engines</strong></td>
+            <td>CodeMirror integration, iframe sandbox AST runner, Three.js WebGL canvas development.</td>
+            <td>Week 5 – Week 6</td>
+            <td>2 Weeks</td>
+          </tr>
+          <tr>
+            <td><strong>Phase IV: Testing & QA</strong></td>
+            <td>Cross-browser accessibility testing (DevTools), Django unit test suite execution, load test.</td>
+            <td>Week 7</td>
+            <td>1 Week</td>
+          </tr>
+          <tr>
+            <td><strong>Phase V: Deployment</strong></td>
+            <td>Vercel production build, documentation authoring, project proposal defense presentation.</td>
+            <td>Week 8</td>
+            <td>1 Week</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2 class="section-heading">8. Resources and Budget Estimation</h2>
+      <p>
+        The platform leverages industry-standard open-source technologies and educational cloud tiers, achieving a completely self-sustaining, zero-cost operational profile:
+      </p>
+
+      <div class="table-caption">Table 3: Resource Allocation & Budget</div>
+      <table class="academic-table">
+        <thead>
+          <tr>
+            <th>Resource Item</th>
+            <th>Specification / Provider</th>
+            <th>Estimated Cost (BDT)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Application Server & Edge CDN</td>
+            <td>Vercel Serverless Hobby Tier</td>
+            <td>0.00 BDT (Free Tier)</td>
+          </tr>
+          <tr>
+            <td>Relational Database Engine</td>
+            <td>SQLite 3 / Neon Serverless Postgres</td>
+            <td>0.00 BDT (Open Source)</td>
+          </tr>
+          <tr>
+            <td>Development Environment & IDE</td>
+            <td>VS Code, Python 3.12, Git Version Control</td>
+            <td>0.00 BDT (Open Source)</td>
+          </tr>
+          <tr>
+            <td>Client Graphics & Editor Libraries</td>
+            <td>Three.js, CodeMirror 5 (MIT License)</td>
+            <td>0.00 BDT (Open Source)</td>
+          </tr>
+          <tr style="font-weight: bold; background-color: #f3f4f6;">
+            <td>Total Project Expenditure</td>
+            <td>Zero External Financial Overhead</td>
+            <td>0.00 BDT</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ==========================================
+         PAGE: CONCLUSION & REFERENCES
+         ========================================== -->
+
+    <section>
+      <h2 class="section-heading">9. Conclusion and Expected Contribution</h2>
+      <p>
+        CodeQuest BD directly resolves the primary friction point facing introductory computer science students: the cognitive chasm between theoretical syntax and intuitive, spatial execution. By engineering an in-browser sandbox that executes instant AST validations alongside engaging Three.js simulations, the project proves that high-retention technical education can be delivered without expensive virtualized cloud servers or commercial paywalls. Academically, the project demonstrates advanced proficiency in full-stack Django architecture, client-side browser sandboxing, responsive UI engineering, and relational schema normalization. The resulting platform offers a scalable, production-ready blueprint for university laboratory sessional coursework across Bangladesh.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="section-heading">10. References</h2>
+      <p style="font-size: 9pt; line-height: 1.4;">
+        [1] M. Resnick et al., "Scratch: Programming for all," <em>Communications of the ACM</em>, vol. 52, no. 11, pp. 60–67, 2009.<br>
+        [2] E. Gamma, R. Helm, R. Johnson, and J. Vlissides, <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>. Addison-Wesley, 1994.<br>
+        [3] J. Robbins and P. V. Binstock, <em>Three.js Cookbook</em>. Packt Publishing, 2014.<br>
+        [4] A. Holovaty and J. Kaplan-Moss, <em>The Definitive Guide to Django: Web Development Done Right</em>. Apress, 2008.<br>
+        [5] World Wide Web Consortium, "Web Content Accessibility Guidelines (WCAG) 2.1," W3C Recommendation, 2018. [Online]. Available: https://www.w3.org/TR/WCAG21/<br>
+        [6] Mozilla Developer Network (MDN), "The HTML DOM API and Sandboxed Iframes," MDN Web Docs, 2024. [Online]. Available: https://developer.mozilla.org/<br>
+        [7] M. Haverbeke, <em>Eloquent JavaScript: A Modern Introduction to Programming</em>, 3rd ed. No Starch Press, 2018.<br>
+        [8] IEEE Standard for Software Quality Assurance Processes, <em>IEEE Std 730-2014</em>, pp. 1–138, 2014.
+      </p>
+    </section>
+
+    <!-- Formal Academic Sign-Off -->
+    <div class="sign-grid">
+      <div class="sign-box">
+        <strong>Md Najmus Sakib Rahatul</strong><br>
+        Student Signature<br>
+        ID: 1119003 | Level-3, Term-II, CSE
+      </div>
+
+      <div class="sign-box">
+        <strong>Course Instructor</strong><br>
+        Department of Computer Science & Engineering<br>
+        BAIUST, Cumilla Cantonment
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

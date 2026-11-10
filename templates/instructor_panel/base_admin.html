@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Instructor CMS — CodeQuest BD{% endblock %}</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/custom.css">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
+
+    <!-- Top Admin Header -->
+    <header class="bg-slate-900 border-b border-slate-800 py-3.5 px-6 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-white text-base shadow-lg shadow-indigo-600/30">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h1 class="text-base font-bold text-white flex items-center gap-2">
+                        CodeQuest BD <span class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded font-mono">Instructor CMS</span>
+                    </h1>
+                    <p class="text-[11px] text-slate-400">CSE 324 Sessional Evaluation Control Center | BAIUST</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-mono text-emerald-400 bg-emerald-950/40 px-3 py-1 rounded-lg border border-emerald-500/20">
+                    <i class="fa-solid fa-user-check"></i> {{ user.username }} (Instructor)
+                </span>
+                <a href="{% url 'arena:home' %}" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 transition">
+                    <i class="fa-solid fa-gamepad"></i> Student Arena
+                </a>
+                <a href="{% url 'accounts:logout' %}" class="text-slate-400 hover:text-rose-400 text-xs px-2 py-1 transition">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sub Navigation Bar for Admin Modules -->
+    <div class="bg-slate-900/60 border-b border-slate-800 px-6">
+        <div class="max-w-7xl mx-auto flex flex-wrap gap-1 py-2 text-xs font-semibold">
+            <a href="{% url 'instructor_panel:dashboard' %}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {% if request.resolver_match.url_name == 'dashboard' %}bg-indigo-600 text-white{% else %}text-slate-400 hover:text-white hover:bg-slate-800{% endif %}">
+                <i class="fa-solid fa-chart-pie"></i> Dashboard
+            </a>
+            <a href="{% url 'instructor_panel:tracks' %}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {% if request.resolver_match.url_name == 'tracks' %}bg-indigo-600 text-white{% else %}text-slate-400 hover:text-white hover:bg-slate-800{% endif %}">
+                <i class="fa-solid fa-layer-group"></i> Tracks CRUD
+            </a>
+            <a href="{% url 'instructor_panel:levels' %}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {% if request.resolver_match.url_name == 'levels' %}bg-indigo-600 text-white{% else %}text-slate-400 hover:text-white hover:bg-slate-800{% endif %}">
+                <i class="fa-solid fa-gamepad"></i> Levels CRUD
+            </a>
+            <a href="{% url 'instructor_panel:quizzes' %}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {% if request.resolver_match.url_name == 'quizzes' %}bg-indigo-600 text-white{% else %}text-slate-400 hover:text-white hover:bg-slate-800{% endif %}">
+                <i class="fa-solid fa-bolt"></i> Bug Blitz Bank CRUD
+            </a>
+            <a href="{% url 'instructor_panel:submissions' %}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {% if request.resolver_match.url_name == 'submissions' %}bg-indigo-600 text-white{% else %}text-slate-400 hover:text-white hover:bg-slate-800{% endif %}">
+                <i class="fa-solid fa-code-commit"></i> Submissions
+            </a>
+            <a href="{% url 'instructor_panel:students' %}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {% if request.resolver_match.url_name == 'students' %}bg-indigo-600 text-white{% else %}text-slate-400 hover:text-white hover:bg-slate-800{% endif %}">
+                <i class="fa-solid fa-users"></i> Students & XP CRUD
+            </a>
+            <a href="{% url 'instructor_panel:announcements' %}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {% if request.resolver_match.url_name == 'announcements' %}bg-indigo-600 text-white{% else %}text-slate-400 hover:text-white hover:bg-slate-800{% endif %}">
+                <i class="fa-solid fa-bullhorn"></i> Announcements
+            </a>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="max-w-7xl mx-auto px-6 mt-4 w-full">
+            {% for message in messages %}
+                <div class="p-3.5 rounded-xl text-xs font-semibold flex items-center justify-between {% if message.tags == 'error' %}bg-rose-950/60 border border-rose-500/30 text-rose-200{% elif message.tags == 'success' %}bg-emerald-950/60 border border-emerald-500/30 text-emerald-200{% else %}bg-indigo-950/60 border border-indigo-500/30 text-indigo-200{% endif %}">
+                    <span>{{ message }}</span>
+                    <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white">✕</button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Admin Body -->
+    <main class="max-w-7xl mx-auto p-6 flex-1 w-full space-y-6">
+        {% block admin_content %}{% endblock %}
+    </main>
+
+    <footer class="bg-slate-900 border-t border-slate-800 py-4 px-6 text-center text-xs text-slate-500">
+        CodeQuest BD — Custom Instructor Control CMS for CSE 324 Web Technologies Sessional Final
+    </footer>
+</body>
+</html>

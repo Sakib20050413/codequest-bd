@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}Bug-Hunter & Output Blitz (60s) — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
+
+    <!-- START SCREEN -->
+    <div id="blitz-start-screen" class="bg-slate-900 border border-slate-800 rounded-3xl p-8 sm:p-12 text-center space-y-6 shadow-2xl">
+        <div class="w-20 h-20 rounded-3xl bg-amber-500/20 text-amber-400 text-4xl flex items-center justify-center mx-auto border border-amber-500/30">
+            🔥
+        </div>
+
+        <div class="space-y-2">
+            <span class="text-xs font-mono text-amber-400 font-semibold uppercase tracking-wider">Mode 4: Handwritten Exam & Viva Trainer</span>
+            <h1 class="text-3xl sm:text-4xl font-black text-white">Bug-Hunter & Output Blitz</h1>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-lg mx-auto">
+                Directly prepares you for the BAIUST CSE 324 20-Mark Code Quiz and Continuous Evaluations. Solve as many output predictions and code-fix questions as you can in 60 seconds!
+            </p>
+        </div>
+
+        <!-- Rules & Combos Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-lg mx-auto text-xs text-left">
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
+                <span class="text-emerald-400 font-bold block">⏱️ 60-Sec Clock</span>
+                <span class="text-slate-400">Answer rapidly before time expires.</span>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
+                <span class="text-amber-400 font-bold block">🔥 Combo Multiplier</span>
+                <span class="text-slate-400">3-streak gives 2x, 5-streak gives 3x, 8-streak gives 5x!</span>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
+                <span class="text-cyan-400 font-bold block">⭐ Earn Bonus XP</span>
+                <span class="text-slate-400">Score converts into permanent profile XP and badges.</span>
+            </div>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="window.blitzGame?.start()" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black px-8 py-4 rounded-2xl text-base transition transform hover:scale-105 shadow-2xl shadow-amber-500/30">
+                Launch 60-Second Blitz 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- ACTIVE GAME SCREEN -->
+    <div id="blitz-game-screen" class="space-y-6 hidden">
+        <!-- HUD Bar -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow-xl">
+            <!-- Timer & Progress Bar -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center font-mono font-black text-xl text-emerald-400" id="blitz-timer">
+                    60s
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 uppercase font-semibold">Time Remaining</span>
+                    <div class="w-32 sm:w-48 bg-slate-950 h-2 rounded-full overflow-hidden mt-1 border border-slate-800">
+                        <div id="blitz-progress-bar" class="h-full bg-emerald-400 transition-all duration-300" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score & Streak -->
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <span class="text-[10px] text-slate-400 uppercase font-semibold">Streak</span>
+                    <p id="blitz-streak" class="font-mono font-bold text-amber-400 text-sm">0🔥</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] text-slate-400 uppercase font-semibold">Multiplier</span>
+                    <span id="blitz-multiplier" class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded font-mono font-bold text-xs block">1x</span>
+                </div>
+                <div class="text-right pl-2 border-l border-slate-800">
+                    <span class="text-[10px] text-slate-400 uppercase font-semibold">Score</span>
+                    <p id="blitz-score" class="font-mono font-black text-white text-xl">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Card -->
+        <div id="blitz-question-card" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <span id="blitz-category-badge" class="text-xs font-mono px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 font-semibold">
+                    HTML5 & CSS3
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Bug-Hunter Bank</span>
+            </div>
+
+            <h2 id="blitz-question-text" class="text-lg sm:text-xl font-bold text-white leading-snug">
+                Question Loading...
+            </h2>
+
+            <!-- Code block (if applicable) -->
+            <div id="blitz-code-block" class="hidden rounded-2xl bg-slate-950 border border-slate-800 p-4 overflow-x-auto">
+                <pre id="blitz-code-content" class="font-mono text-xs text-emerald-400"></pre>
+            </div>
+
+            <!-- Options Container -->
+            <div id="blitz-options-container" class="grid grid-cols-1 gap-3"></div>
+
+            <!-- Instant Pedagogical Explanation Box -->
+            <div id="blitz-explanation-box" class="p-4 rounded-2xl bg-slate-950 border border-indigo-500/30 text-xs text-slate-300 hidden space-y-1">
+                <span class="font-bold text-indigo-400 block"><i class="fa-solid fa-graduation-cap"></i> Pedagogical Explanation:</span>
+                <p id="blitz-explanation-text" class="leading-relaxed"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- END SCREEN -->
+    <div id="blitz-end-screen" class="bg-slate-900 border border-slate-800 rounded-3xl p-8 sm:p-12 text-center space-y-6 shadow-2xl hidden">
+        <div class="w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-400 text-4xl flex items-center justify-center mx-auto border border-emerald-500/30 animate-pulse">
+            🏁
+        </div>
+
+        <div class="space-y-1">
+            <span class="text-xs font-mono text-emerald-400 uppercase font-semibold">Session Complete!</span>
+            <h2 class="text-3xl font-black text-white">Time's Up! Great Effort!</h2>
+            <p class="text-xs text-slate-400">Here is your Bug Blitz performance summary:</p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 max-w-md mx-auto py-2">
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                <span class="text-[10px] text-slate-400 uppercase font-semibold">Final Score</span>
+                <p id="final-blitz-score" class="font-mono font-black text-2xl text-amber-400 mt-1">0</p>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                <span class="text-[10px] text-slate-400 uppercase font-semibold">Solved</span>
+                <p id="final-correct-count" class="font-mono font-bold text-base text-white mt-2">0</p>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                <span class="text-[10px] text-slate-400 uppercase font-semibold">Max Streak</span>
+                <p id="final-max-streak" class="font-mono font-bold text-base text-emerald-400 mt-2">0🔥</p>
+            </div>
+        </div>
+
+        <div id="blitz-xp-awarded-banner" class="hidden p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 font-mono text-xs max-w-md mx-auto font-bold"></div>
+
+        <div class="flex justify-center gap-4 pt-2">
+            <button onclick="window.blitzGame?.start()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-3 rounded-xl text-xs transition">
+                Play Again 🔄
+            </button>
+            <a href="{% url 'arena:leaderboard' %}" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-6 py-3 rounded-xl text-xs transition border border-slate-700">
+                View Leaderboard 🏆
+            </a>
+            <a href="{% url 'arena:tracks' %}" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-6 py-3 rounded-xl text-xs transition border border-slate-700">
+                Tracks
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/blitz_engine.js"></script>
+<script>
+    const quizBank = {{ quiz_bank_json|safe }};
+    const csrfToken = "{{ csrf_token }}";
+
+    window.blitzGame = new BlitzQuizEngine(quizBank, {
+        csrfToken: csrfToken
+    });
+</script>
+{% endblock %}

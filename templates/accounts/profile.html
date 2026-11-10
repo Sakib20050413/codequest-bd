@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ profile.user.username }}'s Profile — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+
+    <!-- Profile Header Card -->
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+        <div class="flex items-center gap-5">
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-emerald-500 to-indigo-600 flex items-center justify-center text-4xl shadow-xl shadow-emerald-500/20">
+                {{ profile.get_avatar_display|slice:":2"|default:"🤖" }}
+            </div>
+            <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                    <h1 class="text-2xl font-bold text-white">{{ profile.user.first_name|default:profile.user.username }}</h1>
+                    <span class="text-xs px-2.5 py-0.5 rounded-full font-semibold border {{ profile.rank_badge_color }}">
+                        {{ profile.rank_name }}
+                    </span>
+                </div>
+                <p class="text-xs text-slate-400 font-mono">
+                    BAIUST Student ID: <strong class="text-white">{{ profile.student_id }}</strong> | {{ profile.batch_section }}
+                </p>
+                <p class="text-xs text-slate-500">Institution: {{ profile.university }}</p>
+            </div>
+        </div>
+
+        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-center min-w-[140px]">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Total Quest XP</span>
+            <p class="text-3xl font-black text-amber-400 font-mono">{{ profile.xp }}</p>
+            <span class="text-[10px] text-emerald-400 font-mono">Level {{ profile.level }} Explorer</span>
+        </div>
+    </div>
+
+    <!-- Progress & Badges Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- XP Level Progress Bar Card -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-emerald-400"></i> Next Rank Progression
+                </h3>
+                <span class="text-xs font-mono text-slate-400">{{ profile.xp }} / {{ profile.next_level_xp }} XP</span>
+            </div>
+
+            <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-800">
+                <div class="h-full bg-gradient-to-r from-emerald-500 to-cyan-500 transition-all duration-500" style="width: {{ profile.xp_progress_percent }}%"></div>
+            </div>
+
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+                Earn <strong class="text-emerald-400">{{ profile.next_level_xp|add:"-1" }} XP</strong> to advance from <em>{{ profile.rank_name }}</em> to the next academic badge.
+            </p>
+
+            <div class="pt-2 border-t border-slate-800/80 flex justify-between text-xs text-slate-400 font-mono">
+                <span>Completed Levels: <strong>{{ profile.solved_levels|length }}</strong></span>
+                <span>Streak: <strong>{{ profile.streak }} Days 🔥</strong></span>
+            </div>
+        </div>
+
+        <!-- Earned Badges Card -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-medal text-amber-400"></i> Sessional Badges Unlocked
+            </h3>
+
+            <div class="flex flex-wrap gap-2">
+                {% for b in profile.badges %}
+                    <span class="text-xs bg-slate-950 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-xl flex items-center gap-1.5 font-medium">
+                        ⭐ {{ b }}
+                    </span>
+                {% empty %}
+                    <p class="text-xs text-slate-500">Solve your first challenge or play Bug Blitz to unlock badges!</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Edit Profile Form -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-user-pen text-indigo-400"></i> Update Student Information
+        </h3>
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1.5">Full Name</label>
+                    <input type="text" name="full_name" value="{{ profile.user.get_full_name|default:profile.user.username }}" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-white text-sm focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-300 mb-1.5">Batch / Section</label>
+                    <input type="text" name="batch_section" value="{{ profile.batch_section }}" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-white text-sm focus:outline-none focus:border-emerald-500">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs uppercase font-semibold text-slate-300 mb-1.5">Avatar Persona</label>
+                <select name="avatar" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-white text-sm focus:outline-none focus:border-emerald-500">
+                    <option value="cyber_rover" {% if profile.avatar == 'cyber_rover' %}selected{% endif %}>Cyber Rover 🤖</option>
+                    <option value="code_wizard" {% if profile.avatar == 'code_wizard' %}selected{% endif %}>Code Wizard 🧙</option>
+                    <option value="syntax_ninja" {% if profile.avatar == 'syntax_ninja' %}selected{% endif %}>Syntax Ninja 🥷</option>
+                    <option value="dom_knight" {% if profile.avatar == 'dom_knight' %}selected{% endif %}>DOM Knight ⚔️</option>
+                    <option value="scholar" {% if profile.avatar == 'scholar' %}selected{% endif %}>BAIUST Scholar 🎓</option>
+                </select>
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2 rounded-xl text-xs transition shadow-lg shadow-indigo-600/20">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

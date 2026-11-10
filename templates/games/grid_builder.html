@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}CSS Grid Builder Lab: 10 Responsive Website Wireframe Levels — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="shell" style="padding-top: 2rem; padding-bottom: 5rem; max-width: 960px;">
+
+  <!-- Breadcrumb & Status -->
+  <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+    <a href="{% url 'games_hub' %}#arcade" style="font-size: 0.88rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;">
+      &larr; Back to Practice Arena
+    </a>
+    <span style="font-size: 0.82rem; font-family: var(--font-mono); color: #06b6d4; background: rgba(6, 182, 212, 0.12); padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid rgba(6, 182, 212, 0.3);">
+      10 Website Wireframe Levels &bull; +50 XP / Blueprint
+    </span>
+  </div>
+
+  <div class="cq-card" style="padding: 2.25rem; border: 1px solid var(--border-strong);">
+
+    <!-- Topbar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: #06b6d4; text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em;">
+          Practice Arena Engine 07 &bull; 2D Web Layout Architecture
+        </div>
+        <h1 style="font-size: 1.65rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
+          📐 CSS Grid Builder Lab
+        </h1>
+      </div>
+      <div id="gridModeBadge" style="font-size: 0.82rem; color: #06b6d4; font-family: var(--font-mono); font-weight: 600; background: rgba(6, 182, 212, 0.12); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(6, 182, 212, 0.25);">
+        CSS Grid 2D Matrix
+      </div>
+    </div>
+
+    <!-- 10-Level Selector Bar -->
+    <div style="margin-bottom: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+        <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">
+          Select Wireframe Blueprint (1 – 10):
+        </span>
+        <span id="gridMissionTitle" style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          Level 1 of 10
+        </span>
+      </div>
+      <div id="gridLevelPills" style="display: flex; gap: 0.35rem; flex-wrap: wrap; overflow-x: auto;">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- Instructions / Objective -->
+    <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+      <div id="gridPrompt" style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.35rem;">
+        Loading blueprint...
+      </div>
+      <div id="gridHint" style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5;">
+        Write real CSS Grid rules for the <code>#websiteGrid</code> container so the wireframe components snap directly into the glowing cyan dashed target layout.
+      </div>
+    </div>
+
+    <!-- Live 2D Grid Visual Stage -->
+    <div style="position: relative; width: 100%; min-height: 300px; background: #070a13; border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1.5rem; border: 1px solid #1e293b; padding: 1.25rem;">
+      
+      <!-- Target Overlay (Dashed Ghost Blueprint) -->
+      <div id="gridTargetOutline" style="position: absolute; inset: 1.25rem; display: grid; pointer-events: none; opacity: 0.35; transition: all 0.3s ease;">
+        <!-- Injected target slots -->
+      </div>
+
+      <!-- Live Player Grid Container -->
+      <div id="websiteGrid" style="display: grid; width: 100%; height: 100%; min-height: 260px; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+        <!-- Active wireframe boxes -->
+      </div>
+
+    </div>
+
+    <!-- CSS Code Input Box -->
+    <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.15rem; margin-bottom: 1.25rem;">
+      <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.35rem;">
+        #websiteGrid { display: grid;
+      </div>
+      <textarea id="gridCssInput" class="code-editor" style="width: 100%; height: 85px; background: transparent; border: none; outline: none; padding: 0.25rem 0 0.25rem 1.5rem; font-family: var(--font-mono); font-size: 0.95rem; color: #06b6d4; resize: none;" placeholder="grid-template-columns: 1fr 1fr; gap: 1rem;" spellcheck="false"></textarea>
+      <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);">}</div>
+    </div>
+
+    <!-- Actions & Feedback -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div id="gridFeedback" style="font-weight: 600; font-size: 0.88rem;"></div>
+      <div style="display: flex; gap: 0.75rem;">
+        <button id="showSolutionBtn" class="btn btn-ghost" style="padding: 0.55rem 1rem; font-size: 0.82rem;">
+          💡 Hint
+        </button>
+        <button id="checkGridBtn" class="btn btn-primary" style="padding: 0.6rem 1.6rem; font-size: 0.88rem;">
+          Build Layout &rarr;
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  (function () {
+    const LEVELS = [
+      {
+        id: 1,
+        title: "Split Screen Hero & Feature Block",
+        prompt: "Create 2 equal-width columns so the Hero Banner and Media Card sit side-by-side.",
+        hint: "Use grid-template-columns: 1fr 1fr; or repeat(2, 1fr);",
+        boxes: [
+          { text: "⚡ Hero Banner", color: "#6366f1" },
+          { text: "🖼️ Interactive Media", color: "#06b6d4" }
+        ],
+        targetStyle: { gridTemplateColumns: "1fr 1fr", gap: "16px" },
+        validate: (css) => /grid-template-columns\s*:\s*(1fr\s+1fr|repeat\s*\(\s*2\s*,\s*1fr\s*\))/i.test(css)
+      },
+      {
+        id: 2,
+        title: "3-Column Feature Cards Matrix",
+        prompt: "Divide the container into 3 equal flexible columns with a 16px gap.",
+        hint: "Use grid-template-columns: repeat(3, 1fr); gap: 16px; (or 1rem)",
+        boxes: [
+          { text: "🚀 Fast WASM", color: "#34d399" },
+          { text: "🛡️ Type Safe", color: "#38bdf8" },
+          { text: "⚡ Instant Test", color: "#facc15" }
+        ],
+        targetStyle: { gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" },
+        validate: (css) => /grid-template-columns\s*:\s*(repeat\s*\(\s*3\s*,\s*1fr\s*\)|1fr\s+1fr\s+1fr)/i.test(css) && /gap\s*:/i.test(css)
+      },
+      {
+        id: 3,
+        title: "Fixed Sidebar & Fluid Application Canvas",
+        prompt: "Lock the left sidebar to exactly 200px and allow the main application area to fill all remaining space (1fr).",
+        hint: "Use grid-template-columns: 200px 1fr; gap: 16px;",
+        boxes: [
+          { text: "📂 Nav Sidebar (200px)", color: "#a855f7" },
+          { text: "💻 Code Editor & Preview (Fluid 1fr)", color: "#ec4899" }
+        ],
+        targetStyle: { gridTemplateColumns: "200px 1fr", gap: "16px" },
+        validate: (css) => /grid-template-columns\s*:\s*200px\s+1fr/i.test(css)
+      },
+      {
+        id: 4,
+        title: "4-Column Modern Metrics Dashboard",
+        prompt: "Arrange 4 telemetry cards in a clean 4-column row with 12px gap.",
+        hint: "Use grid-template-columns: repeat(4, 1fr); gap: 12px;",
+        boxes: [
+          { text: "🔥 7-Day Streak", color: "#f59e0b" },
+          { text: "⚡ 1,450 XP", color: "#10b981" },
+          { text: "✓ 28 Tasks", color: "#38bdf8" },
+          { text: "🏆 Rank 1", color: "#818cf8" }
+        ],
+        targetStyle: { gridTemplateColumns: "repeat(4, 1fr)", gap: "12px" },
+        validate: (css) => /grid-template-columns\s*:\s*(repeat\s*\(\s*4\s*,\s*1fr\s*\)|1fr\s+1fr\s+1fr\s+1fr)/i.test(css)
+      },
+      {
+        id: 5,
+        title: "Bento Box Master Block",
+        prompt: "Create 2 columns and 2 rows so the top item can stretch across both columns.",
+        hint: "Use grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;",
+        boxes: [
+          { text: "⭐ Bento Hero (Span 2)", color: "#6366f1", style: "grid-column: span 2;" },
+          { text: "📦 Submodule A", color: "#06b6d4" },
+          { text: "📦 Submodule B", color: "#10b981" }
+        ],
+        targetStyle: { gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", gap: "14px" },
+        validate: (css) => /grid-template-columns\s*:\s*(1fr\s+1fr|repeat\s*\(\s*2\s*,\s*1fr\s*\))/i.test(css)
+      },
+      {
+        id: 6,
+        title: "Responsive Auto-Fill Card Catalog",
+        prompt: "Build an auto-responsive layout where cards have a minimum width of 140px and stretch up to 1fr.",
+        hint: "Use grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));",
+        boxes: [
+          { text: "HTML5 Core", color: "#f97316" },
+          { text: "CSS Flexbox", color: "#38bdf8" },
+          { text: "JavaScript V8", color: "#facc15" },
+          { text: "Python Core", color: "#34d399" }
+        ],
+        targetStyle: { gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "14px" },
+        validate: (css) => /repeat\s*\(\s*auto-(fit|fill)\s*,\s*minmax\s*\(\s*140px\s*,\s*1fr\s*\)\s*\)/i.test(css)
+      },
+      {
+        id: 7,
+        title: "Holy Grail 3-Row Web Framework",
+        prompt: "Define a 3-row layout where Header is auto, Body is 1fr, and Footer is 50px.",
+        hint: "Use grid-template-rows: auto 1fr 50px; grid-template-columns: 1fr;",
+        boxes: [
+          { text: "📌 Sticky Header (auto)", color: "#818cf8" },
+          { text: "📰 Main Editorial Body (1fr)", color: "#06b6d4" },
+          { text: "🏛️ Legal Footer (50px)", color: "#64748b" }
+        ],
+        targetStyle: { gridTemplateRows: "auto 1fr 50px", gridTemplateColumns: "1fr", gap: "12px" },
+        validate: (css) => /grid-template-rows\s*:\s*auto\s+1fr\s+50px/i.test(css)
+      },
+      {
+        id: 8,
+        title: "Centered Modal Dialog Canvas",
+        prompt: "Use CSS Grid shorthand place-items to center the dialog both vertically and horizontally.",
+        hint: "Use place-items: center; (or align-items: center; justify-items: center;)",
+        boxes: [
+          { text: "💎 Confirm Achievement Modal", color: "#a855f7", style: "width: 220px; height: 90px;" }
+        ],
+        targetStyle: { placeItems: "center", gridTemplateColumns: "1fr" },
+        validate: (css) => /(place-items\s*:\s*center|align-items\s*:\s*center;\s*justify-items\s*:\s*center)/i.test(css)
+      },
+      {
+        id: 9,
+        title: "Asymmetric 3-Column Magazine Layout",
+        prompt: "Create an asymmetric 3-column grid with proportions: 1fr 2fr 1fr.",
+        hint: "Use grid-template-columns: 1fr 2fr 1fr; gap: 16px;",
+        boxes: [
+          { text: "📑 Left Index (1fr)", color: "#f59e0b" },
+          { text: "📰 Main Article (2fr)", color: "#6366f1" },
+          { text: "📊 Right Stats (1fr)", color: "#10b981" }
+        ],
+        targetStyle: { gridTemplateColumns: "1fr 2fr 1fr", gap: "16px" },
+        validate: (css) => /grid-template-columns\s*:\s*1fr\s+2fr\s+1fr/i.test(css)
+      },
+      {
+        id: 10,
+        title: "Master Enterprise Application Layout",
+        prompt: "Set up a full enterprise dashboard: 240px sidebar, 1fr main workspace, with 16px gap and auto row heights.",
+        hint: "Use grid-template-columns: 240px 1fr; gap: 16px; align-items: stretch;",
+        boxes: [
+          { text: "📁 Cloud Project Files (240px)", color: "#06b6d4" },
+          { text: "⚡ In-Browser Virtual IDE (1fr)", color: "#10b981" },
+          { text: "🗄️ Database Tables (240px)", color: "#38bdf8" },
+          { text: "📊 Live Diagnostics (1fr)", color: "#a855f7" }
+        ],
+        targetStyle: { gridTemplateColumns: "240px 1fr", gap: "16px" },
+        validate: (css) => /grid-template-columns\s*:\s*240px\s+1fr/i.test(css) && /gap\s*:\s*(16px|1rem)/i.test(css)
+      }
+    ];
+
+    let currentLevelIdx = 0;
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialLvl = parseInt(urlParams.get('level'), 10);
+    if (!isNaN(initialLvl) && initialLvl >= 1 && initialLvl <= LEVELS.length) {
+      currentLevelIdx = initialLvl - 1;
+    }
+
+    const pillsContainer = document.getElementById('gridLevelPills');
+    const missionTitle = document.getElementById('gridMissionTitle');
+    const promptEl = document.getElementById('gridPrompt');
+    const cssInput = document.getElementById('gridCssInput');
+    const feedback = document.getElementById('gridFeedback');
+    const checkBtn = document.getElementById('checkGridBtn');
+    const hintBtn = document.getElementById('showSolutionBtn');
+    const playerGrid = document.getElementById('websiteGrid');
+    const targetOutline = document.getElementById('gridTargetOutline');
+
+    function renderLevel(idx) {
+      currentLevelIdx = idx;
+      const lvl = LEVELS[idx];
+      missionTitle.textContent = `Level ${lvl.id} of ${LEVELS.length}: ${lvl.title}`;
+      promptEl.textContent = lvl.prompt;
+      feedback.textContent = '';
+      cssInput.value = '';
+
+      // Update level pills
+      pillsContainer.innerHTML = '';
+      LEVELS.forEach((l, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = `${l.id}`;
+        btn.style.padding = '0.3rem 0.65rem';
+        btn.style.fontSize = '0.74rem';
+        btn.style.fontFamily = 'var(--font-mono)';
+        btn.style.borderRadius = '6px';
+        btn.style.border = (i === idx) ? '1px solid #06b6d4' : '1px solid var(--border-subtle)';
+        btn.style.background = (i === idx) ? '#06b6d4' : 'var(--bg-panel)';
+        btn.style.color = (i === idx) ? '#07080c' : 'var(--text-secondary)';
+        btn.style.fontWeight = (i === idx) ? '700' : 'normal';
+        btn.style.cursor = 'pointer';
+        btn.onclick = () => renderLevel(i);
+        pillsContainer.appendChild(btn);
+      });
+
+      // Target Outline Setup
+      targetOutline.style.cssText = 'position: absolute; inset: 1.25rem; display: grid; pointer-events: none; opacity: 0.35; transition: all 0.3s ease;';
+      Object.assign(targetOutline.style, lvl.targetStyle);
+      targetOutline.innerHTML = '';
+      lvl.boxes.forEach(() => {
+        const targetSlot = document.createElement('div');
+        targetSlot.style.border = '2px dashed #06b6d4';
+        targetSlot.style.borderRadius = '8px';
+        targetSlot.style.minHeight = '65px';
+        targetSlot.style.background = 'rgba(6, 182, 212, 0.08)';
+        targetOutline.appendChild(targetSlot);
+      });
+
+      // Player Grid Setup
+      playerGrid.style.cssText = 'display: grid; width: 100%; height: 100%; min-height: 260px; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);';
+      playerGrid.innerHTML = '';
+      lvl.boxes.forEach((box) => {
+        const el = document.createElement('div');
+        el.textContent = box.text;
+        el.style.cssText = `background: ${box.color}25; border: 1px solid ${box.color}; color: #ffffff; padding: 1rem; border-radius: 8px; font-weight: 700; font-family: var(--font-mono); font-size: 0.82rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); ${box.style || ''}`;
+        playerGrid.appendChild(el);
+      });
+    }
+
+    // Live preview on CSS input
+    cssInput.addEventListener('input', function () {
+      const css = cssInput.value;
+      const declarations = css.split(';');
+      declarations.forEach(decl => {
+        const [prop, val] = decl.split(':');
+        if (prop && val) {
+          const camel = prop.trim().replace(/-([a-z])/g, g => g[1].toUpperCase());
+          playerGrid.style[camel] = val.trim();
+        }
+      });
+    });
+
+    hintBtn.onclick = function () {
+      alert(`💡 Blueprint Solution Clue:\n\n${LEVELS[currentLevelIdx].hint}`);
+    };
+
+    checkBtn.onclick = function () {
+      const lvl = LEVELS[currentLevelIdx];
+      const css = cssInput.value.trim();
+
+      if (lvl.validate(css)) {
+        feedback.innerHTML = '<span style="color: var(--success); font-weight: 700;">✓ Wireframe Grid Snapped! +50 XP Awarded</span>';
+        if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('success');
+        if (window.CodeQuest && window.CodeQuest.fireConfetti) window.CodeQuest.fireConfetti();
+
+        // Award XP
+        fetch('/api/games/grid-builder/score/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrfToken() }
+        }).catch(() => {});
+
+        setTimeout(() => {
+          if (currentLevelIdx < LEVELS.length - 1) {
+            renderLevel(currentLevelIdx + 1);
+          } else {
+            alert('🎉 Congratulations! You have completed all 10 CSS Grid Website Wireframe levels!');
+          }
+        }, 1200);
+      } else {
+        feedback.innerHTML = '<span style="color: var(--danger); font-weight: 700;">✕ Layout does not match blueprint. Review the hint!</span>';
+        if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('error');
+      }
+    };
+
+    function getCsrfToken() {
+      const match = document.cookie.match(/csrftoken=([^;]+)/);
+      return match ? match[1] : '';
+    }
+
+    renderLevel(currentLevelIdx);
+  })();
+</script>
+{% endblock %}

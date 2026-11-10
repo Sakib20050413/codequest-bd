@@ -1,0 +1,71 @@
+/* CodeQuest BD - Custom Gamified Theme & Print Stylesheet */
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(16, 185, 129, 0.8);
+    }
+}
+
+.glow-emerald {
+    animation: pulse-glow 2s infinite ease-in-out;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #090d16;
+}
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
+
+/* Rover Maze Animation */
+.rover-sprite {
+    user-select: none;
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.6));
+}
+
+/* Print Stylesheet for BAIUST CSE 324 Formal Proposal */
+@media print {
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt;
+    }
+
+    nav, footer, .no-print, button, .print-hide {
+        display: none !important;
+    }
+
+    .proposal-page {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+
+    a {
+        color: #000 !important;
+        text-decoration: underline;
+    }
+
+    .print-break-inside-avoid {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .print-page-break {
+        page-break-before: always;
+    }
+}

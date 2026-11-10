@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}BAIUST Campus Leaderboard — CodeQuest BD{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-800 pb-6">
+        <div>
+            <span class="text-xs font-mono text-amber-400 uppercase font-semibold">Campus Hall of Fame</span>
+            <h1 class="text-3xl font-extrabold text-white mt-1">BAIUST CSE Leaderboard</h1>
+            <p class="text-xs text-slate-400 mt-1">Real-time rankings based on level completions and Bug Blitz mastery.</p>
+        </div>
+
+        <!-- Section Filter Tabs -->
+        <div class="flex items-center gap-2 bg-slate-900 p-1.5 rounded-2xl border border-slate-800 text-xs font-mono">
+            <a href="?section=all" class="px-3.5 py-1.5 rounded-xl transition {% if current_filter == 'all' %}bg-amber-500 text-slate-950 font-bold{% else %}text-slate-400 hover:text-white{% endif %}">
+                All BAIUST
+            </a>
+            <a href="?section=Section A" class="px-3.5 py-1.5 rounded-xl transition {% if current_filter == 'Section A' %}bg-amber-500 text-slate-950 font-bold{% else %}text-slate-400 hover:text-white{% endif %}">
+                Section A
+            </a>
+            <a href="?section=Section B" class="px-3.5 py-1.5 rounded-xl transition {% if current_filter == 'Section B' %}bg-amber-500 text-slate-950 font-bold{% else %}text-slate-400 hover:text-white{% endif %}">
+                Section B
+            </a>
+        </div>
+    </div>
+
+    <!-- Leaderboard Table -->
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-300">
+                <thead class="bg-slate-950/80 text-xs uppercase text-slate-400 font-semibold border-b border-slate-800">
+                    <tr>
+                        <th class="p-4 pl-6">Rank</th>
+                        <th class="p-4">Student</th>
+                        <th class="p-4">BAIUST ID</th>
+                        <th class="p-4">Batch / Section</th>
+                        <th class="p-4">Rank Tier</th>
+                        <th class="p-4">Levels Solved</th>
+                        <th class="p-4 pr-6 text-right">Total XP</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 font-sans">
+                    {% for profile in profiles %}
+                        <tr class="hover:bg-slate-800/40 transition {% if user.is_authenticated and profile.user == user %}bg-emerald-950/20 border-l-4 border-l-emerald-500{% endif %}">
+                            <td class="p-4 pl-6 font-mono font-bold text-base">
+                                {% if forloop.counter == 1 %}
+                                    <span class="text-xl" title="1st Place">🥇</span>
+                                {% elif forloop.counter == 2 %}
+                                    <span class="text-xl" title="2nd Place">🥈</span>
+                                {% elif forloop.counter == 3 %}
+                                    <span class="text-xl" title="3rd Place">🥉</span>
+                                {% else %}
+                                    <span class="text-slate-500 text-xs">#{{ forloop.counter }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="p-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">{{ profile.get_avatar_display|slice:":2"|default:"🤖" }}</span>
+                                    <div>
+                                        <p class="font-bold text-white flex items-center gap-1.5">
+                                            {{ profile.user.first_name|default:profile.user.username }}
+                                            {% if profile.student_id == '1119003' %}
+                                                <span class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-1.5 py-0.2 rounded font-mono">ARCHITECT</span>
+                                            {% endif %}
+                                        </p>
+                                        <span class="text-[11px] text-slate-400">@{{ profile.user.username }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-4 font-mono text-xs font-semibold text-slate-300">{{ profile.student_id }}</td>
+                            <td class="p-4 text-xs text-slate-400">{{ profile.batch_section }}</td>
+                            <td class="p-4">
+                                <span class="text-xs px-2.5 py-0.5 rounded-full font-semibold border {{ profile.rank_badge_color }}">
+                                    {{ profile.rank_name }}
+                                </span>
+                            </td>
+                            <td class="p-4 font-mono text-xs text-slate-300">
+                                {{ profile.solved_levels|length }} Levels
+                            </td>
+                            <td class="p-4 pr-6 text-right">
+                                <span class="font-mono font-black text-amber-400 text-base">{{ profile.xp }}</span>
+                                <span class="text-xs text-slate-500 font-mono"> XP</span>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7" class="p-8 text-center text-slate-500 font-mono text-xs">
+                                No students currently registered under this batch filter.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

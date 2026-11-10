@@ -1,0 +1,1637 @@
+{% extends "base.html" %}
+{% load static %}
+{% load learn_extras %}
+
+{% block title %}{{ lesson.title }} — {{ course.title }} — CodeQuest BD{% endblock %}
+
+{% block extra_head %}
+<!-- CodeMirror Professional Web IDE Engine -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="cq-learning-shell">
+
+  <!-- Ergonomic Top Navigation Header -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--border-subtle);">
+    <div style="display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap;">
+      <a href="{% url 'course_detail' course.slug %}" class="btn btn-ghost" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">
+        &larr; {{ course.title }}
+      </a>
+      <button id="syllabusDrawerBtn" class="btn btn-ghost" style="padding: 0.4rem 0.85rem; font-size: 0.82rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); display: inline-flex; align-items: center; gap: 0.4rem;" title="View Course Syllabus & Jump to Lessons">
+        <span>☰</span> <span>Syllabus ({{ lesson.order }}/{{ all_lessons|length|default:course.lessons.count }})</span>
+      </button>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); color: var(--accent);">
+          #{{ lesson.order }}
+        </span>
+        <h1 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.015em;">
+          {{ lesson.title }}
+        </h1>
+      </div>
+    </div>
+
+    <!-- Quick Action Controls -->
+    <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; background: var(--accent-subtle); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(99, 102, 241, 0.25);">
+        ⚡ +{{ lesson.xp }} XP
+      </span>
+
+      <!-- Mechanical SFX Switch -->
+      <button id="lessonAudioToggle" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;" title="Toggle Mechanical Keystroke Audio">
+        ⌨ Mechanical SFX
+      </button>
+
+      <!-- Zen Workspace Mode -->
+      <button id="zenModeBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Toggle Distraction-Free Fullscreen Studio">
+        ⛶ Zen Mode
+      </button>
+
+      <div style="display: flex; gap: 0.35rem;">
+        {% if prev_lesson %}
+        <a href="{% url 'lesson_detail' course.slug prev_lesson.slug %}" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Previous Lesson">
+          &larr; Prev
+        </a>
+        {% endif %}
+        {% if next_lesson %}
+        <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="btn btn-primary" style="padding: 0.35rem 0.95rem; font-size: 0.82rem;" title="Next Lesson">
+          Next &rarr;
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile View Switcher (Under 860px) -->
+  <div id="mobileLessonTabs" style="display: none; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem; gap: 0.5rem;">
+    <button class="btn btn-ghost mobile-tab-btn active" data-tab="instructions" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
+      📖 Instructions
+    </button>
+    <button class="btn btn-ghost mobile-tab-btn" data-tab="editor" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
+      💻 Code Studio
+    </button>
+    <button class="btn btn-ghost mobile-tab-btn" data-tab="preview" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
+      🌐 Preview &amp; Tests
+    </button>
+  </div>
+
+  <!-- Fullscreen Studio Root Container -->
+  <div id="lessonStudioRoot" class="lesson-studio-root">
+
+    <!-- Dedicated Zen Studio HUD for Lessons (Visible only in Fullscreen Zen Mode) -->
+    <div class="zen-hud-bar" id="lessonZenHud">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 800; color: #ffffff; background: var(--accent-gradient-btn); padding: 0.2rem 0.6rem; border-radius: 4px; letter-spacing: 0.04em;">
+          ZEN STUDY STUDIO
+        </span>
+        <span style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
+          {{ course.title }} &bull; {{ lesson.title }}
+        </span>
+        <button id="zenSyllabusDrawerBtn" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); border-radius: 4px;" title="Jump to Course Lessons">
+          ☰ Lessons ({{ lesson.order }}/{{ all_lessons|length|default:course.lessons.count }})
+        </button>
+        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; background: var(--accent-subtle); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid rgba(99, 102, 241, 0.25);">
+          ⚡ +{{ lesson.xp }} XP
+        </span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <button id="zenLessonRunBtn" class="btn btn-primary" style="padding: 0.35rem 1rem; font-size: 0.82rem; font-weight: 700;" title="Execute Tests (Ctrl+Enter)">
+          ▶ Run Code &amp; Test (Ctrl+Enter)
+        </button>
+        <button id="zenLessonAudioToggle" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem;" title="Toggle Mechanical Keystroke Audio">
+          ⌨ Mechanical SFX
+        </button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <button id="exitLessonZenBtn" class="btn" style="padding: 0.42rem 1.15rem; font-size: 0.84rem; font-weight: 800; background: #ef4444; border: 1px solid #f87171; color: #ffffff; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(239, 68, 68, 0.45);" title="Exit Zen Fullscreen (Press Esc)">
+          ✕ Exit Zen <kbd style="background: rgba(0,0,0,0.4); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.72rem; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.4);">Esc</kbd>
+        </button>
+      </div>
+    </div>
+
+    <!-- Resizable Full-Bleed Workspace Container -->
+    <div id="workspaceContainer" class="zen-workspace-body" style="display: flex; gap: 0; align-items: stretch; position: relative;">
+    
+    <!-- Left Column: Study Hub & Interactive Learning Center -->
+    <div id="panelInstructions" class="cq-card" style="flex: 0 0 38%; min-width: 320px; max-width: 60%; padding: 0; overflow: hidden; display: flex; flex-direction: column; max-height: calc(100vh - 120px);">
+      
+      <!-- Study Tabs Bar -->
+      <div class="study-tabs-nav">
+        <button class="study-tab-btn active" data-study-tab="concept">
+          📖 Lesson &amp; Task
+        </button>
+        <button class="study-tab-btn" data-study-tab="quiz">
+          🧠 Quiz &amp; Cheat Sheet
+        </button>
+        <button class="study-tab-btn" data-study-tab="models">
+          🏗️ Architecture Models
+        </button>
+      </div>
+
+      <!-- Scrollable Study Content -->
+      <div style="padding: 1.5rem 1.75rem; overflow-y: auto; flex: 1;">
+        
+        <!-- Tab 1: Unified Concept & Coding Task -->
+        <div id="studyTabConcept" class="study-tab-content">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+            <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em;">
+              Mental Model &bull; Bite-Sized Learning
+            </span>
+            <span style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); background: var(--bg-panel); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
+              ⏱ {{ lesson.est_minutes }} mins
+            </span>
+          </div>
+
+          <!-- Conceptual Markdown -->
+          <div class="prose" style="font-size: 0.94rem; line-height: 1.68; color: var(--text-primary); margin-bottom: 1.5rem;">
+            {{ lesson.body_md|render_md }}
+          </div>
+
+          <!-- Pillar 2: "Tips & Tricks" Memory Box (Pro Shortcuts & Common Traps) -->
+          <div class="cq-memory-box" style="margin: 1.5rem 0; padding: 1.15rem 1.35rem; border-radius: var(--radius-lg); background: rgba(245, 158, 11, 0.08); border: 1.5px solid rgba(245, 158, 11, 0.4); position: relative;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.15rem;">💡</span>
+                <span style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #fbbf24;">
+                  Tips &amp; Tricks &bull; Pro Shortcuts &amp; Common Traps
+                </span>
+              </div>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; background: rgba(245, 158, 11, 0.15); padding: 0.15rem 0.45rem; border-radius: 4px;">
+                Memory Anchor
+              </span>
+            </div>
+            <div style="font-size: 0.88rem; color: #e2e8f0; line-height: 1.62;">
+              {% if lesson.tips_tricks %}
+                {{ lesson.tips_tricks|linebreaksbr }}
+              {% else %}
+                <strong>Pro Shortcut:</strong> Always verify boundary conditions (empty values, off-by-one errors). In competitive coding and technical interviews, explicitly stating time complexity O(n) and edge cases before typing code distinguishes top-tier engineers.
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Optional Diagram SVG -->
+          {% if lesson.diagram_svg %}
+          <div style="margin: 1.5rem 0; padding: 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); text-align: center;">
+            {{ lesson.diagram_svg|safe }}
+          </div>
+          {% endif %}
+
+          <!-- Key Takeaways Box -->
+          <div style="margin-top: 1.25rem; padding: 1rem 1.25rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);">
+            <div style="font-size: 0.76rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem;">
+              ⚡ Pro Developer Tip
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+              Clean semantic markup improves both SEO indexing and screen reader accessibility for visually impaired learners.
+            </div>
+          </div>
+
+          <!-- Target Objective & Coding Task (Seamlessly visible together with lesson concept) -->
+          <div style="margin-top: 1.75rem; padding: 1.25rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-strong); border-left: 4px solid var(--accent); border-radius: var(--radius-md);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
+              <div style="font-size: 0.8rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
+                <span>🎯</span> <span>Target Objective &bull; What to Code</span>
+              </div>
+              <button id="inlineFillSolutionBtn" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.2rem 0.65rem; color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); font-weight: 700;" title="Click to auto-populate solution into code editor">
+                ⚡ Auto-Fill Solution
+              </button>
+            </div>
+            <div style="font-size: 0.94rem; color: var(--text-primary); font-weight: 600; line-height: 1.6; margin-bottom: 0.85rem;">
+              {{ lesson.task_prompt }}
+            </div>
+            <div style="padding: 0.75rem 1rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 0.85rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+              <div style="font-weight: 700; color: var(--text-muted); font-size: 0.74rem; text-transform: uppercase; margin-bottom: 0.3rem;">Verification Rules</div>
+              &bull; Type your code in the editor on the right.<br/>
+              &bull; Press <kbd style="background: var(--bg-surface); padding: 0.1rem 0.35rem; border-radius: 3px; font-family: var(--font-mono); font-size: 0.72rem; border: 1px solid var(--border-medium);">Ctrl+Enter</kbd> to run tests and earn +{{ lesson.xp }} XP!
+            </div>
+            <div style="display: flex; justify-content: flex-end; align-items: center;">
+              <button id="inlineShowHintBtn" style="background: none; border: none; color: #f59e0b; cursor: pointer; font-size: 0.78rem; font-weight: 700; text-decoration: underline;">
+                💡 Need a hint? Show solution snippet
+              </button>
+            </div>
+
+          <!-- Pillar 4: Post-Lesson Micro-Tasks (3 Automated Tiers) -->
+          <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+              <div style="font-size: 0.8rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
+                <span>⚡</span> <span>Post-Lesson Micro-Tasks (Automated Multi-Case)</span>
+              </div>
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; background: rgba(245, 158, 11, 0.1); padding: 0.15rem 0.45rem; border-radius: 4px;">
+                +120 XP Pool
+              </span>
+            </div>
+
+            <div id="microTasksContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
+              {% if micro_tasks %}
+                {% for mt in micro_tasks %}
+                <div class="cq-card" id="mtCard_{{ mt.id }}" style="padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated);">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.35rem;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">
+                      {{ mt.title }}
+                    </div>
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 0.15rem 0.4rem; border-radius: 4px;">
+                      +{{ mt.xp_reward }} XP
+                    </span>
+                  </div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.5rem;">
+                    {{ mt.description }}
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="mtBadge_{{ mt.id }}" style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">
+                      Normal &bull; Edge &bull; Stress
+                    </span>
+                    <button onclick="runMicroTask({{ mt.id }})" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">
+                      Evaluate &rarr;
+                    </button>
+                  </div>
+                </div>
+                {% endfor %}
+              {% else %}
+                <div class="cq-card" id="mtCard_t1" style="padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Task 1: Core Syntax Check</div>
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">+30 XP</span>
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Deterministic validation of core syntax patterns.</div>
+                </div>
+                <div class="cq-card" id="mtCard_t2" style="padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Task 2: Boundary Edge Case</div>
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">+40 XP</span>
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Empty values and extreme array boundaries guarded.</div>
+                </div>
+                <div class="cq-card" id="mtCard_t3" style="padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Task 3: Mini Boss Stress Test</div>
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #ec4899; font-weight: 700;">+50 XP</span>
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Sub-10ms latency execution verification.</div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+            <div id="inlineHintBox" style="display: none; margin-top: 0.65rem; padding: 0.75rem 1rem; background: var(--warning-subtle); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; font-size: 0.82rem; color: var(--text-primary);">
+              <div style="font-weight: 700; color: #f59e0b; margin-bottom: 0.3rem;">Solution Blueprint:</div>
+              <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem; color: #38bdf8; background: #060913; padding: 0.5rem; border-radius: 4px; overflow-x: auto;"><code>{{ lesson.solution }}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Task & Objective -->
+        <div id="studyTabTask" class="study-tab-content" style="display: none;">
+          <div style="padding: 1.25rem; background: var(--bg-panel); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 1.5rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.4rem;">
+              🎯 Target Objective
+            </div>
+            <div style="font-size: 0.92rem; color: var(--text-primary); line-height: 1.6;">
+              {{ lesson.task_prompt }}
+            </div>
+          </div>
+
+          <div style="padding: 1rem 1.25rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 1.25rem;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">
+              Verification Rules
+            </div>
+            <div style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55;">
+              • Match all opening and closing tags.<br/>
+              • Maintain proper hierarchical parent-child nesting.<br/>
+              • Press <kbd style="background: var(--bg-panel); padding: 0.1rem 0.4rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; border: 1px solid var(--border-medium);">Ctrl+Enter</kbd> to run automated validation tests.
+            </div>
+          </div>
+
+          <button id="openBoxInspectorBtnFromTask" class="btn btn-ghost" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 0.5rem; border: 1px dashed var(--border-medium);">
+            📐 Launch Visual CSS Box Model Lab
+          </button>
+        </div>
+
+        <!-- Tab 3: Software Engineering Living Models Hub -->
+        <div id="studyTabModels" class="study-tab-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <div style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em;">
+                Software Architecture &amp; Models
+              </div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">
+                7 Living engineering models &bull; Interactive mental maps
+              </div>
+            </div>
+            <span style="font-size: 0.72rem; color: var(--success); font-family: var(--font-mono); background: rgba(16,185,129,0.12); padding: 0.15rem 0.5rem; border-radius: 999px; border: 1px solid rgba(16,185,129,0.25);">
+              ● Real-Time Sync
+            </span>
+          </div>
+
+          <!-- Model Navigation Pills Bar (7 Living Software Models) -->
+          <div class="models-nav-pills" style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.65rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+            <button class="model-pill-btn active" data-model="dom">🌳 DOM Tree</button>
+            <button class="model-pill-btn" data-model="box">📦 CSS Box Model</button>
+            <button class="model-pill-btn" data-model="ast">⚡ AST &amp; State</button>
+            <button class="model-pill-btn" data-model="memory">🧠 Memory &amp; Pointers</button>
+            <button class="model-pill-btn" data-model="schema">🗄️ Relational Schema</button>
+            <button class="model-pill-btn" data-model="eventloop">🔄 Event Loop</button>
+            <button class="model-pill-btn" data-model="arch">🏛️ 3-Tier Architecture</button>
+          </div>
+
+          <!-- Pane 1: Live DOM Tree (Document Object Model) -->
+          <div id="modelPaneDom" class="model-pane-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted);">
+              <span id="domStatsBadge">0 Elements &bull; Depth: 0</span>
+              <span style="color: #38bdf8;">HTML5 Living DOM</span>
+            </div>
+            <div id="liveDomTreeContainer" style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1rem; min-height: 220px; max-height: 400px; overflow-y: auto;">
+              <!-- Populated live by DOM parser -->
+            </div>
+            <div style="margin-top: 0.75rem; font-size: 0.76rem; color: var(--text-muted); line-height: 1.45;">
+              💡 The Document Object Model (DOM) is an in-memory tree representing every tag, attribute, and text node rendered by the browser engine.
+            </div>
+          </div>
+
+          <!-- Pane 2: CSS Box Model (Layout & Geometry Model) -->
+          <div id="modelPaneBox" class="model-pane-content" style="display: none;">
+            <div style="background: var(--bg-panel); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem; border: 1px solid var(--border-subtle);">
+              <div class="box-model-preview" style="display: flex; justify-content: center; align-items: center;">
+                <div id="inBmMarginLayer" class="bm-layer bm-margin" style="background: rgba(245, 158, 11, 0.12); border: 1px dashed #f59e0b; padding: 24px; border-radius: 8px; text-align: center; transition: all 0.15s ease;">
+                  <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 0.25rem;">Margin (<span id="inlineLabelMargin">24px</span>)</span>
+                  <div id="inBmBorderLayer" class="bm-layer bm-border" style="background: rgba(6, 182, 212, 0.15); border: 2px solid #06b6d4; border-radius: 6px; text-align: center; transition: all 0.15s ease;">
+                    <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700; margin-bottom: 0.25rem;">Border (<span id="inlineLabelBorder">2px</span>)</span>
+                    <div id="inBmPaddingLayer" class="bm-layer bm-padding" style="background: rgba(16, 185, 129, 0.15); padding: 20px; border-radius: 4px; text-align: center; transition: all 0.15s ease;">
+                      <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: #10b981; font-weight: 700; margin-bottom: 0.25rem;">Padding (<span id="inlineLabelPadding">20px</span>)</span>
+                      <div id="inBmContentLayer" class="bm-layer bm-content" style="background: rgba(99, 102, 241, 0.25); border: 1px solid #6366f1; padding: 0.5rem 1rem; border-radius: 4px; text-align: center; min-width: 140px;">
+                        <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #ffffff; font-weight: 700;">Content (240 × 56px)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mathematical Breakdown Card -->
+            <div id="boxModelMathDisplay" style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; font-family: var(--font-mono); font-size: 0.74rem; margin-bottom: 1rem;">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Box-Sizing Mode Toggle -->
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; padding: 0.5rem 0.75rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 0.78rem;">
+              <span style="color: var(--text-muted); font-weight: 700;">Box Sizing:</span>
+              <label style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                <input type="radio" name="boxSizingMode" value="border-box" checked />
+                <span>border-box</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                <input type="radio" name="boxSizingMode" value="content-box" />
+                <span>content-box</span>
+              </label>
+            </div>
+
+            <!-- Sliders -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1rem;">
+              <div>
+                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: #f59e0b;">
+                  <span>Margin</span>
+                  <span id="inlineValMargin">24px</span>
+                </label>
+                <input type="range" id="inlineInputMargin" min="0" max="48" value="24" style="width: 100%; accent-color: #f59e0b;" />
+              </div>
+              <div>
+                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: #06b6d4;">
+                  <span>Border Width</span>
+                  <span id="inlineValBorder">2px</span>
+                </label>
+                <input type="range" id="inlineInputBorder" min="0" max="12" value="2" style="width: 100%; accent-color: #06b6d4;" />
+              </div>
+              <div>
+                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: #10b981;">
+                  <span>Padding</span>
+                  <span id="inlineValPadding">20px</span>
+                </label>
+                <input type="range" id="inlineInputPadding" min="0" max="48" value="20" style="width: 100%; accent-color: #10b981;" />
+              </div>
+              <div>
+                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: var(--accent);">
+                  <span>Border Radius</span>
+                  <span id="inlineLabelRadius">8px</span>
+                </label>
+                <input type="range" id="inlineInputRadius" min="0" max="24" value="8" style="width: 100%; accent-color: var(--accent);" />
+              </div>
+            </div>
+
+            <!-- CSS Output Box -->
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; background: var(--bg-surface); padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+              <code id="inlineBoxModelCssOutput" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); white-space: pre-wrap; word-break: break-all;">
+box-sizing: border-box;
+margin: 24px; padding: 20px; border: 2px solid;
+              </code>
+              <button id="inlineCopyBoxCssBtn" class="btn btn-primary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; flex-shrink: 0;">
+                Copy CSS
+              </button>
+            </div>
+          </div>
+
+          <!-- Pane 3: AST & State Flow Model -->
+          <div id="modelPaneAst" class="model-pane-content" style="display: none;">
+            <div style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.65rem;">
+              Abstract Syntax Tree &bull; In-Memory Compilation Tokens
+            </div>
+            <div id="astNodesContainer" style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem; max-height: 220px; overflow-y: auto; margin-bottom: 1rem;">
+              <!-- Populated by JS -->
+            </div>
+
+            <div style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.45rem;">
+              Call Stack &amp; Execution Frames
+            </div>
+            <div id="callStackContainer" style="margin-bottom: 1rem;">
+              <!-- Populated by JS -->
+            </div>
+
+            <div style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.45rem;">
+              Lexical Scope Chain Inspector
+            </div>
+            <div id="scopeChainContainer" style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Pane 4: Relational Schema Model -->
+          <div id="modelPaneSchema" class="model-pane-content" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">
+              <span>Relational Tables &bull; PostgreSQL / SQLite</span>
+              <span style="color: #10b981;">ACID Safe</span>
+            </div>
+            <div id="relationalTablesList" style="max-height: 340px; overflow-y: auto;">
+              <!-- Populated by JS -->
+            </div>
+            <div style="margin-top: 0.75rem; font-size: 0.74rem; color: var(--text-muted); line-height: 1.45;">
+              💡 Relational databases organize persistent state into mathematical relations with indexed Primary Keys ($O(1)$ lookup) and Foreign Key integrity.
+            </div>
+          </div>
+
+          <!-- Pane 5: 3-Tier Architecture Model -->
+          <div id="modelPaneArch" class="model-pane-content" style="display: none;">
+            <div style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.75rem;">
+              Full-Stack 3-Tier Architecture Topology
+            </div>
+            <div id="architectureTiersContainer">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Pane 6: Memory Layout & Pointers Model (Stack vs. Heap) -->
+          <div id="modelPaneMemory" class="model-pane-content" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">
+              <span>Memory Layout &bull; Stack Frames vs. Dynamic Heap</span>
+              <span style="color: #38bdf8;">64-bit Hex Pointers</span>
+            </div>
+
+            <!-- Memory Action Toolbar -->
+            <div style="display: flex; gap: 0.4rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+              <button id="memBtnPushStack" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono);">
+                + Push Stack Frame
+              </button>
+              <button id="memBtnPopStack" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono);">
+                - Pop Frame
+              </button>
+              <button id="memBtnAllocHeap" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono); color: #10b981;">
+                + malloc(64)
+              </button>
+              <button id="memBtnFreeHeap" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444;">
+                free()
+              </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <!-- Left: Stack Memory Segment (LIFO) -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem;">
+                <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #818cf8; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                  <span>STACK MEMORY (LIFO)</span>
+                  <span style="color: var(--text-muted); font-size: 0.68rem;">High &rarr; Low</span>
+                </div>
+                <div id="stackFramesList" style="display: flex; flex-direction: column; gap: 0.45rem; min-height: 160px; max-height: 240px; overflow-y: auto;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <!-- Right: Heap Memory Segment (Dynamic Allocations) -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem;">
+                <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #34d399; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                  <span>HEAP MEMORY (DYN)</span>
+                  <span style="color: var(--text-muted); font-size: 0.68rem;">Low &rarr; High</span>
+                </div>
+                <div id="heapBlocksList" style="display: flex; flex-direction: column; gap: 0.45rem; min-height: 160px; max-height: 240px; overflow-y: auto;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 0.75rem; font-size: 0.74rem; color: var(--text-muted); line-height: 1.45;">
+              💡 <strong>Systems Mental Model:</strong> Stack frames allocate fast fixed-size automatic storage for local scope. The Heap provides persistent dynamic memory referenced via 64-bit pointers (e.g. <code>0x7ffee4b2</code>).
+            </div>
+          </div>
+
+          <!-- Pane 7: Concurrency & Event Loop Model -->
+          <div id="modelPaneEventloop" class="model-pane-content" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">
+              <span>Event Loop &bull; Single-Threaded Concurrency Pipeline</span>
+              <button id="btnStepEventLoop" class="btn btn-primary" style="padding: 0.2rem 0.65rem; font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700;">
+                ⚡ Step Event Loop Tick
+              </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.5rem; margin-bottom: 0.75rem;">
+              <!-- 1. Call Stack -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #818cf8; margin-bottom: 0.35rem;">
+                  CALL STACK (LIFO)
+                </div>
+                <div id="elCallStack" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <!-- 2. Web APIs / Background -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b; margin-bottom: 0.35rem;">
+                  WEB APIS / IO
+                </div>
+                <div id="elWebApis" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <!-- 3. Microtask Queue -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4; margin-bottom: 0.35rem;">
+                  MICROTASK (Promises)
+                </div>
+                <div id="elMicrotasks" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <!-- 4. Macrotask Queue -->
+              <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; margin-bottom: 0.35rem;">
+                  TASK QUEUE (Timers)
+                </div>
+                <div id="elMacrotasks" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Loop State Indicator -->
+            <div id="elLoopStatus" style="padding: 0.5rem 0.75rem; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 4px; font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-primary); display: flex; justify-content: space-between; align-items: center;">
+              <span>Loop Status: <strong style="color: var(--accent);">Waiting for next tick</strong></span>
+              <span style="color: var(--text-muted); font-size: 0.7rem;">Priority: Microtasks &gt; Tasks</span>
+            </div>
+
+            <div style="margin-top: 0.75rem; font-size: 0.74rem; color: var(--text-muted); line-height: 1.45;">
+              💡 <strong>Runtime Mental Model:</strong> The Event Loop continuously checks if the Call Stack is empty. When empty, it drains all Microtasks (Promises) before dequeuing the next Macrotask (setTimeout/DOM events).
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Interactive Quick Quiz & Cheat Sheet -->
+        <div id="studyTabQuiz" class="study-tab-content" style="display: none;">
+          <!-- Knowledge Check Card -->
+          <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: #a855f7; text-transform: uppercase;">
+                🧠 Knowledge Check &bull; Quick Concept Check
+              </span>
+              <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">
+                Instant Feedback
+              </span>
+            </div>
+            <div id="quickQuizQuestion" style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.85rem; line-height: 1.5;">
+              What is the key takeaway of this lesson?
+            </div>
+            <div id="quickQuizOptions" style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <!-- Dynamically populated by JS -->
+            </div>
+            <div id="quickQuizFeedback" style="display: none; margin-top: 0.75rem; padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.84rem; line-height: 1.5;"></div>
+          </div>
+
+          <!-- Cheat Sheet Card -->
+          <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase;">
+                📋 Quick Reference Cheat Sheet
+              </span>
+              <button id="btnCopyCheatSheet" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono);">
+                Copy Snippet 📋
+              </button>
+            </div>
+            <pre id="cheatSheetSnippet" style="background: #060913; border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.82rem; color: #38bdf8; overflow-x: auto; margin-bottom: 0.75rem;"><code>{{ lesson.solution }}</code></pre>
+            <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
+              💡 <strong>Pro Tip:</strong> Re-type this pattern in the editor instead of copying to reinforce neural muscle memory.
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Progressive Guided Hints -->
+        <div id="studyTabHints" class="study-tab-content" style="display: none;">
+          <div style="margin-bottom: 1rem; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+            Stuck on a syntax check or failing test? Unlock progressive step-by-step guidance to diagnose the issue yourself.
+          </div>
+
+          <button id="revealHintBtn" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 0.55rem; margin-bottom: 1rem;">
+            🔍 Reveal Next Hint
+          </button>
+
+          <div id="hintDisplayBox" style="display: none; padding: 1rem 1.25rem; background: var(--warning-subtle); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-sm); font-size: 0.88rem; color: var(--text-primary); line-height: 1.6;">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Draggable Splitter Divider -->
+    <div id="workspaceSplitter" class="cq-splitter-v" title="Drag to resize panels (Double-click to reset)"></div>
+
+    <!-- Right Column: Interactive Code Studio & Verification Deck -->
+    <div id="panelEditorWrapper" style="flex: 1; min-width: 360px; display: flex; flex-direction: column; gap: 0.85rem;">
+      
+      <!-- Upper Pane: Professional Code Editor -->
+      <div id="panelCodeEditor" class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border-strong);">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 0.55rem 1rem; background: var(--bg-surface-elevated); border-bottom: 1px solid var(--border-subtle); gap: 0.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted);">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent);"></span>
+            <span style="font-weight: 600; color: var(--text-primary);">editor.{{ course.language.slug|default:'html' }}</span>
+            <span style="font-size: 0.72rem; color: var(--text-dim); margin-left: 0.4rem;">(Ctrl+Enter to check)</span>
+          </div>
+
+          <!-- Studio Toolbar Actions -->
+          <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center;">
+            <button id="formatCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.76rem;" title="Auto-indent and format code">
+              ⇥ Format
+            </button>
+            <button id="openBoxInspectorBtn" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.76rem;" title="Open Visual Box Model &amp; Flexbox Inspector">
+              📐 Box Inspector
+            </button>
+            <button id="resetCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.76rem;" title="Reset Starter Code">
+              ↺ Reset
+            </button>
+            <button id="fillSolutionBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.76rem; color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); font-weight: 700;" title="Auto-fill verified solution code">
+              ⚡ Fill Solution
+            </button>
+            <button id="runCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.75rem; font-size: 0.76rem;" title="Run live sandboxed preview">
+              ▶ Preview
+            </button>
+            <button id="checkSolutionBtn" class="btn btn-primary" style="padding: 0.3rem 0.95rem; font-size: 0.78rem; font-weight: 700;">
+              ✔ Check Solution
+            </button>
+          </div>
+        </div>
+
+        <textarea id="codeEditor" class="code-editor" style="min-height: 240px; border: none; border-radius: 0; font-size: 0.9rem; outline: none; background: var(--bg-input); color: var(--text-primary); padding: 1.25rem;" spellcheck="false">{{ lesson.starter_code }}</textarea>
+      </div>
+
+      <!-- Lower Pane: Tabbed Studio Deck (Preview, Test Suite, Console) -->
+      <div id="panelStudioDeck" class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+        
+        <!-- Studio Deck Tabs Header -->
+        <div class="studio-tabs-nav" style="justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 0.35rem;">
+            <button class="studio-tab-btn active" data-studio-tab="preview">
+              🌐 Live Preview
+            </button>
+            <button class="studio-tab-btn" data-studio-tab="tests">
+              🧪 Test Suite <span id="testBadgeCount" style="margin-left: 0.3rem; padding: 0.1rem 0.35rem; border-radius: 999px; background: rgba(99, 102, 241, 0.15); font-size: 0.7rem; font-family: var(--font-mono);">0/{{ lesson.tests_json|length|default:3 }}</span>
+            </button>
+            <button class="studio-tab-btn" data-studio-tab="console">
+              🖥️ Console
+            </button>
+            <button class="studio-tab-btn" data-studio-tab="game">
+              🎮 Syntax Game: {{ full_syntax_game.title|default:"Cyber Grid Rover" }}
+            </button>
+          </div>
+
+          <!-- Canvas Controls & Status -->
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <span id="runnerStatusMessage" style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 600;"></span>
+            <button id="togglePreviewCanvasBtn" class="btn btn-ghost" style="padding: 0.15rem 0.5rem; font-size: 0.7rem; height: auto;" title="Switch Preview Canvas Dark/Light">
+              🌓 Canvas
+            </button>
+          </div>
+        </div>
+
+        <!-- Studio Tab Content: 1. Live Preview -->
+        <div id="studioTabPreview" class="studio-tab-pane">
+          <div id="iframeWrapper" style="width: 100%; transition: max-width 0.2s ease; margin: 0 auto;">
+            <iframe id="previewIframe" sandbox="allow-scripts allow-same-origin" style="width: 100%; height: 230px; border: none; background: var(--bg-input); display: block;"></iframe>
+          </div>
+        </div>
+
+        <!-- Studio Tab Content: 2. Test Verification Suite -->
+        <div id="studioTabTests" class="studio-tab-pane" style="display: none; padding: 1.15rem; min-height: 230px; overflow-y: auto;">
+          <div style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.65rem;">
+            Automated Acceptance Criteria
+          </div>
+          <div id="testChecklist" style="display: flex; flex-direction: column; gap: 0.45rem;">
+            <!-- Dynamically populated by web_runner.js with safe pills -->
+          </div>
+        </div>
+
+        <!-- Studio Tab Content: 3. Console Logs -->
+        <div id="studioTabConsole" class="studio-tab-pane" style="display: none; padding: 1rem; min-height: 230px; background: #080a0f;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 0.4rem;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">
+              JavaScript &bull; Sandboxed Console Stream
+            </span>
+            <button id="clearConsoleBtn" class="btn btn-ghost" style="padding: 0.15rem 0.5rem; font-size: 0.7rem; height: auto;">
+              Clear
+            </button>
+          </div>
+          <div id="studioConsoleLogs" style="font-family: var(--font-mono); font-size: 0.78rem; min-height: 160px; max-height: 200px; overflow-y: auto;">
+            <div style="color: var(--text-dim); font-style: italic; padding: 0.5rem 0;">
+              Console ready. Use console.log() inside scripts to stream outputs.
+            </div>
+          </div>
+
+        <!-- Studio Tab Content: 4. Real Code-Writing Interactive Game Canvas (Pillar 3) -->
+        <div id="studioTabGame" class="studio-tab-pane" style="display: none; padding: 0.75rem; min-height: 230px; background: #080c14;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding: 0 0.25rem;">
+            <div style="font-size: 0.78rem; font-weight: 700; color: #38bdf8; font-family: var(--font-mono);">
+              🕹️ {{ full_syntax_game.title|default:"Cyber Grid Rover" }} &bull; Live Canvas
+            </div>
+            <span style="font-size: 0.72rem; color: #10b981; font-family: var(--font-mono);">Real-Time Code Engine</span>
+          </div>
+          <div style="position: relative; border-radius: var(--radius-md); overflow: hidden; border: 1px solid rgba(56, 189, 248, 0.2); background: #030712; height: 210px; display: flex; align-items: center; justify-content: center;">
+            <canvas id="syntaxGameCanvas" width="480" height="200" style="display: block; max-width: 100%; height: auto;"></canvas>
+            <div id="gameOverlayText" style="position: absolute; bottom: 8px; left: 12px; font-family: var(--font-mono); font-size: 0.72rem; color: #94a3b8; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px;">
+              Syntax Battery: 100% &bull; Coordinates: [0, 0] &bull; Status: Ready
+            </div>
+          </div>
+        </div>
+        </div>
+
+      </div>
+
+      <!-- Lesson Completion Celebration Banner -->
+      <div id="lessonCompletionBanner" class="cq-card" style="display: none; padding: 1.25rem 1.5rem; background: var(--success-subtle); border-color: rgba(16, 185, 129, 0.4); justify-content: space-between; align-items: center; gap: 1rem; animation: slideDown 0.3s var(--ease);">
+        <div>
+          <div style="font-weight: 800; color: var(--success); font-size: 1rem; margin-bottom: 0.2rem;">
+            ✓ Lesson Complete!
+          </div>
+          <div style="font-size: 0.84rem; color: var(--text-secondary);">
+            +{{ lesson.xp }} XP awarded. You have mastered this concept!
+          </div>
+        </div>
+        {% if next_lesson %}
+        <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.86rem; font-weight: 700;">
+          Next Lesson &rarr;
+        </a>
+        {% else %}
+        <a href="{% url 'course_detail' course.slug %}" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.86rem; font-weight: 700;">
+          Complete Track &rarr;
+        </a>
+        {% endif %}
+      </div>
+
+    </div>
+
+  </div>
+
+  </div> <!-- End #lessonStudioRoot -->
+
+  <!-- Floating Always-On-Top Exit Zen Pill (Maximum Z-Index 2147483647 Failsafe) -->
+  <button id="floatingLessonZenExitPill" class="floating-zen-exit-pill" title="Exit Zen Fullscreen Mode (Press Esc)">
+    <span class="zen-exit-pill-icon">✕</span>
+    <span class="zen-exit-pill-text">Exit Zen Mode</span>
+    <kbd class="zen-exit-pill-kbd">Esc</kbd>
+  </button>
+
+</div>
+
+<!-- Interactive Visual Box Model & Flexbox Modal -->
+<div id="boxInspectorModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 10000; align-items: center; justify-content: center; padding: 1.5rem;">
+  <div class="cq-card" style="width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; padding: 2rem; border: 1px solid var(--border-strong);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
+      <div style="display: flex; align-items: center; gap: 0.65rem;">
+        <span style="font-size: 1.4rem;">📐</span>
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin: 0;">Visual CSS Box Model &amp; Flexbox Lab</h3>
+          <span style="font-size: 0.78rem; color: var(--text-muted);">Direct manipulation &bull; Drag sliders to visualize layout mechanics</span>
+        </div>
+      </div>
+      <button id="closeBoxInspectorBtn" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 1rem;">✕</button>
+    </div>
+
+    <!-- Live Rendered Box Model Graphic -->
+    <div style="background: var(--bg-panel); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.75rem; border: 1px solid var(--border-subtle);">
+      <div class="box-model-preview">
+        <div id="bmMarginLayer" class="bm-layer bm-margin">
+          <span class="bm-label">Margin (<span id="valMargin">24</span>px)</span>
+          <div id="bmBorderLayer" class="bm-layer bm-border">
+            <span class="bm-label">Border (<span id="valBorder">2</span>px)</span>
+            <div id="bmPaddingLayer" class="bm-layer bm-padding">
+              <span class="bm-label">Padding (<span id="valPadding">20</span>px)</span>
+              <div id="bmContentLayer" class="bm-layer bm-content">
+                <span>Content (240 &times; 60px)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sliders and Controls -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+      <div>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: #f59e0b;">
+          <span>Margin</span>
+          <span id="labelMargin">24px</span>
+        </label>
+        <input type="range" id="inputMargin" min="0" max="48" value="24" style="width: 100%; accent-color: #f59e0b;" />
+      </div>
+
+      <div>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: #06b6d4;">
+          <span>Border Width</span>
+          <span id="labelBorder">2px</span>
+        </label>
+        <input type="range" id="inputBorder" min="0" max="12" value="2" style="width: 100%; accent-color: #06b6d4;" />
+      </div>
+
+      <div>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: #10b981;">
+          <span>Padding</span>
+          <span id="labelPadding">20px</span>
+        </label>
+        <input type="range" id="inputPadding" min="0" max="48" value="20" style="width: 100%; accent-color: #10b981;" />
+      </div>
+
+      <div>
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: var(--accent);">
+          <span>Border Radius</span>
+          <span id="labelRadius">8px</span>
+        </label>
+        <input type="range" id="inputRadius" min="0" max="24" value="8" style="width: 100%; accent-color: var(--accent);" />
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+      <code id="boxModelCssOutput" style="font-family: var(--font-mono); font-size: 0.78rem; background: var(--bg-input); padding: 0.4rem 0.75rem; border-radius: var(--radius-sm); color: var(--text-secondary);">
+        margin: 24px; padding: 20px; border: 2px solid; border-radius: 8px;
+      </code>
+      <button id="copyBoxCssBtn" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.82rem;">
+        Copy CSS Rules
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/runners/web_runner.js' %}"></script>
+<script src="{% static 'js/software_models.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const rawEditor = document.getElementById('codeEditor');
+    let cmInstance = null;
+    let sfxEnabled = true;
+
+    // Detect language mode for CodeMirror
+    const langSlug = '{{ course.language.slug|default:"html" }}';
+    let cmMode = 'htmlmixed';
+    if (langSlug.includes('css')) cmMode = 'css';
+    else if (langSlug.includes('js') || langSlug.includes('javascript')) cmMode = 'javascript';
+    else if (langSlug.includes('py') || langSlug.includes('python')) cmMode = 'python';
+    else if (langSlug.includes('sql')) cmMode = 'sql';
+
+    // Mount CodeMirror
+    if (window.CodeMirror && rawEditor) {
+      cmInstance = CodeMirror.fromTextArea(rawEditor, {
+        mode: cmMode,
+        theme: 'codequest',
+        lineNumbers: true,
+        matchBrackets: true,
+        autoCloseTags: true,
+        autoCloseBrackets: true,
+        tabSize: 2,
+        indentUnit: 2,
+        lineWrapping: true
+      });
+
+      // Synchronize changes to textarea, mechanical click audio, and living software models
+      cmInstance.on('change', function () {
+        cmInstance.save();
+        if (sfxEnabled && window.CodeQuest && window.CodeQuest.playMechanicalClick) {
+          window.CodeQuest.playMechanicalClick();
+        }
+        if (window.updateAllSoftwareModels) {
+          window.updateAllSoftwareModels();
+        }
+      });
+
+      // Bind Ctrl+Enter inside CodeMirror to run checks and Escape to exit Zen
+      cmInstance.setOption('extraKeys', {
+        'Ctrl-Enter': function () {
+          document.getElementById('checkSolutionBtn').click();
+        },
+        'Cmd-Enter': function () {
+          document.getElementById('checkSolutionBtn').click();
+        },
+        'Esc': function () {
+          if (lessonStudioRoot && lessonStudioRoot.classList.contains('zen-fullscreen-root')) {
+            toggleLessonZen();
+          }
+        },
+        'Escape': function () {
+          if (lessonStudioRoot && lessonStudioRoot.classList.contains('zen-fullscreen-root')) {
+            toggleLessonZen();
+          }
+        }
+      });
+    }
+
+    // Auto-Format Code Button
+    const formatBtn = document.getElementById('formatCodeBtn');
+    if (formatBtn && cmInstance) {
+      formatBtn.onclick = function () {
+        const total = cmInstance.lineCount();
+        for (let i = 0; i < total; i++) {
+          cmInstance.indentLine(i);
+        }
+        formatBtn.textContent = '✓ Formatted';
+        setTimeout(() => { formatBtn.textContent = '⇥ Format'; }, 1200);
+      };
+    }
+
+    // Auto-Fill Solution helper
+    function applySolution(andRun) {
+      const solutionText = `{{ lesson.solution|escapejs }}`;
+      if (rawEditor) {
+        rawEditor.value = solutionText;
+      }
+      if (cmInstance) {
+        cmInstance.setValue(solutionText);
+        cmInstance.save();
+      }
+      const previewBtn = document.getElementById('runCodeBtn');
+      if (previewBtn) previewBtn.click();
+      if (window.CodeQuest && window.CodeQuest.playTone) {
+        window.CodeQuest.playTone('success');
+      }
+      if (andRun) {
+        setTimeout(function() {
+          const checkBtn = document.getElementById('checkSolutionBtn');
+          if (checkBtn) checkBtn.click();
+        }, 300);
+      }
+    }
+
+    const fillBtn = document.getElementById('fillSolutionBtn');
+    if (fillBtn) fillBtn.onclick = function() { applySolution(false); };
+
+    const inlineFillBtn = document.getElementById('inlineFillSolutionBtn');
+    if (inlineFillBtn) inlineFillBtn.onclick = function() { applySolution(true); };
+
+    const inlineHintBtn = document.getElementById('inlineShowHintBtn');
+    const inlineHintBox = document.getElementById('inlineHintBox');
+    if (inlineHintBtn && inlineHintBox) {
+      inlineHintBtn.onclick = function () {
+        inlineHintBox.style.display = (inlineHintBox.style.display === 'none' || !inlineHintBox.style.display) ? 'block' : 'none';
+      };
+    }
+
+    // Audio SFX Toggle
+    const sfxBtn = document.getElementById('lessonAudioToggle');
+    if (sfxBtn) {
+      sfxBtn.onclick = function () {
+        sfxEnabled = !sfxEnabled;
+        sfxBtn.textContent = sfxEnabled ? '⌨ Mechanical SFX' : '🔇 Muted SFX';
+        sfxBtn.style.color = sfxEnabled ? 'var(--accent)' : 'var(--text-muted)';
+      };
+    }
+
+    // Zen Mode Fullscreen Toggle & Studio Management
+    const lessonStudioRoot = document.getElementById('lessonStudioRoot');
+    const zenBtn = document.getElementById('zenModeBtn');
+    const exitLessonZenBtn = document.getElementById('exitLessonZenBtn');
+    const floatingLessonZenExitPill = document.getElementById('floatingLessonZenExitPill');
+
+    function toggleLessonZen() {
+      if (!lessonStudioRoot) return;
+      const isZen = lessonStudioRoot.classList.toggle('zen-fullscreen-root');
+      document.body.classList.toggle('zen-locked', isZen);
+
+      if (zenBtn) {
+        zenBtn.innerHTML = isZen ? '✕ Exit Zen' : '⛶ Zen Mode';
+        zenBtn.style.borderColor = isZen ? '#ef4444' : '';
+      }
+
+      if (floatingLessonZenExitPill) {
+        floatingLessonZenExitPill.style.display = isZen ? 'inline-flex' : 'none';
+      }
+
+      setTimeout(function () {
+        if (cmInstance) cmInstance.refresh();
+      }, 50);
+    }
+
+    if (zenBtn) {
+      zenBtn.onclick = toggleLessonZen;
+    }
+
+    if (exitLessonZenBtn) {
+      exitLessonZenBtn.onclick = toggleLessonZen;
+    }
+
+    if (floatingLessonZenExitPill) {
+      floatingLessonZenExitPill.onclick = toggleLessonZen;
+    }
+
+    const zenLessonRunBtn = document.getElementById('zenLessonRunBtn');
+    if (zenLessonRunBtn) {
+      zenLessonRunBtn.onclick = function () {
+        const checkBtn = document.getElementById('checkSolutionBtn');
+        if (checkBtn) {
+          checkBtn.click();
+        } else {
+          const runBtn = document.getElementById('runCodeBtn');
+          if (runBtn) runBtn.click();
+        }
+      };
+    }
+
+    const zenLessonAudioToggle = document.getElementById('zenLessonAudioToggle');
+    if (zenLessonAudioToggle) {
+      zenLessonAudioToggle.onclick = function () {
+        const audioBtn = document.getElementById('lessonAudioToggle');
+        if (audioBtn) audioBtn.click();
+      };
+    }
+
+    // Global Capture Escape Key to cleanly exit Zen Mode across all elements
+    function handleLessonZenEscape(e) {
+      if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+        if (lessonStudioRoot && lessonStudioRoot.classList.contains('zen-fullscreen-root')) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleLessonZen();
+        }
+      }
+    }
+    window.addEventListener('keydown', handleLessonZenEscape, true);
+    document.addEventListener('keydown', handleLessonZenEscape, true);
+
+    // Message listener for preview iframe escape forwarding
+    window.addEventListener('message', function (e) {
+      if (!e.data) return;
+      if (e.data.type === 'cq_esc') {
+        if (lessonStudioRoot && lessonStudioRoot.classList.contains('zen-fullscreen-root')) {
+          toggleLessonZen();
+        }
+      }
+    });
+
+    // Draggable Workspace Splitter
+    const wsContainer = document.getElementById('workspaceContainer');
+    const splitter = document.getElementById('workspaceSplitter');
+    const panelInst = document.getElementById('panelInstructions');
+
+    if (splitter && panelInst && wsContainer) {
+      let isDragging = false;
+
+      splitter.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        splitter.classList.add('dragging');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mousemove', function (e) {
+        if (!isDragging) return;
+        const containerRect = wsContainer.getBoundingClientRect();
+        const pointerX = e.clientX - containerRect.left;
+        const percentage = (pointerX / containerRect.width) * 100;
+
+        if (percentage >= 25 && percentage <= 65) {
+          panelInst.style.flex = `0 0 ${percentage}%`;
+          if (cmInstance) cmInstance.refresh();
+        }
+      });
+
+      document.addEventListener('mouseup', function () {
+        if (isDragging) {
+          isDragging = false;
+          splitter.classList.remove('dragging');
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+          if (cmInstance) cmInstance.refresh();
+        }
+      });
+
+      // Double-click to reset to 38%
+      splitter.addEventListener('dblclick', function () {
+        panelInst.style.flex = '0 0 38%';
+        if (cmInstance) cmInstance.refresh();
+      });
+    }
+
+    // Study Tabs (Left Pane: Concept / Task / Software Models / Hints)
+    const studyTabBtns = document.querySelectorAll('.study-tab-btn');
+    const studyContents = {
+      concept: document.getElementById('studyTabConcept'),
+      task: document.getElementById('studyTabTask'),
+      quiz: document.getElementById('studyTabQuiz'),
+      models: document.getElementById('studyTabModels') || document.getElementById('studyTabDomtree'),
+      hints: document.getElementById('studyTabHints'),
+    };
+
+    studyTabBtns.forEach(btn => {
+      btn.addEventListener('click', function () {
+        const rawKey = btn.getAttribute('data-study-tab');
+        const tabKey = (rawKey === 'domtree') ? 'models' : rawKey;
+        studyTabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        Object.keys(studyContents).forEach(k => {
+          if (studyContents[k]) {
+            studyContents[k].style.display = (k === tabKey) ? 'block' : 'none';
+          }
+        });
+      });
+    });
+
+    // Studio Deck Tabs (Right Pane: Preview / Test Suite / Console)
+    const studioTabBtns = document.querySelectorAll('.studio-tab-btn');
+    const studioPanes = {
+      preview: document.getElementById('studioTabPreview'),
+      tests: document.getElementById('studioTabTests'),
+      console: document.getElementById('studioTabConsole'),
+      game: document.getElementById('studioTabGame'),
+    };
+
+    // Lightweight Game Canvas Simulation for Pillar 3
+    function initGameCanvas() {
+      var canvas = document.getElementById('syntaxGameCanvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var x = 40, y = 100, dx = 1.5;
+      function animate() {
+        ctx.fillStyle = '#030712';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Grid lines
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 1;
+        for (var i = 0; i < canvas.width; i += 30) {
+          ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+        }
+        for (var j = 0; j < canvas.height; j += 30) {
+          ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
+        }
+        // Energy Node
+        ctx.fillStyle = '#10b981';
+        ctx.beginPath();
+        ctx.arc(380, 100, 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#fff';
+        ctx.font = '9px monospace';
+        ctx.fillText('CORE', 370, 103);
+        // Cyber Rover
+        x += dx;
+        if (x > 320 || x < 40) dx = -dx;
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(x, y - 10, 28, 20);
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(x + 18, y - 5, 8, 10);
+        // Laser trail
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(x + 28, y); ctx.lineTo(380, 100); ctx.stroke();
+        ctx.setLineDash([]);
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+    setTimeout(initGameCanvas, 500);
+
+    // Micro-Task API runner for Pillar 4
+    window.runMicroTask = function(taskId) {
+      var card = document.getElementById('mtCard_' + taskId);
+      var badge = document.getElementById('mtBadge_' + taskId);
+      if (badge) badge.innerHTML = "<span style='color: #f59e0b;'>⚙️ Evaluating 3 test tiers...</span>";
+      fetch('/api/micro-task/check/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': (function() {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+            var c = cookies[i].trim();
+            if (c.startsWith('csrftoken=')) return c.substring(10);
+          }
+          return '';
+        })() },
+        body: JSON.stringify({ task_id: taskId, code: (window.editorInstance ? window.editorInstance.getValue() : '') })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d.passed) {
+          if (card) {
+            card.style.borderColor = '#10b981';
+            card.style.background = 'rgba(16, 185, 129, 0.08)';
+          }
+          if (badge) badge.innerHTML = "<span style='color: #10b981; font-weight: bold;'>✓ ALL 3 TIERS PASSED (+" + d.xp_awarded + " XP)</span>";
+          var xpBadge = document.getElementById('xpCount');
+          if (xpBadge) {
+            var cur = parseInt(xpBadge.textContent.replace(/[^0-9]/g, '')) || 0;
+            xpBadge.textContent = (cur + d.xp_awarded) + ' XP';
+          }
+        }
+      })
+      .catch(function(e) {
+        if (badge) badge.innerHTML = "<span style='color: #ef4444;'>❌ Evaluation error</span>";
+      });
+    };
+
+    studioTabBtns.forEach(btn => {
+      btn.addEventListener('click', function () {
+        const tabKey = btn.getAttribute('data-studio-tab');
+        studioTabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        Object.keys(studioPanes).forEach(k => {
+          if (studioPanes[k]) {
+            studioPanes[k].style.display = k === tabKey ? 'block' : 'none';
+          }
+        });
+      });
+    });
+
+    // Clear Console
+    const clearConsoleBtn = document.getElementById('clearConsoleBtn');
+    const studioConsoleLogs = document.getElementById('studioConsoleLogs');
+    if (clearConsoleBtn && studioConsoleLogs) {
+      clearConsoleBtn.onclick = function () {
+        studioConsoleLogs.innerHTML = '<div style="color: var(--text-dim); font-style: italic; padding: 0.5rem 0;">Console cleared.</div>';
+      };
+    }
+
+    // Interactive Box Model Modal
+    const boxModal = document.getElementById('boxInspectorModal');
+    const openBoxBtn = document.getElementById('openBoxInspectorBtn');
+    const openBoxBtnTask = document.getElementById('openBoxInspectorBtnFromTask');
+    const closeBoxBtn = document.getElementById('closeBoxInspectorBtn');
+    const inMargin = document.getElementById('inputMargin');
+    const inBorder = document.getElementById('inputBorder');
+    const inPadding = document.getElementById('inputPadding');
+    const inRadius = document.getElementById('inputRadius');
+    const copyBoxBtn = document.getElementById('copyBoxCssBtn');
+    const cssOutput = document.getElementById('boxModelCssOutput');
+
+    function updateBoxGraphic() {
+      const m = inMargin.value;
+      const b = inBorder.value;
+      const p = inPadding.value;
+      const r = inRadius.value;
+
+      document.getElementById('valMargin').textContent = m;
+      document.getElementById('valBorder').textContent = b;
+      document.getElementById('valPadding').textContent = p;
+      document.getElementById('labelMargin').textContent = m + 'px';
+      document.getElementById('labelBorder').textContent = b + 'px';
+      document.getElementById('labelPadding').textContent = p + 'px';
+      document.getElementById('labelRadius').textContent = r + 'px';
+
+      const bmMargin = document.getElementById('bmMarginLayer');
+      const bmBorder = document.getElementById('bmBorderLayer');
+      const bmPadding = document.getElementById('bmPaddingLayer');
+
+      bmMargin.style.padding = `${m}px`;
+      bmMargin.style.borderRadius = `${r}px`;
+      bmBorder.style.borderWidth = `${b}px`;
+      bmBorder.style.borderRadius = `${Math.max(0, r - 2)}px`;
+      bmPadding.style.padding = `${p}px`;
+      bmPadding.style.borderRadius = `${Math.max(0, r - 4)}px`;
+
+      const rule = `margin: ${m}px; padding: ${p}px; border: ${b}px solid #06b6d4; border-radius: ${r}px;`;
+      cssOutput.textContent = rule;
+    }
+
+    function openBox() {
+      if (boxModal) {
+        boxModal.style.display = 'flex';
+        updateBoxGraphic();
+      }
+    }
+
+    if (openBoxBtn) openBoxBtn.onclick = openBox;
+    if (openBoxBtnTask) openBoxBtnTask.onclick = openBox;
+    if (closeBoxBtn) {
+      closeBoxBtn.onclick = function () {
+        boxModal.style.display = 'none';
+      };
+    }
+    [inMargin, inBorder, inPadding, inRadius].forEach(inp => inp && inp.addEventListener('input', updateBoxGraphic));
+    
+    if (copyBoxBtn) {
+      copyBoxBtn.onclick = function () {
+        navigator.clipboard.writeText(cssOutput.textContent.trim());
+        copyBoxBtn.textContent = '✓ Copied!';
+        setTimeout(() => { copyBoxBtn.textContent = 'Copy CSS Rules'; }, 1500);
+      };
+    }
+
+    // Initialize Web Runner Engine
+    if (window.CodeQuestLessonRunner) {
+      window.CodeQuestLessonRunner.init({
+        lessonId: {{ lesson.id }},
+        tests: JSON.parse('{{ tests_json_str|escapejs }}'),
+        hints: JSON.parse('{{ hints_json_str|escapejs }}'),
+        solution: `{{ lesson.solution|escapejs }}`,
+        xpReward: {{ lesson.xp }}
+      });
+    }
+
+    // Initialize Living Software Architecture & Models Studio
+    if (window.CodeQuestSoftwareModels) {
+      window.CodeQuestSoftwareModels.init({
+        langSlug: '{{ course.language.slug|default:"html" }}'
+      });
+    }
+
+    // Reset starter code in CodeMirror
+    const resetBtn = document.getElementById('resetCodeBtn');
+    if (resetBtn && cmInstance) {
+      resetBtn.addEventListener('click', function () {
+        setTimeout(function () {
+          cmInstance.setValue(rawEditor.value);
+        }, 50);
+      });
+    }
+
+    // --- LMS Enhanced Features: Quick Quiz, Syllabus Drawer & Keyboard Shortcuts ---
+    
+    // 1. Drawer open/close logic
+    const drawerModal = document.getElementById('syllabusDrawerModal');
+    const openDrawerBtn = document.getElementById('syllabusDrawerBtn');
+    const openDrawerZenBtn = document.getElementById('zenSyllabusDrawerBtn');
+    const closeDrawerBtn = document.getElementById('closeSyllabusDrawerBtn');
+
+    function toggleSyllabusDrawer(show) {
+      if (!drawerModal) return;
+      drawerModal.style.display = show ? 'flex' : 'none';
+    }
+
+    if (openDrawerBtn) openDrawerBtn.onclick = () => toggleSyllabusDrawer(true);
+    if (openDrawerZenBtn) openDrawerZenBtn.onclick = () => toggleSyllabusDrawer(true);
+    if (closeDrawerBtn) closeDrawerBtn.onclick = () => toggleSyllabusDrawer(false);
+    if (drawerModal) {
+      drawerModal.onclick = (e) => {
+        if (e.target === drawerModal) toggleSyllabusDrawer(false);
+      };
+    }
+
+    // 2. Interactive Quick Quiz Generator
+    const quizOptions = document.getElementById('quickQuizOptions');
+    const quizFeedback = document.getElementById('quickQuizFeedback');
+    const copyCheatBtn = document.getElementById('btnCopyCheatSheet');
+
+    function getLessonQuizData() {
+      const title = "{{ lesson.title|escapejs }}";
+      const lang = "{{ course.language.name|escapejs }}";
+      return {
+        question: `In ${lang}, what is the essential principle demonstrated in "${title}"?`,
+        options: [
+          {
+            text: "It establishes the correct syntax, scope, or structure expected by the runtime engine.",
+            isCorrect: true,
+            explanation: "Spot on! Adhering to language contracts and idiomatic syntax ensures clean execution without runtime errors."
+          },
+          {
+            text: "It completely bypasses all security rules and memory boundaries.",
+            isCorrect: false,
+            explanation: "Incorrect. Modern languages enforce strict boundaries, typing, and safety guarantees."
+          },
+          {
+            text: "It is an optional cosmetic comment ignored by compiler and browser engines.",
+            isCorrect: false,
+            explanation: "Incorrect. The code is active, executable logic that determines program state and layout."
+          }
+        ]
+      };
+    }
+
+    if (quizOptions) {
+      const qData = getLessonQuizData();
+      const qTitleEl = document.getElementById('quickQuizQuestion');
+      if (qTitleEl) qTitleEl.textContent = qData.question;
+      quizOptions.innerHTML = '';
+      qData.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-ghost';
+        btn.style.cssText = 'text-align: left; justify-content: flex-start; padding: 0.65rem 0.95rem; font-size: 0.84rem; border-radius: 6px; border: 1px solid var(--border-subtle); line-height: 1.4;';
+        btn.innerHTML = `<span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent); margin-right: 0.5rem;">${String.fromCharCode(65 + idx)}.</span> <span>${opt.text}</span>`;
+        btn.onclick = () => {
+          if (opt.isCorrect) {
+            btn.style.background = 'rgba(16, 185, 129, 0.15)';
+            btn.style.borderColor = 'var(--success)';
+            btn.style.color = 'var(--success)';
+            quizFeedback.style.display = 'block';
+            quizFeedback.style.background = 'rgba(16, 185, 129, 0.1)';
+            quizFeedback.style.border = '1px solid var(--success)';
+            quizFeedback.style.color = 'var(--success)';
+            quizFeedback.innerHTML = `<strong>✓ Correct!</strong> ${opt.explanation}`;
+            if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('success');
+          } else {
+            btn.style.background = 'rgba(239, 68, 68, 0.15)';
+            btn.style.borderColor = 'var(--danger)';
+            btn.style.color = 'var(--danger)';
+            quizFeedback.style.display = 'block';
+            quizFeedback.style.background = 'rgba(239, 68, 68, 0.1)';
+            quizFeedback.style.border = '1px solid var(--danger)';
+            quizFeedback.style.color = '#fca5a5';
+            quizFeedback.innerHTML = `<strong>✕ Review:</strong> ${opt.explanation}`;
+            if (window.CodeQuest && window.CodeQuest.playTone) window.CodeQuest.playTone('error');
+          }
+        };
+        quizOptions.appendChild(btn);
+      });
+    }
+
+    if (copyCheatBtn) {
+      copyCheatBtn.onclick = () => {
+        const snippet = document.getElementById('cheatSheetSnippet').textContent;
+        navigator.clipboard.writeText(snippet);
+        copyCheatBtn.textContent = '✓ Copied!';
+        setTimeout(() => { copyCheatBtn.textContent = 'Copy Snippet 📋'; }, 1500);
+      };
+    }
+
+    // 3. Ergonomic Alt+N and Alt+P Navigation Shortcuts
+    window.addEventListener('keydown', function(e) {
+      if (e.altKey && (e.key === 'n' || e.key === 'N')) {
+        {% if next_lesson %}
+        window.location.href = "{% url 'lesson_detail' course.slug next_lesson.slug %}";
+        {% endif %}
+      } else if (e.altKey && (e.key === 'p' || e.key === 'P')) {
+        {% if prev_lesson %}
+        window.location.href = "{% url 'lesson_detail' course.slug prev_lesson.slug %}";
+        {% endif %}
+      }
+    });
+
+    // Responsive Mobile Tab Switcher
+    const tabs = document.querySelectorAll('.mobile-tab-btn');
+    const pInst = document.getElementById('panelInstructions');
+    const pEdit = document.getElementById('panelCodeEditor');
+    const pDeck = document.getElementById('panelStudioDeck');
+    const pWrapper = document.getElementById('panelEditorWrapper');
+
+    function applyMobileTab(target) {
+      if (!pInst || !pWrapper) return;
+      if (target === 'instructions') {
+        pInst.style.display = 'flex';
+        pWrapper.style.display = 'none';
+      } else if (target === 'editor') {
+        pInst.style.display = 'none';
+        pWrapper.style.display = 'flex';
+        if (pEdit) pEdit.style.display = 'flex';
+        if (pDeck) pDeck.style.display = 'none';
+        if (cmInstance) {
+          setTimeout(() => cmInstance.refresh(), 50);
+        }
+      } else if (target === 'preview') {
+        pInst.style.display = 'none';
+        pWrapper.style.display = 'flex';
+        if (pEdit) pEdit.style.display = 'none';
+        if (pDeck) pDeck.style.display = 'flex';
+      }
+    }
+
+    function checkResponsiveView() {
+      const isMobile = window.innerWidth <= 860;
+      const tabGroup = document.getElementById('mobileLessonTabs');
+      if (tabGroup) tabGroup.style.display = isMobile ? 'flex' : 'none';
+
+      if (!isMobile) {
+        if (pInst) { pInst.style.display = 'flex'; pInst.style.flex = ''; pInst.style.minWidth = ''; pInst.style.maxWidth = ''; }
+        if (pWrapper) { pWrapper.style.display = 'flex'; pWrapper.style.minWidth = ''; }
+        if (pEdit) pEdit.style.display = 'flex';
+        if (pDeck) pDeck.style.display = 'flex';
+        if (splitter) splitter.style.display = 'flex';
+      } else {
+        if (splitter) splitter.style.display = 'none';
+        const activeTab = document.querySelector('.mobile-tab-btn.active');
+        const target = activeTab ? activeTab.getAttribute('data-tab') : 'instructions';
+        applyMobileTab(target);
+      }
+      if (cmInstance) cmInstance.refresh();
+    }
+
+    tabs.forEach(function (btn) {
+      btn.onclick = function () {
+        tabs.forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.getAttribute('data-tab');
+        applyMobileTab(target);
+      };
+    });
+
+    window.addEventListener('resize', checkResponsiveView);
+    checkResponsiveView();
+  });
+</script>
+<style>
+  .mobile-tab-btn.active {
+    background: var(--bg-panel);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .model-pill-btn {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    padding: 0.32rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .model-pill-btn:hover {
+    background: var(--bg-panel);
+    color: var(--text-primary);
+    border-color: var(--border-medium);
+  }
+  .model-pill-btn.active {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+    font-weight: 700;
+  }
+</style>
+<!-- Slide-Out Course Syllabus Drawer Modal (Z-Index 2147483646) -->
+<div id="syllabusDrawerModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); z-index: 2147483646; justify-content: flex-end;">
+  <div style="background: var(--bg-surface); width: 100%; max-width: 440px; height: 100vh; border-left: 1px solid var(--border-strong); display: flex; flex-direction: column; box-shadow: -10px 0 35px rgba(0,0,0,0.6); animation: slideLeft 0.25s var(--ease);">
+    
+    <!-- Drawer Header -->
+    <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; background: var(--bg-panel);">
+      <div>
+        <div style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; text-transform: uppercase;">
+          {{ course.language.name }} &bull; {{ course.level }}
+        </div>
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
+          {{ course.title }}
+        </h3>
+      </div>
+      <button id="closeSyllabusDrawerBtn" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 1.1rem; border-radius: 6px;">
+        ✕
+      </button>
+    </div>
+
+    <!-- Progress Meter -->
+    <div style="padding: 0.85rem 1.5rem; background: var(--bg-surface-elevated); border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-family: var(--font-mono);">
+      <span style="color: var(--text-muted);">Course Progress</span>
+      <span style="color: var(--success); font-weight: 700;">{{ completed_ids|length }} / {{ all_lessons|length|default:course.lessons.count }} Mastered</span>
+    </div>
+
+    <!-- Lessons List -->
+    <div style="flex: 1; overflow-y: auto; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.6rem;">
+      {% for l in all_lessons %}
+      <a href="{% url 'lesson_detail' course.slug l.slug %}" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: 1px solid {% if l.id == lesson.id %}var(--accent){% else %}var(--border-subtle){% endif %}; background: {% if l.id == lesson.id %}rgba(20, 184, 166, 0.12){% else %}var(--bg-panel){% endif %}; transition: all 0.15s ease;">
+        <div style="display: flex; align-items: center; gap: 0.85rem;">
+          <div style="width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.74rem; font-weight: 800; background: {% if l.id in completed_ids %}var(--success-subtle){% else %}var(--bg-surface){% endif %}; color: {% if l.id in completed_ids %}var(--success){% else %}var(--text-muted){% endif %}; border: 1px solid {% if l.id in completed_ids %}rgba(16, 185, 129, 0.35){% else %}var(--border-subtle){% endif %};">
+            {% if l.id in completed_ids %}✓{% else %}{{ l.order }}{% endif %}
+          </div>
+          <div>
+            <div style="font-size: 0.88rem; font-weight: 700; color: {% if l.id == lesson.id %}var(--accent){% else %}var(--text-primary){% endif %};">
+              {{ l.title }}
+            </div>
+            <div style="font-size: 0.74rem; color: var(--text-muted);">
+              ⏱ {{ l.est_minutes }} min &bull; +{{ l.xp }} XP
+            </div>
+          </div>
+        </div>
+        {% if l.id == lesson.id %}
+        <span style="font-size: 0.68rem; font-family: var(--font-mono); font-weight: 700; background: var(--accent); color: #07090e; padding: 0.15rem 0.45rem; border-radius: 4px;">
+          ACTIVE
+        </span>
+        {% endif %}
+      </a>
+      {% empty %}
+      <div style="text-align: center; color: var(--text-muted); padding: 2rem;">No lessons loaded.</div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

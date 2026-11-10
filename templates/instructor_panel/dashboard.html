@@ -1,0 +1,173 @@
+{% extends 'instructor_panel/base_admin.html' %}
+
+{% block title %}Instructor Dashboard — CodeQuest BD{% endblock %}
+
+{% block admin_content %}
+<div class="space-y-8">
+
+    <!-- Overview Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Tracks</span>
+            <p class="text-2xl font-black text-white mt-1">{{ total_tracks }}</p>
+            <span class="text-[10px] text-indigo-400 font-mono">6 Core Stacks</span>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Levels</span>
+            <p class="text-2xl font-black text-emerald-400 mt-1">{{ total_levels }}</p>
+            <span class="text-[10px] text-emerald-400 font-mono">Playable</span>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Quiz Questions</span>
+            <p class="text-2xl font-black text-amber-400 mt-1">{{ total_quizzes }}</p>
+            <span class="text-[10px] text-amber-400 font-mono">Bug-Hunter Bank</span>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Students</span>
+            <p class="text-2xl font-black text-cyan-400 mt-1">{{ total_students }}</p>
+            <span class="text-[10px] text-cyan-400 font-mono">BAIUST CSE</span>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Submissions</span>
+            <p class="text-2xl font-black text-white mt-1">{{ total_submissions }}</p>
+            <span class="text-[10px] text-slate-400 font-mono">Logged Code</span>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Accepted Rate</span>
+            <p class="text-2xl font-black text-emerald-400 mt-1">{{ accepted_submissions }}</p>
+            <span class="text-[10px] text-emerald-400 font-mono">Successful Solves</span>
+        </div>
+    </div>
+
+    <!-- Quick Action Launchers -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <a href="{% url 'instructor_panel:levels' %}" class="bg-slate-900 border border-slate-800 hover:border-emerald-500/50 p-5 rounded-2xl flex items-center gap-4 transition group">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 text-2xl flex items-center justify-center group-hover:scale-105 transition">
+                <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-white text-sm">Add New Level</h3>
+                <p class="text-[11px] text-slate-400">Create Rover or Code Judge task</p>
+            </div>
+        </a>
+
+        <a href="{% url 'instructor_panel:quizzes' %}" class="bg-slate-900 border border-slate-800 hover:border-amber-500/50 p-5 rounded-2xl flex items-center gap-4 transition group">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 text-2xl flex items-center justify-center group-hover:scale-105 transition">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-white text-sm">Add Quiz Question</h3>
+                <p class="text-[11px] text-slate-400">Expand 60s Bug Blitz Bank</p>
+            </div>
+        </a>
+
+        <a href="{% url 'instructor_panel:announcements' %}" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 p-5 rounded-2xl flex items-center gap-4 transition group">
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 text-2xl flex items-center justify-center group-hover:scale-105 transition">
+                <i class="fa-solid fa-bullhorn"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-white text-sm">Post Announcement</h3>
+                <p class="text-[11px] text-slate-400">Notify students of lab evaluation</p>
+            </div>
+        </a>
+
+        <a href="/php_sessional_crud/index.php" target="_blank" class="bg-slate-900 border border-slate-800 hover:border-cyan-500/50 p-5 rounded-2xl flex items-center gap-4 transition group">
+            <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 text-2xl flex items-center justify-center group-hover:scale-105 transition font-mono">
+                🐘
+            </div>
+            <div>
+                <h3 class="font-bold text-white text-sm">PHP MySQLi Module</h3>
+                <p class="text-[11px] text-slate-400">Continuous Evaluation iv</p>
+            </div>
+        </a>
+    </div>
+
+    <!-- 2 Column Admin Grid: Recent Submissions & Leaderboard -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Recent Student Submissions Table -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+            <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-code-commit text-emerald-400"></i> Recent Submissions Log
+                </h3>
+                <a href="{% url 'instructor_panel:submissions' %}" class="text-xs text-indigo-400 hover:underline">View All</a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-950/80 uppercase font-semibold text-slate-400 border-b border-slate-800">
+                        <tr>
+                            <th class="p-3">Student</th>
+                            <th class="p-3">Level</th>
+                            <th class="p-3">Language</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3">XP</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 font-mono">
+                        {% for sub in recent_submissions %}
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-white">{{ sub.user.username }}</td>
+                                <td class="p-3 text-slate-300">{{ sub.level.title|truncatechars:20 }}</td>
+                                <td class="p-3">{{ sub.language }}</td>
+                                <td class="p-3">
+                                    <span class="px-2 py-0.5 rounded text-[10px] {% if sub.status == 'ACCEPTED' %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/30{% else %}bg-rose-500/10 text-rose-400 border border-rose-500/30{% endif %}">
+                                        {{ sub.status }}
+                                    </span>
+                                </td>
+                                <td class="p-3 font-bold text-amber-400">+{{ sub.xp_earned }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="5" class="p-6 text-center text-slate-500">No submissions recorded yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Student Progress Leaderboard -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+            <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-users text-amber-400"></i> Top Registered Students
+                </h3>
+                <a href="{% url 'instructor_panel:students' %}" class="text-xs text-indigo-400 hover:underline">Manage All</a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-950/80 uppercase font-semibold text-slate-400 border-b border-slate-800">
+                        <tr>
+                            <th class="p-3">Student Name</th>
+                            <th class="p-3">ID</th>
+                            <th class="p-3">Batch</th>
+                            <th class="p-3">Rank Tier</th>
+                            <th class="p-3 text-right">XP</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 font-sans">
+                        {% for s in recent_students %}
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-white">{{ s.user.first_name|default:s.user.username }}</td>
+                                <td class="p-3 font-mono text-slate-400">{{ s.student_id }}</td>
+                                <td class="p-3 text-slate-400">{{ s.batch_section }}</td>
+                                <td class="p-3">
+                                    <span class="text-[10px] px-2 py-0.5 rounded font-mono font-semibold border {{ s.rank_badge_color }}">
+                                        Lvl {{ s.level }}
+                                    </span>
+                                </td>
+                                <td class="p-3 text-right font-mono font-bold text-amber-400">{{ s.xp }} XP</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="5" class="p-6 text-center text-slate-500">No student profiles found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
