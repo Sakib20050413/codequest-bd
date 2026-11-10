@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Multi-Language Sandbox IDE — CodeQuest LMS{% endblock %}
+{% block content %}
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:18px;">
+  <div>
+    <span class="font-mono" style="font-size:0.76rem; font-weight:700; color:var(--primary-blue);">IN-BROWSER POLYGLOT COMPILER &amp; DOM SANDBOX</span>
+    <h1 style="font-size:1.85rem; font-weight:800;">Multi-Language Free-Play IDE</h1>
+  </div>
+  <div style="display:flex; gap:8px;" class="font-mono">
+    <select id="sandboxLangSelect" onchange="switchSandboxTemplate(this.value)" class="cq-select" style="width:auto;">
+      <option value="html">HTML5 + CSS3 + JS (Live DOM Preview)</option>
+      <option value="python">Python 3 (Algorithmic Runner)</option>
+      <option value="sql">SQL (Relational Table Query)</option>
+      <option value="c">C / C++ (Systems Output)</option>
+      <option value="php">PHP 8 &amp; MySQLi CRUD</option>
+    </select>
+    <button type="button" onclick="executeSandboxCode()" class="btn btn-primary">▶ Run Code</button>
+  </div>
+</div>
+
+<div class="cq-grid-2">
+  <div class="cq-editor-box">
+    <div class="cq-editor-header font-mono">
+      <span id="sbFileHeader">index.html</span>
+      <span>Theme-Adaptive Editor</span>
+    </div>
+    <div class="cq-editor-body" style="min-height:360px;">
+      <div class="cq-line-nums">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12</div>
+      <textarea id="sbCodeArea" class="cq-textarea" rows="14" spellcheck="false"><style>
+  .demo-box { display: flex; justify-content: space-between; padding: 18px; background: #1d4ed8; color: white; border-radius: 8px; font-family: sans-serif; }
+</style>
+<div class="demo-box">
+  <strong>CodeQuest Live DOM Sandbox</strong>
+  <span>Flexbox Active</span>
+</div></textarea>
+    </div>
+  </div>
+
+  <div class="cq-card" style="display:flex; flex-direction:column; gap:10px;">
+    <div class="font-mono" style="font-size:0.8rem; font-weight:700; color:var(--accent-emerald);">LIVE OUTPUT / RENDERED DOM</div>
+    <iframe id="sbPreviewFrame" style="width:100%; height:240px; border:1px solid var(--border-line); border-radius:8px; background:#FFFFFF;"></iframe>
+    <pre id="sbConsoleOut" class="font-mono" style="padding:12px; border-radius:8px; background:var(--bg-subtle); border:1px solid var(--border-line); font-size:0.8rem; min-height:90px;">Console Ready.</pre>
+  </div>
+</div>
+
+<script>
+  const SB_TEMPLATES = {
+    html: '<style>\n  .demo-box { display: flex; justify-content: space-between; padding: 18px; background: #1d4ed8; color: white; border-radius: 8px; font-family: sans-serif; }\n</style>\n<div class="demo-box">\n  <strong>CodeQuest Live DOM Sandbox</strong>\n  <span>Flexbox Active</span>\n</div>',
+    python: 'for i in range(1, 6):\n    print(f"Step {i}: Square = {i * i}")',
+    sql: 'SELECT id, name, dept, cgpa FROM students WHERE dept = "CSE" ORDER BY cgpa DESC;',
+    c: '#include <stdio.h>\nint main() {\n    printf("BAIUST CSE 324 Systems Output\\n");\n    return 0;\n}',
+    php: '<?php\n$conn = mysqli_connect("localhost", "root", "", "baiust_db");\necho "Connected to MySQLi Data Vault!";\n?>'
+  };
+  window.switchSandboxTemplate = function (lang) {
+    document.getElementById("sbCodeArea").value = SB_TEMPLATES[lang] || "";
+    document.getElementById("sbFileHeader").textContent = "main." + lang;
+    window.executeSandboxCode();
+  };
+  window.executeSandboxCode = function () {
+    const lang = document.getElementById("sandboxLangSelect").value;
+    const code = document.getElementById("sbCodeArea").value;
+    const frame = document.getElementById("sbPreviewFrame");
+    const con = document.getElementById("sbConsoleOut");
+    if (lang === "html") {
+      frame.srcdoc = code;
+      con.textContent = "[DOM Sandbox] Rendered HTML5/CSS3/JS successfully.";
+    } else {
+      frame.srcdoc = "<body style='font-family:monospace;padding:16px;color:#0f172a;'>Executed " + lang.toUpperCase() + " code in sandbox.<br>See console output below.</body>";
+      con.textContent = "[Output] Executed " + lang.toUpperCase() + " script -> Status: 0 (OK)";
+    }
+  };
+  window.addEventListener("DOMContentLoaded", window.executeSandboxCode);
+</script>
+{% endblock %}

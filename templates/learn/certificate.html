@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Verifiable Certificate — CodeQuest LMS{% endblock %}
+{% block content %}
+<div class="cq-card" style="max-width:880px; margin:0 auto; padding:42px; text-align:center; border:3px double var(--primary-blue);">
+  <div class="font-mono" style="font-size:0.8rem; font-weight:700; color:var(--primary-blue); letter-spacing:0.08em;">
+    CODEQUEST LMS • VERIFIED COURSE &amp; GAMING WITH LEARNING CREDENTIAL
+  </div>
+  <h1 style="font-size:2.2rem; font-weight:800; margin:14px 0 8px;">Certificate of Achievement</h1>
+  <p style="color:var(--text-secondary); font-size:0.95rem;">This certifies that</p>
+  <h2 style="font-size:1.85rem; font-weight:800; color:var(--primary-blue); margin:10px 0;">Md Najmus Sakib Rahatul (ID: 1119003)</h2>
+  <p style="max-width:620px; margin:0 auto 24px; font-size:0.9rem; color:var(--text-secondary);">
+    has successfully completed the 4-Part Structured Curriculum, Full-Code Visual Coding Games, and Multi-Platform Problem Solving Tasks across HTML5, CSS3 Flexbox/Grid, JavaScript DOM, Python 3, Django, PHP &amp; MySQLi CRUD, SQL, and C/C++.
+  </p>
+  <div style="display:flex; justify-content:space-around; flex-wrap:wrap; gap:16px; padding-top:20px; border-top:1px solid var(--border-line);" class="font-mono">
+    <div><strong>Credential ID:</strong> CQ-2026-1119003</div>
+    <div><strong>Course:</strong> CSE 324 Web Technologies Sessional</div>
+    <div><strong>Institution:</strong> BAIUST, Cumilla</div>
+  </div>
+  <div style="margin-top:24px;">
+    <button type="button" onclick="window.print()" class="btn btn-primary">🖨️ Print / Save Certificate as PDF</button>
+  </div>
+</div>
+{% endblock %}

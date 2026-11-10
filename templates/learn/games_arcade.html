@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Gaming with Learning — 6 Full-Code Visual Game Engines{% endblock %}
+{% block content %}
+<div style="margin-bottom:20px;">
+  <span class="font-mono" style="font-size:0.76rem; font-weight:700; color:var(--accent-emerald);">GAMING WITH LEARNING ARCADE</span>
+  <h1 style="font-size:2rem; font-weight:800;">Write Complete Real Code to Play (6 Visual Game Engines)</h1>
+  <p style="font-size:0.9rem; color:var(--text-secondary);">Select any of the 6 game engines below, write or load the complete code solution, and watch the visual simulation respond in real time.</p>
+</div>
+
+<!-- 6 Game Engine Selector Buttons -->
+<div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;" class="font-mono">
+  {% for g in games %}
+  <button type="button" onclick="selectArcadeGame({{ g.id }})" id="gameBtn_{{ g.id }}" class="btn game-sel-btn">
+    {{ g.title }}
+  </button>
+  {% endfor %}
+</div>
+
+<div class="cq-grid-2" style="align-items:start;">
+  <!-- Left: Full-Code Editor & Scenario Brief -->
+  <div class="cq-card" style="display:flex; flex-direction:column; gap:14px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;" class="font-mono">
+      <span id="arcGameLang" class="badge badge-blue">HTML5 &amp; CSS3</span>
+      <span id="arcGameXp" class="badge badge-amber">+120 XP</span>
+    </div>
+    <h2 id="arcGameTitle" style="font-size:1.3rem; font-weight:800;"></h2>
+    <p id="arcGameBrief" style="font-size:0.88rem; color:var(--text-secondary);"></p>
+    <div class="cq-tips-box font-mono" style="font-size:0.78rem;">
+      <strong>Requirement:</strong> <span id="arcGameReq"></span>
+    </div>
+
+    <div class="cq-editor-box">
+      <div class="cq-editor-header font-mono">
+        <span>Full-Code Game Editor</span>
+        <div style="display:flex; gap:6px;">
+          <button type="button" onclick="loadArcadeSolution()" class="btn" style="padding:4px 10px; font-size:0.74rem;">✨ Load Solution</button>
+          <button type="button" onclick="runArcadeGameCode()" class="btn btn-emerald" style="padding:4px 12px; font-size:0.76rem;">▶ Run Code &amp; Play</button>
+        </div>
+      </div>
+      <div class="cq-editor-body">
+        <div class="cq-line-nums">1<br>2<br>3<br>4<br>5<br>6<br>7</div>
+        <textarea id="arcCodeInput" class="cq-textarea" rows="7" spellcheck="false"></textarea>
+      </div>
+    </div>
+    <div id="arcStatusMsg" class="font-mono" style="font-size:0.82rem; font-weight:700; color:var(--accent-emerald);"></div>
+  </div>
+
+  <!-- Right: Interactive Visual Game Viewport -->
+  <div class="cq-card" style="display:flex; flex-direction:column; gap:12px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;" class="font-mono">
+      <span style="font-size:0.8rem; font-weight:800; color:var(--primary-blue);">LIVE VISUAL GAME MONITOR</span>
+      <span id="arcEngineTag" class="badge badge-emerald">FLEX_BRIDGE</span>
+    </div>
+    <div style="border:1px solid var(--border-line); border-radius:10px; overflow:hidden;">
+      <canvas id="arcadeMainCanvas" height="320" style="width:100%; height:320px;"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ARCADE_GAMES = {{ games_json|safe }};
+  let currentArcGame = ARCADE_GAMES[0];
+
+  window.selectArcadeGame = function (id) {
+    const found = ARCADE_GAMES.find(function (x) { return x.id === id; }) || ARCADE_GAMES[0];
+    currentArcGame = found;
+    document.querySelectorAll(".game-sel-btn").forEach(function (b) { b.classList.remove("btn-primary"); });
+    const activeBtn = document.getElementById("gameBtn_" + found.id);
+    if (activeBtn) activeBtn.classList.add("btn-primary");
+
+    document.getElementById("arcGameLang").textContent = found.languageTag;
+    document.getElementById("arcGameXp").textContent = "+" + found.xp + " XP";
+    document.getElementById("arcGameTitle").textContent = found.title;
+    document.getElementById("arcGameBrief").textContent = found.brief;
+    document.getElementById("arcGameReq").textContent = found.requirement;
+    document.getElementById("arcCodeInput").value = found.starter;
+    document.getElementById("arcEngineTag").textContent = found.engineKey;
+    document.getElementById("arcStatusMsg").textContent = "";
+    window.renderGameEngineCanvas("arcadeMainCanvas", found.engineKey, 0.35, found.starter);
+  };
+
+  window.loadArcadeSolution = function () {
+    document.getElementById("arcCodeInput").value = currentArcGame.solution;
+  };
+
+  window.runArcadeGameCode = function () {
+    const code = document.getElementById("arcCodeInput").value;
+    window.renderGameEngineCanvas("arcadeMainCanvas", currentArcGame.engineKey, 1.0, code);
+    document.getElementById("arcStatusMsg").textContent = "✔ Full Code Executed! +" + currentArcGame.xp + " XP Awarded.";
+  };
+
+  window.redrawActiveGameCanvas = function () {
+    if (currentArcGame) {
+      window.renderGameEngineCanvas("arcadeMainCanvas", currentArcGame.engineKey, 1.0, document.getElementById("arcCodeInput").value);
+    }
+  };
+
+  window.addEventListener("DOMContentLoaded", function () {
+    if (ARCADE_GAMES.length > 0) window.selectArcadeGame(ARCADE_GAMES[0].id);
+  });
+</script>
+{% endblock %}

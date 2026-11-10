@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Instructor &amp; Admin CRUD Panel — CodeQuest LMS{% endblock %}
+{% block content %}
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:20px;">
+  <div>
+    <span class="font-mono" style="font-size:0.76rem; font-weight:700; color:var(--accent-emerald);">INSTRUCTOR &amp; ADMIN DATABASE CRUD PANEL</span>
+    <h1 style="font-size:1.9rem; font-weight:800;">Manage Courses, 4-Part Modules, Full-Code Games &amp; Tasks</h1>
+  </div>
+  <div style="display:flex; gap:8px;">
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="crud_action" value="award_bonus_xp">
+      <button type="submit" class="btn btn-emerald">+150 Bonus XP to Active Student</button>
+    </form>
+    <a href="{% url 'logout' %}" class="btn">Sign Out</a>
+  </div>
+</div>
+
+{% if status_msg %}
+<div class="cq-card" style="margin-bottom:18px; border-color:var(--accent-emerald); color:var(--accent-emerald); font-weight:700;">
+  ✔ {{ status_msg }}
+</div>
+{% endif %}
+
+<div class="cq-grid-2" style="margin-bottom:24px;">
+  <!-- Create New Course & 4-Part Module -->
+  <div class="cq-card">
+    <h2 style="font-size:1.1rem; font-weight:800; margin-bottom:12px;">1. Add New Course &amp; Module (CRUD CREATE)</h2>
+    <form method="POST" style="display:flex; flex-direction:column; gap:10px;">
+      {% csrf_token %}
+      <input type="hidden" name="crud_action" value="create_course">
+      <select name="language_id" class="cq-select">
+        {% for l in languages %}
+        <option value="{{ l.id }}">{{ l.name }} ({{ l.short_code }})</option>
+        {% endfor %}
+      </select>
+      <input type="text" name="title" required placeholder="Course Title (e.g. TypeScript Full-Stack Architecture)" class="cq-input">
+      <input type="text" name="slug" placeholder="Slug (e.g. typescript-architecture)" class="cq-input">
+      <textarea name="overview" rows="2" required placeholder="Course overview & learning goals..." class="cq-input"></textarea>
+      <textarea name="starter_code" rows="2" placeholder="Starter code for Part 3 Game Lab..." class="cq-input font-mono"></textarea>
+      <button type="submit" class="btn btn-primary">+ Create Course in Database</button>
+    </form>
+  </div>
+
+  <!-- Create New Practice Task -->
+  <div class="cq-card">
+    <h2 style="font-size:1.1rem; font-weight:800; margin-bottom:12px;">2. Add Multi-Site Practice Task (CRUD CREATE)</h2>
+    <form method="POST" style="display:flex; flex-direction:column; gap:10px;">
+      {% csrf_token %}
+      <input type="hidden" name="crud_action" value="create_task">
+      <div class="cq-grid-2">
+        <input type="text" name="code_id" placeholder="Code ID (e.g. CQ-107)" required class="cq-input">
+        <select name="difficulty" class="cq-select">
+          <option value="Easy">Easy</option>
+          <option value="Medium">Medium</option>
+          <option value="Hard">Hard</option>
+        </select>
+      </div>
+      <input type="text" name="title" placeholder="Task Title *" required class="cq-input">
+      <input type="text" name="language_tag" placeholder="Languages (e.g. Python / C++ / SQL)" required class="cq-input">
+      <textarea name="problem_statement" rows="2" placeholder="Problem statement & constraints..." required class="cq-input"></textarea>
+      <textarea name="starter_code" rows="2" placeholder="Starter code..." required class="cq-input font-mono"></textarea>
+      <button type="submit" class="btn btn-emerald">+ Save Practice Task to Database</button>
+    </form>
+  </div>
+</div>
+
+<!-- Existing Tasks CRUD Table -->
+<div class="cq-card">
+  <h2 style="font-size:1.1rem; font-weight:800; margin-bottom:12px;">Manage Practice Tasks &amp; Games ({{ tasks|length }} Tasks, {{ games|length }} Games)</h2>
+  <div class="cq-table-wrap">
+    <table class="cq-table font-mono">
+      <thead>
+        <tr><th>Code</th><th>Title</th><th>Language</th><th>Difficulty</th><th>XP</th><th>Delete</th></tr>
+      </thead>
+      <tbody>
+        {% for t in tasks %}
+        <tr>
+          <td>{{ t.code_id }}</td>
+          <td style="font-weight:700;">{{ t.title }}</td>
+          <td>{{ t.language_tag }}</td>
+          <td>{{ t.difficulty }}</td>
+          <td>{{ t.xp_reward }} XP</td>
+          <td>
+            <form method="POST" style="display:inline;">
+              {% csrf_token %}
+              <input type="hidden" name="crud_action" value="delete_task">
+              <input type="hidden" name="task_id" value="{{ t.id }}">
+              <button type="submit" class="btn" style="padding:3px 10px; font-size:0.72rem; color:var(--accent-danger);">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

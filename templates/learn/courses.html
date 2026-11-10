@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Courses &amp; 4-Part Modules — CodeQuest LMS{% endblock %}
+{% block content %}
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:14px; margin-bottom:24px;">
+  <div>
+    <span class="font-mono" style="font-size:0.76rem; font-weight:700; color:var(--primary-blue);">STRUCTURED LMS CURRICULUM</span>
+    <h1 style="font-size:2rem; font-weight:800;">All 12 Programming Courses &amp; 4-Part Modules</h1>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px;" class="font-mono">
+    <a href="{% url 'courses' %}?pillar=ALL" class="btn {% if pillar_filter == 'ALL' %}btn-primary{% endif %}">All Pillars (12)</a>
+    <a href="{% url 'courses' %}?pillar=FRONTEND" class="btn {% if pillar_filter == 'FRONTEND' %}btn-primary{% endif %}">Frontend &amp; Web (4)</a>
+    <a href="{% url 'courses' %}?pillar=BACKEND" class="btn {% if pillar_filter == 'BACKEND' %}btn-primary{% endif %}">Backend &amp; Frameworks (3)</a>
+    <a href="{% url 'courses' %}?pillar=DATABASE" class="btn {% if pillar_filter == 'DATABASE' %}btn-primary{% endif %}">Databases &amp; Queries (2)</a>
+    <a href="{% url 'courses' %}?pillar=SYSTEMS" class="btn {% if pillar_filter == 'SYSTEMS' %}btn-primary{% endif %}">Core Systems &amp; OOP (3)</a>
+  </div>
+</div>
+
+<div class="cq-grid-3">
+  {% for c in courses %}
+  <div class="cq-card" style="display:flex; flex-direction:column; justify-content:space-between; gap:16px;">
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;" class="font-mono">
+        <span class="badge badge-blue">{{ c.language.name }}</span>
+        <span class="badge badge-emerald">{{ c.language.runtime_engine }}</span>
+      </div>
+      <h2 style="font-size:1.2rem; font-weight:800;">{{ c.title }}</h2>
+      <p style="font-size:0.86rem; color:var(--text-secondary);">{{ c.overview }}</p>
+      <div style="padding:10px 12px; border-radius:8px; background:var(--bg-subtle); font-size:0.78rem;" class="font-mono">
+        <div>• Part 1: Concept, Syntax Anatomy &amp; Tips Box</div>
+        <div>• Part 2: CS50 Memory Stack/Heap &amp; DOM Trace</div>
+        <div>• Part 3: Full-Code Interactive Game Lab</div>
+        <div>• Part 4: 3-Test-Case Module Judge</div>
+      </div>
+    </div>
+    <a href="{% url 'lesson_player' c.slug %}" class="btn btn-primary" style="width:100%;">Open 4-Part Course Player →</a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

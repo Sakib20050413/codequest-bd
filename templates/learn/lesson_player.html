@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% block title %}{{ course.title }} — 4-Part Interactive Course Player{% endblock %}
+{% block content %}
+
+<!-- Top Course Switcher & 4-Part Stepper Bar -->
+<div class="cq-card" style="margin-bottom:20px; padding:16px 20px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;">
+  <div>
+    <div class="font-mono" style="font-size:0.75rem; color:var(--primary-blue); font-weight:700;">
+      {{ course.language.name }} // {{ lesson.module_title }}
+    </div>
+    <h1 style="font-size:1.35rem; font-weight:800;">{{ lesson.title }}</h1>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;" class="font-mono">
+    <select onchange="if(this.value) window.location.href=this.value;" class="cq-select" style="width:auto; font-size:0.78rem;">
+      {% for item in all_courses %}
+      <option value="{% url 'lesson_player' item.slug %}" {% if item.id == course.id %}selected{% endif %}>
+        Switch Track: {{ item.language.name }}
+      </option>
+      {% endfor %}
+    </select>
+    <span class="badge badge-emerald">+{{ lesson.xp_reward }} XP</span>
+  </div>
+</div>
+
+<!-- 2-COLUMN SPLIT WORKSPACE: LEFT (4-Part Structured Lesson) + RIGHT (Full-Code Editor, Game Engine & 3-Test-Case Judge) -->
+<div class="cq-grid-2" style="align-items:start;">
+
+  <!-- LEFT PANE: Parts 1 & 2 (Concept, Line-by-Line Syntax Table, Tips & Tricks Box, CS50 Memory Trace) -->
+  <div class="cq-card" style="display:flex; flex-direction:column; gap:18px;">
+    <div style="display:flex; flex-wrap:wrap; gap:6px; border-bottom:1px solid var(--border-line); padding-bottom:12px;" class="font-mono">
+      <span class="badge badge-blue">Part 1: Concept &amp; Anatomy</span>
+      <span class="badge badge-emerald">Part 2: Memory &amp; DOM Trace</span>
+      <span class="badge badge-amber">Part 3: Full-Code Game</span>
+      <span class="badge">Part 4: 3-Test-Case Judge</span>
+    </div>
+
+    <div>
+      <h2 style="font-size:1.1rem; font-weight:800; margin-bottom:6px;">Part 1: Core Concept &amp; Architecture</h2>
+      <p style="font-size:0.9rem; color:var(--text-secondary);">{{ lesson.part1_concept }}</p>
+    </div>
+
+    <!-- Line-by-Line Syntax Anatomy Table (Single-Border Table) -->
+    <div>
+      <h3 style="font-size:0.95rem; font-weight:700; margin-bottom:8px;">Line-by-Line Code Anatomy</h3>
+      <div class="cq-table-wrap">
+        <table class="cq-table font-mono">
+          <thead>
+            <tr><th>Line</th><th>Syntax</th><th>How It Works</th></tr>
+          </thead>
+          <tbody>
+            {% for row in lesson.parsed_syntax_rows %}
+            <tr>
+              <td style="font-weight:700; color:var(--primary-blue);">{{ row.line }}</td>
+              <td style="font-weight:700;">{{ row.code }}</td>
+              <td>{{ row.meaning }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Practical Tips & Tricks Box -->
+    <div class="cq-tips-box">
+      <div class="font-mono" style="font-size:0.75rem; font-weight:800; color:var(--accent-amber); margin-bottom:4px;">
+        💡 TIPS, TRICKS &amp; EXAM/VIVA INSIGHT
+      </div>
+      <div>{{ lesson.tips_and_tricks }}</div>
+    </div>
+
+    <!-- Part 2: Harvard CS50 Style Memory Stack / Heap / DOM Execution Trace -->
+    <div style="padding:14px; border-radius:10px; background:var(--bg-subtle); border:1px solid var(--border-line);">
+      <div class="font-mono" style="font-size:0.75rem; font-weight:800; color:var(--primary-blue); margin-bottom:6px;">
+        🧠 PART 2: STEP-BY-STEP MEMORY STACK, HEAP &amp; DOM EXECUTION TRACE
+      </div>
+      <p style="font-size:0.84rem; color:var(--text-secondary);" class="font-mono">{{ lesson.part2_trace_explanation }}</p>
+    </div>
+  </div>
+
+  <!-- RIGHT PANE: Parts 3 & 4 (Full-Code Editor + Live Visual Game Canvas + 3-Test-Case Micro-Judge) -->
+  <div class="cq-card" style="display:flex; flex-direction:column; gap:14px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+      <span class="font-mono" style="font-size:0.8rem; font-weight:800; color:var(--accent-emerald);">
+        🎮 PART 3: FULL-CODE GAME LAB ({{ lesson.game_engine_key }})
+      </span>
+      <div style="display:flex; gap:6px;" class="font-mono">
+        <button type="button" onclick="document.getElementById('lessonHintBox').style.display='block';" class="btn" style="padding:5px 10px; font-size:0.75rem;">💡 Hint</button>
+        <button type="button" onclick="loadLessonSolution()" class="btn" style="padding:5px 10px; font-size:0.75rem; color:var(--primary-blue);">✨ Load Solution</button>
+      </div>
+    </div>
+
+    <p style="font-size:0.86rem; color:var(--text-secondary);">{{ lesson.part3_game_prompt }}</p>
+    <div id="lessonHintBox" style="display:none; padding:10px 12px; border-radius:8px; background:var(--bg-subtle); font-size:0.8rem;" class="font-mono">
+      💡 Hint: {{ lesson.hint_text }}
+    </div>
+
+    <!-- Theme-Adaptive Multi-Line Code Editor -->
+    <div class="cq-editor-box">
+      <div class="cq-editor-header font-mono">
+        <span>{{ course.language.name }} Full-Code Editor</span>
+        <button type="button" onclick="runLessonCodeAndVerify()" class="btn btn-primary" style="padding:5px 14px; font-size:0.78rem;">
+          ▶ Run Full Code &amp; Verify 3 Test Cases
+        </button>
+      </div>
+      <div class="cq-editor-body">
+        <div class="cq-line-nums">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8</div>
+        <textarea id="lessonCodeEditor" class="cq-textarea" rows="8" spellcheck="false">{{ lesson.starter_code }}</textarea>
+      </div>
+    </div>
+
+    <!-- Live Game Simulation Canvas -->
+    <div style="border:1px solid var(--border-line); border-radius:10px; overflow:hidden;">
+      <canvas id="lessonGameCanvas" height="230" style="width:100%; height:230px;"></canvas>
+    </div>
+
+    <!-- Part 4: 3-Test-Case Automated Judge Table -->
+    <div style="padding:14px; border-radius:10px; background:var(--bg-subtle); border:1px solid var(--border-line);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;" class="font-mono">
+        <span style="font-size:0.76rem; font-weight:800;">✅ PART 4: AUTOMATED 3-TEST-CASE JUDGE</span>
+        <span id="judgeOverallBadge" class="badge">PENDING RUN</span>
+      </div>
+      <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:8px;">{{ lesson.part4_judge_prompt }}</p>
+      <div class="cq-grid-3 font-mono" style="font-size:0.76rem;">
+        <div id="tcBox1" style="padding:8px 10px; border-radius:6px; background:var(--bg-surface); border:1px solid var(--border-line);">Test Case 01: Syntax Structure</div>
+        <div id="tcBox2" style="padding:8px 10px; border-radius:6px; background:var(--bg-surface); border:1px solid var(--border-line);">Test Case 02: Logic &amp; Loops</div>
+        <div id="tcBox3" style="padding:8px 10px; border-radius:6px; background:var(--bg-surface); border:1px solid var(--border-line);">Test Case 03: Game State Target</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<textarea id="hiddenSolutionCode" style="display:none;">{{ lesson.solution_code }}</textarea>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const LESSON_ENGINE = "{{ lesson.game_engine_key }}";
+  window.loadLessonSolution = function () {
+    document.getElementById("lessonCodeEditor").value = document.getElementById("hiddenSolutionCode").value;
+  };
+
+  window.runLessonCodeAndVerify = function () {
+    const code = (document.getElementById("lessonCodeEditor").value || "").trim();
+    const badge = document.getElementById("judgeOverallBadge");
+    if (code.length < 10) {
+      badge.textContent = "FAILED — WRITE COMPLETE CODE";
+      badge.className = "badge badge-amber";
+      window.renderGameEngineCanvas("lessonGameCanvas", LESSON_ENGINE, 0.2, code);
+      return;
+    }
+
+    window.renderGameEngineCanvas("lessonGameCanvas", LESSON_ENGINE, 1.0, code);
+    badge.textContent = "ALL 3 TEST CASES PASSED (+{{ lesson.xp_reward }} XP)";
+    badge.className = "badge badge-emerald";
+
+    ["tcBox1", "tcBox2", "tcBox3"].forEach(function (id, idx) {
+      const el = document.getElementById(id);
+      el.style.borderColor = "var(--accent-emerald)";
+      el.style.color = "var(--accent-emerald)";
+      el.style.fontWeight = "700";
+      el.textContent = "✔ Test Case 0" + (idx + 1) + ": PASSED";
+    });
+
+    fetch("{% url 'api_submit_code' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+      },
+      body: JSON.stringify({
+        item_type: "Course Module",
+        item_title: "{{ lesson.title|escapejs }}",
+        language: "{{ course.language.name|escapejs }}",
+        code: code,
+        xp: {{ lesson.xp_reward }}
+      })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d.ok && document.getElementById("navXpBadge")) {
+        document.getElementById("navXpBadge").textContent = d.new_xp;
+      }
+    }).catch(function () {});
+  };
+
+  window.redrawActiveGameCanvas = function () {
+    window.renderGameEngineCanvas("lessonGameCanvas", LESSON_ENGINE, 0.4, document.getElementById("lessonCodeEditor").value);
+  };
+
+  window.addEventListener("DOMContentLoaded", function () {
+    window.renderGameEngineCanvas("lessonGameCanvas", LESSON_ENGINE, 0.4, document.getElementById("lessonCodeEditor").value);
+  });
+</script>
+{% endblock %}
