@@ -22,8 +22,8 @@
 
     <!-- Quick Operations -->
     <div style="display: flex; gap: 0.75rem;">
-      <a href="/admin/" target="_blank" class="btn btn-ghost" style="font-size: 0.85rem; padding: 0.5rem 1rem; border: 1px solid var(--border-color);">
-        Django Admin &nearr;
+      <a href="{% url 'api_admin_stats' %}" target="_blank" class="btn btn-ghost" style="font-size: 0.85rem; padding: 0.5rem 1rem; border: 1px solid var(--border-color);">
+        JSON Telemetry API &nearr;
       </a>
       <a href="{% url 'certificates_hub' %}" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1.1rem; background: #3b82f6;">
         Verify Credentials &rarr;
@@ -85,9 +85,9 @@
     <div>
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-          <span>📚</span> Active Curriculum Tracks (11 Viral + 2 Core)
+          <span>📚</span> Active Curriculum Tracks ({{ total_courses }} Full Tracks)
         </h2>
-        <span style="font-size: 0.8rem; color: var(--text-muted);">Synced to db.sqlite3</span>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Synced to db.sqlite3 &amp; Polyglot Engine</span>
       </div>
 
       <div class="cq-card" style="border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--border-color); padding: 0;">
@@ -188,5 +188,61 @@
 
   </div>
 
+  <!-- Live PHP + MySQL & Polyglot Database Bridge Tester (CSE 324 Sessional Demo) -->
+  <div class="cq-card" style="margin-top: 2rem; border-radius: var(--radius-xl); padding: 1.5rem 1.75rem; border: 1px solid rgba(20, 184, 166, 0.35); background: radial-gradient(ellipse at top left, rgba(20, 184, 166, 0.08), var(--bg-surface) 70%);">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: #14b8a6; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">
+          🗄️ Live Database &amp; Backend Bridge &bull; PHP 8.3 + MySQLi + SQLite + PostgreSQL + MongoDB
+        </div>
+        <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
+          Interactive Database &amp; PHP Connection Tester (For CSE 324 Viva Defense)
+        </h3>
+      </div>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <button type="button" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.35rem 0.75rem;" onclick="loadAdminDbSample('php')">PHP + MySQLi</button>
+        <button type="button" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.35rem 0.75rem;" onclick="loadAdminDbSample('sql')">SQL / MySQL</button>
+        <button type="button" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.35rem 0.75rem;" onclick="loadAdminDbSample('mongodb')">MongoDB Shell</button>
+        <button type="button" class="btn btn-primary" style="font-size: 0.78rem; padding: 0.35rem 0.95rem;" onclick="executeAdminDbQuery()">▶ Execute Query</button>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem;">
+      <textarea id="adminDbEditor" style="width: 100%; min-height: 150px; background: #070b14; color: #e2e8f0; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.55;">&lt;?php
+$conn = mysqli_connect("localhost", "root", "", "codequest_bd");
+echo "Connected to MySQL Server (codequest_bd)!";
+$sql = "SELECT student_id, name, department, cgpa, xp FROM students ORDER BY xp DESC;";
+?&gt;</textarea>
+      <pre id="adminDbOutput" style="margin: 0; min-height: 150px; background: #04070e; color: #34d399; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.5; overflow-x: auto;">[PHP 8.3 + MySQLi Bridge Ready] Click "▶ Execute Query" to run live against the sandboxed university database.</pre>
+    </div>
+  </div>
+
 </div>
+<script>
+  var adminDbLang = 'php';
+  function loadAdminDbSample(mode) {
+    adminDbLang = mode;
+    var ed = document.getElementById('adminDbEditor');
+    if (mode === 'php') {
+      ed.value = '<?php\n$conn = mysqli_connect("localhost", "root", "", "codequest_bd");\necho "Connected to MySQL Server (codequest_bd)!";\n$sql = "SELECT student_id, name, department, cgpa, xp FROM students ORDER BY xp DESC;";\n?>';
+    } else if (mode === 'sql') {
+      ed.value = 'SELECT student_id, name, department, cgpa, course_streak, game_streak, xp FROM students ORDER BY xp DESC;';
+    } else if (mode === 'mongodb') {
+      ed.value = 'db.students.find({ "dept": "CSE" })';
+    }
+    executeAdminDbQuery();
+  }
+  function executeAdminDbQuery() {
+    var ed = document.getElementById('adminDbEditor');
+    var out = document.getElementById('adminDbOutput');
+    out.textContent = 'Executing query...';
+    fetch('/api/terminal/execute/', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({language: adminDbLang, code: ed.value})
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(d) { out.textContent = d.stdout || 'Executed cleanly.'; })
+    .catch(function(e) { out.textContent = 'Error: ' + e; });
+  }
+</script>
 {% endblock %}

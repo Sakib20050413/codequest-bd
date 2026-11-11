@@ -803,23 +803,23 @@ print("Welcome to CodeQuest BD — you are ready to build!")</textarea>
     <!-- Curriculum Filter Tabs -->
     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
       <button class="btn featured-filter-tab active" data-track-cat="all" style="padding: 0.45rem 1.1rem; font-size: 0.82rem; border-radius: 999px;">
-        All Featured Tracks (6)
+        All Featured Tracks ({{ featured_courses|length }})
       </button>
       <button class="btn btn-ghost featured-filter-tab" data-track-cat="web" style="padding: 0.45rem 1.1rem; font-size: 0.82rem; border-radius: 999px;">
-        🌐 Web Foundations (HTML5, CSS3, JavaScript)
+        🌐 Web &amp; Frontend (HTML5, CSS3, JS, React)
       </button>
       <button class="btn btn-ghost featured-filter-tab" data-track-cat="data" style="padding: 0.45rem 1.1rem; font-size: 0.82rem; border-radius: 999px;">
-        🐍 Scripting &amp; Data (Python 3, SQL)
+        🐍 Python, Backend &amp; Databases (Python, Django, PHP, SQL, MySQL, MongoDB)
       </button>
       <button class="btn btn-ghost featured-filter-tab" data-track-cat="systems" style="padding: 0.45rem 1.1rem; font-size: 0.82rem; border-radius: 999px;">
-        ⚙️ Systems &amp; Memory (C Programming)
+        ⚙️ Systems, C/C++/Rust, Java, Bash &amp; AI
       </button>
     </div>
 
     <!-- Rich LMS Course Cards Grid (Symmetrical 3x2 Matrix, Zero Orphans) -->
     <div class="featured-tracks-grid">
       {% for course in featured_courses %}
-      <div class="cq-card cq-card-interactive featured-course-card" data-cat="{% if course.language.slug == 'html' or course.language.slug == 'css' or course.language.slug == 'javascript' %}web{% elif course.language.slug == 'python' or course.language.slug == 'sql' %}data{% else %}systems{% endif %}" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2rem; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); background: radial-gradient(ellipse at top right, rgba(99, 102, 241, 0.06), var(--bg-surface) 75%); position: relative; overflow: hidden;">
+      <div class="cq-card cq-card-interactive featured-course-card" data-cat="{% if course.language.slug == 'html' or course.language.slug == 'css' or course.language.slug == 'javascript' or course.language.slug == 'react' %}web{% elif course.language.slug == 'python' or course.language.slug == 'django' or course.language.slug == 'php' or course.language.slug == 'sql' or course.language.slug == 'mysql' or course.language.slug == 'mongodb' %}data{% else %}systems{% endif %}" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2rem; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); background: radial-gradient(ellipse at top right, rgba(99, 102, 241, 0.06), var(--bg-surface) 75%); position: relative; overflow: hidden;">
         
         <!-- Glow accent badge -->
         <div style="position: absolute; top: 0; right: 0; width: 120px; height: 120px; background: radial-gradient(circle, rgba(99, 102, 241, 0.12), transparent 70%); pointer-events: none;"></div>

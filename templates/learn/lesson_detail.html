@@ -155,6 +155,9 @@
             </span>
           </div>
 
+          <!-- 1-Minute Silent Visual Lesson Player (All 16 Languages) -->
+          <div id="lessonMicroVideoPlayer" style="min-height: 220px; margin-bottom: 1.35rem;"></div>
+
           <!-- Conceptual Markdown -->
           <div class="prose" style="font-size: 0.94rem; line-height: 1.68; color: var(--text-primary); margin-bottom: 1.5rem;">
             {{ lesson.body_md|render_md }}
@@ -757,25 +760,14 @@ margin: 24px; padding: 20px; border: 2px solid;
           </div>
           <div id="studioConsoleLogs" style="font-family: var(--font-mono); font-size: 0.78rem; min-height: 160px; max-height: 200px; overflow-y: auto;">
             <div style="color: var(--text-dim); font-style: italic; padding: 0.5rem 0;">
-              Console ready. Use console.log() inside scripts to stream outputs.
-            </div>
-          </div>
-
-        <!-- Studio Tab Content: 4. Real Code-Writing Interactive Game Canvas (Pillar 3) -->
-        <div id="studioTabGame" class="studio-tab-pane" style="display: none; padding: 0.75rem; min-height: 230px; background: #080c14;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding: 0 0.25rem;">
-            <div style="font-size: 0.78rem; font-weight: 700; color: #38bdf8; font-family: var(--font-mono);">
-              🕹️ {{ full_syntax_game.title|default:"Cyber Grid Rover" }} &bull; Live Canvas
-            </div>
-            <span style="font-size: 0.72rem; color: #10b981; font-family: var(--font-mono);">Real-Time Code Engine</span>
-          </div>
-          <div style="position: relative; border-radius: var(--radius-md); overflow: hidden; border: 1px solid rgba(56, 189, 248, 0.2); background: #030712; height: 210px; display: flex; align-items: center; justify-content: center;">
-            <canvas id="syntaxGameCanvas" width="480" height="200" style="display: block; max-width: 100%; height: auto;"></canvas>
-            <div id="gameOverlayText" style="position: absolute; bottom: 8px; left: 12px; font-family: var(--font-mono); font-size: 0.72rem; color: #94a3b8; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px;">
-              Syntax Battery: 100% &bull; Coordinates: [0, 0] &bull; Status: Ready
+              Console ready. Use console.log() or Run Preview to stream outputs.
             </div>
           </div>
         </div>
+
+        <!-- Studio Tab Content: 4. Real Code-Writing 2D & 3D Multi-Game Canvas (Pillar 3) -->
+        <div id="studioTabGame" class="studio-tab-pane" style="display: none; padding: 0.85rem; min-height: 260px; background: #080c14;">
+          <div id="lessonGameCanvas" style="min-height: 250px;"></div>
         </div>
 
       </div>
@@ -897,8 +889,8 @@ margin: 24px; padding: 20px; border: 2px solid;
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="{% static 'js/runners/web_runner.js' %}"></script>
-<script src="{% static 'js/software_models.js' %}"></script>
+<script src="{% static 'js/runners/web_runner.js' %}?v=12.0"></script>
+<script src="{% static 'js/software_models.js' %}?v=12.0"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const rawEditor = document.getElementById('codeEditor');
@@ -1237,7 +1229,7 @@ margin: 24px; padding: 20px; border: 2px solid;
           }
           return '';
         })() },
-        body: JSON.stringify({ task_id: taskId, code: (window.editorInstance ? window.editorInstance.getValue() : '') })
+        body: JSON.stringify({ task_id: taskId, code: (cmInstance ? cmInstance.getValue() : (rawEditor ? rawEditor.value : '')) })
       })
       .then(function(r) { return r.json(); })
       .then(function(d) {
@@ -1351,12 +1343,33 @@ margin: 24px; padding: 20px; border: 2px solid;
     if (window.CodeQuestLessonRunner) {
       window.CodeQuestLessonRunner.init({
         lessonId: {{ lesson.id }},
+        langSlug: '{{ course.language.slug|default:"html" }}',
         tests: JSON.parse('{{ tests_json_str|escapejs }}'),
         hints: JSON.parse('{{ hints_json_str|escapejs }}'),
         solution: `{{ lesson.solution|escapejs }}`,
         xpReward: {{ lesson.xp }}
       });
     }
+
+    // Initialize 1-Minute Visual Guide & 2D/3D Multi-Game Studio for this Lesson's Language
+    const currentLessonLang = '{{ course.language.slug|default:"python" }}';
+    if (window.CQInitMicroVideo) {
+      window.CQInitMicroVideo('lessonMicroVideoPlayer', currentLessonLang);
+    }
+    if (window.CQRenderGameCanvas) {
+      window.CQRenderGameCanvas('lessonGameCanvas', currentLessonLang, false, '');
+    }
+    const runBtnForGame = document.getElementById('runCodeBtn');
+    const checkBtnForGame = document.getElementById('checkSolutionBtn');
+    [runBtnForGame, checkBtnForGame].forEach(function (b) {
+      if (b) {
+        b.addEventListener('click', function () {
+          if (window.CQRenderGameCanvas) {
+            window.CQRenderGameCanvas('lessonGameCanvas', currentLessonLang, true, cmInstance ? cmInstance.getValue() : rawEditor.value);
+          }
+        });
+      }
+    });
 
     // Initialize Living Software Architecture & Models Studio
     if (window.CodeQuestSoftwareModels) {
@@ -1520,8 +1533,8 @@ margin: 24px; padding: 20px; border: 2px solid;
       if (tabGroup) tabGroup.style.display = isMobile ? 'flex' : 'none';
 
       if (!isMobile) {
-        if (pInst) { pInst.style.display = 'flex'; pInst.style.flex = ''; pInst.style.minWidth = ''; pInst.style.maxWidth = ''; }
-        if (pWrapper) { pWrapper.style.display = 'flex'; pWrapper.style.minWidth = ''; }
+        if (pInst) { pInst.style.display = 'flex'; pInst.style.flex = '0 0 40%'; pInst.style.minWidth = '340px'; pInst.style.maxWidth = '55%'; }
+        if (pWrapper) { pWrapper.style.display = 'flex'; pWrapper.style.flex = '1'; pWrapper.style.minWidth = '360px'; }
         if (pEdit) pEdit.style.display = 'flex';
         if (pDeck) pDeck.style.display = 'flex';
         if (splitter) splitter.style.display = 'flex';

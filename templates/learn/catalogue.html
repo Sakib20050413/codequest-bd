@@ -229,7 +229,7 @@
         🗄️ Databases (SQL)
       </button>
       <button class="btn btn-ghost filter-pill" data-group="systems" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 999px;">
-        ⚙️ Systems &amp; CLI
+        ⚙️ Systems, C/C++/Rust &amp; AI
       </button>
     </div>
   </div>
@@ -242,7 +242,7 @@
            data-title="{{ course.title|lower }}" 
            data-desc="{{ course.description|lower }}" 
            data-lang="{{ lang.name|lower }}" 
-           data-group="{% if 'Web' in lang.category %}web{% elif 'Backend' in lang.category or 'Scripting' in lang.category %}backend{% elif 'Database' in lang.category %}database{% elif 'System' in lang.category or 'CLI' in lang.category %}systems{% else %}other{% endif %}">
+           data-group="{% if 'Web' in lang.category or 'Frontend' in lang.category %}web{% elif 'Backend' in lang.category or 'Scripting' in lang.category or 'Full-Stack' in lang.category %}backend{% elif 'Database' in lang.category %}database{% else %}systems{% endif %}">
         
         <div>
           <!-- Header Row -->

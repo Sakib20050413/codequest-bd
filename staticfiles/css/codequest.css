@@ -1663,6 +1663,12 @@ body.zen-locked .floating-zen-exit-pill,
   padding: 0.85rem 1.5rem 3rem 1.5rem;
 }
 
+#panelInstructions {
+  flex: 0 0 40%;
+  min-width: 340px;
+  max-width: 55%;
+}
+
 @media (max-width: 768px) {
   .cq-learning-shell {
     padding: 0.5rem 0.85rem 2rem 0.85rem;

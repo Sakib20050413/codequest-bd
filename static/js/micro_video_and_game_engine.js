@@ -435,8 +435,21 @@
   }
 
   window.CQRenderGameCanvas = function (canvasId, rawLang, progressState, codeText, keepGameMode) {
-    const canvas = document.getElementById(canvasId);
+    let canvas = document.getElementById(canvasId);
     if (!canvas) return;
+    if (canvas.tagName !== "CANVAS") {
+      let innerCanvas = canvas.querySelector("canvas");
+      if (!innerCanvas) {
+        innerCanvas = document.createElement("canvas");
+        innerCanvas.id = canvasId + "_canvasEl";
+        innerCanvas.width = 640;
+        innerCanvas.height = 220;
+        innerCanvas.style.cssText = "width:100%; height:220px; display:block;";
+        canvas.appendChild(innerCanvas);
+      }
+      canvas = innerCanvas;
+      canvasId = innerCanvas.id;
+    }
 
     if (activeCanvasTimers[canvasId]) {
       cancelAnimationFrame(activeCanvasTimers[canvasId]);

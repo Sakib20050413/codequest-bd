@@ -31,6 +31,36 @@
   </div>
 
 
+  <!-- INSTANT 2D & 3D MULTI-GAME STUDIO (6 Built-In 2D/3D Games + Live Code Trigger) -->
+  <div class="cq-card" style="margin-bottom: 2.25rem; padding: 1.35rem 1.5rem; border: 1px solid rgba(20, 184, 166, 0.35); background: radial-gradient(ellipse at top right, rgba(20, 184, 166, 0.1), var(--bg-surface) 75%);">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+      <div>
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 800; color: #14b8a6; text-transform: uppercase; letter-spacing: 0.05em;">
+          🕹️ Instant 2D Arcade &amp; 🌐 3D WebGL Game Studio &bull; Play Right Now
+        </div>
+        <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
+          Interactive 2D &amp; 3D Code-to-Game Sandbox (6 Instant Modes + 108 Full Games Below)
+        </h2>
+      </div>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <button type="button" class="btn btn-primary" style="padding: 0.4rem 0.95rem; font-size: 0.8rem;" onclick="if(window.CQRenderGameCanvas) window.CQRenderGameCanvas('hubLiveGameCanvas', 'python', true, 'move_rover()')">
+          🚀 Trigger Win Animation (+35 XP)
+        </button>
+        <a href="#arcadeArenaSection" onclick="switchArenaMode('arcade')" class="btn btn-ghost" style="padding: 0.4rem 0.95rem; font-size: 0.8rem;">
+          Browse All 108 Games &darr;
+        </a>
+      </div>
+    </div>
+    <div id="hubLiveGameCanvas" style="min-height: 260px;"></div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.CQRenderGameCanvas) {
+        window.CQRenderGameCanvas("hubLiveGameCanvas", "python", false, "");
+      }
+    });
+  </script>
+
   <!-- TOP PRIMARY MODE SWITCHER -->
   <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
     <div class="arena-mode-nav" role="tablist" aria-label="Practice Arena Modes">

@@ -469,7 +469,7 @@ def playground(request):
                 elif t.get("cat") == "frontend":
                     initial_lang = "web"
                 break
-    elif lang_param in ["python", "sql", "c", "go", "rust", "java", "bash", "web"]:
+    elif lang_param in ["python", "sql", "mysql", "postgresql", "mongodb", "c", "cpp", "go", "rust", "java", "php", "bash", "react", "django", "ai-ml", "web"]:
         initial_lang = lang_param
 
     return render(
@@ -619,6 +619,7 @@ def logout_view(request):
     return redirect("landing")
 
 
+@csrf_exempt
 @require_POST
 def submit_feedback(request):
     try:
@@ -701,6 +702,11 @@ def api_cloud_db_status(request):
 # ==============================================================================
 
 def contests_view(request):
+    from .automation_engine import ensure_autonomous_platform_state
+    try:
+        ensure_autonomous_platform_state()
+    except Exception:
+        pass
     contests = Contest.objects.all()
     active_contests = [c for c in contests if c.is_active]
     upcoming_contests = [c for c in contests if not c.is_active]
@@ -815,6 +821,7 @@ def verify_certificate_view(request, credential_id):
     )
 
 
+@csrf_exempt
 @require_POST
 def api_claim_certificate(request):
     try:
@@ -907,6 +914,7 @@ def api_admin_stats(request):
 # 4. MICRO-TASKS & DAILY GOAL APIS
 # ==============================================================================
 
+@csrf_exempt
 @require_POST
 def api_check_micro_task(request):
     try:

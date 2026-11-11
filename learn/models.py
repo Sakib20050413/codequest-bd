@@ -58,15 +58,27 @@ class Course(models.Model):
             "html-core": ["Semantic HTML5", "DOM Skeletons", "Forms & Input", "Accessible Web"],
             "css-core": ["Box Model", "Flexbox Pond", "CSS Grid", "Responsive Layouts"],
             "javascript-core": ["DOM Reactivity", "Event Listeners", "Async / Await", "ES6+ Modules"],
+            "react-core": ["JSX Components", "useState & Hooks", "Props & State", "SPA Architecture"],
             "python-core": ["Algorithmic Logic", "Comprehensions", "OOP & Dictionaries", "Data Pipelines"],
+            "django-core": ["MVT Architecture", "ORM Models", "URLs & Views", "REST APIs"],
             "sql-core": ["Relational Schemas", "JOIN Algorithms", "Aggregates & Filters", "Query Tuning"],
+            "mysql-core": ["InnoDB Tables", "PHP MySQLi/PDO", "Foreign Keys", "Indexed Queries"],
+            "postgresql-core": ["ACID Transactions", "JSONB Indexing", "Window Functions", "Cloud Neon DB"],
+            "mongodb-core": ["NoSQL Documents", "BSON Schemas", "Aggregation Pipelines", "mongosh CRUD"],
             "c-lang-stubs": ["Memory & Pointers", "Format Strings", "Structs & Arrays", "Deterministic AST"],
+            "c-lang-core": ["Memory & Pointers", "Format Strings", "Structs & Arrays", "Deterministic AST"],
             "c-core": ["Memory & Pointers", "Format Strings", "Structs & Arrays", "Deterministic AST"],
+            "cpp-core": ["STL Containers", "Vectors & Maps", "Fast I/O", "Competitive Coding"],
+            "rust-core": ["Ownership & Borrowing", "Zero-Cost Safety", "Pattern Matching", "Cargo Systems"],
             "java-stubs": ["OOP Hierarchy", "Static Typing", "JVM Memory Model", "Exception Guard"],
+            "java-core": ["OOP Hierarchy", "Static Typing", "JVM Memory Model", "Collections API"],
             "php-stubs": ["Server Request API", "CRUD Operations", "Header Routing", "Database Bridges"],
+            "php-core": ["Server Request API", "MySQLi & PDO", "Session Auth", "Dynamic Web"],
             "bash-stubs": ["Linux Pipeline", "Regex & Grep", "Stream Redirection", "Shell Automation"],
+            "bash-core": ["Linux Pipeline", "Regex & Grep", "Stream Redirection", "Shell Automation"],
+            "ai-ml-core": ["Neural Networks", "PyTorch Tensors", "Gradient Descent", "LLM Prompts"],
         }
-        return tag_map.get(self.slug, ["Core Fundamentals", "Syntax Fluency", "Hands-on Labs", "Verified Certificate"])
+        return tag_map.get(self.slug, ["Core Fundamentals", "1-Min Visual Studio", "Hands-on Labs", "Verified Certificate"])
 
 
 class Lesson(models.Model):
@@ -252,6 +264,10 @@ class MicroTask(models.Model):
         ordering = ["lesson", "task_number", "id"]
         unique_together = ("lesson", "task_number")
 
+    @property
+    def description(self):
+        return self.instructions
+
     def __str__(self):
         return f"{self.lesson.title} - Task {self.task_number}: {self.title}"
 
@@ -299,6 +315,14 @@ class Contest(models.Model):
 
     class Meta:
         ordering = ["-is_active", "starts_at"]
+
+    @property
+    def difficulty(self):
+        return f"{self.get_category_display()} • {self.language_slug.upper()}"
+
+    @property
+    def problem_statement(self):
+        return self.description
 
     def __str__(self):
         return f"[{self.get_category_display()}] {self.title}"

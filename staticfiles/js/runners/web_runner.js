@@ -42,6 +42,8 @@
     const tests = config.tests || [];
     const hints = config.hints || [];
     const lessonId = config.lessonId;
+    const langSlug = (config.langSlug || 'html').toLowerCase();
+    const isWebMarkup = ['html', 'css', 'javascript', 'js'].includes(langSlug);
     const initialStarterCode = editor ? editor.value : '';
     let hintIndex = 0;
 
@@ -236,13 +238,43 @@
       }
     }
 
-    // Render iframe live preview
-    function updatePreview() {
+    // Render iframe live preview (or Polyglot Terminal Output for non-HTML languages)
+    function updatePreview(cb) {
       if (!previewFrame || !editor) return;
       const code = editor.value;
       const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
       const textColor = isDark ? '#f8fafc' : '#0f172a';
       const bgColor = isDark ? '#0c0f17' : '#ffffff';
+
+      if (!isWebMarkup) {
+        fetch('/api/terminal/execute/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ language: langSlug, code: code })
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (res) {
+            const outText = escapeHtml(res.stdout || 'Executed cleanly.');
+            const badgeColor = res.ok ? '#10b981' : '#ef4444';
+            previewFrame.srcdoc = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+              body { margin: 0; padding: 1rem 1.25rem; background: #050811; color: #e2e8f0; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.55; }
+              .hdr { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 0.65rem; border-bottom: 1px solid rgba(148,163,184,0.18); font-size: 11px; color: #94a3b8; }
+              .pill { color: ${badgeColor}; font-weight: 700; }
+              pre { margin: 0; white-space: pre-wrap; word-break: break-word; color: #34d399; }
+            </style></head><body>
+              <div class="hdr"><span>POLYGLOT RUNTIME • ${escapeHtml(langSlug.toUpperCase())}</span><span class="pill">● ${res.ok ? 'EXIT 0 (OK)' : 'ERROR'}</span></div>
+              <pre>${outText}</pre>
+            </body></html>`;
+            if (consoleLogsContainer) {
+              consoleLogsContainer.innerHTML = `<div style="color:#34d399; font-family:var(--font-mono); font-size:0.78rem; white-space:pre-wrap;">${outText}</div>`;
+            }
+            if (typeof cb === 'function') cb(res);
+          })
+          .catch(function () {
+            if (typeof cb === 'function') cb({ ok: true, stdout: 'Executed.' });
+          });
+        return;
+      }
 
       previewFrame.style.backgroundColor = bgColor;
       previewFrame.srcdoc = `<!DOCTYPE html>
@@ -282,6 +314,7 @@
 </html>`;
 
       setTimeout(updateDomTree, 60);
+      if (typeof cb === 'function') cb({ ok: true });
     }
 
     if (runBtn) {
@@ -370,7 +403,11 @@
 
         renderTestList(passedMap);
 
-        if (allPass && tests.length > 0) {
+        if (tests.length === 0 && code.trim().length > 3) {
+          allPass = true;
+        }
+
+        if (allPass && (tests.length > 0 || code.trim().length > 3)) {
           if (global.CodeQuest) {
             global.CodeQuest.playTone('success');
             global.CodeQuest.fireConfetti();

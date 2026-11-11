@@ -140,14 +140,29 @@
           <button class="studio-lang-tab {% if initial_lang == 'python' %}active{% endif %}" data-lang="python">
             🐍 Python 3
           </button>
+          <button class="studio-lang-tab {% if initial_lang == 'react' %}active{% endif %}" data-lang="react">
+            ⚛️ React
+          </button>
+          <button class="studio-lang-tab {% if initial_lang == 'django' %}active{% endif %}" data-lang="django">
+            🎯 Django
+          </button>
           <button class="studio-lang-tab {% if initial_lang == 'sql' %}active{% endif %}" data-lang="sql">
-            🗄️ SQL Database
+            🗄️ SQL / PostgreSQL
+          </button>
+          <button class="studio-lang-tab {% if initial_lang == 'mysql' %}active{% endif %}" data-lang="mysql">
+            🐬 MySQL
+          </button>
+          <button class="studio-lang-tab {% if initial_lang == 'mongodb' %}active{% endif %}" data-lang="mongodb">
+            🍃 MongoDB
+          </button>
+          <button class="studio-lang-tab {% if initial_lang == 'php' %}active{% endif %}" data-lang="php">
+            🐘 PHP + SQL
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'c' %}active{% endif %}" data-lang="c">
-            ⚙️ C Systems
+            ⚙️ C
           </button>
-          <button class="studio-lang-tab {% if initial_lang == 'go' %}active{% endif %}" data-lang="go">
-            🐹 Go
+          <button class="studio-lang-tab {% if initial_lang == 'cpp' %}active{% endif %}" data-lang="cpp">
+            🚀 C++20
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'rust' %}active{% endif %}" data-lang="rust">
             🦀 Rust
@@ -155,8 +170,14 @@
           <button class="studio-lang-tab {% if initial_lang == 'java' %}active{% endif %}" data-lang="java">
             ☕ Java
           </button>
+          <button class="studio-lang-tab {% if initial_lang == 'go' %}active{% endif %}" data-lang="go">
+            🐹 Go
+          </button>
           <button class="studio-lang-tab {% if initial_lang == 'bash' %}active{% endif %}" data-lang="bash">
-            💻 Bash Shell
+            💻 Bash CLI
+          </button>
+          <button class="studio-lang-tab {% if initial_lang == 'ai-ml' %}active{% endif %}" data-lang="ai-ml">
+            🧠 AI &amp; ML
           </button>
         </div>
       </div>
@@ -1315,6 +1336,84 @@ whoami
 pwd
 `
         }
+      },
+      react: {
+        component: {
+          title: 'Template: React useState Hook Component',
+          code: `import React, { useState } from "react";
+
+export default function QuestScoreCard() {
+  const [xp, setXp] = useState(640);
+  console.log("React Component Rendered • Active XP: " + xp);
+  return "<QuestScoreCard xp=" + xp + " />";
+}
+`
+        }
+      },
+      django: {
+        orm: {
+          title: 'Template: Django ORM & View Pipeline',
+          code: `# Django ORM + REST Endpoint Simulation
+students = [
+    {"id": "1119003", "name": "Md Najmus Sakib Rahatul", "xp": 2450, "streak": 12},
+    {"id": "1119026", "name": "Nusrat Jahan", "xp": 2720, "streak": 15},
+]
+top = sorted(students, key=lambda s: s["xp"], reverse=True)
+print("[Django 5.1 ORM] Top CSE 324 Learners:")
+for s in top:
+    print(f"  -> {s['name']} ({s['id']}): {s['xp']} XP | Streak: {s['streak']}d")
+`
+        }
+      },
+      mysql: {
+        join: {
+          title: 'Template: MySQL Relational Query',
+          code: `SELECT student_id, name, department, cgpa, course_streak, game_streak, xp
+FROM students
+ORDER BY xp DESC;`
+        }
+      },
+      mongodb: {
+        find: {
+          title: 'Template: MongoDB Document Query (mongosh)',
+          code: `db.students.find({ "dept": "CSE" })`
+        }
+      },
+      php: {
+        mysqli: {
+          title: 'Template: PHP 8.3 + MySQLi Database Bridge',
+          code: `<?php
+$conn = mysqli_connect("localhost", "root", "", "codequest_bd");
+echo "Connected to MySQL Server (codequest_bd) via PHP 8.3!";
+$sql = "SELECT student_id, name, department, cgpa, xp FROM students ORDER BY xp DESC;";
+?>`
+        }
+      },
+      cpp: {
+        stl: {
+          title: 'Template: C++20 STL Vector & Sort',
+          code: `#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    cout << "C++20 STL Competitive Engine Ready | Sorted Ranks: 99, 95, 88" << endl;
+    return 0;
+}
+`
+        }
+      },
+      'ai-ml': {
+        neural: {
+          title: 'Template: Neural Network Forward Pass (Python AI)',
+          code: `weights = [0.6, 0.3, 0.1]
+inputs  = [0.95, 0.88, 0.92]
+logit = sum(w * x for w, x in zip(weights, inputs))
+print("Neural Layer Forward Pass Logit:", round(logit, 4))
+print("Prediction: Code Mastery Confidence = 92.6%")
+`
+        }
       }
     };
 
@@ -1394,12 +1493,19 @@ pwd
       } else {
         const extMap = {
           python: { label: 'main.py', icon: '🐍' },
+          react: { label: 'App.jsx', icon: '⚛️' },
+          django: { label: 'views.py', icon: '🎯' },
           sql: { label: 'query.sql', icon: '🗄️' },
+          mysql: { label: 'schema.mysql.sql', icon: '🐬' },
+          mongodb: { label: 'pipeline.mongodb.js', icon: '🍃' },
+          php: { label: 'db_connect.php', icon: '🐘' },
           c: { label: 'main.c', icon: '⚙️' },
+          cpp: { label: 'main.cpp', icon: '🚀' },
           go: { label: 'main.go', icon: '🐹' },
           rust: { label: 'main.rs', icon: '🦀' },
           java: { label: 'Main.java', icon: '☕' },
-          bash: { label: 'script.sh', icon: '💻' }
+          bash: { label: 'script.sh', icon: '💻' },
+          'ai-ml': { label: 'neural_net.py', icon: '🧠' }
         };
         const f = extMap[currentStudio] || { label: 'main.txt', icon: '📝' };
         const btn = document.createElement('button');
@@ -1835,17 +1941,42 @@ sys.stderr = sys_err
         runBashSimulation(code, startTime);
         return;
       }
+
+      // 8. Polyglot Engine Execution (React, Django, MySQL, MongoDB, PHP, C++, AI/ML)
+      fetch('/api/terminal/execute/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ language: currentStudio, code: code })
+      })
+        .then(r => r.json())
+        .then(res => {
+          sqlDataGridArea.style.display = 'none';
+          terminalScreen.style.display = 'block';
+          appendTerminalLine(`<span style="color:#e2e8f0; white-space:pre-wrap;">${escapeHtml(res.stdout || 'Executed cleanly.')}</span>`);
+          finishExecution(startTime, res.ok ? 0 : 1);
+        })
+        .catch(err => {
+          appendTerminalLine(`<span style="color:#f87171;">Execution error: ${escapeHtml(err.message)}</span>`);
+          finishExecution(startTime, 1);
+        });
     }
 
     function getCommandLine(lang) {
       const cmds = {
         python: 'python3 main.py',
+        react: 'npm run build && node render_jsx.js',
+        django: 'python3 manage.py shell < views.py',
         sql: 'sqlite3 :memory: < query.sql',
+        mysql: 'mysql -u root codequest_bd < schema.mysql.sql',
+        mongodb: 'mongosh mongodb://127.0.0.1:27017/codequest_bd pipeline.mongodb.js',
+        php: 'php -f db_connect.php',
         c: 'gcc -O2 -Wall main.c -o main && ./main',
+        cpp: 'g++ -std=c++20 -O2 main.cpp -o main && ./main',
         go: 'go run main.go',
         rust: 'rustc main.rs -o main && ./main',
         java: 'javac Main.java && java Main',
-        bash: 'bash script.sh'
+        bash: 'bash script.sh',
+        'ai-ml': 'python3 neural_net.py'
       };
       return cmds[lang] || './run';
     }
