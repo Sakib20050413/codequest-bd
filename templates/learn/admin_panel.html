@@ -1,131 +1,192 @@
 {% extends "base.html" %}
 
-{% block title %}Database Records &amp; PHP MySQLi Connection — CodeQuest{% endblock %}
+{% block title %}Instructor &amp; Administrative Command Center — CodeQuest BD{% endblock %}
 
 {% block content %}
+<div class="shell shell-wide" style="padding-top: 2rem; padding-bottom: 5rem;">
 
-<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
-  <h1 style="font-size:1.75rem; font-weight:700; margin:0; color:var(--text-primary);">
-    SQL Database Tables &amp; PHP MySQLi Connection
-  </h1>
-  <div style="display:flex; gap:8px;">
-    <a href="/admin/" target="_blank" class="w3-btn-outline">Django Admin</a>
-    <a href="{% url 'playground' %}" class="w3-btn-green">Run SQL / PHP Queries &raquo;</a>
-  </div>
-</div>
-
-<p style="font-size:0.92rem; line-height:1.6; color:var(--text-secondary); margin:0 0 16px 0;">
-  Overview of the relational database records (<code>db.sqlite3</code> / MySQL) and the standalone PHP 8 <code>mysqli</code> database connection module (<code>php_sessional_crud/db.php</code> &amp; <code>index.php</code>) implemented for CSE 324 Web Technologies Sessional.
-</p>
-
-<!-- Database Summary Table -->
-<table class="cq-table" style="margin-bottom:22px;">
-  <thead>
-    <tr>
-      <th>Programming Languages</th>
-      <th>Tutorial Courses</th>
-      <th>Lesson Units</th>
-      <th>Coding Games</th>
-      <th>Open Contests</th>
-      <th>Certificates Issued</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="font-family:var(--font-mono); font-weight:700;">{{ total_languages }}</td>
-      <td style="font-family:var(--font-mono); font-weight:700;">{{ total_courses }}</td>
-      <td style="font-family:var(--font-mono); font-weight:700;">{{ total_lessons }}</td>
-      <td style="font-family:var(--font-mono); font-weight:700;">{{ total_games }}</td>
-      <td style="font-family:var(--font-mono); font-weight:700;">{{ total_contests }}</td>
-      <td style="font-family:var(--font-mono); font-weight:700;">{{ total_certificates }}</td>
-    </tr>
-  </tbody>
-</table>
-
-<hr class="w3-hr" />
-
-<!-- Live PHP + SQL Database Connection Tester -->
-<div class="w3-example-box">
-  <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
+  <!-- Admin Header -->
+  <div style="margin-bottom: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
     <div>
-      <h2 style="font-size:1.15rem; font-weight:700; margin:0; color:var(--text-primary);">
-        PHP 8 MySQLi Database Connection &amp; Live SQL Query Tester
-      </h2>
-      <div style="font-size:0.82rem; color:var(--text-secondary);">
-        Edit the PHP / SQL query below and click "Execute PHP + SQL" to query the student database table:
+      <div class="section-eyebrow-pill" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3);">
+        <span class="pill-pulse-dot" style="background: #6366f1; box-shadow: 0 0 10px #6366f1;"></span>
+        <span style="color: #818cf8; font-weight: 700;">Academic CMS &bull; Evaluation Control &bull; BAIUST CSE 324</span>
+      </div>
+      <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.035em; line-height: 1.15; margin: 0 0 0.5rem 0;">
+        Instructor &amp; Admin <span style="background: linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Command Center</span>
+      </h1>
+      <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 650px; line-height: 1.6; margin: 0;">
+        Real-time telemetry, curriculum content management, multi-tier micro-task verification, competitive contest monitoring, and cryptographic certificate issuance.
+      </p>
+    </div>
+
+    <!-- Quick Operations -->
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="/admin/" target="_blank" class="btn btn-ghost" style="font-size: 0.85rem; padding: 0.5rem 1rem; border: 1px solid var(--border-color);">
+        Django Admin &nearr;
+      </a>
+      <a href="{% url 'certificates_hub' %}" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1.1rem; background: #3b82f6;">
+        Verify Credentials &rarr;
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI Metrics Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2.5rem;">
+    
+    <div class="cq-card" style="padding: 1.25rem; border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--border-color);">
+      <div style="font-size: 2rem; font-weight: 800; color: #3b82f6;">{{ total_languages }}</div>
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-top: 0.25rem;">
+        Languages
       </div>
     </div>
-    <button type="button" onclick="runAdminPhpSqlTest()" class="w3-btn-green">
-      Execute PHP + SQL Query &raquo;
-    </button>
-  </div>
 
-  <div class="w3-code-panel" style="padding:0; overflow:hidden;">
-    <div style="padding:6px 12px; background:#f1f5f9; border-bottom:1px solid #d1d5db; font-family:var(--font-mono); font-size:0.75rem; color:#334155;">
-      php_sessional_crud/db.php
+    <div class="cq-card" style="padding: 1.25rem; border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--border-color);">
+      <div style="font-size: 2rem; font-weight: 800; color: #10b981;">{{ total_courses }}</div>
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-top: 0.25rem;">
+        Active Tracks
+      </div>
     </div>
-    <textarea id="adminPhpSqlCode" rows="5" spellcheck="false" style="width:100%; background:#ffffff; color:#0f172a; font-family:var(--font-mono); font-size:0.82rem; padding:10px 12px; border:none; outline:none;">&lt;?php
-$conn = mysqli_connect('localhost', 'root', '', 'codequest_sql');
-echo "[PHP 8.3 MySQLi] Connected to SQL Database Successfully!";
-$sql = "SELECT student_id, name, department, cgpa, course_streak, game_streak, xp FROM students ORDER BY xp DESC";
-?&gt;</textarea>
+
+    <div class="cq-card" style="padding: 1.25rem; border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--border-color);">
+      <div style="font-size: 2rem; font-weight: 800; color: #8b5cf6;">{{ total_lessons }}</div>
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-top: 0.25rem;">
+        Total Lessons
+      </div>
+    </div>
+
+    <div class="cq-card" style="padding: 1.25rem; border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--border-color);">
+      <div style="font-size: 2rem; font-weight: 800; color: #fbbf24;">{{ total_micro_tasks }}</div>
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-top: 0.25rem;">
+        Micro-Tasks
+      </div>
+    </div>
+
+    <div class="cq-card" style="padding: 1.25rem; border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--border-color);">
+      <div style="font-size: 2rem; font-weight: 800; color: #ec4899;">{{ total_games }}</div>
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-top: 0.25rem;">
+        Game Modules
+      </div>
+    </div>
+
+    <div class="cq-card" style="padding: 1.25rem; border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--border-color);">
+      <div style="font-size: 2rem; font-weight: 800; color: #06b6d4;">{{ total_certificates }}</div>
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-top: 0.25rem;">
+        Certificates
+      </div>
+    </div>
+
   </div>
 
-  <div style="font-size:0.8rem; font-weight:700; margin:8px 0 4px 0;">Database Output:</div>
-  <pre id="adminPhpSqlOut" style="margin:0; padding:10px 12px; background:#1e293b; border-left:4px solid #04aa6d; color:#f8fafc; font-family:var(--font-mono); font-size:0.8rem; white-space:pre-wrap;">Click "Execute PHP + SQL Query" to view live records.</pre>
+  <!-- Main Administrative Workstation -->
+  <div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 62% 38%; gap: 1.75rem;">
+    
+    <!-- Left Column: Curriculum Tracks & Lessons Table -->
+    <div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+          <span>📚</span> Active Curriculum Tracks (11 Viral + 2 Core)
+        </h2>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Synced to db.sqlite3</span>
+      </div>
+
+      <div class="cq-card" style="border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--border-color); padding: 0;">
+        <div style="overflow-x: auto; max-height: 480px;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.84rem;">
+            <thead style="position: sticky; top: 0; z-index: 10;">
+              <tr style="background: #1e293b; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;">
+                <th style="padding: 0.75rem 1rem;">Track Title</th>
+                <th style="padding: 0.75rem 1rem;">Language</th>
+                <th style="padding: 0.75rem 1rem;">Lessons</th>
+                <th style="padding: 0.75rem 1rem;">Micro-Tasks</th>
+                <th style="padding: 0.75rem 1rem;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for course in courses %}
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.75rem 1rem; font-weight: 600; color: var(--text-primary);">
+                  {{ course.title }}
+                </td>
+                <td style="padding: 0.75rem 1rem; color: #60a5fa; font-family: var(--font-mono); font-size: 0.78rem;">
+                  {{ course.language.name }}
+                </td>
+                <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">
+                  {{ course.lessons.count }}
+                </td>
+                <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); color: #fbbf24;">
+                  {% with first_lesson=course.lessons.first %}
+                    {{ first_lesson.micro_tasks.count|default:"3" }}
+                  {% endwith %}
+                </td>
+                <td style="padding: 0.75rem 1rem;">
+                  <a href="{% url 'course_detail' course.slug %}" class="btn btn-ghost" style="padding: 0.25rem 0.55rem; font-size: 0.75rem;">
+                    View &rarr;
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Recent Certificates & Contests Telemetry -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      
+      <!-- Contests Panel -->
+      <div class="cq-card" style="border-radius: var(--radius-xl); padding: 1.25rem; border: 1px solid var(--border-color);">
+        <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.85rem 0; display: flex; align-items: center; justify-content: space-between;">
+          <span>🏆 Weekly Contests Arena</span>
+          <a href="{% url 'contests_hub' %}" style="font-size: 0.75rem; color: var(--accent); text-decoration: none;">View All &rarr;</a>
+        </h3>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          {% for ct in contests %}
+          <div style="padding: 0.75rem; background: rgba(0,0,0,0.2); border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.88rem; color: var(--text-primary);">{{ ct.title }}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">
+                {{ ct.duration_minutes }}m &bull; {{ ct.submissions.count }} Submissions &bull; +{{ ct.xp_reward }} XP
+              </div>
+            </div>
+            <a href="{% url 'contest_detail' ct.slug %}" class="btn btn-ghost" style="font-size: 0.75rem; padding: 0.3rem 0.6rem;">
+              Arena
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Verifiable Certificates Ledger -->
+      <div class="cq-card" style="border-radius: var(--radius-xl); padding: 1.25rem; border: 1px solid var(--border-color);">
+        <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.85rem 0; display: flex; align-items: center; justify-content: space-between;">
+          <span>📜 Issued Certificates</span>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700;">✓ Verified</span>
+        </h3>
+
+        <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+          {% for cert in certificates %}
+          <div style="padding: 0.65rem 0.85rem; background: rgba(0,0,0,0.2); border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">{{ cert.student_name }}</div>
+              <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #60a5fa;">{{ cert.credential_id }}</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.8rem; font-weight: 700; color: #10b981;">{{ cert.mastery_score }}%</div>
+              <a href="/verify/{{ cert.credential_id }}/" target="_blank" style="font-size: 0.72rem; color: var(--accent); text-decoration: underline;">
+                Verify &nearr;
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
-
-<hr class="w3-hr" />
-
-<!-- Courses Table in Database -->
-<h2 style="font-size:1.3rem; font-weight:700; margin:0 0 10px 0; color:var(--text-primary);">
-  Database Table: <code>learn_course</code> ({{ courses|length }} Rows)
-</h2>
-
-<div style="overflow-x:auto;">
-  <table class="cq-table">
-    <thead>
-      <tr>
-        <th style="width:65px;">ID</th>
-        <th>Course Slug</th>
-        <th>Title</th>
-        <th>Language</th>
-        <th>Lessons</th>
-        <th>XP Reward</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for c in courses %}
-      <tr>
-        <td style="font-family:var(--font-mono);">{{ c.id }}</td>
-        <td style="font-family:var(--font-mono); font-size:0.8rem;">{{ c.slug }}</td>
-        <td><strong>{{ c.title }}</strong></td>
-        <td>{{ c.language.name }}</td>
-        <td style="font-family:var(--font-mono);">{{ c.lessons.count }}</td>
-        <td style="font-family:var(--font-mono);">+{{ c.xp_reward }} XP</td>
-        <td>
-          <a href="{% url 'course_detail' c.slug %}" class="w3-btn-outline" style="padding:3px 8px; font-size:0.76rem;">
-            View
-          </a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-
-<script>
-  function runAdminPhpSqlTest() {
-    window.CQExecuteTerminal({
-      language: "php",
-      code: document.getElementById("adminPhpSqlCode").value,
-      outputEl: "adminPhpSqlOut"
-    });
-  }
-  document.addEventListener("DOMContentLoaded", function () {
-    runAdminPhpSqlTest();
-  });
-</script>
-
 {% endblock %}

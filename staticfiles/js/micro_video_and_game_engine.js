@@ -807,7 +807,7 @@
           </div>
           <div style="display:flex; gap:6px; align-items:center;">
             <span id="${containerId}_timer" style="color:var(--text-secondary); font-family:var(--font-mono); font-size:0.75rem;">Step 1 of 4 (0:00 / 1:00)</span>
-            <button type="button" id="${containerId}_speedBtn" class="cq-btn-secondary" style="padding:2px 8px; font-size:0.72rem;">1.0x</button>
+            <button type="button" id="${containerId}_speedBtn" class="btn btn-ghost" style="padding:2px 8px; font-size:0.72rem;">1.0x</button>
           </div>
         </div>
 
@@ -820,9 +820,9 @@
 
         <div style="padding:8px 14px; background:var(--bg-surface-elevated); border-top:1px solid var(--border-subtle); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
           <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
-            <button type="button" id="${containerId}_playBtn" class="cq-btn-primary" style="padding:5px 12px; font-size:0.78rem;">▶ Play 1-Min Visual Guide</button>
+            <button type="button" id="${containerId}_playBtn" class="btn btn-primary" style="padding:5px 12px; font-size:0.78rem;">▶ Play 1-Min Visual Guide</button>
             <div style="display:flex; flex-wrap:wrap; gap:4px;" id="${containerId}_chapters">
-              ${chapters.map((c, idx) => `<button type="button" data-ch="${idx}" class="cq-btn-secondary" style="padding:3px 8px; font-size:0.73rem;">${c.title}</button>`).join("")}
+              ${chapters.map((c, idx) => `<button type="button" data-ch="${idx}" class="btn btn-ghost" style="padding:3px 8px; font-size:0.73rem;">${c.title}</button>`).join("")}
             </div>
           </div>
           <input type="range" id="${containerId}_scrub" min="0" max="60" value="0" style="width:120px; accent-color:#059669; cursor:pointer;" aria-label="Lesson timeline">
@@ -1003,4 +1003,83 @@
 
   window.CQLangMeta = LANG_META;
   window.CQResolveLangKey = resolveLangKey;
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const picker = document.getElementById("heroLanguagePicker");
+    if (!picker) return;
+
+    const langs = [
+      { key: "python", label: "🐍 Python 3" },
+      { key: "html", label: "🌐 HTML5" },
+      { key: "css", label: "🎨 CSS3" },
+      { key: "javascript", label: "⚡ JavaScript" },
+      { key: "react", label: "⚛️ React" },
+      { key: "c", label: "⚙️ C" },
+      { key: "cpp", label: "🚀 C++" },
+      { key: "java", label: "☕ Java" },
+      { key: "sql", label: "🗄️ SQL / MySQL" },
+      { key: "php", label: "🐘 PHP + MySQL" },
+      { key: "django", label: "🎸 Django" },
+      { key: "mongodb", label: "🍃 MongoDB" },
+      { key: "rust", label: "🦀 Rust" },
+      { key: "ai-ml", label: "🤖 AI & ML" }
+    ];
+
+    let activeLang = "python";
+
+    function selectHeroLang(langKey) {
+      activeLang = langKey;
+      const meta = LANG_META[langKey] || LANG_META.python;
+      picker.querySelectorAll("button").forEach(function (b) {
+        const isAct = b.getAttribute("data-lang") === langKey;
+        b.className = isAct ? "btn btn-primary" : "btn btn-ghost";
+        b.style.padding = "0.35rem 0.75rem";
+        b.style.fontSize = "0.78rem";
+        b.style.fontFamily = "var(--font-mono)";
+      });
+      const titleEl = document.getElementById("heroSelectedLangTitle");
+      if (titleEl) titleEl.textContent = meta.name + " — 1-Minute Visual Lesson & 2D/3D Coding Game";
+      const promptEl = document.getElementById("heroCliPrompt");
+      if (promptEl) promptEl.textContent = "$ " + meta.cli;
+      const codeEl = document.getElementById("heroTerminalCodeInput");
+      if (codeEl) codeEl.value = meta.starter;
+
+      window.CQInitMicroVideo("heroMicroVideoPlayer", langKey, meta.name);
+      window.CQExecuteTerminal({
+        language: langKey,
+        code: meta.starter,
+        outputEl: "heroTerminalOutput",
+        canvasId: "heroLiveGameCanvas",
+        submitTask: false
+      });
+    }
+
+    picker.innerHTML = langs.map(function (l) {
+      return '<button type="button" data-lang="' + l.key + '" class="btn btn-ghost" style="padding:0.35rem 0.75rem; font-size:0.78rem; font-family:var(--font-mono);">' + l.label + '</button>';
+    }).join("");
+
+    picker.querySelectorAll("button").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        selectHeroLang(this.getAttribute("data-lang"));
+      });
+    });
+
+    const runBtn = document.getElementById("heroRunTerminalBtn");
+    if (runBtn) {
+      runBtn.addEventListener("click", function () {
+        const codeEl = document.getElementById("heroTerminalCodeInput");
+        const cliEl = document.getElementById("heroCliInput");
+        window.CQExecuteTerminal({
+          language: activeLang,
+          code: codeEl ? codeEl.value : "",
+          cliCommand: cliEl ? cliEl.value : "",
+          outputEl: "heroTerminalOutput",
+          canvasId: "heroLiveGameCanvas",
+          submitTask: true
+        });
+      });
+    }
+
+    selectHeroLang("python");
+  });
 })();
