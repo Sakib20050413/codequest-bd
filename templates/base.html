@@ -16,26 +16,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   
-  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=11.1" />
+  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=12.1" />
   {% block extra_head %}{% endblock %}
 </head>
 <body>
-  <!-- Ambient Atmospheric Lighting Effects (Linear / Vercel Aesthetic) -->
   <div class="ambient-glow-top"></div>
   <div class="ambient-grid"></div>
 
-  <!-- Floating Sticky Navigation Bar -->
   <header class="cq-header">
     <div class="shell shell-wide">
       <nav class="cq-nav" aria-label="Main Navigation">
         
-        <!-- Brand Logo with Vector Emblem (Dark & Light Adaptive) -->
         <a href="{% url 'landing' %}" class="brand-logo" aria-label="CodeQuest Home">
-          <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="34" class="logo-dark-theme" style="display: block; width: auto;" />
-          <img src="{% static 'img/logo-light.svg' %}" alt="CodeQuest BD" height="34" class="logo-light-theme" style="display: none; width: auto;" />
+          <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="32" class="logo-dark-theme" style="display: block; width: auto;" />
+          <img src="{% static 'img/logo-light.svg' %}" alt="CodeQuest BD" height="32" class="logo-light-theme" style="display: none; width: auto;" />
         </a>
 
-        <!-- Desktop Navigation Links -->
         <ul class="nav-links">
           <li>
             <a href="{% url 'catalogue' %}" class="nav-link {% if '/courses/' in request.path %}active{% endif %}">
@@ -49,12 +45,12 @@
           </li>
           <li>
             <a href="{% url 'contests_hub' %}" class="nav-link {% if '/contests/' in request.path %}active{% endif %}">
-              Contests 🏆
+              Contests
             </a>
           </li>
           <li>
             <a href="{% url 'certificates_hub' %}" class="nav-link {% if '/certificates/' in request.path or '/verify/' in request.path %}active{% endif %}">
-              Certificates 🎓
+              Certificates
             </a>
           </li>
           <li>
@@ -63,8 +59,8 @@
             </a>
           </li>
           <li>
-            <a href="{% url 'admin_panel' %}" class="nav-link {% if '/admin-panel/' in request.path %}active{% endif %}" style="color: #818cf8;">
-              Admin 🛠️
+            <a href="{% url 'admin_panel' %}" class="nav-link {% if '/admin-panel/' in request.path %}active{% endif %}">
+              Admin
             </a>
           </li>
           <li>
@@ -74,60 +70,44 @@
           </li>
         </ul>
 
-        <!-- Right Side Widgets & User Controls (Dynamic Priority Hierarchy) -->
         <div class="nav-actions-cluster">
-          
-          <!-- Course Streak Indicator (Visible on Desktop) -->
-          <div class="streak-pill desktop-only-stat" title="Daily Course Learning Streak">
-            <span>🔥</span>
+          <div class="streak-pill desktop-only-stat" title="Daily Course Streak">
+            <span style="color: var(--text-muted); font-weight: 600;">COURSE</span>
             <span id="streakCount">{{ course_streak|default:user_streak }}d</span>
           </div>
 
-          <!-- Game Streak Indicator (Visible on Desktop) -->
-          <div class="streak-pill desktop-only-stat" title="Daily Coding Game Streak" style="border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.12); color: #38bdf8;">
-            <span>🎮</span>
+          <div class="streak-pill desktop-only-stat" title="Daily Game Streak" style="border-color: rgba(56, 189, 248, 0.25); background: rgba(56, 189, 248, 0.08); color: #38bdf8;">
+            <span style="color: var(--text-muted); font-weight: 600;">GAME</span>
             <span id="gameStreakCount">{{ game_streak|default:5 }}d</span>
           </div>
 
-          <!-- Total XP Badge (Visible on Desktop) -->
           <div class="xp-pill desktop-only-stat" title="Total XP Earned">
-            <span>⚡</span>
             <span id="xpCount">{{ user_xp }}</span> XP
           </div>
 
-          <!-- Sound Mute/Unmute -->
-          <button id="soundToggleBtn" class="btn btn-icon desktop-only-stat" title="Toggle Audio Feedback" aria-label="Toggle Audio Feedback">
-            🔊
-          </button>
+          <button id="soundToggleBtn" style="display: none;" aria-hidden="true"></button>
+          <button id="fluidToggleBtn" style="display: none;" aria-hidden="true"></button>
 
-          <!-- Theme Toggle -->
           <button id="themeToggleBtn" class="btn btn-icon" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
             ☀
           </button>
 
-          <!-- Dynamic Fluid / Full-Width Viewport Toggle -->
-          <button id="fluidToggleBtn" class="btn btn-icon desktop-only-stat" title="Toggle Dynamic Full-Width Layout" aria-label="Toggle Dynamic Full-Width Layout">
-            ⛶
-          </button>
-
-          <!-- Account Buttons -->
           {% if user.is_authenticated %}
-            <a href="{% url 'profile_view' %}" class="btn btn-ghost nav-auth-btn desktop-only-stat" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;">
+            <a href="{% url 'profile_view' %}" class="btn btn-ghost nav-auth-btn desktop-only-stat" style="padding: 0.4rem 0.85rem; font-size: 0.84rem;">
               Profile
             </a>
-            <a href="{% url 'logout_view' %}" class="btn btn-ghost desktop-only-stat" style="padding: 0.45rem 0.75rem; font-size: 0.84rem; color: var(--text-muted);">
+            <a href="{% url 'logout_view' %}" class="btn btn-ghost desktop-only-stat" style="padding: 0.4rem 0.75rem; font-size: 0.84rem; color: var(--text-muted);">
               Logout
             </a>
           {% else %}
-            <a href="{% url 'login_view' %}" class="btn btn-ghost nav-auth-btn desktop-only-stat" style="padding: 0.45rem 0.85rem; font-size: 0.84rem;">
+            <a href="{% url 'login_view' %}" class="btn btn-ghost nav-auth-btn desktop-only-stat" style="padding: 0.4rem 0.85rem; font-size: 0.84rem;">
               Sign In
             </a>
-            <a href="{% url 'signup_view' %}" class="btn btn-primary nav-auth-btn desktop-only-stat" style="padding: 0.45rem 0.95rem; font-size: 0.84rem;">
+            <a href="{% url 'signup_view' %}" class="btn btn-primary nav-auth-btn desktop-only-stat" style="padding: 0.4rem 0.95rem; font-size: 0.84rem;">
               Get Started
             </a>
           {% endif %}
 
-          <!-- Mobile Hamburger Toggle -->
           <button id="mobileMenuBtn" class="mobile-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -135,107 +115,97 @@
               <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
           </button>
-
         </div>
       </nav>
     </div>
   </header>
 
-  <!-- Mobile Off-Canvas Navigation Drawer (Apple Glassmorphism) -->
   <div id="mobileNavDrawer" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
     <div class="mobile-drawer-header">
       <div class="mobile-drawer-stats">
         <div class="streak-pill">
-          <span>🔥</span> <span>{{ user_streak }}d Streak</span>
+          <span>COURSE {{ user_streak }}d</span>
         </div>
         <div class="xp-pill">
-          <span>⚡</span> <span>{{ user_xp }} XP</span>
+          <span>{{ user_xp }} XP</span>
         </div>
       </div>
       <button id="mobileDrawerCloseBtn" class="mobile-drawer-close" aria-label="Close menu">✕</button>
     </div>
 
-    <!-- Audio Toggle Bar in Mobile Drawer -->
-    <div class="mobile-audio-toggle-bar">
-      <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 0.5rem;">
-        <span>🔊</span> Audio Sound Effects
-      </span>
-      <button id="mobileSoundToggleBtn" class="btn btn-ghost" style="padding: 0.25rem 0.75rem; font-size: 0.78rem;">
-        Mute / Unmute
-      </button>
+    <div class="mobile-audio-toggle-bar" style="display: none;">
+      <button id="mobileSoundToggleBtn" class="btn btn-ghost">Sound</button>
     </div>
 
-    <!-- Navigation Menu Items -->
     <nav class="mobile-nav-menu">
       <a href="{% url 'catalogue' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap" style="background: rgba(99, 102, 241, 0.12); color: #818cf8;">📚</div>
+        <div class="menu-icon-wrap dev-monogram">CRS</div>
         <div class="menu-text-wrap">
           <div class="menu-item-title">All Courses</div>
-          <div class="menu-item-desc">9 guided tracks with bite-sized lessons</div>
+          <div class="menu-item-desc">16 language tracks with interactive lessons</div>
         </div>
         <span class="menu-item-arrow">›</span>
       </a>
 
       <a href="{% url 'games_hub' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap" style="background: rgba(6, 182, 212, 0.12); color: #06b6d4;">🎮</div>
+        <div class="menu-icon-wrap dev-monogram">2D/3D</div>
         <div class="menu-text-wrap">
           <div class="menu-item-title">Practice Arena</div>
-          <div class="menu-item-desc">108 games &amp; 28 practical coding tasks</div>
+          <div class="menu-item-desc">108 coding games &amp; 28 practical tasks</div>
         </div>
         <span class="menu-item-arrow">›</span>
       </a>
 
       <a href="{% url 'contests_hub' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b;">🏆</div>
+        <div class="menu-icon-wrap dev-monogram">LIVE</div>
         <div class="menu-text-wrap">
-          <div class="menu-item-title">Competitions Arena</div>
-          <div class="menu-item-desc">Weekly tournaments &amp; university batch rankings</div>
+          <div class="menu-item-title">Competitions</div>
+          <div class="menu-item-desc">Weekly contests &amp; batch leaderboard</div>
         </div>
         <span class="menu-item-arrow">›</span>
       </a>
 
       <a href="{% url 'certificates_hub' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap" style="background: rgba(16, 185, 129, 0.12); color: #10b981;">🎓</div>
+        <div class="menu-icon-wrap dev-monogram">CERT</div>
         <div class="menu-text-wrap">
-          <div class="menu-item-title">Verifiable Certificates</div>
-          <div class="menu-item-desc">Tamper-proof credentials with QR verification</div>
+          <div class="menu-item-title">Certificates</div>
+          <div class="menu-item-desc">Verifiable credentials &amp; QR IDs</div>
         </div>
         <span class="menu-item-arrow">›</span>
       </a>
 
       <a href="{% url 'playground' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap" style="background: rgba(16, 185, 129, 0.12); color: #10b981;">💻</div>
+        <div class="menu-icon-wrap dev-monogram">IDE</div>
         <div class="menu-text-wrap">
-          <div class="menu-item-title">IDE Playground</div>
-          <div class="menu-item-desc">In-browser code editor &amp; multi-language WASM</div>
+          <div class="menu-item-title">Playground</div>
+          <div class="menu-item-desc">16-language browser compiler &amp; CLI</div>
         </div>
         <span class="menu-item-arrow">›</span>
       </a>
 
       <a href="{% url 'admin_panel' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap" style="background: rgba(99, 102, 241, 0.12); color: #818cf8;">🛠️</div>
+        <div class="menu-icon-wrap dev-monogram">ADM</div>
         <div class="menu-text-wrap">
-          <div class="menu-item-title">Admin &amp; Instructor Panel</div>
-          <div class="menu-item-desc">Curriculum telemetry &amp; certification control</div>
+          <div class="menu-item-title">Admin Panel</div>
+          <div class="menu-item-desc">Curriculum DB &amp; evaluation controls</div>
         </div>
         <span class="menu-item-arrow">›</span>
       </a>
 
       <a href="{% url 'about_view' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b;">🏛️</div>
+        <div class="menu-icon-wrap dev-monogram">DOC</div>
         <div class="menu-text-wrap">
           <div class="menu-item-title">About CodeQuest</div>
-          <div class="menu-item-desc">Pedagogical principles &amp; platform roadmap</div>
+          <div class="menu-item-desc">BAIUST CSE 324 architecture &amp; specs</div>
         </div>
         <span class="menu-item-arrow">›</span>
       </a>
     </nav>
 
-    <!-- Account Actions in Mobile Drawer -->
     <div class="mobile-auth-footer">
       {% if user.is_authenticated %}
         <a href="{% url 'profile_view' %}" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; font-weight: 700;">
-          👤 Student Command Center
+          Student Profile
         </a>
         <a href="{% url 'logout_view' %}" class="btn btn-ghost" style="width: 100%; justify-content: center; padding: 0.65rem; color: var(--danger); margin-top: 0.5rem;">
           Sign Out
@@ -249,23 +219,21 @@
     </div>
   </div>
 
-  <!-- Main Body Content -->
   <main style="flex: 1;">
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Editorial Platform Footer -->
   <footer class="cq-footer">
     <div class="shell">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2.5rem; margin-bottom: 2.5rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2.5rem; margin-bottom: 2rem;">
         
         <div>
           <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.75rem;">
-            <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="30" class="logo-dark-theme" style="display: block;" />
-            <img src="{% static 'img/logo-light.svg' %}" alt="CodeQuest BD" height="30" class="logo-light-theme" style="display: none;" />
+            <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="28" class="logo-dark-theme" style="display: block;" />
+            <img src="{% static 'img/logo-light.svg' %}" alt="CodeQuest BD" height="28" class="logo-light-theme" style="display: none;" />
           </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; max-width: 320px;">
-            Bangladesh's flagship developer education platform. Master web technologies, systems programming, and databases with structured 3–7 minute lessons and interactive browser tools.
+          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; max-width: 340px;">
+            CodeQuest BD — Interactive Programming &amp; 2D/3D Game Learning Platform (BAIUST CSE 324 Sessional). Write, compile, and visualize code directly in the browser.
           </p>
         </div>
 
@@ -313,20 +281,20 @@
 
       </div>
 
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle); font-size: 0.82rem; color: var(--text-muted);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
         <div>
-          &copy; {% now "Y" %} CodeQuest BD. Designed for purposeful, accessible coding education.
+          &copy; {% now "Y" %} CodeQuest BD &middot; BAIUST CSE 324 Web Technologies Sessional
         </div>
         <div>
-          Client-Side Sandboxed Execution &bull; WCAG 2.2 AA Compliant
+          16 Languages &middot; Browser CLI Compiler &middot; 2D/3D Game Studio
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="{% static 'js/ambient_canvas.js' %}?v=12.0"></script>
-  <script src="{% static 'js/codequest.js' %}?v=12.0"></script>
-  <script src="{% static 'js/micro_video_and_game_engine.js' %}?v=12.0"></script>
+  <script src="{% static 'js/ambient_canvas.js' %}?v=12.1"></script>
+  <script src="{% static 'js/codequest.js' %}?v=12.1"></script>
+  <script src="{% static 'js/micro_video_and_game_engine.js' %}?v=12.1"></script>
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>

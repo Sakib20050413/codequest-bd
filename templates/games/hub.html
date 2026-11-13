@@ -9,12 +9,12 @@
   <!-- Header & Telemetry -->
   <div style="margin-bottom: 2.5rem;">
     <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem;">
-      <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">
-        🎯 28 REAL-WORLD CODING TASKS &bull; 108 MASTER CODING GAMES (1,080 LEVELS)
+      <div class="dev-tag">
+        ARENA // 28 TASKS &bull; 108 CODING GAMES (1,080 LEVELS)
       </div>
       <div style="display: flex; gap: 0.65rem; align-items: center;">
         <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
-          ⚡ Earn 54,000+ Total XP
+          54,000+ Total XP
         </span>
         <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
           108 Master Games &bull; 2D/3D Simulators
@@ -32,11 +32,11 @@
 
 
   <!-- INSTANT 2D & 3D MULTI-GAME STUDIO (6 Built-In 2D/3D Games + Live Code Trigger) -->
-  <div class="cq-card" style="margin-bottom: 2.25rem; padding: 1.35rem 1.5rem; border: 1px solid rgba(20, 184, 166, 0.35); background: radial-gradient(ellipse at top right, rgba(20, 184, 166, 0.1), var(--bg-surface) 75%);">
+  <div class="cq-card" style="margin-bottom: 2.25rem; padding: 1.35rem 1.5rem; border: 1px solid rgba(16, 185, 129, 0.3); background: var(--bg-surface);">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 800; color: #14b8a6; text-transform: uppercase; letter-spacing: 0.05em;">
-          🕹️ Instant 2D Arcade &amp; 🌐 3D WebGL Game Studio &bull; Play Right Now
+        <div class="dev-tag" style="margin-bottom: 0.25rem;">
+          [2D ARCADE] + [3D WEBGL] // SANDBOX STUDIO
         </div>
         <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
           Interactive 2D &amp; 3D Code-to-Game Sandbox (6 Instant Modes + 108 Full Games Below)
@@ -44,7 +44,7 @@
       </div>
       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
         <button type="button" class="btn btn-primary" style="padding: 0.4rem 0.95rem; font-size: 0.8rem;" onclick="if(window.CQRenderGameCanvas) window.CQRenderGameCanvas('hubLiveGameCanvas', 'python', true, 'move_rover()')">
-          🚀 Trigger Win Animation (+35 XP)
+          Run Win Demo (+35 XP)
         </button>
         <a href="#arcadeArenaSection" onclick="switchArenaMode('arcade')" class="btn btn-ghost" style="padding: 0.4rem 0.95rem; font-size: 0.8rem;">
           Browse All 108 Games &darr;
@@ -65,19 +65,19 @@
   <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
     <div class="arena-mode-nav" role="tablist" aria-label="Practice Arena Modes">
       <button id="modeBtnTasks" class="arena-mode-btn {% if active_mode == 'tasks' %}active{% endif %}" onclick="switchArenaMode('tasks')">
-        ⚡ Practical Coding Tasks (28)
+        01 &middot; Practical Tasks (28)
       </button>
       <button id="modeBtnArcade" class="arena-mode-btn {% if active_mode == 'arcade' %}active{% endif %}" onclick="switchArenaMode('arcade')">
-        🎮 108 Master Games (1,080 Levels)
+        02 &middot; 108 Master Games (1,080 Levels)
       </button>
       <button id="modeBtnQuests" class="arena-mode-btn {% if active_mode == 'quests' %}active{% endif %}" onclick="switchArenaMode('quests')">
-        🔥 Daily Quests &amp; Bounties (24)
+        03 &middot; Daily Quests (24)
       </button>
     </div>
 
     <div style="display: flex; align-items: center; gap: 0.75rem;">
       <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.45rem 1rem; font-size: 0.82rem; font-family: var(--font-mono);">
-        💻 Open Full Browser IDE &rarr;
+        Open Browser IDE &rarr;
       </a>
     </div>
   </div>
@@ -94,7 +94,7 @@
         <!-- Search Input -->
         <div style="flex: 1; min-width: 280px; position: relative;">
           <input type="text" id="taskSearchInput" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; font-size: 0.92rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;" placeholder="Search 28 coding tasks by title, skill, or keyword (e.g. navbar, two-sum, join, pointer)..." aria-label="Search coding tasks">
-          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted); pointer-events: none;">🔍</span>
+          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted); pointer-events: none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
         </div>
 
         <!-- Task Live Counter -->
@@ -112,16 +112,16 @@
             All Tasks (28)
           </button>
           <button class="btn btn-ghost task-filter-pill" data-task-cat="frontend" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
-            🌐 Frontend Web (8)
+            Frontend Web (8)
           </button>
           <button class="btn btn-ghost task-filter-pill" data-task-cat="algorithms" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
-            🐍 Algorithms &amp; Data Logic (8)
+            Algorithms &amp; Data Logic (8)
           </button>
           <button class="btn btn-ghost task-filter-pill" data-task-cat="sql" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
-            🗄️ SQL Databases (6)
+            SQL Databases (6)
           </button>
           <button class="btn btn-ghost task-filter-pill" data-task-cat="systems" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
-            ⚙️ Systems &amp; C (6)
+            Systems &amp; C (6)
           </button>
         </div>
 
@@ -202,10 +202,10 @@
         <!-- Action Bar -->
         <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); gap: 0.75rem;">
           <button type="button" class="btn btn-ghost" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="openTaskModal('{{ task.id }}')">
-            Spec &amp; Tests 📋
+            Spec &amp; Tests
           </button>
           <a href="{% url 'playground' %}?task={{ task.id }}" class="btn btn-primary" style="padding: 0.4rem 0.95rem; font-size: 0.8rem;">
-            Solve in IDE ⚡ &rarr;
+            Solve in IDE &rarr;
           </a>
         </div>
 
@@ -215,7 +215,7 @@
 
     <!-- Empty Results Fallback -->
     <div id="noTasksFoundMsg" style="display: none; text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
-      <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+      <div style="font-size: 0.8rem; font-family: var(--font-mono); letter-spacing: 0.08em; margin-bottom: 0.5rem;">EMPTY_RESULT</div>
       <div style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">No matching coding tasks found</div>
       <p style="font-size: 0.88rem;">Try adjusting your keyword search or category filters.</p>
     </div>
@@ -234,7 +234,7 @@
         <!-- Search Input -->
         <div style="flex: 1; min-width: 280px; position: relative;">
           <input type="text" id="arenaSearchInput" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; font-size: 0.92rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;" placeholder="Search 175 challenges by language (python, js, css, sql, c) or concept...">
-          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted);">🔍</span>
+          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
         </div>
 
         <!-- Result Counter -->
@@ -249,40 +249,40 @@
           All (175)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="code-typer" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          🏎️ Keystroke Racing (20)
+          Keystroke Racing (20)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="flexbox-pond" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          🐸 Flexbox &amp; Grid (20)
+          Flexbox &amp; Grid (20)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="bug-hunt" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          🐛 Bug Hunt (20)
+          Bug Hunt (20)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="output-predictor" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          🔮 Output Predictor (20)
+          Output Predictor (20)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="tag-match" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          ⚡ Tag &amp; Syntax (20)
+          Tag &amp; Syntax (20)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="rover-3d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          🤖 Cyber Rover 3D (15)
+          Cyber Rover 3D (15)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="grid-builder" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          📐 Grid Builder (10)
+          Grid Builder (10)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="sql-detective" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          🔍 SQL Detective (10)
+          SQL Detective (10)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="canvas-blaster-2d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          🚀 2D Blaster (10)
+          2D Blaster (10)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="city-builder-3d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          🏙️ 3D City (10)
+          3D City (10)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="regex-matrix" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          ⚡ Regex Matrix (10)
+          Regex Matrix (10)
         </button>
         <button class="btn btn-ghost arena-filter-tab" data-filter="api-tower-defense" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          🛡️ API Defense (10)
+          API Defense (10)
         </button>
       </div>
 
@@ -299,11 +299,11 @@
             Complete Master Arcade &bull; 10 Specialized Domains &bull; 10 Levels Each
           </div>
           <h2 style="font-size: 1.7rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-            🕹️ The 108 Coding Games Matrix (1,080 Playable Levels)
+            The 108 Coding Games Matrix (1,080 Playable Levels)
           </h2>
         </div>
         <div style="font-size: 0.82rem; font-family: var(--font-mono); color: #10b981; background: var(--success-subtle); padding: 0.35rem 0.85rem; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.25);">
-          ⚡ 54,000+ Total Earnable XP
+          54,000+ Total Earnable XP
         </div>
       </div>
 
@@ -313,34 +313,34 @@
           All Games (108)
         </button>
         <button class="btn btn-ghost arcade-cat-pill" data-cat="3d webgl metaverse" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          🌐 3D WebGL (10)
+          3D WebGL (10)
         </button>
         <button class="btn btn-ghost arcade-cat-pill" data-cat="2d canvas & physics" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          🚀 2D Canvas (11)
+          2D Canvas (11)
         </button>
         <button class="btn btn-ghost arcade-cat-pill" data-cat="css & frontend battles" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          🎨 CSS Battles (11)
+          CSS Battles (11)
         </button>
         <button class="btn btn-ghost arcade-cat-pill" data-cat="algorithm & logic arenas" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          ⚔️ Algorithms (11)
+          Algorithms (11)
         </button>
         <button class="btn btn-ghost arcade-cat-pill" data-cat="sql & database mysteries" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          🔍 SQL Mysteries (10)
+          SQL Mysteries (10)
         </button>
         <button class="btn btn-ghost arcade-cat-pill" data-cat="cyber security & ctf" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          🛡️ Cyber &amp; CTF (11)
+          Cyber &amp; CTF (11)
         </button>
         <button class="btn btn-ghost arcade-cat-pill" data-cat="devops & cloud simulators" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          ☁️ DevOps &amp; Cloud (11)
+          DevOps &amp; Cloud (11)
         </button>
         <button class="btn btn-ghost arcade-cat-pill" data-cat="hardware & logic gates" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          ⚡ Hardware &amp; Gates (11)
+          Hardware &amp; Gates (11)
         </button>
         <button class="btn btn-ghost arcade-cat-pill" data-cat="speed & reflex drills" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          🏎️ Speed Drills (11)
+          Speed Drills (11)
         </button>
         <button class="btn btn-ghost arcade-cat-pill" data-cat="ai & autonomous agents" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          🤖 AI &amp; Neural (11)
+          AI &amp; Neural (11)
         </button>
       </div>
 
@@ -375,7 +375,7 @@
               Engine Cartridge
             </span>
             <a href="{% url 'game_play' g.slug %}" class="btn btn-primary" style="padding: 0.4rem 1.05rem; font-size: 0.82rem; font-weight: 800;">
-              ▶ Play Engine &rarr;
+              Play Engine &rarr;
             </a>
           </div>
         </div>
@@ -393,7 +393,7 @@
           Engine 01 &bull; 20 High-Speed Keystroke Racing Circuits
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          🏎️ Code TypeRacer 3D Arena
+          01 · Code TypeRacer 3D Arena
         </h2>
       </div>
       <a href="{% url 'game_play' 'code-typer' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -440,7 +440,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Ghost Runners: Turing &amp; Ada</span>
-          <span style="color: #06b6d4; font-weight: 700;">▶ Play Track</span>
+          <span style="color: #06b6d4; font-weight: 700;">Play Track &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -456,7 +456,7 @@
           Engine 02 &bull; 20 Modern CSS Layout &amp; Alignment Levels
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          🐸 Flexbox &amp; Grid Alignment Pond
+          02 · Flexbox &amp; Grid Alignment Pond
         </h2>
       </div>
       <a href="{% url 'game_play' 'flexbox-pond' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -503,7 +503,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Reactive Water Canvas</span>
-          <span style="color: #10b981; font-weight: 700;">▶ Play Level</span>
+          <span style="color: #10b981; font-weight: 700;">Play Level &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -519,7 +519,7 @@
           Engine 03 &bull; 20 Real-World Code Review &amp; Debugging Missions
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          🐛 Bug Hunt: Spot the Error
+          03 · Bug Hunt: Spot the Error
         </h2>
       </div>
       <a href="{% url 'game_play' 'bug-hunt' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -566,7 +566,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Click Line to Triage</span>
-          <span style="color: #ef4444; font-weight: 700;">▶ Spot Bug</span>
+          <span style="color: #ef4444; font-weight: 700;">Spot Bug &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -582,7 +582,7 @@
           Engine 04 &bull; 20 Mental Model &amp; Scoping Evaluation Puzzles
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          🔮 Output Predictor: AST &amp; Evaluation Order
+          04 · Output Predictor: AST &amp; Evaluation Order
         </h2>
       </div>
       <a href="{% url 'game_play' 'output-predictor' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -629,7 +629,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Evaluate STDOUT</span>
-          <span style="color: #a855f7; font-weight: 700;">▶ Predict Output</span>
+          <span style="color: #a855f7; font-weight: 700;">Predict Output &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -645,7 +645,7 @@
           Engine 05 &bull; 20 Timed Semantic &amp; Web Syntax Speed Drills
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          ⚡ Tag &amp; Syntax Matcher
+          05 · Tag &amp; Syntax Matcher
         </h2>
       </div>
       <a href="{% url 'game_play' 'tag-match' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -692,7 +692,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Timed Recognition</span>
-          <span style="color: #fbbf24; font-weight: 700;">▶ Match Token</span>
+          <span style="color: #fbbf24; font-weight: 700;">Match Token &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -708,7 +708,7 @@
           Engine 06 &bull; 15 Planetary Spatial Navigation &amp; Robotics Missions
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          🤖 Cyber Rover 3D Space Explorer
+          06 · Cyber Rover 3D Space Explorer
         </h2>
       </div>
       <a href="{% url 'game_play' 'rover-3d' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -750,7 +750,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">WebGL Autonomous Scripting</span>
-          <span style="color: #38bdf8; font-weight: 700;">▶ Pilot Mission</span>
+          <span style="color: #38bdf8; font-weight: 700;">Pilot Mission &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -766,7 +766,7 @@
           Engine 07 &bull; 10 Responsive CSS Grid Wireframe Blueprints
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          📐 CSS Grid Builder Lab
+          07 · CSS Grid Builder Lab
         </h2>
       </div>
       <a href="{% url 'game_play' 'grid-builder' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -802,7 +802,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">CSS Grid 2D Matrix</span>
-          <span style="color: #06b6d4; font-weight: 700;">▶ Snap Wireframe</span>
+          <span style="color: #06b6d4; font-weight: 700;">Snap Wireframe &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -817,7 +817,7 @@
           Engine 08 &bull; 10 Relational Data Crime Mystery Cases
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          🔍 SQL Crime Detective
+          08 · SQL Crime Detective
         </h2>
       </div>
       <a href="{% url 'game_play' 'sql-detective' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -853,7 +853,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">In-Memory Relational Engine</span>
-          <span style="color: #f59e0b; font-weight: 700;">▶ Solve Mystery</span>
+          <span style="color: #f59e0b; font-weight: 700;">Solve Mystery &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -868,7 +868,7 @@
           Engine 09 &bull; 10 HTML5 Canvas 2D Physics &amp; Game Loop Waves
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          🚀 HTML5 Canvas 2D Blaster Lab
+          09 · HTML5 Canvas 2D Blaster Lab
         </h2>
       </div>
       <a href="{% url 'game_play' 'canvas-blaster-2d' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -904,7 +904,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">60 FPS Canvas Physics</span>
-          <span style="color: #ec4899; font-weight: 700;">▶ Play Wave</span>
+          <span style="color: #ec4899; font-weight: 700;">Play Wave &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -919,7 +919,7 @@
           Engine 10 &bull; 10 WebGL 3D Spatial Geometry Missions
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          🏙️ 3D Voxel City Architect
+          10 · 3D Voxel City Architect
         </h2>
       </div>
       <a href="{% url 'game_play' 'city-builder-3d' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -955,7 +955,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Three.js WebGL Engine</span>
-          <span style="color: #8b5cf6; font-weight: 700;">▶ Build Phase</span>
+          <span style="color: #8b5cf6; font-weight: 700;">Build Phase &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -970,7 +970,7 @@
           Engine 11 &bull; 10 Cyber Pattern Recognition Sectors
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          ⚡ Regex Matrix Decoder
+          11 · Regex Matrix Decoder
         </h2>
       </div>
       <a href="{% url 'game_play' 'regex-matrix' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -1006,7 +1006,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Matrix Pattern Stream</span>
-          <span style="color: #10b981; font-weight: 700;">▶ Decode Sector</span>
+          <span style="color: #10b981; font-weight: 700;">Decode Sector &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -1021,7 +1021,7 @@
           Engine 12 &bull; 10 Backend Middleware Architecture Waves
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          🛡️ API Route &amp; Traffic Tower Defense
+          12 · API Route &amp; Traffic Tower Defense
         </h2>
       </div>
       <a href="{% url 'game_play' 'api-tower-defense' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
@@ -1057,7 +1057,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Backend Middleware Highway</span>
-          <span style="color: #f59e0b; font-weight: 700;">▶ Defend Route</span>
+          <span style="color: #f59e0b; font-weight: 700;">Defend Route &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -1079,7 +1079,7 @@
           Gamified Missions &bull; Streak Multipliers &bull; Level Bounties
         </div>
         <h2 style="font-size: clamp(1.6rem, 2.8vw, 2.2rem); font-weight: 800; color: var(--text-primary); margin: 0 0 0.4rem; letter-spacing: -0.02em;">
-          🎯 Daily Quests, Bounties &amp; Milestones (24 Quests)
+          Daily Quests, Bounties &amp; Milestones (24 Quests)
         </h2>
         <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 720px; line-height: 1.6; margin: 0;">
           Level up your developer rank through daily habit sprints, high-reward weekly architecture bounties, speed duels, and milestone career achievements.
@@ -1105,16 +1105,16 @@
         All Quests (24)
       </button>
       <button class="btn btn-ghost quest-filter-pill" data-qcat="daily" onclick="filterQuests('daily', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
-        ⚡ Daily Active (6)
+        Daily Active (6)
       </button>
       <button class="btn btn-ghost quest-filter-pill" data-qcat="weekly" onclick="filterQuests('weekly', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
-        🎯 Weekly Bounties (6)
+        Weekly Bounties (6)
       </button>
       <button class="btn btn-ghost quest-filter-pill" data-qcat="milestones" onclick="filterQuests('milestones', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
-        🏆 Milestones (6)
+        Milestones (6)
       </button>
       <button class="btn btn-ghost quest-filter-pill" data-qcat="challenges" onclick="filterQuests('challenges', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
-        🔥 Speed Duels (6)
+        Speed Duels (6)
       </button>
     </div>
 
@@ -1228,7 +1228,7 @@
             Starter Implementation Blueprint
           </span>
           <button id="copyStarterSnippetBtn" class="btn btn-ghost" style="padding: 0.2rem 0.55rem; font-size: 0.72rem;" onclick="copyModalStarterCode()">
-            Copy Snippet 📋
+            Copy Snippet
           </button>
         </div>
         <pre id="modalTaskStarter" style="padding: 1rem; border-radius: 8px; background: #080b11; border: 1px solid rgba(255, 255, 255, 0.08); font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.5; color: #e2e8f0; overflow-x: auto; max-height: 180px;"></pre>
@@ -1240,7 +1240,7 @@
           Client-Side In-Browser Execution &bull; 0ms Latency
         </span>
         <a id="modalSolveLink" href="#" class="btn btn-primary" style="padding: 0.55rem 1.4rem; font-size: 0.88rem;">
-          Solve in Browser IDE ⚡ &rarr;
+          Solve in Browser IDE &rarr;
         </a>
       </div>
 
@@ -1428,7 +1428,7 @@
       navigator.clipboard.writeText(code).then(() => {
         const btn = document.getElementById('copyStarterSnippetBtn');
         btn.textContent = 'Copied! ✓';
-        setTimeout(() => { btn.textContent = 'Copy Snippet 📋'; }, 2000);
+        setTimeout(() => { btn.textContent = 'Copy Snippet'; }, 2000);
       });
     };
 

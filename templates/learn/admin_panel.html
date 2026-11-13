@@ -8,12 +8,11 @@
   <!-- Admin Header -->
   <div style="margin-bottom: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
     <div>
-      <div class="section-eyebrow-pill" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3);">
-        <span class="pill-pulse-dot" style="background: #6366f1; box-shadow: 0 0 10px #6366f1;"></span>
-        <span style="color: #818cf8; font-weight: 700;">Academic CMS &bull; Evaluation Control &bull; BAIUST CSE 324</span>
+      <div class="dev-tag" style="margin-bottom: 0.75rem;">
+        ADMIN // ACADEMIC CMS &bull; BAIUST CSE 324
       </div>
-      <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.035em; line-height: 1.15; margin: 0 0 0.5rem 0;">
-        Instructor &amp; Admin <span style="background: linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Command Center</span>
+      <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 0.5rem 0;">
+        Instructor &amp; Admin <span style="color: var(--accent);">Command Center</span>
       </h1>
       <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 650px; line-height: 1.6; margin: 0;">
         Real-time telemetry, curriculum content management, multi-tier micro-task verification, competitive contest monitoring, and cryptographic certificate issuance.
@@ -85,7 +84,7 @@
     <div>
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-          <span>📚</span> Active Curriculum Tracks ({{ total_courses }} Full Tracks)
+          Active Curriculum Tracks ({{ total_courses }} Full Tracks)
         </h2>
         <span style="font-size: 0.8rem; color: var(--text-muted);">Synced to db.sqlite3 &amp; Polyglot Engine</span>
       </div>
@@ -138,7 +137,7 @@
       <!-- Contests Panel -->
       <div class="cq-card" style="border-radius: var(--radius-xl); padding: 1.25rem; border: 1px solid var(--border-color);">
         <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.85rem 0; display: flex; align-items: center; justify-content: space-between;">
-          <span>🏆 Weekly Contests Arena</span>
+          <span>Weekly Contests Arena</span>
           <a href="{% url 'contests_hub' %}" style="font-size: 0.75rem; color: var(--accent); text-decoration: none;">View All &rarr;</a>
         </h3>
 
@@ -162,8 +161,8 @@
       <!-- Verifiable Certificates Ledger -->
       <div class="cq-card" style="border-radius: var(--radius-xl); padding: 1.25rem; border: 1px solid var(--border-color);">
         <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.85rem 0; display: flex; align-items: center; justify-content: space-between;">
-          <span>📜 Issued Certificates</span>
-          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700;">✓ Verified</span>
+          <span>Issued Certificates</span>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 700;">Verified</span>
         </h3>
 
         <div style="display: flex; flex-direction: column; gap: 0.65rem;">
@@ -189,11 +188,11 @@
   </div>
 
   <!-- Live PHP + MySQL & Polyglot Database Bridge Tester (CSE 324 Sessional Demo) -->
-  <div class="cq-card" style="margin-top: 2rem; border-radius: var(--radius-xl); padding: 1.5rem 1.75rem; border: 1px solid rgba(20, 184, 166, 0.35); background: radial-gradient(ellipse at top left, rgba(20, 184, 166, 0.08), var(--bg-surface) 70%);">
+  <div class="cq-card" style="margin-top: 2rem; border-radius: var(--radius-xl); padding: 1.5rem 1.75rem; border: 1px solid rgba(16, 185, 129, 0.3); background: var(--bg-surface);">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); color: #14b8a6; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">
-          🗄️ Live Database &amp; Backend Bridge &bull; PHP 8.3 + MySQLi + SQLite + PostgreSQL + MongoDB
+        <div class="dev-tag" style="margin-bottom: 0.25rem;">
+          DB_BRIDGE // PHP 8.3 + MySQLi + SQLite + PostgreSQL + MongoDB
         </div>
         <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
           Interactive Database &amp; PHP Connection Tester (For CSE 324 Viva Defense)
@@ -203,7 +202,7 @@
         <button type="button" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.35rem 0.75rem;" onclick="loadAdminDbSample('php')">PHP + MySQLi</button>
         <button type="button" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.35rem 0.75rem;" onclick="loadAdminDbSample('sql')">SQL / MySQL</button>
         <button type="button" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.35rem 0.75rem;" onclick="loadAdminDbSample('mongodb')">MongoDB Shell</button>
-        <button type="button" class="btn btn-primary" style="font-size: 0.78rem; padding: 0.35rem 0.95rem;" onclick="executeAdminDbQuery()">▶ Execute Query</button>
+        <button type="button" class="btn btn-primary" style="font-size: 0.78rem; padding: 0.35rem 0.95rem;" onclick="executeAdminDbQuery()">Execute Query</button>
       </div>
     </div>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem;">

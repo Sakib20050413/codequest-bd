@@ -8,12 +8,11 @@
   <!-- Header Section -->
   <div style="margin-bottom: 2.75rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem;">
     <div>
-      <div class="section-eyebrow-pill" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);">
-        <span class="pill-pulse-dot" style="background: #10b981; box-shadow: 0 0 10px #10b981;"></span>
-        <span style="color: #34d399; font-weight: 700;">Official Academic Verification &bull; Unique Credential ID &bull; BAIUST CSE</span>
+      <div class="dev-tag" style="margin-bottom: 0.75rem;">
+        CREDENTIALS // VERIFIABLE ID &bull; BAIUST CSE
       </div>
-      <h1 style="font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.035em; line-height: 1.15; margin: 0 0 0.75rem 0;">
-        Verifiable Professional <span style="background: linear-gradient(135deg, #10b981 0%, #3b82f6 50%, #8b5cf6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Certificates</span>
+      <h1 style="font-size: clamp(2.1rem, 3.8vw, 2.85rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 0.75rem 0;">
+        Verifiable <span style="color: var(--accent);">Certificates</span>
       </h1>
       <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 700px; line-height: 1.65; margin: 0;">
         Earn globally verifiable proof of software engineering competence. Each certificate is cryptographically backed by your post-lesson micro-tasks, interactive game mechanics, and Capstone Exam score (&ge;80%).
@@ -22,8 +21,8 @@
 
     <!-- Claim Certificate Action -->
     <div>
-      <button id="openClaimModalBtn" class="btn btn-primary" style="padding: 0.75rem 1.6rem; font-size: 0.95rem; font-weight: 700; border-radius: var(--radius-lg); background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);">
-        🎓 Claim / Issue Certificate
+      <button id="openClaimModalBtn" class="btn btn-primary" style="padding: 0.7rem 1.45rem; font-size: 0.9rem; font-weight: 700;">
+        Issue Certificate
       </button>
     </div>
   </div>
@@ -32,7 +31,7 @@
   <div class="cq-card" style="margin-bottom: 2.75rem; border-radius: var(--radius-xl); padding: 1.5rem 1.75rem; border: 1px solid var(--border-color); background: rgba(15, 23, 42, 0.4); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;">
     <div style="max-width: 650px;">
       <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0; display: flex; align-items: center; gap: 0.5rem;">
-        <span>🛡️</span> Rigorous Capstone Quality Gate (80% Mastery Bar)
+        Capstone Quality Gate (80% Mastery Bar)
       </h3>
       <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.55; margin: 0;">
         Unlike attendance-based certificates, CodeQuest credentials require executing real syntax, passing automated boundary test cases, and completing track capstones. Every certificate features a permanent URL and scannable QR verification code.
@@ -54,7 +53,7 @@
   <div style="margin-bottom: 3.5rem;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
       <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-        <span>📜</span> Your Earned Credentials
+        Your Earned Credentials
       </h2>
       <span style="font-size: 0.85rem; color: var(--text-muted);">Personal Credential Vault</span>
     </div>
@@ -109,7 +108,7 @@
   <div style="margin-bottom: 3.5rem;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
       <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-        <span>🎯</span> {{ courses|length }} Track Certification Standards
+        {{ courses|length }} Track Certification Standards
       </h2>
       <span style="font-size: 0.85rem; color: var(--text-muted);">Curriculum Completion &amp; Capstone Requirements</span>
     </div>
@@ -149,7 +148,7 @@
   <!-- Public Registry Sample Certificates -->
   <div>
     <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0 0 1.25rem 0; display: flex; align-items: center; gap: 0.5rem;">
-      <span>🏛️</span> Public Verification Registry (Recently Validated)
+      Public Verification Registry
     </h2>
 
     <div class="cq-card" style="border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--border-color); padding: 0;">
@@ -212,7 +211,7 @@
     <button id="closeClaimModalBtn" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer;">&times;</button>
     
     <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
-      <span>🎓</span> Issue Verifiable Certificate
+      Issue Verifiable Certificate
     </h3>
     <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 1.5rem 0;">
       Enter your official name and university details. A cryptographically unique credential ID with QR verification will be generated immediately.
@@ -241,7 +240,7 @@
       <div id="claimModalNotice" style="font-size: 0.82rem; color: #10b981; display: none;"></div>
 
       <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
-        <button id="btnSubmitClaim" class="btn btn-primary" style="flex: 1; padding: 0.7rem; font-weight: 700; background: linear-gradient(135deg, #10b981, #059669); border: none;">
+        <button id="btnSubmitClaim" class="btn btn-primary" style="flex: 1; padding: 0.7rem; font-weight: 700;">
           Generate &amp; Verify Now
         </button>
       </div>
@@ -289,7 +288,7 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(function(data) {
       if (data.success) {
         noticeEl.style.display = "block";
-        noticeEl.innerHTML = "🎉 Certificate issued! Credential ID: <strong>" + data.credential_id + "</strong>. Redirecting...";
+        noticeEl.innerHTML = "Certificate issued! Credential ID: <strong>" + data.credential_id + "</strong>. Redirecting...";
         setTimeout(function() {
           window.location.href = data.verify_url;
         }, 1200);

@@ -215,6 +215,38 @@
       ],
       starter: "fn main() {\n    let status = \"Memory Safety Verified\";\n    println!(\"Rust Cargo Engine: {}\", status);\n}"
     },
+    bash: {
+      name: "Bash & Shell CLI",
+      badge: "Linux & Automation CLI",
+      cli: "bash deploy_check.sh",
+      color: "#a855f7",
+      whatItDoes: "Bash scripts automate terminal commands, file pipelines, and server deployments across Linux environments.",
+      gameTitle: "Terminal Pipeline Runner",
+      gameGoal: "Run the Bash commands below to check server health and advance the pipeline steps!",
+      videoChapters: [
+        { t: "0:00", title: "1. What is Bash?", caption: "Bash is the command-line shell used by developers and DevOps engineers to control servers directly." },
+        { t: "0:15", title: "2. echo & Variables", caption: "SERVICE='api-gateway' stores text, and echo \"$SERVICE\" prints status updates to stdout." },
+        { t: "0:30", title: "3. Automating Workflows", caption: "Combining echo, status checks, and shell pipes turns manual terminal work into repeatable scripts." },
+        { t: "0:45", title: "4. Play the Game Below", caption: "Run the Bash script below to validate the service nodes and advance the Rover!" }
+      ],
+      starter: "# Verify environment & deployment pipeline\nSERVICE=\"codequest-engine\"\necho \"[SHELL] Booting $SERVICE worker...\"\necho \"[SHELL] Healthcheck: 200 OK (All Nodes Ready)\""
+    },
+    mysql: {
+      name: "MySQL & PHP Bridge",
+      badge: "Relational Schema & CRUD",
+      cli: "mysql -u root codequest_bd",
+      color: "#0ea5e9",
+      whatItDoes: "MySQL stores relational data in typed tables queried via SELECT, JOIN, and indexed primary keys.",
+      gameTitle: "SQL Data Vault",
+      gameGoal: "Run the MySQL query below to inspect active courses and unlock all vault records!",
+      videoChapters: [
+        { t: "0:00", title: "1. Why MySQL?", caption: "MySQL powers PHP, WordPress, and high-traffic web backends with fast ACID transactions." },
+        { t: "0:15", title: "2. Querying Columns", caption: "SELECT code, title, active_learners FROM courses retrieves only the fields your app needs." },
+        { t: "0:30", title: "3. Sorting Rows", caption: "ORDER BY active_learners DESC puts the highest-enrollment courses at the top." },
+        { t: "0:45", title: "4. Play the Game Below", caption: "Run the MySQL query below to unlock the database server racks!" }
+      ],
+      starter: "-- Query courses from MySQL database\nSELECT code, title, language, active_learners\nFROM courses\nORDER BY active_learners DESC;"
+    },
     "ai-ml": {
       name: "AI & Machine Learning",
       badge: "Neural Networks & Data",
@@ -226,7 +258,7 @@
       videoChapters: [
         { t: "0:00", title: "1. How Does AI Learn?", caption: "A neural network takes input numbers, multiplies them by learned weights, adds a bias, and outputs a decision." },
         { t: "0:15", title: "2. Inputs & Weights", caption: "Each input feature is multiplied by its weight: sum(x * w for x, w in zip(inputs, weights))." },
-        { t: "0:30", title: "3. ReLU Activation", caption: "max(0.0, total) is the ReLU activation function—keeping positive signals and zeroing out negative noise." },
+        { t: "0:30", title: "3. ReLU Activation", caption: "max(0.0, total) is the ReLU activation function, keeping positive signals and zeroing negative noise." },
         { t: "0:45", title: "4. Play the Game Below", caption: "Run the AI script below to compute the neuron output and steer the AI Rover to the flag!" }
       ],
       starter: "# Single Neuron Forward Pass (AI & Machine Learning)\ninputs = [0.9, 0.4, 0.8]\nweights = [0.5, 0.3, 0.7]\nbias = 0.12\n\noutput = round(max(0.0, sum(x * w for x, w in zip(inputs, weights)) + bias), 3)\nprint(f'AI Neuron Output = {output} -> Move Rover to Goal!')"
@@ -240,11 +272,13 @@
     if (s.includes("react")) return "react";
     if (s.includes("js") || s.includes("javascript") || s.includes("ts")) return "javascript";
     if (s.includes("django")) return "django";
+    if (s.includes("bash") || s.includes("shell") || s.includes("cli")) return "bash";
     if (s.includes("ai") || s.includes("ml") || s.includes("neural")) return "ai-ml";
     if (s.includes("python") || s.includes("py")) return "python";
     if (s.includes("php")) return "php";
     if (s.includes("mongo") || s.includes("nosql")) return "mongodb";
-    if (s.includes("sql") || s.includes("mysql") || s.includes("postgres")) return "sql";
+    if (s.includes("mysql")) return "mysql";
+    if (s.includes("sql") || s.includes("postgres")) return "sql";
     if (s.includes("rust") || s.includes("rs")) return "rust";
     if (s.includes("cpp") || s.includes("c++")) return "cpp";
     if (s === "c" || s.includes("c-lang") || s.includes("c prog")) return "c";
@@ -267,20 +301,20 @@
   const canvasStates = {};
 
   const GAME_MODES = [
-    { id: "rover", label: "🤖 1. Rover Maze", fullUrl: "/games/rover-3d/", langHint: "Python / Logic" },
-    { id: "bridge", label: "🌉 2. Bridge & Pond", fullUrl: "/games/flexbox-pond/", langHint: "HTML / CSS" },
-    { id: "sqlvault", label: "🕵️ 3. SQL Data Vault", fullUrl: "/games/cyber-crime-detective/", langHint: "SQL / PHP / DB" },
-    { id: "orbital", label: "🚀 4. Space Defender", fullUrl: "/games/drone-flight-3d/", langHint: "JS / C / Rust" },
-    { id: "city", label: "🏙️ 5. Voxel City 3D", fullUrl: "/games/city-builder-3d/", langHint: "Java / React / OOP" },
-    { id: "neural", label: "🧠 6. AI Neural Core", fullUrl: "/games/quantum-cube-3d/", langHint: "AI & ML" }
+    { id: "rover", label: "01 · Rover Maze", fullUrl: "/games/rover-3d/", langHint: "Python / Logic" },
+    { id: "bridge", label: "02 · Flexbox Bridge", fullUrl: "/games/flexbox-pond/", langHint: "HTML / CSS" },
+    { id: "sqlvault", label: "03 · SQL Data Vault", fullUrl: "/games/cyber-crime-detective/", langHint: "SQL / PHP / DB" },
+    { id: "orbital", label: "04 · Orbital Defender", fullUrl: "/games/drone-flight-3d/", langHint: "JS / C / Rust" },
+    { id: "city", label: "05 · Voxel City 3D", fullUrl: "/games/city-builder-3d/", langHint: "Java / React / OOP" },
+    { id: "neural", label: "06 · Neural Core", fullUrl: "/games/quantum-cube-3d/", langHint: "AI & ML" }
   ];
 
   function defaultGameForLang(langKey) {
     if (langKey === "html" || langKey === "css") return "bridge";
-    if (langKey === "sql" || langKey === "mongodb" || langKey === "php") return "sqlvault";
+    if (langKey === "sql" || langKey === "mysql" || langKey === "mongodb" || langKey === "php") return "sqlvault";
     if (langKey === "java" || langKey === "react") return "city";
     if (langKey === "ai-ml") return "neural";
-    if (langKey === "javascript" || langKey === "c" || langKey === "cpp" || langKey === "rust") return "orbital";
+    if (langKey === "javascript" || langKey === "c" || langKey === "cpp" || langKey === "rust" || langKey === "bash") return "orbital";
     return "rover";
   }
 
@@ -334,21 +368,21 @@
     if (!document.getElementById(canvasId + "_topBar")) {
       const topBar = document.createElement("div");
       topBar.id = canvasId + "_topBar";
-      topBar.style.cssText = "background:#0f172a; border-bottom:1px solid #334155; padding:8px 10px; display:flex; flex-direction:column; gap:6px;";
+      topBar.style.cssText = "background:#0d1117; border-bottom:1px solid rgba(255,255,255,0.08); padding:8px 10px; display:flex; flex-direction:column; gap:6px;";
       topBar.innerHTML = `
         <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:6px;">
           <div style="display:flex; gap:4px; align-items:center;">
-            <span style="font-size:0.72rem; font-weight:800; color:#94a3b8; margin-right:4px;">DIMENSION:</span>
-            <button type="button" data-dim="2d" class="cq-dim-btn" style="padding:4px 10px; border-radius:6px; border:1px solid #10b981; background:#059669; color:#ffffff; font-size:0.74rem; font-weight:800; cursor:pointer;">🕹️ 2D Arcade Game</button>
-            <button type="button" data-dim="3d" class="cq-dim-btn" style="padding:4px 10px; border-radius:6px; border:1px solid #475569; background:#1e293b; color:#e2e8f0; font-size:0.74rem; font-weight:800; cursor:pointer;">🌐 3D World Game</button>
+            <span style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#8b949e; margin-right:4px;">MODE:</span>
+            <button type="button" data-dim="2d" class="cq-dim-btn" style="padding:3px 9px; border-radius:5px; border:1px solid #30363d; background:#161b22; color:#c9d1d9; font-family:var(--font-mono); font-size:0.71rem; font-weight:700; cursor:pointer;">[2D ARCADE]</button>
+            <button type="button" data-dim="3d" class="cq-dim-btn" style="padding:3px 9px; border-radius:5px; border:1px solid #10b981; background:#059669; color:#ffffff; font-family:var(--font-mono); font-size:0.71rem; font-weight:700; cursor:pointer;">[3D ISOMETRIC]</button>
           </div>
-          <a id="${canvasId}_fullLink" href="/games/rover-3d/" style="font-size:0.74rem; font-weight:800; color:#38bdf8; text-decoration:none; padding:3px 8px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.35); border-radius:6px;">
-            🚀 Open Full 10-Level 3D Game &rarr;
+          <a id="${canvasId}_fullLink" href="/games/rover-3d/" style="font-family:var(--font-mono); font-size:0.71rem; font-weight:700; color:#38bdf8; text-decoration:none; padding:3px 8px; background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.25); border-radius:5px;">
+            Open Full 10-Level Engine &rarr;
           </a>
         </div>
         <div style="display:flex; flex-wrap:wrap; gap:4px; align-items:center;">
-          <span style="font-size:0.7rem; font-weight:800; color:#94a3b8; margin-right:2px;">6 GAMES:</span>
-          ${GAME_MODES.map(g => `<button type="button" data-gmode="${g.id}" class="cq-gmode-btn" style="padding:3px 8px; border-radius:5px; border:1px solid #334155; background:#1e293b; color:#cbd5e1; font-size:0.71rem; font-weight:700; cursor:pointer;">${g.label}</button>`).join("")}
+          <span style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#8b949e; margin-right:2px;">ENGINES:</span>
+          ${GAME_MODES.map(g => `<button type="button" data-gmode="${g.id}" class="cq-gmode-btn" style="padding:3px 8px; border-radius:5px; border:1px solid #30363d; background:#161b22; color:#c9d1d9; font-family:var(--font-mono); font-size:0.7rem; font-weight:600; cursor:pointer;">${g.label}</button>`).join("")}
         </div>
       `;
       wrapper.insertBefore(topBar, canvas);
@@ -374,18 +408,18 @@
     if (!document.getElementById(canvasId + "_ctrlBar")) {
       const ctrlBar = document.createElement("div");
       ctrlBar.id = canvasId + "_ctrlBar";
-      ctrlBar.style.cssText = "background:#0f172a; border-top:1px solid #334155; padding:7px 10px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:6px;";
+      ctrlBar.style.cssText = "background:#0d1117; border-top:1px solid rgba(255,255,255,0.08); padding:7px 10px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:6px;";
       ctrlBar.innerHTML = `
         <div style="display:flex; flex-wrap:wrap; gap:4px; align-items:center;">
-          <span style="font-size:0.7rem; font-weight:800; color:#94a3b8; margin-right:2px;">CONTROLS:</span>
-          <button type="button" data-act="left" style="padding:4px 9px; border-radius:5px; border:1px solid #475569; background:#1e293b; color:#f8fafc; font-size:0.73rem; font-weight:700; cursor:pointer;">⬅️ Left</button>
-          <button type="button" data-act="up" style="padding:4px 9px; border-radius:5px; border:1px solid #475569; background:#1e293b; color:#f8fafc; font-size:0.73rem; font-weight:700; cursor:pointer;">⬆️ Forward</button>
-          <button type="button" data-act="down" style="padding:4px 9px; border-radius:5px; border:1px solid #475569; background:#1e293b; color:#f8fafc; font-size:0.73rem; font-weight:700; cursor:pointer;">⬇️ Down</button>
-          <button type="button" data-act="right" style="padding:4px 9px; border-radius:5px; border:1px solid #475569; background:#1e293b; color:#f8fafc; font-size:0.73rem; font-weight:700; cursor:pointer;">➡️ Right</button>
-          <button type="button" data-act="boost" style="padding:4px 10px; border-radius:5px; border:1px solid #059669; background:#065f46; color:#ffffff; font-size:0.73rem; font-weight:700; cursor:pointer;">⚡ Action / Replay</button>
-          <button type="button" data-act="rotate" style="padding:4px 9px; border-radius:5px; border:1px solid #0284c7; background:#0c4a6e; color:#e0f2fe; font-size:0.73rem; font-weight:700; cursor:pointer;">🔄 Toggle 2D/3D</button>
+          <span style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#8b949e; margin-right:2px;">CTRL:</span>
+          <button type="button" data-act="left" style="padding:3px 8px; border-radius:5px; border:1px solid #30363d; background:#161b22; color:#f0f6fc; font-family:var(--font-mono); font-size:0.71rem; font-weight:600; cursor:pointer;">&larr; Left</button>
+          <button type="button" data-act="up" style="padding:3px 8px; border-radius:5px; border:1px solid #30363d; background:#161b22; color:#f0f6fc; font-family:var(--font-mono); font-size:0.71rem; font-weight:600; cursor:pointer;">&uarr; Up</button>
+          <button type="button" data-act="down" style="padding:3px 8px; border-radius:5px; border:1px solid #30363d; background:#161b22; color:#f0f6fc; font-family:var(--font-mono); font-size:0.71rem; font-weight:600; cursor:pointer;">&darr; Down</button>
+          <button type="button" data-act="right" style="padding:3px 8px; border-radius:5px; border:1px solid #30363d; background:#161b22; color:#f0f6fc; font-family:var(--font-mono); font-size:0.71rem; font-weight:600; cursor:pointer;">&rarr; Right</button>
+          <button type="button" data-act="boost" style="padding:3px 9px; border-radius:5px; border:1px solid #10b981; background:#059669; color:#ffffff; font-family:var(--font-mono); font-size:0.71rem; font-weight:700; cursor:pointer;">Run Step</button>
+          <button type="button" data-act="rotate" style="padding:3px 8px; border-radius:5px; border:1px solid #0284c7; background:#0c4a6e; color:#e0f2fe; font-family:var(--font-mono); font-size:0.71rem; font-weight:600; cursor:pointer;">2D / 3D</button>
         </div>
-        <span id="${canvasId}_scoreBadge" style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#34d399;">Score: 100 XP</span>
+        <span id="${canvasId}_scoreBadge" style="font-family:var(--font-mono); font-size:0.72rem; font-weight:700; color:#34d399;">SCORE: 100 XP</span>
       `;
       wrapper.appendChild(ctrlBar);
 
@@ -402,7 +436,7 @@
           }
           state.score += 15;
           const sb = document.getElementById(canvasId + "_scoreBadge");
-          if (sb) sb.textContent = "Score: " + state.score + " XP";
+          if (sb) sb.textContent = "SCORE: " + state.score + " XP";
           window.CQRenderGameCanvas(canvasId, state.langKey, 1.0, "", true);
         });
       });
@@ -416,21 +450,21 @@
     if (!topBar) return;
     topBar.querySelectorAll(".cq-dim-btn").forEach(function (btn) {
       const active = btn.getAttribute("data-dim") === state.dimension;
-      btn.style.background = active ? "#059669" : "#1e293b";
-      btn.style.borderColor = active ? "#10b981" : "#475569";
-      btn.style.color = active ? "#ffffff" : "#cbd5e1";
+      btn.style.background = active ? "#059669" : "#161b22";
+      btn.style.borderColor = active ? "#10b981" : "#30363d";
+      btn.style.color = active ? "#ffffff" : "#c9d1d9";
     });
     topBar.querySelectorAll(".cq-gmode-btn").forEach(function (btn) {
       const active = btn.getAttribute("data-gmode") === state.gameMode;
-      btn.style.background = active ? "#0284c7" : "#1e293b";
-      btn.style.borderColor = active ? "#38bdf8" : "#334155";
-      btn.style.color = active ? "#ffffff" : "#cbd5e1";
+      btn.style.background = active ? "#0284c7" : "#161b22";
+      btn.style.borderColor = active ? "#38bdf8" : "#30363d";
+      btn.style.color = active ? "#ffffff" : "#c9d1d9";
     });
     const fullLink = document.getElementById(canvasId + "_fullLink");
     const found = GAME_MODES.find(g => g.id === state.gameMode);
     if (fullLink && found) {
       fullLink.href = found.fullUrl;
-      fullLink.innerHTML = "🚀 Play Full " + found.label + " (10 Levels) &rarr;";
+      fullLink.innerHTML = "Open " + found.label + " (10 Levels) &rarr;";
     }
   }
 
@@ -501,16 +535,16 @@
       const is3D = state.dimension === "3d";
 
       // Top HUD Strip inside Canvas
-      ctx.fillStyle = "rgba(30, 41, 59, 0.9)";
+      ctx.fillStyle = "rgba(13, 17, 23, 0.92)";
       ctx.fillRect(0, 0, w, 30);
       ctx.fillStyle = "#38bdf8";
-      ctx.font = "700 11.5px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillText((is3D ? "🌐 3D WORLD: " : "🕹️ 2D ARCADE: ") + gInfo.label + " (" + meta.name + ")", 10, 19);
+      ctx.font = "700 11px 'JetBrains Mono', monospace";
+      ctx.fillText((is3D ? "3D ENGINE // " : "2D ARCADE // ") + gInfo.label + " (" + meta.name + ")", 10, 19);
 
       ctx.fillStyle = "#34d399";
       ctx.textAlign = "right";
-      ctx.font = "700 11px 'JetBrains Mono', monospace";
-      ctx.fillText(animProgress >= 0.9 ? "✔ MISSION COMPLETE (+35 XP)" : "⚡ SIMULATING...", w - 10, 19);
+      ctx.font = "700 10.5px 'JetBrains Mono', monospace";
+      ctx.fillText(animProgress >= 0.9 ? "STATUS: READY (+35 XP)" : "STATUS: RUNNING...", w - 10, 19);
       ctx.textAlign = "left";
 
       // ======================================================================
@@ -571,9 +605,9 @@
               ctx.strokeStyle = isGoal ? "#10b981" : "#334155";
               ctx.strokeRect(x, y, cw - 4, cw - 4);
               if (isGoal) {
-                ctx.fillStyle = "#ffffff";
-                ctx.font = "12px sans-serif";
-                ctx.fillText("🏁", x + 8, y + cw * 0.65);
+                ctx.fillStyle = "#34d399";
+                ctx.font = "700 9px 'JetBrains Mono', monospace";
+                ctx.fillText("GOAL", x + 5, y + cw * 0.62);
               }
             }
           }
@@ -659,15 +693,15 @@
             ctx.fillStyle = "#ffffff";
             ctx.font = "700 10px 'JetBrains Mono', monospace";
             ctx.fillText(t.label, t.x - 28, 155 - hZ - 6);
-            ctx.fillStyle = "#34d399";
-            ctx.fillText(unlocked ? "✔ " + t.xp : "🔒 LOCKED", t.x - 28, 174);
+            ctx.fillStyle = unlocked ? "#34d399" : "#94a3b8";
+            ctx.fillText(unlocked ? "[OK] " + t.xp : "[LOCKED]", t.x - 28, 174);
           });
         } else {
           const rows = [
             ["STUDENT ID", "NAME", "DEPT", "STATUS"],
-            ["1119003", "Md Najmus Sakib", "CSE", animProgress > 0.3 ? "✔ Unlocked (2450 XP)" : "🔒 Locked"],
-            ["1119026", "Nusrat Jahan", "CSE", animProgress > 0.6 ? "✔ Unlocked (2720 XP)" : "🔒 Locked"],
-            ["1119014", "Tahmid Hasan", "CSE", animProgress > 0.85 ? "✔ Unlocked (1890 XP)" : "🔒 Locked"]
+            ["1119003", "Md Najmus Sakib", "CSE", animProgress > 0.3 ? "[OK] 2450 XP" : "[LOCKED]"],
+            ["1119026", "Nusrat Jahan", "CSE", animProgress > 0.6 ? "[OK] 2720 XP" : "[LOCKED]"],
+            ["1119014", "Tahmid Hasan", "CSE", animProgress > 0.85 ? "[OK] 1890 XP" : "[LOCKED]"]
           ];
           rows.forEach(function (r, idx) {
             const y = 40 + idx * 34;
@@ -778,11 +812,11 @@
       }
 
       // Bottom Status Bar inside Canvas
-      ctx.fillStyle = "rgba(15, 23, 42, 0.92)";
+      ctx.fillStyle = "rgba(13, 17, 23, 0.94)";
       ctx.fillRect(0, h - 22, w, 22);
-      ctx.fillStyle = "#cbd5e1";
-      ctx.font = "600 10.5px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillText("🎯 " + meta.gameGoal.slice(0, 86), 10, h - 7);
+      ctx.fillStyle = "#c9d1d9";
+      ctx.font = "600 10.5px 'JetBrains Mono', monospace";
+      ctx.fillText("OBJECTIVE: " + meta.gameGoal.slice(0, 82), 10, h - 7);
 
       if (animProgress < targetProgress) {
         animProgress = Math.min(targetProgress, animProgress + 0.04);
@@ -813,29 +847,29 @@
 
     root.innerHTML = `
       <div style="background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:10px; overflow:hidden; margin-bottom:14px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 14px; background:var(--bg-surface-elevated); border-bottom:1px solid var(--border-medium); font-size:0.82rem;">
-          <div>
-            <strong style="color:var(--text-primary);">🎬 1-Minute Visual Guide: ${titleText}</strong>
-            <span style="color:var(--text-muted); margin-left:6px; font-size:0.75rem;">(${meta.name})</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 14px; background:var(--bg-surface-elevated); border-bottom:1px solid var(--border-medium); font-size:0.8rem;">
+          <div style="font-family:var(--font-mono);">
+            <strong style="color:var(--text-primary);">1-MIN VISUAL GUIDE // ${titleText}</strong>
+            <span style="color:var(--text-muted); margin-left:6px; font-size:0.74rem;">(${meta.name})</span>
           </div>
           <div style="display:flex; gap:6px; align-items:center;">
-            <span id="${containerId}_timer" style="color:var(--text-secondary); font-family:var(--font-mono); font-size:0.75rem;">Step 1 of 4 (0:00 / 1:00)</span>
-            <button type="button" id="${containerId}_speedBtn" class="btn btn-ghost" style="padding:2px 8px; font-size:0.72rem;">1.0x</button>
+            <span id="${containerId}_timer" style="color:var(--text-secondary); font-family:var(--font-mono); font-size:0.74rem;">Step 1/4 (0:00 / 1:00)</span>
+            <button type="button" id="${containerId}_speedBtn" class="btn btn-ghost" style="padding:2px 8px; font-size:0.72rem; font-family:var(--font-mono);">1.0x</button>
           </div>
         </div>
 
         <div style="position:relative;">
           <canvas id="${containerId}_canvas" height="170" style="width:100%; height:170px; display:block;"></canvas>
-          <div id="${containerId}_caption" style="padding:10px 14px; background:var(--bg-surface); border-top:1px solid var(--border-subtle); color:var(--text-primary); font-size:0.86rem; line-height:1.55;">
+          <div id="${containerId}_caption" style="padding:10px 14px; background:var(--bg-surface); border-top:1px solid var(--border-subtle); color:var(--text-primary); font-size:0.85rem; line-height:1.55;">
             <strong>${chapters[0].title}:</strong> ${chapters[0].caption}
           </div>
         </div>
 
         <div style="padding:8px 14px; background:var(--bg-surface-elevated); border-top:1px solid var(--border-subtle); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px;">
           <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
-            <button type="button" id="${containerId}_playBtn" class="btn btn-primary" style="padding:5px 12px; font-size:0.78rem;">▶ Play 1-Min Visual Guide</button>
+            <button type="button" id="${containerId}_playBtn" class="btn btn-primary" style="padding:5px 12px; font-size:0.76rem; font-family:var(--font-mono);">&#9654; Play Guide</button>
             <div style="display:flex; flex-wrap:wrap; gap:4px;" id="${containerId}_chapters">
-              ${chapters.map((c, idx) => `<button type="button" data-ch="${idx}" class="btn btn-ghost" style="padding:3px 8px; font-size:0.73rem;">${c.title}</button>`).join("")}
+              ${chapters.map((c, idx) => `<button type="button" data-ch="${idx}" class="btn btn-ghost" style="padding:3px 8px; font-size:0.72rem;">${c.title}</button>`).join("")}
             </div>
           </div>
           <input type="range" id="${containerId}_scrub" min="0" max="60" value="0" style="width:120px; accent-color:#059669; cursor:pointer;" aria-label="Lesson timeline">
@@ -1022,20 +1056,22 @@
     if (!picker) return;
 
     const langs = [
-      { key: "python", label: "🐍 Python 3" },
-      { key: "html", label: "🌐 HTML5" },
-      { key: "css", label: "🎨 CSS3" },
-      { key: "javascript", label: "⚡ JavaScript" },
-      { key: "react", label: "⚛️ React" },
-      { key: "c", label: "⚙️ C" },
-      { key: "cpp", label: "🚀 C++" },
-      { key: "java", label: "☕ Java" },
-      { key: "sql", label: "🗄️ SQL / MySQL" },
-      { key: "php", label: "🐘 PHP + MySQL" },
-      { key: "django", label: "🎸 Django" },
-      { key: "mongodb", label: "🍃 MongoDB" },
-      { key: "rust", label: "🦀 Rust" },
-      { key: "ai-ml", label: "🤖 AI & ML" }
+      { key: "python", label: "PY · Python 3" },
+      { key: "html", label: "HTML5" },
+      { key: "css", label: "CSS3" },
+      { key: "javascript", label: "JS · ES6+" },
+      { key: "react", label: "React" },
+      { key: "django", label: "DJ · Django" },
+      { key: "php", label: "PHP 8" },
+      { key: "sql", label: "SQL / PG" },
+      { key: "mysql", label: "MySQL" },
+      { key: "mongodb", label: "MongoDB" },
+      { key: "c", label: "C · GCC" },
+      { key: "cpp", label: "C++20" },
+      { key: "java", label: "Java 21" },
+      { key: "rust", label: "RS · Rust" },
+      { key: "bash", label: "SH · Bash" },
+      { key: "ai-ml", label: "AI & ML" }
     ];
 
     let activeLang = "python";
@@ -1046,12 +1082,12 @@
       picker.querySelectorAll("button").forEach(function (b) {
         const isAct = b.getAttribute("data-lang") === langKey;
         b.className = isAct ? "btn btn-primary" : "btn btn-ghost";
-        b.style.padding = "0.35rem 0.75rem";
-        b.style.fontSize = "0.78rem";
+        b.style.padding = "0.3rem 0.65rem";
+        b.style.fontSize = "0.74rem";
         b.style.fontFamily = "var(--font-mono)";
       });
       const titleEl = document.getElementById("heroSelectedLangTitle");
-      if (titleEl) titleEl.textContent = meta.name + " — 1-Minute Visual Lesson & 2D/3D Coding Game";
+      if (titleEl) titleEl.textContent = meta.name + " · 1-Minute Visual Guide & 2D/3D Studio";
       const promptEl = document.getElementById("heroCliPrompt");
       if (promptEl) promptEl.textContent = "$ " + meta.cli;
       const codeEl = document.getElementById("heroTerminalCodeInput");
@@ -1068,7 +1104,7 @@
     }
 
     picker.innerHTML = langs.map(function (l) {
-      return '<button type="button" data-lang="' + l.key + '" class="btn btn-ghost" style="padding:0.35rem 0.75rem; font-size:0.78rem; font-family:var(--font-mono);">' + l.label + '</button>';
+      return '<button type="button" data-lang="' + l.key + '" class="btn btn-ghost" style="padding:0.3rem 0.65rem; font-size:0.74rem; font-family:var(--font-mono);">' + l.label + '</button>';
     }).join("");
 
     picker.querySelectorAll("button").forEach(function (btn) {

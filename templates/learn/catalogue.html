@@ -5,17 +5,16 @@
 {% block content %}
 <div class="shell shell-wide" style="padding-top: 2.5rem; padding-bottom: 5rem;">
   
-  <!-- Sleek Header & Breadcrumb -->
+  <!-- Header & Curriculum Tag -->
   <div style="margin-bottom: 2.25rem;">
-    <div class="section-eyebrow-pill" style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25);">
-      <span class="pill-pulse-dot" style="background: #38bdf8; box-shadow: 0 0 10px #38bdf8;"></span>
-      <span style="color: #7dd3fc;">Curriculum Roadmap &bull; In-Browser Labs</span>
+    <div class="dev-tag" style="margin-bottom: 0.75rem;">
+      CURRICULUM // {{ languages|length }} TRACKS &bull; IN-BROWSER LABS
     </div>
-    <h1 style="font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.035em; line-height: 1.15; margin: 0 0 0.75rem 0;">
-      Programming Courses &amp; <span style="background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Guided Tracks</span>
+    <h1 style="font-size: clamp(2.1rem, 3.8vw, 2.85rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 0.75rem 0;">
+      Programming Courses &amp; <span style="color: var(--accent);">Guided Tracks</span>
     </h1>
-    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 680px; line-height: 1.65; margin: 0;">
-      Master foundational software engineering through bite-sized, interactive browser lessons. Every course pairs an intuitive mental model with an instant coding sandbox.
+    <p style="font-size: 1.02rem; color: var(--text-muted); max-width: 680px; line-height: 1.65; margin: 0;">
+      Interactive language tracks combining concise lessons, worked examples, and a live execution terminal inside the browser.
     </p>
   </div>
 
@@ -33,20 +32,20 @@
         </div>
         <div>
           <div class="lms-user-title">
-            <span>Welcome back, {{ request.user.username }}!</span>
-            <span class="lms-status-chip lms-chip-tier">{{ learner.learner_stats.rank_icon }} {{ learner.learner_stats.rank_title }}</span>
+            <span>{{ request.user.username }}</span>
+            <span class="lms-status-chip lms-chip-tier" style="font-family: var(--font-mono);">{{ learner.learner_stats.rank_title }}</span>
           </div>
           <div class="lms-user-meta">
-            <span class="lms-status-chip lms-chip-streak">🔥 {{ learner.learner_stats.streak }}-Day Streak Active</span>
+            <span class="lms-status-chip lms-chip-streak" style="font-family: var(--font-mono);">STREAK: {{ learner.learner_stats.streak }}D</span>
             <span>&bull;</span>
-            <span>{{ learner.learner_stats.completed_lessons }} of {{ learner.learner_stats.total_lessons }} Curriculum Lessons Mastered ({{ learner.learner_stats.overall_pct }}%)</span>
+            <span>{{ learner.learner_stats.completed_lessons }} of {{ learner.learner_stats.total_lessons }} lessons completed ({{ learner.learner_stats.overall_pct }}%)</span>
           </div>
         </div>
       </div>
 
       <div class="lms-quick-metrics">
         <div class="lms-metric-pill">
-          <span class="lms-metric-value" style="color: #fbbf24;">⚡ {{ learner.learner_stats.xp }} XP</span>
+          <span class="lms-metric-value" style="color: #fbbf24; font-family: var(--font-mono);">{{ learner.learner_stats.xp }} XP</span>
           <span class="lms-metric-label">Total Earned</span>
         </div>
         <div class="lms-metric-pill">
@@ -63,7 +62,7 @@
       <div class="lms-resume-card">
         <div>
           <div class="lms-card-tag">
-            <span>⚡ PICK UP WHERE YOU LEFT OFF</span>
+            <span>RESUME // ACTIVE TRACK</span>
           </div>
           
           {% if learner.continue_lesson %}
@@ -74,7 +73,7 @@
             Lesson 0{{ learner.continue_lesson.order }}: {{ learner.continue_lesson.title }}
           </h2>
           <div class="lms-resume-meta">
-            <span>⏱ ~{{ learner.continue_lesson.est_minutes }} mins interactive lab</span>
+            <span>~{{ learner.continue_lesson.est_minutes }} mins interactive lab</span>
             <span>&bull;</span>
             <span style="color: #fbbf24;">+{{ learner.continue_lesson.xp }} XP on completion</span>
             <span>&bull;</span>
@@ -103,7 +102,7 @@
         <div class="lms-resume-actions">
           {% if learner.continue_lesson %}
           <a href="{% url 'lesson_detail' learner.active_course.slug learner.continue_lesson.slug %}" class="lms-btn-resume">
-            <span>▶ Resume Lesson (0{{ learner.continue_lesson.order }})</span>
+            <span>Resume Lesson (0{{ learner.continue_lesson.order }})</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
           <a href="{% url 'course_detail' learner.active_course.slug %}" class="btn btn-ghost" style="font-size: 0.85rem;">
@@ -126,7 +125,7 @@
                 Habit Engine
               </div>
               <div class="lms-streak-badge">
-                <span>🔥 {{ learner.learner_stats.streak }}</span>
+                <span>{{ learner.learner_stats.streak }}</span>
                 <span style="font-size: 1rem; color: var(--text-primary); font-weight: 700;">Day Streak</span>
               </div>
             </div>
@@ -151,7 +150,7 @@
         <!-- Tier & XP Advancement -->
         <div class="lms-tier-progress-box">
           <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.76rem; font-family: var(--font-mono); margin-bottom: 0.4rem;">
-            <span style="color: var(--text-muted); font-weight: 600;">{{ learner.learner_stats.rank_icon }} {{ learner.learner_stats.rank_title }}</span>
+            <span style="color: var(--text-muted); font-weight: 600;">RANK: {{ learner.learner_stats.rank_title }}</span>
             <span style="color: #a5b4fc; font-weight: 700;">{{ learner.learner_stats.xp }} / {{ learner.learner_stats.next_tier_xp }} XP ({{ learner.learner_stats.tier_pct }}%)</span>
           </div>
           <div class="lms-progress-track" style="height: 6px;">
@@ -169,11 +168,11 @@
 
   </div>
   {% else %}
-  <!-- Clean, Non-Intrusive Value Strip for Guests -->
-  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.15rem 1.65rem; background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.08), var(--bg-surface) 75%); border: 1px solid var(--border-medium); border-radius: var(--radius-lg); margin-bottom: 2.25rem;">
-    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; font-size: 0.86rem; font-family: var(--font-mono); color: var(--text-secondary);">
+  <!-- Guest Summary Strip -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.15rem 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: var(--radius-lg); margin-bottom: 2.25rem;">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; font-size: 0.84rem; font-family: var(--font-mono); color: var(--text-secondary);">
       <span style="display: inline-flex; align-items: center; gap: 0.45rem; color: var(--text-primary); font-weight: 700;">
-        <span style="color: #38bdf8;">✦</span> 88 Interactive Units
+        <span style="color: #10b981;">&bull;</span> 88 Interactive Units
       </span>
       <span style="display: inline-flex; align-items: center; gap: 0.45rem;">
         <span style="color: #10b981;">✓</span> Zero Tooling Setup
@@ -187,13 +186,13 @@
     </div>
     <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem;">
       <a href="{% url 'login_view' %}?demo=1" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.45rem 0.95rem;">
-        ⚡ 1-Click Instant Demo
+        Instant Demo Login
       </a>
       <a href="{% url 'games_hub' %}" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.45rem 0.95rem;">
-        🎮 Practice Arena
+        Practice Arena
       </a>
       <a href="{% url 'playground' %}" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.45rem 0.95rem;">
-        🧪 Playground Studio
+        Playground Studio
       </a>
       <a href="{% url 'signup_view' %}" class="btn btn-primary" style="font-size: 0.84rem; padding: 0.45rem 1.25rem; font-weight: 700;">
         Create Account &rarr;
@@ -220,16 +219,16 @@
         All Tracks ({{ languages|length }})
       </button>
       <button class="btn btn-ghost filter-pill" data-group="web" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 999px;">
-        🌐 Web Foundations
+        Web Foundations
       </button>
       <button class="btn btn-ghost filter-pill" data-group="backend" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 999px;">
-        🐍 Scripting &amp; Python
+        Scripting &amp; Python
       </button>
       <button class="btn btn-ghost filter-pill" data-group="database" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 999px;">
-        🗄️ Databases (SQL)
+        Databases (SQL)
       </button>
       <button class="btn btn-ghost filter-pill" data-group="systems" style="font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 999px;">
-        ⚙️ Systems, C/C++/Rust &amp; AI
+        Systems, C/C++/Rust &amp; AI
       </button>
     </div>
   </div>
@@ -303,19 +302,19 @@
             <div>
               <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Duration</div>
               <div style="font-size: 0.92rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-primary);">
-                ⏱ {{ course.total_minutes }}m
+                {{ course.total_minutes }}m
               </div>
             </div>
             <div>
               <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Lessons</div>
               <div style="font-size: 0.92rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent);">
-                📚 {{ course.lessons.count }}
+                {{ course.lessons.count }}
               </div>
             </div>
             <div>
               <div style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Hands-on</div>
               <div style="font-size: 0.92rem; font-weight: 800; font-family: var(--font-mono); color: #10b981;">
-                🎯 100%
+                100%
               </div>
             </div>
           </div>
@@ -348,16 +347,16 @@
 
   <!-- Empty Search Results Placeholder -->
   <div id="noSearchResultsMsg" style="display: none; text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
-    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+    <div style="font-size: 0.8rem; font-family: var(--font-mono); letter-spacing: 0.08em; margin-bottom: 0.5rem;">EMPTY_RESULT</div>
     <div style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">No matching courses found</div>
     <p style="font-size: 0.9rem;">Try adjusting your search keywords or switching category filters.</p>
   </div>
 
   <!-- Practice Arena & Arcade Drills Callout Strip -->
-  <div style="margin-top: 4.5rem; padding: 2.25rem; background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), var(--bg-surface) 75%); border: 1px solid var(--border-medium); border-radius: var(--radius-xl); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;">
+  <div style="margin-top: 4.5rem; padding: 2rem; background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: var(--radius-xl); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;">
     <div>
-      <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #a5b4fc; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.35rem;">
-        🎮 Interactive Practice Arena &bull; Arcade Drills
+      <div class="dev-tag" style="margin-bottom: 0.35rem;">
+        ARENA // INTERACTIVE PRACTICE &amp; DRILLS
       </div>
       <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.4rem 0;">
         Looking for arcade code drills and algorithmic challenges?
@@ -405,16 +404,16 @@
     padding: 1.85rem;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-lg);
-    background: radial-gradient(ellipse at top right, rgba(99, 102, 241, 0.04), var(--bg-surface) 75%);
+    background: var(--bg-surface);
     position: relative;
     overflow: hidden;
     transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
   }
 
   .catalogue-course-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(99, 102, 241, 0.4);
-    box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.4), 0 0 20px -4px rgba(99, 102, 241, 0.15);
+    transform: translateY(-2px);
+    border-color: rgba(16, 185, 129, 0.35);
+    box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
   }
 
   .catalogue-lang-pill {

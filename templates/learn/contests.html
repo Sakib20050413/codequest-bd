@@ -8,12 +8,11 @@
   <!-- Header Section -->
   <div style="margin-bottom: 2.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem;">
     <div>
-      <div class="section-eyebrow-pill" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3);">
-        <span class="pill-pulse-dot" style="background: #f59e0b; box-shadow: 0 0 10px #f59e0b;"></span>
-        <span style="color: #fbbf24; font-weight: 700;">Live Arena &bull; Weekly Leaderboards &bull; BAIUST CSE 324</span>
+      <div class="dev-tag" style="margin-bottom: 0.75rem;">
+        ARENA // WEEKLY LEADERBOARDS &bull; BAIUST CSE 324
       </div>
-      <h1 style="font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.035em; line-height: 1.15; margin: 0 0 0.75rem 0;">
-        Weekly Coding <span style="background: linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Competitions</span>
+      <h1 style="font-size: clamp(2.1rem, 3.8vw, 2.85rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 0.75rem 0;">
+        Weekly Coding <span style="color: var(--accent);">Competitions</span>
       </h1>
       <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 680px; line-height: 1.65; margin: 0;">
         Prove your coding mastery under time pressure. Compete against your university batch, solve algorithmic mini-bosses, earn massive XP bonuses, and climb the official CodeQuest leaderboard.
@@ -55,10 +54,10 @@
         <div>
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
             <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">
-              🔥 {{ contest.difficulty }}
+              {{ contest.difficulty }}
             </span>
             <span style="font-size: 0.82rem; font-family: var(--font-mono); color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 0.25rem 0.6rem; border-radius: 6px;">
-              ⚡ +{{ contest.xp_reward }} XP
+              +{{ contest.xp_reward }} XP
             </span>
           </div>
 
@@ -72,22 +71,22 @@
             {{ contest.description|truncatewords:24 }}
           </p>
 
-          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
-            <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.35rem;">
-              <span>⏱️</span> <strong>{{ contest.duration_minutes }} Mins</strong>
+          <div style="display: flex; gap: 0.85rem; flex-wrap: wrap; margin-bottom: 1.25rem; font-family: var(--font-mono);">
+            <div style="font-size: 0.78rem; color: var(--text-muted);">
+              Duration: <strong style="color: var(--text-primary);">{{ contest.duration_minutes }}m</strong>
             </div>
-            <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.35rem;">
-              <span>🎯</span> <strong>100 Pts</strong>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">
+              Score: <strong style="color: var(--text-primary);">100 pts</strong>
             </div>
-            <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.35rem;">
-              <span>👥</span> <strong>{{ contest.submissions.count }} Submissions</strong>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">
+              Entries: <strong style="color: var(--text-primary);">{{ contest.submissions.count }}</strong>
             </div>
           </div>
         </div>
 
         <div style="border-top: 1px solid var(--border-color); padding-top: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
           <div style="font-size: 0.82rem; color: #fbbf24; font-family: var(--font-mono); font-weight: 600;">
-            ⏳ Closes Sunday 11:59 PM
+            Closes Sun 23:59
           </div>
           <a href="{% url 'contest_detail' contest.slug %}" class="btn btn-primary" style="padding: 0.5rem 1.15rem; font-size: 0.85rem; border-radius: var(--radius-md);">
             Enter Arena &rarr;
@@ -108,7 +107,7 @@
     <!-- Upcoming Tournaments -->
     <div>
       <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0 0 1.25rem 0; display: flex; align-items: center; gap: 0.5rem;">
-        <span>📅</span> Upcoming Competitions
+        Upcoming Competitions
       </h2>
 
       <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -138,7 +137,7 @@
 
       <!-- Fair Play & Rules Notice -->
       <div class="cq-card" style="margin-top: 1.5rem; padding: 1.25rem; border-radius: var(--radius-lg); background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2);">
-        <h4 style="font-size: 0.95rem; font-weight: 700; color: #60a5fa; margin: 0 0 0.5rem 0;">🛡️ Contest Rules &amp; Integrity Policy</h4>
+        <h4 style="font-size: 0.95rem; font-weight: 700; color: #60a5fa; margin: 0 0 0.5rem 0;">Contest Rules &amp; Integrity Policy</h4>
         <ul style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin: 0; padding-left: 1.2rem;">
           <li>All solutions are evaluated across 3 test tiers: Normal, Boundary Edge, and <10ms Stress Case.</li>
           <li>Scores are determined by test accuracy first, then lowest execution runtime (ms).</li>
@@ -151,7 +150,7 @@
     <div>
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
         <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-          <span>🏆</span> Arena Hall of Fame
+          Arena Hall of Fame
         </h2>
         <span style="font-size: 0.8rem; color: var(--text-muted);">BAIUST CSE Sessional Standings</span>
       </div>
@@ -173,11 +172,11 @@
               <tr style="border-bottom: 1px solid var(--border-color); transition: background 0.15s ease;">
                 <td style="padding: 0.85rem 1rem; font-weight: 700; font-family: var(--font-mono);">
                   {% if forloop.counter == 1 %}
-                    <span style="color: #fbbf24; font-size: 1.1rem;">🥇 #1</span>
+                    <span style="color: #fbbf24; font-family: var(--font-mono); font-weight: 700;">#1</span>
                   {% elif forloop.counter == 2 %}
-                    <span style="color: #94a3b8; font-size: 1.1rem;">🥈 #2</span>
+                    <span style="color: #94a3b8; font-family: var(--font-mono); font-weight: 700;">#2</span>
                   {% elif forloop.counter == 3 %}
-                    <span style="color: #b45309; font-size: 1.1rem;">🥉 #3</span>
+                    <span style="color: #b45309; font-family: var(--font-mono); font-weight: 700;">#3</span>
                   {% else %}
                     <span style="color: var(--text-muted);">#{{ forloop.counter }}</span>
                   {% endif %}
