@@ -43,9 +43,21 @@
     const hints = config.hints || [];
     const lessonId = config.lessonId;
     const langSlug = (config.langSlug || 'html').toLowerCase();
-    const isWebMarkup = ['html', 'css', 'javascript', 'js'].includes(langSlug);
     const initialStarterCode = editor ? editor.value : '';
     let hintIndex = 0;
+    let lastTerminalStdout = '';
+
+    function checkIsWebMarkup(codeStr) {
+      if (['html', 'css'].includes(langSlug)) return true;
+      if (['javascript', 'js', 'react'].includes(langSlug)) {
+        return /<(?:h[1-6]|div|span|p|button|section|main|header|footer|nav|article|form|input|ul|ol|li|table|tr|td|a|img|html|body|style|script)\b/i.test(codeStr || '');
+      }
+      return false;
+    }
+
+    function checkIsPureJs(codeStr) {
+      return ['javascript', 'js'].includes(langSlug) && !checkIsWebMarkup(codeStr);
+    }
 
     // Listen for sandboxed iframe console messages
     window.addEventListener('message', function (e) {
@@ -238,7 +250,7 @@
       }
     }
 
-    // Render iframe live preview (or Polyglot Terminal Output for non-HTML languages)
+    // Render iframe live preview (or Polyglot Terminal Output for non-HTML / Pure-JS languages)
     function updatePreview(cb) {
       if (!previewFrame || !editor) return;
       const code = editor.value;
@@ -246,15 +258,69 @@
       const textColor = isDark ? '#f8fafc' : '#0f172a';
       const bgColor = isDark ? '#0c0f17' : '#ffffff';
 
-      if (!isWebMarkup) {
+      if (checkIsPureJs(code)) {
+        const encodedCode = JSON.stringify(code);
+        previewFrame.style.backgroundColor = '#050811';
+        previewFrame.srcdoc = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><style>
+          body { margin: 0; padding: 1rem 1.25rem; background: #050811; color: #e2e8f0; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.55; }
+          .hdr { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 0.65rem; border-bottom: 1px solid rgba(148,163,184,0.18); font-size: 11px; color: #94a3b8; }
+          .pill { color: #10b981; font-weight: 700; }
+          .err { color: #f87171; }
+          pre { margin: 0; white-space: pre-wrap; word-break: break-word; color: #34d399; }
+        </style></head><body>
+          <div class="hdr"><span>JAVASCRIPT V8 SANDBOX</span><span id="jsStatus" class="pill">EXECUTED</span></div>
+          <pre id="jsOut">(Ready — use console.log() or declare expressions)</pre>
+          <script>
+            (function() {
+              const outEl = document.getElementById('jsOut');
+              const stEl = document.getElementById('jsStatus');
+              const logs = [];
+              const origLog = console.log;
+              console.log = function(...args) {
+                origLog.apply(console, args);
+                const msg = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
+                logs.push(msg);
+                window.parent.postMessage({ type: 'cq_console', level: 'log', msg: msg }, '*');
+              };
+              try {
+                const src = ${encodedCode};
+                const res = (0, eval)(src);
+                if (logs.length === 0 && res !== undefined) {
+                  logs.push('=> ' + (typeof res === 'object' ? JSON.stringify(res) : String(res)));
+                }
+                outEl.textContent = logs.length ? logs.join('\\n') : 'Executed cleanly (0 errors).';
+                window.__cq_stdout = logs.join('\\n');
+              } catch (err) {
+                stEl.textContent = 'RUNTIME ERROR';
+                stEl.className = 'err';
+                outEl.className = 'err';
+                outEl.textContent = err.name + ': ' + err.message;
+                window.parent.postMessage({ type: 'cq_console', level: 'error', msg: err.message }, '*');
+              }
+            })();
+          <\/script>
+        </body></html>`;
+
+        setTimeout(function () {
+          try {
+            const win = previewFrame.contentWindow;
+            lastTerminalStdout = (win && win.__cq_stdout) || '';
+          } catch (e) {}
+          if (typeof cb === 'function') cb({ ok: true, stdout: lastTerminalStdout });
+        }, 70);
+        return;
+      }
+
+      if (!checkIsWebMarkup(code)) {
         fetch('/api/terminal/execute/', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrfToken() },
           body: JSON.stringify({ language: langSlug, code: code })
         })
           .then(function (r) { return r.json(); })
           .then(function (res) {
-            const outText = escapeHtml(res.stdout || 'Executed cleanly.');
+            lastTerminalStdout = res.stdout || '';
+            const outText = escapeHtml(lastTerminalStdout || 'Executed cleanly.');
             const badgeColor = res.ok ? '#10b981' : '#ef4444';
             previewFrame.srcdoc = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
               body { margin: 0; padding: 1rem 1.25rem; background: #050811; color: #e2e8f0; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.55; }
@@ -262,16 +328,19 @@
               .pill { color: ${badgeColor}; font-weight: 700; }
               pre { margin: 0; white-space: pre-wrap; word-break: break-word; color: #34d399; }
             </style></head><body>
-              <div class="hdr"><span>POLYGLOT RUNTIME • ${escapeHtml(langSlug.toUpperCase())}</span><span class="pill">● ${res.ok ? 'EXIT 0 (OK)' : 'ERROR'}</span></div>
+              <div class="hdr"><span>POLYGLOT RUNTIME • ${escapeHtml(langSlug.toUpperCase())}</span><span class="pill">${res.ok ? 'EXIT 0 (OK)' : 'ERROR'}</span></div>
               <pre>${outText}</pre>
             </body></html>`;
             if (consoleLogsContainer) {
-              consoleLogsContainer.innerHTML = `<div style="color:#34d399; font-family:var(--font-mono); font-size:0.78rem; white-space:pre-wrap;">${outText}</div>`;
+              consoleLogsContainer.innerHTML = `<div style="color:${res.ok ? '#34d399' : '#f87171'}; font-family:var(--font-mono); font-size:0.78rem; white-space:pre-wrap;">${outText}</div>`;
+            }
+            if (global.CQRenderGameCanvas) {
+              global.CQRenderGameCanvas('lessonGameCanvas', langSlug, res.ok ? 1.0 : 0.5, code, true);
             }
             if (typeof cb === 'function') cb(res);
           })
           .catch(function () {
-            if (typeof cb === 'function') cb({ ok: true, stdout: 'Executed.' });
+            if (typeof cb === 'function') cb({ ok: true, stdout: lastTerminalStdout || '' });
           });
         return;
       }
@@ -343,47 +412,80 @@
       };
     }
 
-    // Auto-checking tests against iframe DOM
+    // Auto-checking tests against iframe DOM & Polyglot stdout
     function runTests() {
-      updatePreview();
       const code = editor ? editor.value : '';
       const passedMap = {};
       let allPass = true;
 
-      // Ensure Test Studio tab is active so learner sees feedback
       const tTab = document.querySelector('[data-studio-tab="tests"]');
       if (tTab) tTab.click();
 
-      setTimeout(function () {
+      updatePreview(function (execRes) {
+        const stdout = ((execRes && execRes.stdout) || lastTerminalStdout || '').trim();
         let doc = null;
+        let iframeWin = null;
         try {
-          doc = previewFrame.contentDocument || (previewFrame.contentWindow && previewFrame.contentWindow.document);
+          iframeWin = previewFrame.contentWindow;
+          doc = previewFrame.contentDocument || (iframeWin && iframeWin.document);
         } catch (e) {}
 
-        // Fallback to DOMParser if iframe is cross-origin or sandboxed
         if (!doc || !doc.body || doc.body.children.length === 0) {
           try {
             doc = new DOMParser().parseFromString(code, 'text/html');
           } catch (e) {}
         }
-        if (!doc) return;
+
+        const normCode = code.replace(/\s+/g, ' ').trim();
+        const lowerNormCode = normCode.toLowerCase();
+
+        function evalPureJs(expr) {
+          const cleanCode = code.replace(/<script\b[^>]*>|<\/script>/gi, '');
+          try {
+            if (iframeWin && typeof iframeWin.eval === 'function' && checkIsWebMarkup(code)) {
+              return iframeWin.eval(expr);
+            }
+          } catch (e) {}
+          const fn = new Function(cleanCode + '\nreturn (' + expr + ');');
+          return fn();
+        }
 
         tests.forEach(function (t) {
           let pass = false;
           try {
-            if (t.type === 'dom_exists') {
-              pass = !!doc.querySelector(t.query);
+            if (t.type === 'stdout_match') {
+              const target = String(t.val || '').trim();
+              pass = stdout === target || stdout.includes(target);
+            } else if (t.type === 'stdout_contains') {
+              const target = String(t.val || '').trim();
+              pass = stdout.includes(target) || stdout.replace(/\r\n/g, '\n').includes(target);
+            } else if (t.type === 'js_var') {
+              const v = evalPureJs('typeof ' + t.name + ' !== "undefined" ? ' + t.name + ' : undefined');
+              pass = v === t.val || String(v) === String(t.val);
+            } else if (t.type === 'js_fn_eval') {
+              const v = evalPureJs(t.expr);
+              pass = v === t.expected || JSON.stringify(v) === JSON.stringify(t.expected);
+            } else if (t.type === 'js_eval') {
+              pass = Boolean(evalPureJs(t.expr));
+            } else if (t.type === 'code_contains') {
+              const q = String(t.query || t.val || '').replace(/\s+/g, ' ').trim();
+              pass = normCode.includes(q) || code.includes(t.query || t.val || '');
+            } else if (t.type === 'sql_query_match' || t.type === 'sql_query_contains') {
+              const q = String(t.val || '').replace(/\s+/g, ' ').trim().toLowerCase();
+              pass = lowerNormCode.includes(q);
+            } else if (t.type === 'dom_exists') {
+              pass = !!(doc && doc.querySelector(t.query));
             } else if (t.type === 'dom_has_attr') {
-              const el = doc.querySelector(t.query);
+              const el = doc && doc.querySelector(t.query);
               pass = !!(el && el.hasAttribute(t.attr));
             } else if (t.type === 'dom_has_attr_val') {
-              const el = doc.querySelector(t.query);
+              const el = doc && doc.querySelector(t.query);
               pass = !!(el && el.getAttribute(t.attr) === t.val);
             } else if (t.type === 'dom_text') {
-              const el = doc.querySelector(t.query);
+              const el = doc && doc.querySelector(t.query);
               pass = !!(el && el.textContent.trim().toLowerCase().includes((t.val || '').toLowerCase()));
             } else if (t.type === 'dom_count_min') {
-              pass = doc.querySelectorAll(t.query).length >= t.min;
+              pass = Boolean(doc && doc.querySelectorAll(t.query).length >= t.min);
             } else if (t.type === 'css_rule') {
               pass = code.includes(t.sel) && code.includes(t.prop);
             } else if (t.type === 'css_contains') {
@@ -391,7 +493,7 @@
             } else if (t.type === 'exact_match') {
               pass = code.trim().includes(t.val);
             } else {
-              pass = code.length > 5;
+              pass = code.trim().length > 5;
             }
           } catch (e) {
             pass = false;
@@ -413,6 +515,9 @@
             global.CodeQuest.fireConfetti();
             global.CodeQuest.recordGuestCompleted(lessonId, config.xpReward || 50);
           }
+          if (global.CQRenderGameCanvas) {
+            global.CQRenderGameCanvas('lessonGameCanvas', langSlug, 1.0, code, true);
+          }
           if (statusMsg) {
             statusMsg.textContent = `All checks passed! +${config.xpReward || 50} XP awarded.`;
             statusMsg.style.color = 'var(--success)';
@@ -422,7 +527,6 @@
             completionBanner.style.display = 'flex';
           }
 
-          // Report pass to backend
           fetch(`/api/lesson/${lessonId}/check/`, {
             method: 'POST',
             headers: {
@@ -445,7 +549,7 @@
             statusMsg.style.color = 'var(--danger)';
           }
         }
-      }, 180);
+      });
     }
 
     if (checkBtn) {
@@ -464,10 +568,14 @@
           hintBox.textContent = hints[hintIndex];
           hintBox.style.display = 'block';
           hintIndex++;
-          hintBtn.textContent = hintIndex < hints.length ? `💡 Next Hint (${hintIndex + 1}/${hints.length})` : '✨ Apply Solution';
+          hintBtn.textContent = hintIndex < hints.length ? `Next Hint (${hintIndex + 1}/${hints.length})` : 'Apply Solution';
         } else {
           if (editor) {
             editor.value = config.solution || '';
+            if (global.CQ_CODE_EDITOR && typeof global.CQ_CODE_EDITOR.setValue === 'function') {
+              global.CQ_CODE_EDITOR.setValue(editor.value);
+              global.CQ_CODE_EDITOR.save();
+            }
             updatePreview();
           }
           hintBox.textContent = 'Working reference solution applied to editor. Click "Check Solution" to verify!';

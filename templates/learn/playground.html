@@ -63,7 +63,7 @@
           ↺ Reset
         </button>
         <button id="zenClearTermBtn" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem;" title="Clear Output Screen">
-          🧹 Clear
+          Clear
         </button>
         <button id="zenLayoutBtn" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem;" title="Toggle Split Orientation">
           ⇄ Toggle Layout
@@ -102,27 +102,27 @@
 
         <!-- Context Tools Button (Diff for Web, Schema for SQL, Memory for C) -->
         <button id="contextHelperBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Contextual Inspection Tool">
-          🎯 Design Diff
+          Design Diff
         </button>
 
         <!-- Layout Toggle Button -->
         <button id="toggleLayoutBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Toggle Split Orientation">
-          ⇄ Toggle Layout
+          Toggle Layout
         </button>
 
         <!-- Zen Fullscreen Toggle -->
         <button id="zenPlaygroundBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Toggle Zen Fullscreen Mode">
-          ⛶ Zen Mode
+          [ ] Zen Mode
         </button>
 
         <!-- Reset Button -->
         <button id="resetPlaygroundBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;">
-          ↺ Reset
+          Reset
         </button>
 
         <!-- Run Button -->
         <button id="runPlaygroundBtn" class="btn btn-primary" style="padding: 0.35rem 1rem; font-size: 0.82rem;" title="Execute Code (Ctrl+Enter)">
-          ▶ Run Code
+          Run Code
         </button>
       </div>
     </div>
@@ -135,62 +135,62 @@
         </span>
         <div id="studioLanguageTabs" style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
           <button class="studio-lang-tab {% if initial_lang == 'web' %}active{% endif %}" data-lang="web">
-            🌐 Web (HTML/CSS/JS)
+            WEB (HTML/CSS/JS)
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'python' %}active{% endif %}" data-lang="python">
-            🐍 Python 3
+            PY Python 3
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'react' %}active{% endif %}" data-lang="react">
-            ⚛️ React
+            JSX React
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'django' %}active{% endif %}" data-lang="django">
-            🎯 Django
+            DJ Django
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'sql' %}active{% endif %}" data-lang="sql">
-            🗄️ SQL / PostgreSQL
+            SQL / PostgreSQL
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'mysql' %}active{% endif %}" data-lang="mysql">
-            🐬 MySQL
+            MY MySQL
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'mongodb' %}active{% endif %}" data-lang="mongodb">
-            🍃 MongoDB
+            MDB MongoDB
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'php' %}active{% endif %}" data-lang="php">
-            🐘 PHP + SQL
+            PHP + SQL
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'c' %}active{% endif %}" data-lang="c">
-            ⚙️ C
+            C C11
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'cpp' %}active{% endif %}" data-lang="cpp">
-            🚀 C++20
+            C++20
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'rust' %}active{% endif %}" data-lang="rust">
-            🦀 Rust
+            RS Rust
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'java' %}active{% endif %}" data-lang="java">
-            ☕ Java
+            JV Java
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'go' %}active{% endif %}" data-lang="go">
-            🐹 Go
+            GO Go
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'bash' %}active{% endif %}" data-lang="bash">
-            💻 Bash CLI
+            SH Bash CLI
           </button>
           <button class="studio-lang-tab {% if initial_lang == 'ai-ml' %}active{% endif %}" data-lang="ai-ml">
-            🧠 AI &amp; ML
+            AI &amp; ML
           </button>
         </div>
       </div>
 
       <!-- Runtime Engine Indicator Badge -->
       <div id="activeRuntimeBadge" style="font-size: 0.76rem; font-family: var(--font-mono); color: #10b981; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.2rem 0.6rem; border-radius: 999px;">
-        ● Runtime Ready
+        Runtime Ready
       </div>
     </div>
 
     {% if selected_task %}
     <!-- Active Coding Task HUD Banner -->
-    <div class="cq-card task-hud-banner" style="margin-bottom: 1.25rem; padding: 1.25rem 1.5rem; border: 1px solid rgba(99, 102, 241, 0.4); background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.1), var(--bg-surface) 75%);">
+    <div class="cq-card task-hud-banner" style="margin-bottom: 1.25rem; padding: 1.25rem 1.5rem; border: 1px solid rgba(56, 189, 248, 0.35); background: var(--bg-surface);">
       <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 0.65rem;">
         <div style="display: flex; align-items: center; gap: 0.5rem;">
           <span style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #ffffff; background: var(--accent-gradient-btn); padding: 0.2rem 0.55rem; border-radius: 4px;">
@@ -246,7 +246,7 @@
           <!-- Quick Action Buttons -->
           <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">
             <button id="copyCodeBtn" class="btn btn-ghost" style="padding: 0.2rem 0.5rem; font-size: 0.72rem;" title="Copy Code to Clipboard">
-              Copy 📋
+              Copy
             </button>
             <span style="font-size: 0.74rem;">Ctrl+Enter to Run</span>
           </div>
@@ -342,7 +342,7 @@
                 0ms
               </span>
               <button id="termCopyOutputBtn" class="btn btn-ghost" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; height: auto;">
-                Copy 📋
+                Copy
               </button>
               <button id="termClearBtn" class="btn btn-ghost" style="padding: 0.15rem 0.45rem; font-size: 0.72rem; height: auto;">
                 Clear
@@ -353,13 +353,13 @@
           <!-- SQL Result Tabs (Only visible when in SQL Studio) -->
           <div id="sqlResultTabBar" style="display: none; background: #0b1120; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0.35rem 0.75rem; gap: 0.5rem;">
             <button id="sqlTabTableBtn" class="btn btn-primary" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">
-              📊 Data Grid
+              Data Grid
             </button>
             <button id="sqlTabLogBtn" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">
-              📟 Terminal Log
+              Terminal Log
             </button>
             <button id="sqlTabSchemaBtn" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem;">
-              🗂️ Tables Schema
+              Tables Schema
             </button>
           </div>
 
@@ -398,7 +398,7 @@
   <div id="boxInspectorModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 10000; align-items: center; justify-content: center; padding: 1.5rem;">
     <div class="cq-card" style="width: 100%; max-width: 680px; padding: 2rem; border: 1px solid var(--border-strong); background: var(--bg-surface);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
-        <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: var(--text-primary);">📐 CSS Box Model Inspector</h3>
+        <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: var(--text-primary);">CSS Box Model Inspector</h3>
         <button id="closeBoxInspectorBtn" class="btn btn-ghost" style="padding: 0.25rem 0.5rem; font-size: 1rem;">✕</button>
       </div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
@@ -1479,38 +1479,38 @@ print("Prediction: Code Mastery Confidence = 92.6%")
 
       if (currentStudio === 'web') {
         const files = [
-          { id: 'html', label: 'index.html', icon: '📄' },
-          { id: 'css', label: 'style.css', icon: '🎨' },
-          { id: 'js', label: 'script.js', icon: '⚡' }
+          { id: 'html', label: 'index.html', tag: 'HTML' },
+          { id: 'css', label: 'style.css', tag: 'CSS' },
+          { id: 'js', label: 'script.js', tag: 'JS' }
         ];
         files.forEach(f => {
           const btn = document.createElement('button');
           btn.className = `editor-tab-btn ${currentWebTab === f.id ? 'active' : ''}`;
-          btn.innerHTML = `${f.icon} ${f.label}`;
+          btn.innerHTML = `<span style="opacity:0.7;font-size:0.7rem;margin-right:4px;">${f.tag}</span>${f.label}`;
           btn.onclick = () => switchWebTab(f.id);
           editorDynamicTabs.appendChild(btn);
         });
       } else {
         const extMap = {
-          python: { label: 'main.py', icon: '🐍' },
-          react: { label: 'App.jsx', icon: '⚛️' },
-          django: { label: 'views.py', icon: '🎯' },
-          sql: { label: 'query.sql', icon: '🗄️' },
-          mysql: { label: 'schema.mysql.sql', icon: '🐬' },
-          mongodb: { label: 'pipeline.mongodb.js', icon: '🍃' },
-          php: { label: 'db_connect.php', icon: '🐘' },
-          c: { label: 'main.c', icon: '⚙️' },
-          cpp: { label: 'main.cpp', icon: '🚀' },
-          go: { label: 'main.go', icon: '🐹' },
-          rust: { label: 'main.rs', icon: '🦀' },
-          java: { label: 'Main.java', icon: '☕' },
-          bash: { label: 'script.sh', icon: '💻' },
-          'ai-ml': { label: 'neural_net.py', icon: '🧠' }
+          python: 'main.py',
+          react: 'App.jsx',
+          django: 'views.py',
+          sql: 'query.sql',
+          mysql: 'schema.mysql.sql',
+          mongodb: 'pipeline.mongodb.js',
+          php: 'db_connect.php',
+          c: 'main.c',
+          cpp: 'main.cpp',
+          go: 'main.go',
+          rust: 'main.rs',
+          java: 'Main.java',
+          bash: 'script.sh',
+          'ai-ml': 'neural_net.py'
         };
-        const f = extMap[currentStudio] || { label: 'main.txt', icon: '📝' };
+        const label = extMap[currentStudio] || 'main.txt';
         const btn = document.createElement('button');
         btn.className = 'editor-tab-btn active';
-        btn.innerHTML = `${f.icon} ${f.label}`;
+        btn.textContent = label;
         editorDynamicTabs.appendChild(btn);
       }
     }
@@ -1568,9 +1568,9 @@ print("Prediction: Code Mastery Confidence = 92.6%")
         webStageBox.style.display = 'flex';
         webConsoleBox.style.display = 'flex';
         terminalStageBox.style.display = 'none';
-        contextHelperBtn.textContent = '🎯 Design Diff';
+        contextHelperBtn.textContent = 'Design Diff';
         contextHelperBtn.title = 'Compare with Design Spec';
-        activeRuntimeBadge.innerHTML = '● Web Sandbox (Iframe V8)';
+        activeRuntimeBadge.textContent = 'Web Sandbox (Iframe V8)';
         activeRuntimeBadge.style.color = '#38bdf8';
         loadTemplate('counter');
       } else {
@@ -1583,11 +1583,15 @@ print("Prediction: Code Mastery Confidence = 92.6%")
         webConsoleBox.style.display = 'none';
         terminalStageBox.style.display = 'flex';
 
-        // Set CodeMirror Mode
         const modeMap = {
           python: 'python',
+          django: 'python',
+          'ai-ml': 'python',
           sql: 'text/x-sql',
+          mysql: 'text/x-sql',
+          php: 'application/x-httpd-php',
           c: 'text/x-csrc',
+          cpp: 'text/x-c++src',
           go: 'text/x-go',
           rust: 'text/x-rustsrc',
           java: 'text/x-java',
@@ -1599,68 +1603,38 @@ print("Prediction: Code Mastery Confidence = 92.6%")
           cmCode.refresh();
         }
 
-        // Host Titles & Helpers
-        if (lang === 'python') {
-          termHostTitle.textContent = '● python-3.12 (sandboxed-wasm)';
-          termHostTitle.style.color = '#34d399';
-          contextHelperBtn.textContent = '📦 Python AST';
-          activeRuntimeBadge.innerHTML = '● Pyodide WASM Engine';
-          activeRuntimeBadge.style.color = '#34d399';
-          initPyodide();
-        } else if (lang === 'sql') {
-          termHostTitle.textContent = '● sqlite3-3.45 (in-memory)';
-          termHostTitle.style.color = '#f59e0b';
-          contextHelperBtn.textContent = '🗂️ View Schema';
-          activeRuntimeBadge.innerHTML = '● SQLite3 In-Memory Engine';
-          activeRuntimeBadge.style.color = '#f59e0b';
+        const STUDIO_HOST_META = {
+          python:  { host: 'python-3.12 (sandboxed-wasm)', color: '#34d399', helper: 'Python AST', badge: 'Pyodide WASM Engine', init: initPyodide },
+          react:   { host: 'react-18 (jsx-sandbox)', color: '#38bdf8', helper: 'JSX DOM Tree', badge: 'React Component Sandbox' },
+          django:  { host: 'django-5.1 (python-orm)', color: '#10b981', helper: 'ORM Inspector', badge: 'Django ORM Virtual Engine' },
+          sql:     { host: 'sqlite3-3.45 (in-memory)', color: '#f59e0b', helper: 'View Schema', badge: 'SQLite3 In-Memory Engine', sql: true, init: initSqlJs },
+          mysql:   { host: 'mysql-8.0 (sql-sandbox)', color: '#06b6d4', helper: 'View Schema', badge: 'MySQL Compatible Engine', sql: true, init: initSqlJs },
+          mongodb: { host: 'mongosh-2.2 (doc-store)', color: '#22c55e', helper: 'Collections', badge: 'MongoDB Document Engine' },
+          php:     { host: 'php-8.3 (cli-pdo)', color: '#818cf8', helper: 'PDO Runtime', badge: 'PHP 8.3 + SQLite Runtime' },
+          c:       { host: 'gcc-13 (c11-runtime)', color: '#38bdf8', helper: 'Memory Frame', badge: 'C Pointers & Memory Runtime' },
+          cpp:     { host: 'g++-13 (c++20-runtime)', color: '#60a5fa', helper: 'STL Vectors', badge: 'C++20 Virtual Runtime' },
+          go:      { host: 'go-1.22 (wasm-runtime)', color: '#06b6d4', helper: 'Goroutines', badge: 'Go Concurrent Engine' },
+          rust:    { host: 'rustc-1.78 (borrow-check)', color: '#f97316', helper: 'Borrow Checker', badge: 'Rust Safe Memory Runtime' },
+          java:    { host: 'openjdk-21 (virtual-jvm)', color: '#ef4444', helper: 'Class Model', badge: 'Java 21 Virtual JVM' },
+          bash:    { host: 'gnu-bash-5.2 (posix-sh)', color: '#a855f7', helper: 'File Tree', badge: 'Interactive Bash Shell' },
+          'ai-ml': { host: 'pytorch-cpu (tensor-sim)', color: '#ec4899', helper: 'Tensor Shapes', badge: 'AI & ML Compute Sandbox' }
+        };
+
+        const meta = STUDIO_HOST_META[lang] || { host: lang + ' (sandbox)', color: '#38bdf8', helper: 'Inspect', badge: lang.toUpperCase() + ' Runtime' };
+        termHostTitle.textContent = meta.host;
+        termHostTitle.style.color = meta.color;
+        contextHelperBtn.textContent = meta.helper;
+        activeRuntimeBadge.textContent = meta.badge;
+        activeRuntimeBadge.style.color = meta.color;
+
+        if (meta.sql) {
           sqlResultTabBar.style.display = 'flex';
-          initSqlJs();
-        } else if (lang === 'c') {
-          termHostTitle.textContent = '● gcc-13 (virtual-runtime)';
-          termHostTitle.style.color = '#38bdf8';
-          contextHelperBtn.textContent = '🧠 Memory Frame';
-          activeRuntimeBadge.innerHTML = '● C Pointers & Memory Runtime';
-          activeRuntimeBadge.style.color = '#38bdf8';
-          sqlResultTabBar.style.display = 'none';
-          sqlDataGridArea.style.display = 'none';
-          terminalScreen.style.display = 'block';
-        } else if (lang === 'go') {
-          termHostTitle.textContent = '● go-1.22 (wasm-runtime)';
-          termHostTitle.style.color = '#06b6d4';
-          contextHelperBtn.textContent = '🐹 Goroutines';
-          activeRuntimeBadge.innerHTML = '● Go Concurrent Engine';
-          activeRuntimeBadge.style.color = '#06b6d4';
-          sqlResultTabBar.style.display = 'none';
-          sqlDataGridArea.style.display = 'none';
-          terminalScreen.style.display = 'block';
-        } else if (lang === 'rust') {
-          termHostTitle.textContent = '● rustc-1.78 (virtual-runtime)';
-          termHostTitle.style.color = '#f97316';
-          contextHelperBtn.textContent = '🛡️ Borrow Checker';
-          activeRuntimeBadge.innerHTML = '● Rust Safe Memory Runtime';
-          activeRuntimeBadge.style.color = '#f97316';
-          sqlResultTabBar.style.display = 'none';
-          sqlDataGridArea.style.display = 'none';
-          terminalScreen.style.display = 'block';
-        } else if (lang === 'java') {
-          termHostTitle.textContent = '● openjdk-21 (virtual-jvm)';
-          termHostTitle.style.color = '#ef4444';
-          contextHelperBtn.textContent = '☕ Class Model';
-          activeRuntimeBadge.innerHTML = '● Java 21 Bytecode Virtual JVM';
-          activeRuntimeBadge.style.color = '#ef4444';
-          sqlResultTabBar.style.display = 'none';
-          sqlDataGridArea.style.display = 'none';
-          terminalScreen.style.display = 'block';
-        } else if (lang === 'bash') {
-          termHostTitle.textContent = '● gnu-bash-5.2 (in-browser-sh)';
-          termHostTitle.style.color = '#a855f7';
-          contextHelperBtn.textContent = '📂 File Tree';
-          activeRuntimeBadge.innerHTML = '● Interactive Bash Shell';
-          activeRuntimeBadge.style.color = '#a855f7';
+        } else {
           sqlResultTabBar.style.display = 'none';
           sqlDataGridArea.style.display = 'none';
           terminalScreen.style.display = 'block';
         }
+        if (meta.init) meta.init();
 
         // Check if selected task belongs to this language
         const taskStarter = {% if selected_task %}`{{ selected_task.starter|escapejs }}`{% else %}null{% endif %};
@@ -2178,7 +2152,7 @@ sys.stderr = sys_err
 
       sqlTableRenderContainer.innerHTML = `
         <div style="font-size:0.8rem; font-family:var(--font-mono); color:#e2e8f0; line-height:1.6;">
-          <div style="color:#f59e0b; font-weight:700; margin-bottom:0.5rem;">🗄️ In-Memory SQLite Database Tables Schema</div>
+          <div style="color:#f59e0b; font-weight:700; margin-bottom:0.5rem;">In-Memory SQLite Database Tables Schema</div>
           <div style="background:#0f172a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b; margin-bottom:0.5rem;">
             <strong style="color:#38bdf8;">employees</strong> (id INTEGER PK, name TEXT, department_id INTEGER, salary INTEGER, role TEXT, hire_date TEXT)
           </div>
@@ -2220,8 +2194,8 @@ sys.stderr = sys_err
         ? (currentWebTab === 'html' ? cmHtml.getValue() : currentWebTab === 'css' ? cmCss.getValue() : cmJs.getValue())
         : (cmCode ? cmCode.getValue() : rawCode.value);
       navigator.clipboard.writeText(code).then(() => {
-        copyCodeBtn.textContent = 'Copied! ✓';
-        setTimeout(() => copyCodeBtn.textContent = 'Copy 📋', 1500);
+        copyCodeBtn.textContent = 'Copied!';
+        setTimeout(() => copyCodeBtn.textContent = 'Copy', 1500);
       });
     };
 
@@ -2233,7 +2207,7 @@ sys.stderr = sys_err
       } else if (currentStudio === 'sql') {
         sqlTabSchemaBtn.click();
       } else if (currentStudio === 'c') {
-        alert("🧠 C Memory Frame Inspector:\n\nStack frame base pointer: 0x7ffd8a20\nVariables: x (0x7ffd8a24)=42, y (0x7ffd8a28)=99\nHeap allocated pointers: 0 bytes active\nAlignment: 64-bit word boundaries");
+        alert("C Memory Frame Inspector:\n\nStack frame base pointer: 0x7ffd8a20\nVariables: x (0x7ffd8a24)=42, y (0x7ffd8a28)=99\nHeap allocated pointers: 0 bytes active\nAlignment: 64-bit word boundaries");
       } else {
         executeUniversalCode();
       }
@@ -2255,7 +2229,7 @@ sys.stderr = sys_err
       document.body.classList.toggle('zen-locked', isZen);
 
       if (zenBtn) {
-        zenBtn.innerHTML = isZen ? '✕ Exit Zen' : '⛶ Zen Mode';
+        zenBtn.innerHTML = isZen ? 'Exit Zen' : '[ ] Zen Mode';
         zenBtn.style.borderColor = isZen ? '#ef4444' : '';
       }
 

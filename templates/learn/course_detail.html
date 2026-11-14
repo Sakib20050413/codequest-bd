@@ -28,11 +28,11 @@
           +{{ course.xp_reward }} XP
         </span>
         <span style="font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono);">
-          ⏱ {{ course.total_minutes }} mins total
+          {{ course.total_minutes }} mins total
         </span>
       </div>
 
-      <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.025em; margin-bottom: 1rem;" class="headline-gradient">
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.025em; margin-bottom: 1rem;">
         {{ course.title }}
       </h1>
       <p style="font-size: 1.02rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.5rem;">
@@ -63,11 +63,11 @@
         {% if lessons|length > 0 %}
           {% if completed_ids|length == lessons|length %}
             <div style="text-align: center; padding: 0.65rem; background: var(--success-subtle); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 6px; color: var(--success); font-weight: 700; font-size: 0.88rem;">
-              🏆 Track Completed! All {{ lessons|length }} Modules Mastered
+              Track Completed! All {{ lessons|length }} Modules Mastered
             </div>
           {% else %}
             <a href="{% url 'lesson_detail' course.slug lessons.0.slug %}" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.92rem; padding: 0.75rem 1.25rem; font-weight: 800; box-shadow: 0 4px 16px rgba(20, 184, 166, 0.35);">
-              ▶ Resume Learning Track &rarr;
+              Resume Learning Track &rarr;
             </a>
           {% endif %}
         {% endif %}
@@ -76,7 +76,7 @@
       <!-- What You Will Master -->
       <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
         <div style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 0.75rem;">
-          🎓 LMS Architecture Highlights
+          Studio Architecture Highlights
         </div>
         <div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
           <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
@@ -137,7 +137,7 @@
                 </a>
               </h3>
               <div style="font-size: 0.84rem; color: var(--text-muted);">
-                ⏱ {{ lesson.est_minutes }} min bite-sized practice &bull; Automated test validation &bull; SVG Mental Model
+                {{ lesson.est_minutes }} min bite-sized practice &bull; Automated test validation &bull; SVG Mental Model
               </div>
             </div>
           </div>

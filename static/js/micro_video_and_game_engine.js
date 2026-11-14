@@ -828,7 +828,7 @@
   };
 
   // --------------------------------------------------------------------------
-  // VISUAL 1-MINUTE LESSON WALKTHROUGH PLAYER (Zero Robotic TTS!)
+  // VISUAL 1-MINUTE LESSON WALKTHROUGH PLAYER (Scrimba Sync + Fireship Mental Model)
   // --------------------------------------------------------------------------
   window.CQInitMicroVideo = function (containerId, rawLang, lessonTitle, customCode, customTaskPrompt) {
     const root = document.getElementById(containerId);
@@ -839,22 +839,32 @@
     const titleText = lessonTitle || (meta.name + " — 1-Minute Visual Guide");
     const activeStarter = (customCode && customCode.trim()) ? customCode.trim() : meta.starter;
     const chapters = (customTaskPrompt && customTaskPrompt.trim()) ? [
-      { t: "0:00", title: "1. Lesson Goal", caption: "In this lesson (" + titleText + "): " + meta.whatItDoes },
-      { t: "0:15", title: "2. Step-by-Step Code", caption: "Examine the highlighted code lines above. Each line executes top-to-bottom in the " + meta.name + " compiler." },
-      { t: "0:30", title: "3. Your Mission", caption: customTaskPrompt.trim() },
-      { t: "0:45", title: "4. Play & Complete", caption: "Click 'Run Code & Play Game' to test your code and animate the 2D/3D game!" }
-    ] : meta.videoChapters;
+      { t: "0:00", title: "1. Lesson Goal", caption: "In this lesson (" + titleText + "): " + meta.whatItDoes, mentalModel: "Start with the big picture: know what input enters your " + meta.name + " code and what output or UI must emerge." },
+      { t: "0:15", title: "2. Step-by-Step Code", caption: "Examine the highlighted code lines above. Each instruction executes deterministically inside " + meta.cli + ".", mentalModel: "Read one line at a time top-to-bottom. Variables hold state; expressions transform data into verifiable results." },
+      { t: "0:30", title: "3. Your Mission", caption: customTaskPrompt.trim(), mentalModel: "Translate the English requirement into exact syntax tokens, then sync the starter snippet to the editor below." },
+      { t: "0:45", title: "4. Play & Complete", caption: "Click 'Sync to Editor & Run' or press Ctrl+Enter to test your code and animate the 2D/3D game canvas!", mentalModel: "Tight feedback loops build muscle memory: write, run, observe stdout/DOM + game state, and refine." }
+    ] : meta.videoChapters.map(function (c, i) {
+      const models = [
+        "Concept frame: identify the problem before writing syntax.",
+        "Syntax anatomy: each keyword maps directly to a runtime operation.",
+        "Execution trace: follow control flow and state changes step by step.",
+        "Live game bridge: verify code output visually in the 2D/3D sandbox."
+      ];
+      return { t: c.t, title: c.title, caption: c.caption, mentalModel: c.mentalModel || models[i % models.length] };
+    });
 
     root.innerHTML = `
       <div style="background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:10px; overflow:hidden; margin-bottom:14px;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 14px; background:var(--bg-surface-elevated); border-bottom:1px solid var(--border-medium); font-size:0.8rem;">
           <div style="font-family:var(--font-mono);">
-            <strong style="color:var(--text-primary);">1-MIN VISUAL GUIDE // ${titleText}</strong>
+            <strong style="color:var(--text-primary);">60S VISUAL GUIDE // ${titleText}</strong>
             <span style="color:var(--text-muted); margin-left:6px; font-size:0.74rem;">(${meta.name})</span>
           </div>
-          <div style="display:flex; gap:6px; align-items:center;">
+          <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
             <span id="${containerId}_timer" style="color:var(--text-secondary); font-family:var(--font-mono); font-size:0.74rem;">Step 1/4 (0:00 / 1:00)</span>
+            <button type="button" id="${containerId}_voiceBtn" class="btn btn-ghost" style="padding:2px 8px; font-size:0.72rem; font-family:var(--font-mono); color:var(--text-muted);" title="Optional Web Speech narrator (Muted by default)">Voice: OFF</button>
             <button type="button" id="${containerId}_speedBtn" class="btn btn-ghost" style="padding:2px 8px; font-size:0.72rem; font-family:var(--font-mono);">1.0x</button>
+            <button type="button" id="${containerId}_syncBtn" class="btn btn-primary" style="padding:3px 10px; font-size:0.72rem; font-family:var(--font-mono); font-weight:700;" title="Scrimba-style sync: load this visual code directly into the active editor and execute">Sync to Editor &amp; Run</button>
           </div>
         </div>
 
@@ -862,6 +872,9 @@
           <canvas id="${containerId}_canvas" height="170" style="width:100%; height:170px; display:block;"></canvas>
           <div id="${containerId}_caption" style="padding:10px 14px; background:var(--bg-surface); border-top:1px solid var(--border-subtle); color:var(--text-primary); font-size:0.85rem; line-height:1.55;">
             <strong>${chapters[0].title}:</strong> ${chapters[0].caption}
+          </div>
+          <div id="${containerId}_mentalModel" style="padding:7px 14px; background:rgba(16, 185, 129, 0.08); border-top:1px solid rgba(16, 185, 129, 0.22); color:#34d399; font-family:var(--font-mono); font-size:0.76rem; line-height:1.45;">
+            <strong>WHY THIS WORKS:</strong> ${chapters[0].mentalModel}
           </div>
         </div>
 
@@ -881,13 +894,31 @@
     let playing = false;
     let speed = 1;
     let timerId = null;
+    let voiceEnabled = false;
+    let lastSpokenCh = -1;
 
     const canvas = document.getElementById(containerId + "_canvas");
     const captionEl = document.getElementById(containerId + "_caption");
+    const mentalEl = document.getElementById(containerId + "_mentalModel");
     const timerEl = document.getElementById(containerId + "_timer");
     const scrubEl = document.getElementById(containerId + "_scrub");
     const playBtn = document.getElementById(containerId + "_playBtn");
     const speedBtn = document.getElementById(containerId + "_speedBtn");
+    const voiceBtn = document.getElementById(containerId + "_voiceBtn");
+    const syncBtn = document.getElementById(containerId + "_syncBtn");
+
+    function speakChapter(chIdx) {
+      if (!voiceEnabled || !("speechSynthesis" in window)) return;
+      if (lastSpokenCh === chIdx) return;
+      lastSpokenCh = chIdx;
+      try {
+        window.speechSynthesis.cancel();
+        const ch = chapters[chIdx];
+        const utter = new SpeechSynthesisUtterance(ch.title + ". " + ch.caption);
+        utter.rate = Math.min(1.5, speed);
+        window.speechSynthesis.speak(utter);
+      } catch (e) {}
+    }
 
     function drawFrame() {
       if (!canvas) return;
@@ -938,28 +969,89 @@
       ctx.fillRect(0, h - 5, (sec / 60) * w, 5);
 
       captionEl.innerHTML = "<strong>" + ch.title + ":</strong> " + ch.caption;
+      if (mentalEl) {
+        mentalEl.innerHTML = "<strong>WHY THIS WORKS:</strong> " + ch.mentalModel;
+      }
+      root.querySelectorAll("[data-ch]").forEach(function (b) {
+        const isCurr = parseInt(b.getAttribute("data-ch"), 10) === chIdx;
+        b.style.borderColor = isCurr ? "#10b981" : "";
+        b.style.color = isCurr ? "#34d399" : "";
+      });
       const sPad = sec < 10 ? "0" + sec : sec;
       timerEl.textContent = "Step " + (chIdx + 1) + " of 4 (0:" + sPad + " / 1:00)";
       scrubEl.value = sec;
+      speakChapter(chIdx);
+    }
+
+    if (voiceBtn) {
+      voiceBtn.addEventListener("click", function () {
+        voiceEnabled = !voiceEnabled;
+        voiceBtn.textContent = voiceEnabled ? "Voice: ON" : "Voice: OFF";
+        voiceBtn.style.color = voiceEnabled ? "#34d399" : "var(--text-muted)";
+        voiceBtn.style.borderColor = voiceEnabled ? "#10b981" : "";
+        if (!voiceEnabled && "speechSynthesis" in window) {
+          window.speechSynthesis.cancel();
+        } else {
+          lastSpokenCh = -1;
+          speakChapter(Math.min(3, Math.floor(sec / 15)));
+        }
+      });
+    }
+
+    if (syncBtn) {
+      syncBtn.addEventListener("click", function () {
+        const snippet = activeStarter;
+        const heroInput = document.getElementById("heroTerminalCodeInput");
+        const heroRun = document.getElementById("heroRunTerminalBtn");
+        const lessonRaw = document.getElementById("codeEditor");
+        const lessonRun = document.getElementById("runCodeBtn");
+        let synced = false;
+
+        if (heroInput) {
+          heroInput.value = snippet;
+          synced = true;
+          if (heroRun) heroRun.click();
+        } else if (window.CQ_CODE_EDITOR || lessonRaw) {
+          if (lessonRaw) lessonRaw.value = snippet;
+          if (window.CQ_CODE_EDITOR && typeof window.CQ_CODE_EDITOR.setValue === "function") {
+            window.CQ_CODE_EDITOR.setValue(snippet);
+            window.CQ_CODE_EDITOR.save();
+          }
+          synced = true;
+          if (lessonRun) lessonRun.click();
+          if (window.CQRenderGameCanvas) {
+            window.CQRenderGameCanvas("lessonGameCanvas", langKey, 1.0, snippet, true);
+          }
+        }
+
+        if (synced) {
+          const orig = syncBtn.innerHTML;
+          syncBtn.innerHTML = "&#10003; Synced &amp; Executed";
+          setTimeout(function () {
+            syncBtn.innerHTML = orig;
+          }, 1600);
+        }
+      });
     }
 
     playBtn.addEventListener("click", function () {
       playing = !playing;
       if (playing) {
-        playBtn.textContent = "⏸ Pause Guide";
+        playBtn.textContent = "Pause Guide";
         timerId = setInterval(function () {
           sec += 1;
           if (sec >= 60) {
             sec = 60;
             playing = false;
-            playBtn.textContent = "↺ Replay Guide";
+            playBtn.textContent = "Replay Guide";
             clearInterval(timerId);
           }
           drawFrame();
         }, Math.round(1000 / speed));
       } else {
-        playBtn.textContent = "▶ Resume Guide";
+        playBtn.textContent = "Resume Guide";
         clearInterval(timerId);
+        if ("speechSynthesis" in window) window.speechSynthesis.cancel();
       }
     });
 

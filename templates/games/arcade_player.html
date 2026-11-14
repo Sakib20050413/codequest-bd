@@ -94,10 +94,10 @@
     <!-- Quick Drawer Trigger & XP Badge -->
     <div style="display: flex; align-items: center; gap: 0.75rem;">
       <button id="openCatalogDrawerBtn" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.35rem 0.95rem; border-color: var(--border-medium); font-weight: 700; color: var(--text-primary);">
-        🕹️ Browse All 108 Games &rarr;
+        Browse All Games &rarr;
       </button>
       <span style="font-size: 0.82rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid rgba(16, 185, 129, 0.25);">
-        ⚡ +{{ game.xp_per_win }} XP / Level
+        +{{ game.xp_per_win }} XP / Level
       </span>
     </div>
   </div>
@@ -111,7 +111,7 @@
           Master Arcade Cartridge #{{ game.order|stringformat:"03d" }} &bull; {{ game.difficulty }}
         </div>
         <h1 style="font-size: clamp(1.6rem, 2.8vw, 2.1rem); font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0.4rem; letter-spacing: -0.02em;">
-          {{ game.icon_svg }} {{ game.title }}
+          {{ game.title }}
         </h1>
         <p style="font-size: 0.92rem; color: var(--text-muted); margin: 0; max-width: 720px; line-height: 1.5;">
           {{ game.description }}
@@ -138,7 +138,7 @@
     <!-- Curriculum Bridge Connection Banner -->
     <div style="background: rgba(20, 184, 166, 0.08); border: 1px solid rgba(20, 184, 166, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <span style="font-size: 1.4rem;">🎓</span>
+        <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; color: var(--accent); border: 1px solid rgba(20, 184, 166, 0.35); padding: 0.2rem 0.45rem; border-radius: 4px;">TRACK</span>
         <div>
           <div style="font-size: 0.84rem; font-weight: 700; color: var(--accent);">Connected Curriculum: {{ game.category }}</div>
           <div style="font-size: 0.78rem; color: var(--text-muted);">{{ game.tagline }} Practice here to reinforce concepts taught in courses.</div>
@@ -153,10 +153,10 @@
     <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
         <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
-          <span>🎮</span> <span>How to Play &amp; Scoring Rules</span>
+          <span>MISSION BRIEF &amp; SCORING RULES</span>
         </span>
-        <span style="font-size: 0.74rem; font-family: var(--font-mono); color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.25);">
-          Win Condition: Satisfy Mission Directive &bull; Return true
+        <span id="arcadeWinRuleBadge" style="font-size: 0.74rem; font-family: var(--font-mono); color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.25);">
+          Win Condition: Satisfy Mission Directive &bull; Verified Output
         </span>
       </div>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem; font-size: 0.82rem;">
@@ -170,13 +170,13 @@
           <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem;">
             <span style="color: #38bdf8;">2.</span> Code or Auto-Solve
           </div>
-          <div style="color: var(--text-muted); line-height: 1.45;">Edit the logic in the script console, or click <strong>⚡ Auto-Solve Mission</strong> to load the verified solution instantly.</div>
+          <div style="color: var(--text-muted); line-height: 1.45;">Edit the logic in the script console, or click <strong>Auto-Solve Mission</strong> to load the verified solution instantly.</div>
         </div>
         <div style="background: var(--bg-panel); padding: 0.75rem 0.95rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
           <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem;">
             <span style="color: #10b981;">3.</span> Run &amp; Earn +50 XP
           </div>
-          <div style="color: var(--text-muted); line-height: 1.45;">Press <strong>▶ Run &amp; Verify</strong> or hit <kbd style="font-family: var(--font-mono); font-size: 0.72rem; padding: 0.1rem 0.3rem; background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: 3px;">Ctrl+Enter</kbd> to execute simulation and unlock Level 2–10!</div>
+          <div style="color: var(--text-muted); line-height: 1.45;">Press <strong>Run &amp; Verify</strong> or hit <kbd style="font-family: var(--font-mono); font-size: 0.72rem; padding: 0.1rem 0.3rem; background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: 3px;">Ctrl+Enter</kbd> to execute simulation and unlock Level 2–10.</div>
         </div>
       </div>
     </div>
@@ -206,13 +206,13 @@
           <!-- Top Floating Mode Bar -->
           <div style="position: absolute; top: 12px; left: 12px; z-index: 10; display: flex; gap: 0.4rem; background: rgba(7, 8, 14, 0.85); backdrop-filter: blur(12px); padding: 0.3rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
             <button id="viewMode3dBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 700;">
-              🌐 3D WebGL
+              3D WebGL
             </button>
             <button id="viewMode2dBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 700;">
-              🚀 2D Vector
+              2D Vector
             </button>
             <button id="resetSimBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px;">
-              ↺ Reset
+              Reset
             </button>
           </div>
 
@@ -224,9 +224,9 @@
 
           <!-- Win Overlay Banner -->
           <div id="winBannerModal" style="display: none; position: absolute; inset: 0; z-index: 20; background: rgba(7, 9, 18, 0.94); backdrop-filter: blur(8px); flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;">
-            <div style="font-size: 3.5rem; margin-bottom: 0.5rem; animation: bounce 1s infinite;">🏆</div>
+            <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: 800; color: #10b981; background: rgba(16, 185, 129, 0.14); border: 1px solid rgba(16, 185, 129, 0.35); padding: 0.3rem 0.85rem; border-radius: 999px; margin-bottom: 0.85rem; letter-spacing: 0.08em;">MISSION PASSED</span>
             <h2 style="font-size: 1.85rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">
-              Mission Complete!
+              Mission Complete
             </h2>
             <p id="winBannerSubtitle" style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; max-width: 420px;">
               Simulation parameters validated. +{{ game.xp_per_win }} XP awarded to your cadet profile.
@@ -244,17 +244,17 @@
         <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.75rem 1rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem;">
           <div style="display: flex; gap: 0.45rem; flex-wrap: wrap; align-items: center;">
             <button id="actBoostBtn" class="btn btn-ghost" style="padding: 0.3rem 0.75rem; font-size: 0.76rem; border-color: var(--border-medium);" title="Boost rotation and spin speed">
-              🚀 Boost Speed
+              Boost Speed
             </button>
             <button id="actShieldBtn" class="btn btn-ghost" style="padding: 0.3rem 0.75rem; font-size: 0.76rem; border-color: var(--border-medium);" title="Toggle wireframe vector shield">
-              🛡️ Shield
+              Shield
             </button>
             <button id="actPulseBtn" class="btn btn-ghost" style="padding: 0.3rem 0.75rem; font-size: 0.76rem; border-color: var(--border-medium);" title="Emit bright energy shockwave">
-              ⚡ Energy Pulse
+              Energy Pulse
             </button>
           </div>
           <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">
-            🖱️ Click &amp; drag canvas to orbit 3D view
+            Drag canvas to orbit 3D view
           </span>
         </div>
       </div>
@@ -268,7 +268,7 @@
             <div style="font-size: 0.76rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">
               Mission Directive &bull; Expected Output
             </div>
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8;">Return: Boolean true</span>
+            <span id="arcadeReturnBadge" style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8;">Return: Boolean true</span>
           </div>
           <div id="missionObjectiveText" style="font-size: 0.92rem; color: var(--text-primary); font-weight: 600; line-height: 1.5;">
             Initialize simulation parameters, configure loop conditions, and execute state transitions to pass telemetry checks.
@@ -281,7 +281,7 @@
             <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">
               Algorithm &amp; State Editor
             </span>
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent);">JavaScript / System API</span>
+            <span id="arcadeLangBadge" style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent);">JavaScript / System API</span>
           </div>
 
           <textarea id="arcadeCodeEditor" class="code-editor" style="flex: 1; min-height: 180px; width: 100%; background: #060913; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem; font-family: var(--font-mono); font-size: 0.86rem; color: #38bdf8; resize: vertical; line-height: 1.5;" spellcheck="false">// Mission Script: {{ game.title }}
@@ -296,10 +296,10 @@ function runSimulation(state) {
           <div style="margin-top: 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <div style="display: flex; gap: 0.45rem; align-items: center;">
               <button id="btnAutoSolveScript" class="btn btn-ghost" style="padding: 0.45rem 0.95rem; font-size: 0.8rem; font-weight: 700; color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08);" title="Auto-populate the verified winning algorithm">
-                ⚡ Auto-Solve Mission
+                Auto-Solve Mission
               </button>
               <button id="btnHintScript" class="btn btn-ghost" style="padding: 0.45rem 0.75rem; font-size: 0.8rem; color: #f59e0b; border-color: rgba(245, 158, 11, 0.35);" title="View a hint for this level">
-                💡 Hint
+                Hint
               </button>
             </div>
             <div style="display: flex; gap: 0.65rem; align-items: center;">
@@ -307,7 +307,7 @@ function runSimulation(state) {
                 Ready. Press Run (Ctrl+Enter).
               </span>
               <button id="btnExecuteScript" class="btn btn-primary" style="padding: 0.5rem 1.4rem; font-size: 0.86rem; font-weight: 800;">
-                ▶ Run &amp; Verify
+                Run &amp; Verify
               </button>
             </div>
           </div>
@@ -327,7 +327,7 @@ function runSimulation(state) {
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle);">
       <div>
         <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0;">
-          🕹️ Master Arcade: 108 Games
+          Master Arcade: Game Directory
         </h3>
         <span style="font-size: 0.78rem; color: var(--text-muted);">1,080 Playable Coding Challenges</span>
       </div>
@@ -1245,6 +1245,210 @@ function runSimulation(state) {
     }
   };
 
+  // Language Detector + Polyglot Mission Synthesizer (16 Languages)
+  function detectGameLanguage(slug, cat) {
+    const s = (slug || '').toLowerCase();
+    const c = (cat || '').toLowerCase();
+    const joined = s + ' ' + c;
+
+    if (joined.includes('django')) return 'django';
+    if (joined.includes('python') || joined.includes('snake') || joined.includes('algo') || joined.includes('data-struct')) return 'python';
+    if (joined.includes('ai-ml') || joined.includes('neural') || joined.includes('machine') || joined.includes('tensor')) return 'ai-ml';
+    if (joined.includes('mysql')) return 'mysql';
+    if (joined.includes('mongo') || joined.includes('nosql')) return 'mongodb';
+    if (joined.includes('sql') || joined.includes('postgres') || joined.includes('database') || joined.includes('query')) return 'sql';
+    if (joined.includes('php')) return 'php';
+    if (joined.includes('cpp') || joined.includes('c++') || joined.includes('c-plus')) return 'cpp';
+    if (/\bc\b|c-lang|pointer|malloc|struct/.test(joined)) return 'c';
+    if (joined.includes('rust') || joined.includes('borrow') || joined.includes('cargo')) return 'rust';
+    if (joined.includes('java') && !joined.includes('javascript')) return 'java';
+    if (/\bgo\b|golang|goroutine/.test(joined)) return 'go';
+    if (joined.includes('bash') || joined.includes('shell') || joined.includes('linux')) return 'bash';
+    if (joined.includes('react') || joined.includes('jsx')) return 'react';
+    if (joined.includes('css') || joined.includes('flex') || joined.includes('grid') || joined.includes('style')) return 'css';
+    if (joined.includes('html') || joined.includes('dom') || joined.includes('semantic')) return 'html';
+    return 'javascript';
+  }
+
+  const LANG_MISSION_TEMPLATES = {
+    python: {
+      badge: 'Python 3 · Live Sandbox',
+      returnBadge: 'Expected: Stdout Match',
+      build: (lvl, title) => ({
+        brief: `[Python 3] ${title} (Level ${lvl}): Configure telemetry variable power >= ${lvl * 10} and print SECTOR_${lvl}_OK to stdout.`,
+        starter: `# Python Mission Level ${lvl}\npower = 0  # Update to >= ${lvl * 10}\nif power >= ${lvl * 10}:\n    print("SECTOR_${lvl}_OK")\nelse:\n    print("LOW_POWER")`,
+        solution: `power = ${lvl * 10}\nif power >= ${lvl * 10}:\n    print("SECTOR_${lvl}_OK")`,
+        expect: `SECTOR_${lvl}_OK`,
+        hint: `Set power = ${lvl * 10} so print("SECTOR_${lvl}_OK") executes cleanly.`
+      })
+    },
+    django: {
+      badge: 'Django Python · ORM Sandbox',
+      returnBadge: 'Expected: ORM Output',
+      build: (lvl, title) => ({
+        brief: `[Django] ${title} (Level ${lvl}): Build queryset record count and output DJANGO_VIEW_${lvl}_OK.`,
+        starter: `# Django View Simulation Level ${lvl}\nrecords = ["module_${lvl}"]\nstatus = "PENDING"\nprint(status)`,
+        solution: `records = ["module_${lvl}"] * ${lvl}\nstatus = f"DJANGO_VIEW_${lvl}_OK ({len(records)})"\nprint(status)`,
+        expect: `DJANGO_VIEW_${lvl}_OK`,
+        hint: `Assign status = "DJANGO_VIEW_${lvl}_OK" and print it.`
+      })
+    },
+    'ai-ml': {
+      badge: 'AI & ML · Vector Compute',
+      returnBadge: 'Expected: Tensor Output',
+      build: (lvl, title) => ({
+        brief: `[AI & ML] ${title} (Level ${lvl}): Compute linear activation w * x + b and print MODEL_${lvl}_OK.`,
+        starter: `# Linear Perceptron Step ${lvl}\nw, x, b = 0.0, ${lvl}.0, 0.5\nactivation = w * x + b\nprint("ACT:", activation)`,
+        solution: `w, x, b = 2.0, ${lvl}.0, 1.0\nactivation = w * x + b\nif activation > 1.0:\n    print("MODEL_${lvl}_OK")`,
+        expect: `MODEL_${lvl}_OK`,
+        hint: `Set weight w > 0 so activation exceeds threshold and prints MODEL_${lvl}_OK.`
+      })
+    },
+    sql: {
+      badge: 'SQL · Relational Engine',
+      returnBadge: 'Expected: Query Result',
+      build: (lvl, title) => ({
+        brief: `[SQL] ${title} (Level ${lvl}): Run query counting courses with alias sector_${lvl}_ready.`,
+        starter: `-- SQLite Query Mission ${lvl}\n-- Alias count column as sector_${lvl}_ready\nSELECT 0 AS pending;`,
+        solution: `SELECT COUNT(*) AS sector_${lvl}_ready FROM courses;`,
+        expect: `sector_${lvl}_ready`,
+        hint: `Use SELECT COUNT(*) AS sector_${lvl}_ready FROM courses;`
+      })
+    },
+    mysql: {
+      badge: 'MySQL · Relational Engine',
+      returnBadge: 'Expected: Query Result',
+      build: (lvl, title) => ({
+        brief: `[MySQL] ${title} (Level ${lvl}): Query students table using alias mysql_${lvl}_ready.`,
+        starter: `-- MySQL Query Mission ${lvl}\nSELECT 0 AS waiting;`,
+        solution: `SELECT COUNT(*) AS mysql_${lvl}_ready FROM students;`,
+        expect: `mysql_${lvl}_ready`,
+        hint: `Use SELECT COUNT(*) AS mysql_${lvl}_ready FROM students;`
+      })
+    },
+    mongodb: {
+      badge: 'MongoDB · Document Store',
+      returnBadge: 'Expected: JSON Documents',
+      build: (lvl, title) => ({
+        brief: `[MongoDB] ${title} (Level ${lvl}): Query documents from courses collection.`,
+        starter: `// MongoDB Shell Level ${lvl}\n// Query the courses collection\ndb.help()`,
+        solution: `db.courses.find({})`,
+        expect: `title`,
+        hint: `Run db.courses.find({}) to fetch course documents.`
+      })
+    },
+    php: {
+      badge: 'PHP 8 · Server Runtime',
+      returnBadge: 'Expected: PHP Output',
+      build: (lvl, title) => ({
+        brief: `[PHP] ${title} (Level ${lvl}): Output PHP_NODE_${lvl}_OK via echo.`,
+        starter: `<?php\n$node = ${lvl};\necho "STANDBY";\n?>`,
+        solution: `<?php\n$node = ${lvl};\necho "PHP_NODE_${lvl}_OK";\n?>`,
+        expect: `PHP_NODE_${lvl}_OK`,
+        hint: `Echo the string "PHP_NODE_${lvl}_OK".`
+      })
+    },
+    c: {
+      badge: 'C11 · GCC Runtime',
+      returnBadge: 'Expected: Compiled Stdout',
+      build: (lvl, title) => ({
+        brief: `[C] ${title} (Level ${lvl}): Print C_SYSTEM_${lvl}_OK using printf.`,
+        starter: `#include <stdio.h>\nint main() {\n  int lvl = ${lvl};\n  printf("INIT\\n");\n  return 0;\n}`,
+        solution: `#include <stdio.h>\nint main() {\n  printf("C_SYSTEM_${lvl}_OK\\n");\n  return 0;\n}`,
+        expect: `C_SYSTEM_${lvl}_OK`,
+        hint: `Update printf argument to print C_SYSTEM_${lvl}_OK.`
+      })
+    },
+    cpp: {
+      badge: 'C++20 · G++ Runtime',
+      returnBadge: 'Expected: Compiled Stdout',
+      build: (lvl, title) => ({
+        brief: `[C++20] ${title} (Level ${lvl}): Stream CPP_CORE_${lvl}_OK to std::cout.`,
+        starter: `#include <iostream>\nint main() {\n  std::cout << "IDLE" << std::endl;\n  return 0;\n}`,
+        solution: `#include <iostream>\nint main() {\n  std::cout << "CPP_CORE_${lvl}_OK" << std::endl;\n  return 0;\n}`,
+        expect: `CPP_CORE_${lvl}_OK`,
+        hint: `Output "CPP_CORE_${lvl}_OK" with std::cout.`
+      })
+    },
+    rust: {
+      badge: 'Rust · Cargo Runtime',
+      returnBadge: 'Expected: Compiled Stdout',
+      build: (lvl, title) => ({
+        brief: `[Rust] ${title} (Level ${lvl}): Print RUST_SAFE_${lvl}_OK safely.`,
+        starter: `fn main() {\n    let sector = ${lvl};\n    println!("STANDBY_{}", sector);\n}`,
+        solution: `fn main() {\n    println!("RUST_SAFE_${lvl}_OK");\n}`,
+        expect: `RUST_SAFE_${lvl}_OK`,
+        hint: `Replace println! macro output with RUST_SAFE_${lvl}_OK.`
+      })
+    },
+    java: {
+      badge: 'Java 17 · JVM Runtime',
+      returnBadge: 'Expected: JVM Stdout',
+      build: (lvl, title) => ({
+        brief: `[Java] ${title} (Level ${lvl}): Print JAVA_VM_${lvl}_OK from main().`,
+        starter: `public class Main {\n  public static void main(String[] args) {\n    System.out.println("BOOT");\n  }\n}`,
+        solution: `public class Main {\n  public static void main(String[] args) {\n    System.out.println("JAVA_VM_${lvl}_OK");\n  }\n}`,
+        expect: `JAVA_VM_${lvl}_OK`,
+        hint: `Pass "JAVA_VM_${lvl}_OK" into System.out.println.`
+      })
+    },
+    go: {
+      badge: 'Go · Compiler Runtime',
+      returnBadge: 'Expected: Go Stdout',
+      build: (lvl, title) => ({
+        brief: `[Go] ${title} (Level ${lvl}): Print GO_NODE_${lvl}_OK via fmt.Println.`,
+        starter: `package main\nimport "fmt"\nfunc main() {\n  fmt.Println("WAIT")\n}`,
+        solution: `package main\nimport "fmt"\nfunc main() {\n  fmt.Println("GO_NODE_${lvl}_OK")\n}`,
+        expect: `GO_NODE_${lvl}_OK`,
+        hint: `Call fmt.Println("GO_NODE_${lvl}_OK").`
+      })
+    },
+    bash: {
+      badge: 'Bash · POSIX Shell',
+      returnBadge: 'Expected: Shell Stdout',
+      build: (lvl, title) => ({
+        brief: `[Bash] ${title} (Level ${lvl}): Print BASH_CMD_${lvl}_OK in stdout.`,
+        starter: `# Shell Command Mission ${lvl}\necho "STANDBY"`,
+        solution: `echo "BASH_CMD_${lvl}_OK"`,
+        expect: `BASH_CMD_${lvl}_OK`,
+        hint: `Use echo "BASH_CMD_${lvl}_OK".`
+      })
+    },
+    html: {
+      badge: 'HTML5 · DOM Parser',
+      returnBadge: 'Expected: Semantic DOM',
+      build: (lvl, title) => ({
+        brief: `[HTML5] ${title} (Level ${lvl}): Create a semantic <section id="sector-${lvl}"> containing an <h1> heading.`,
+        starter: `<!-- HTML5 Semantic Mission ${lvl} -->\n<div class="box">Sector ${lvl}</div>`,
+        solution: `<section id="sector-${lvl}">\n  <h1>Sector ${lvl} Active</h1>\n</section>`,
+        expect: `<section`,
+        hint: `Wrap an <h1> element inside <section id="sector-${lvl}">.`
+      })
+    },
+    css: {
+      badge: 'CSS3 · Layout Engine',
+      returnBadge: 'Expected: Valid CSS Rule',
+      build: (lvl, title) => ({
+        brief: `[CSS3] ${title} (Level ${lvl}): Apply display: flex and gap: ${lvl * 4}px on .mission-grid.`,
+        starter: `/* CSS Mission ${lvl} */\n.mission-grid {\n  display: block;\n}`,
+        solution: `.mission-grid {\n  display: flex;\n  gap: ${lvl * 4}px;\n}`,
+        expect: `flex`,
+        hint: `Set display: flex; and gap: ${lvl * 4}px; inside .mission-grid.`
+      })
+    },
+    react: {
+      badge: 'React · Component Engine',
+      returnBadge: 'Expected: Render Output',
+      build: (lvl, title) => ({
+        brief: `[React] ${title} (Level ${lvl}): Return status string REACT_UI_${lvl}_OK from renderMission().`,
+        starter: `function renderMission() {\n  const props = { level: ${lvl} };\n  return "PENDING";\n}`,
+        solution: `function renderMission() {\n  const props = { level: ${lvl} };\n  return "REACT_UI_" + props.level + "_OK";\n}`,
+        expect: `REACT_UI_${lvl}_OK`,
+        hint: `Return "REACT_UI_${lvl}_OK" from renderMission().`
+      })
+    }
+  };
+
   // Master Engine Dispatcher
   function getEngineForGame(slug, cat) {
     slug = (slug || '').toLowerCase();
@@ -1257,10 +1461,30 @@ function runSimulation(state) {
     return UNIVERSAL_CORE_ENGINE;
   }
 
-  // Active Selected Engine
+  // Active Selected Engine & Language Pack
   const activeEngine = getEngineForGame(GAME_SLUG, GAME_CATEGORY);
-  const MISSIONS = activeEngine.missions;
+  const activeGameLang = detectGameLanguage(GAME_SLUG, GAME_CATEGORY);
+  const langPack = LANG_MISSION_TEMPLATES[activeGameLang] || null;
+
+  const MISSIONS = activeEngine.missions.map((m, idx) => {
+    if (!langPack) return m;
+    const custom = langPack.build(idx + 1, m.title);
+    return {
+      title: m.title,
+      brief: custom.brief,
+      starter: custom.starter,
+      solution: custom.solution,
+      expect: custom.expect,
+      hint: custom.hint
+    };
+  });
   let activeEngineCtx = null;
+
+  // Sync UI Language & Return Badges
+  const langBadgeEl = document.getElementById('arcadeLangBadge');
+  const returnBadgeEl = document.getElementById('arcadeReturnBadge');
+  if (langBadgeEl && langPack) langBadgeEl.textContent = langPack.badge;
+  if (returnBadgeEl && langPack) returnBadgeEl.textContent = langPack.returnBadge;
 
   // Render Level Selector Pills
   function renderLevelPills() {
@@ -1438,60 +1662,125 @@ function runSimulation(state) {
     ctx2d.fill();
   }
 
-  // Execution & Code Verification
+  function handleMissionPassed(messageText) {
+    const statusText = document.getElementById('consoleStatusText');
+    playSound('success');
+    fireVictoryConfetti();
+    currentScore += 50;
+    document.getElementById('hudScore').textContent = currentScore;
+    completedLevels.add(currentLevel);
+    localStorage.setItem('cq_arcade_' + GAME_SLUG, JSON.stringify(Array.from(completedLevels)));
+
+    if (statusText) {
+      statusText.textContent = messageText || `Telemetry Verified. Level ${currentLevel} passed (+50 XP).`;
+      statusText.style.color = '#10b981';
+    }
+    if (activeEngine && activeEngine.onSuccess) activeEngine.onSuccess(activeEngineCtx);
+
+    const banner = document.getElementById('winBannerModal');
+    const subtitle = document.getElementById('winBannerSubtitle');
+    if (banner) {
+      if (subtitle) subtitle.textContent = `Mission ${currentLevel} passed. All telemetry constraints satisfied.`;
+      banner.style.display = 'flex';
+    }
+
+    renderLevelPills();
+
+    fetch('/api/games/' + GAME_SLUG + '/score/', {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': (function() {
+          const m = document.cookie.match(/csrftoken=([^;]+)/);
+          return m ? m[1] : '';
+        })()
+      }
+    }).catch(() => {});
+  }
+
+  function handleMissionFailed(messageText, isError) {
+    const statusText = document.getElementById('consoleStatusText');
+    playSound('error');
+    if (statusText) {
+      statusText.textContent = messageText;
+      statusText.style.color = isError ? '#ef4444' : '#f59e0b';
+    }
+  }
+
+  // Execution & Code Verification (Polyglot + JS Sandbox)
   function executeSimulation() {
     const editor = document.getElementById('arcadeCodeEditor');
     const statusText = document.getElementById('consoleStatusText');
+    const mission = MISSIONS[currentLevel - 1] || {};
     if (!editor) return;
 
+    const code = editor.value || '';
+
     try {
-      const code = editor.value;
-      // Sandboxed execution of user function
-      const runFn = new Function(code + "\nreturn runSimulation({});");
-      const result = runFn();
-
-      if (result) {
-        playSound('success');
-        fireVictoryConfetti();
-        currentScore += 50;
-        document.getElementById('hudScore').textContent = currentScore;
-        completedLevels.add(currentLevel);
-        localStorage.setItem('cq_arcade_' + GAME_SLUG, JSON.stringify(Array.from(completedLevels)));
-
-        statusText.textContent = `✓ Telemetry Verified! Level ${currentLevel} passed (+50 XP).`;
-        if (activeEngine && activeEngine.onSuccess) activeEngine.onSuccess(activeEngineCtx);
-        statusText.style.color = '#10b981';
-
-        // Show Win Modal Banner
-        const banner = document.getElementById('winBannerModal');
-        const subtitle = document.getElementById('winBannerSubtitle');
-        if (banner) {
-          if (subtitle) subtitle.textContent = `Mission ${currentLevel} passed successfully! All telemetry constraints satisfied.`;
-          banner.style.display = 'flex';
+      if (activeGameLang === 'javascript') {
+        const runFn = new Function(code + "\nreturn runSimulation({});");
+        const result = runFn();
+        if (result) {
+          handleMissionPassed(`Telemetry Verified. Level ${currentLevel} passed (+50 XP).`);
+        } else {
+          handleMissionFailed(`Assertion Failed: runSimulation did not return true.`, false);
         }
-
-        renderLevelPills();
-
-        // Award XP to user profile via backend API
-        fetch('/api/games/' + GAME_SLUG + '/score/', {
-          method: 'POST',
-          headers: {
-            'X-CSRFToken': (function() {
-              const m = document.cookie.match(/csrftoken=([^;]+)/);
-              return m ? m[1] : '';
-            })()
-          }
-        }).catch(() => {});
-
-      } else {
-        playSound('error');
-        statusText.textContent = `⚠️ Assertion Failed: runSimulation did not return true.`;
-        statusText.style.color = '#f59e0b';
+        return;
       }
+
+      if (activeGameLang === 'react') {
+        const runFn = new Function(code + "\nreturn typeof renderMission === 'function' ? renderMission() : '';");
+        const out = String(runFn() || '');
+        if (!mission.expect || out.toLowerCase().includes(mission.expect.toLowerCase())) {
+          handleMissionPassed(`React Render OK: ${out} (+50 XP).`);
+        } else {
+          handleMissionFailed(`Output mismatch: got "${out}", expected "${mission.expect}".`, false);
+        }
+        return;
+      }
+
+      if (activeGameLang === 'html' || activeGameLang === 'css') {
+        const passed = !mission.expect || code.toLowerCase().includes(mission.expect.toLowerCase());
+        if (passed && code.trim().length > 10) {
+          handleMissionPassed(`${activeGameLang.toUpperCase()} Validated. Level ${currentLevel} passed (+50 XP).`);
+        } else {
+          handleMissionFailed(`Expected token "${mission.expect}" in ${activeGameLang.toUpperCase()} snippet.`, false);
+        }
+        return;
+      }
+
+      // All compiled, scripting & DB tracks execute live on /api/terminal/execute/
+      if (statusText) {
+        statusText.textContent = `Running ${activeGameLang} sandbox...`;
+        statusText.style.color = '#38bdf8';
+      }
+      const apiLang = activeGameLang === 'mysql' ? 'sql' : activeGameLang;
+      fetch('/api/terminal/execute/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': (function() {
+            const m = document.cookie.match(/csrftoken=([^;]+)/);
+            return m ? m[1] : '';
+          })()
+        },
+        body: JSON.stringify({ language: apiLang, code: code })
+      })
+      .then(r => r.json())
+      .then(data => {
+        const out = (data && data.stdout) ? String(data.stdout) : '';
+        if (data && data.ok && (!mission.expect || out.toLowerCase().includes(mission.expect.toLowerCase()))) {
+          const singleLine = out.replace(/\s+/g, ' ').trim().slice(0, 68);
+          handleMissionPassed(`Stdout: ${singleLine || 'OK'} (+50 XP).`);
+        } else {
+          const reason = (data && data.error) || out || `Expected "${mission.expect}" in output.`;
+          handleMissionFailed(`Output Check Failed: ${String(reason).slice(0, 90)}`, false);
+        }
+      })
+      .catch(err => {
+        handleMissionFailed(`Execution Error: ${err.message}`, true);
+      });
     } catch(err) {
-      playSound('error');
-      statusText.textContent = `❌ Syntax / Runtime Error: ${err.message}`;
-      statusText.style.color = '#ef4444';
+      handleMissionFailed(`Syntax / Runtime Error: ${err.message}`, true);
     }
   }
 
@@ -1503,7 +1792,7 @@ function runSimulation(state) {
     if (!editor || !mission) return;
     editor.value = mission.solution || mission.starter;
     if (statusText) {
-      statusText.textContent = `⚡ Solution applied for Mission ${currentLevel}. Verifying...`;
+      statusText.textContent = `Solution loaded for Mission ${currentLevel}. Verifying...`;
       statusText.style.color = '#38bdf8';
     }
     executeSimulation();
@@ -1514,7 +1803,7 @@ function runSimulation(state) {
     const mission = MISSIONS[currentLevel - 1];
     const statusText = document.getElementById('consoleStatusText');
     if (!statusText || !mission) return;
-    statusText.textContent = `💡 Hint: ${mission.hint || 'Make sure runSimulation returns a truthy value.'}`;
+    statusText.textContent = `Hint: ${mission.hint || 'Verify mission requirements and run again.'}`;
     statusText.style.color = '#f59e0b';
     playSound('click');
   }
@@ -1524,6 +1813,14 @@ function runSimulation(state) {
     const mount = document.getElementById('threeCanvasMount');
     if (!mount) return;
 
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+    let rotationVelocity = { x: 0.008, y: 0.012 };
+    function getOrbitTarget() {
+      if (!activeEngineCtx) return null;
+      return activeEngineCtx.heroMesh || activeEngineCtx.rover || activeEngineCtx.drone || activeEngineCtx.core || activeEngineCtx.group || activeEngineCtx.sun || null;
+    }
+
     mount.addEventListener('mousedown', function(e) {
       isDragging = true;
       previousMousePosition = { x: e.clientX, y: e.clientY };
@@ -1531,6 +1828,7 @@ function runSimulation(state) {
     });
 
     window.addEventListener('mousemove', function(e) {
+      const heroMesh = getOrbitTarget();
       if (!isDragging || !heroMesh) return;
       const deltaX = e.clientX - previousMousePosition.x;
       const deltaY = e.clientY - previousMousePosition.y;
@@ -1557,6 +1855,7 @@ function runSimulation(state) {
     }, { passive: true });
 
     window.addEventListener('touchmove', function(e) {
+      const heroMesh = getOrbitTarget();
       if (!isDragging || !heroMesh || e.touches.length !== 1) return;
       const deltaX = e.touches[0].clientX - previousMousePosition.x;
       const deltaY = e.touches[0].clientY - previousMousePosition.y;
@@ -1581,9 +1880,11 @@ function runSimulation(state) {
         playSound('click');
         rotationVelocity.x = 0.05;
         rotationVelocity.y = 0.07;
+        const heroMesh = getOrbitTarget();
+        if (heroMesh) heroMesh.rotation.y += rotationVelocity.y * 6;
         const statusText = document.getElementById('consoleStatusText');
         if (statusText) {
-          statusText.textContent = '🚀 Velocity boost applied to 3D matrix!';
+          statusText.textContent = 'Velocity boost applied to 3D matrix.';
           statusText.style.color = '#38bdf8';
         }
         setTimeout(() => {
@@ -1596,13 +1897,14 @@ function runSimulation(state) {
     if (shieldBtn) {
       shieldBtn.onclick = function() {
         playSound('click');
+        const heroMesh = getOrbitTarget();
         if (heroMesh && heroMesh.children.length > 0) {
           heroMesh.children[0].visible = !heroMesh.children[0].visible;
           const isShieldOn = heroMesh.children[0].visible;
           shieldBtn.classList.toggle('btn-primary', isShieldOn);
           const statusText = document.getElementById('consoleStatusText');
           if (statusText) {
-            statusText.textContent = isShieldOn ? '🛡️ Shield barrier engaged.' : '🛡️ Shield barrier lowered.';
+            statusText.textContent = isShieldOn ? 'Shield barrier engaged.' : 'Shield barrier lowered.';
             statusText.style.color = isShieldOn ? '#10b981' : 'var(--text-muted)';
           }
         }
@@ -1612,13 +1914,14 @@ function runSimulation(state) {
     if (pulseBtn) {
       pulseBtn.onclick = function() {
         playSound('success');
+        const heroMesh = getOrbitTarget();
         if (heroMesh) {
           heroMesh.scale.set(1.4, 1.4, 1.4);
           setTimeout(() => heroMesh.scale.set(1, 1, 1), 400);
         }
         const statusText = document.getElementById('consoleStatusText');
         if (statusText) {
-          statusText.textContent = '⚡ Energy pulse discharged across telemetry sectors!';
+          statusText.textContent = 'Energy pulse discharged across telemetry sectors.';
           statusText.style.color = '#a855f7';
         }
       };

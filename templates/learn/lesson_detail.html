@@ -30,7 +30,7 @@
         &larr; {{ course.title }}
       </a>
       <button id="syllabusDrawerBtn" class="btn btn-ghost" style="padding: 0.4rem 0.85rem; font-size: 0.82rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); display: inline-flex; align-items: center; gap: 0.4rem;" title="View Course Syllabus & Jump to Lessons">
-        <span>☰</span> <span>Syllabus ({{ lesson.order }}/{{ all_lessons|length|default:course.lessons.count }})</span>
+        <span>&#9776;</span> <span>Syllabus ({{ lesson.order }}/{{ all_lessons|length|default:course.lessons.count }})</span>
       </button>
       <div style="display: flex; align-items: center; gap: 0.5rem;">
         <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); color: var(--accent);">
@@ -44,18 +44,18 @@
 
     <!-- Quick Action Controls -->
     <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
-      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; background: var(--accent-subtle); padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(99, 102, 241, 0.25);">
-        ⚡ +{{ lesson.xp }} XP
+      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.12); padding: 0.25rem 0.65rem; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.25);">
+        +{{ lesson.xp }} XP
       </span>
 
       <!-- Mechanical SFX Switch -->
-      <button id="lessonAudioToggle" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;" title="Toggle Mechanical Keystroke Audio">
-        ⌨ Mechanical SFX
+      <button id="lessonAudioToggle" class="btn btn-ghost" style="padding: 0.35rem 0.65rem; font-size: 0.82rem; font-family: var(--font-mono);" title="Toggle Keystroke Audio">
+        SFX: ON
       </button>
 
       <!-- Zen Workspace Mode -->
-      <button id="zenModeBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" title="Toggle Distraction-Free Fullscreen Studio">
-        ⛶ Zen Mode
+      <button id="zenModeBtn" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.82rem; font-family: var(--font-mono);" title="Toggle Distraction-Free Fullscreen Studio">
+        [ ] Zen Mode
       </button>
 
       <div style="display: flex; gap: 0.35rem;">
@@ -73,16 +73,32 @@
     </div>
   </div>
 
+  <!-- 4-Step Progressive Study Architecture Strip -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 0.5rem; margin-bottom: 1rem;">
+    <div style="padding: 0.45rem 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-left: 3px solid #10b981; border-radius: 6px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
+      <strong style="color: #34d399;">01 · 60S GUIDE</strong> Visual Mental Model
+    </div>
+    <div style="padding: 0.45rem 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-left: 3px solid #38bdf8; border-radius: 6px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
+      <strong style="color: #38bdf8;">02 · ANATOMY</strong> Syntax + CS50 Trace
+    </div>
+    <div style="padding: 0.45rem 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-left: 3px solid #f59e0b; border-radius: 6px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
+      <strong style="color: #fbbf24;">03 · CODE + GAME</strong> Live 2D/3D Split
+    </div>
+    <div style="padding: 0.45rem 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-left: 3px solid #0284c7; border-radius: 6px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
+      <strong style="color: #38bdf8;">04 · 3-TIER JUDGE</strong> Normal · Edge · Stress
+    </div>
+  </div>
+
   <!-- Mobile View Switcher (Under 860px) -->
   <div id="mobileLessonTabs" style="display: none; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem; gap: 0.5rem;">
     <button class="btn btn-ghost mobile-tab-btn active" data-tab="instructions" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
-      📖 Instructions
+      01 · Concept &amp; Task
     </button>
     <button class="btn btn-ghost mobile-tab-btn" data-tab="editor" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
-      💻 Code Studio
+      02 · Code Editor
     </button>
     <button class="btn btn-ghost mobile-tab-btn" data-tab="preview" style="font-size: 0.82rem; padding: 0.4rem 0.85rem;">
-      🌐 Preview &amp; Tests
+      03 · Output, Game &amp; Tests
     </button>
   </div>
 
@@ -92,32 +108,32 @@
     <!-- Dedicated Zen Studio HUD for Lessons (Visible only in Fullscreen Zen Mode) -->
     <div class="zen-hud-bar" id="lessonZenHud">
       <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 800; color: #ffffff; background: var(--accent-gradient-btn); padding: 0.2rem 0.6rem; border-radius: 4px; letter-spacing: 0.04em;">
+        <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 800; color: #ffffff; background: #059669; padding: 0.2rem 0.6rem; border-radius: 4px; letter-spacing: 0.04em;">
           ZEN STUDY STUDIO
         </span>
         <span style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
           {{ course.title }} &bull; {{ lesson.title }}
         </span>
         <button id="zenSyllabusDrawerBtn" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); border-radius: 4px;" title="Jump to Course Lessons">
-          ☰ Lessons ({{ lesson.order }}/{{ all_lessons|length|default:course.lessons.count }})
+          &#9776; Lessons ({{ lesson.order }}/{{ all_lessons|length|default:course.lessons.count }})
         </button>
-        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; background: var(--accent-subtle); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid rgba(99, 102, 241, 0.25);">
-          ⚡ +{{ lesson.xp }} XP
+        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.12); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.25);">
+          +{{ lesson.xp }} XP
         </span>
       </div>
 
       <div style="display: flex; align-items: center; gap: 0.5rem;">
         <button id="zenLessonRunBtn" class="btn btn-primary" style="padding: 0.35rem 1rem; font-size: 0.82rem; font-weight: 700;" title="Execute Tests (Ctrl+Enter)">
-          ▶ Run Code &amp; Test (Ctrl+Enter)
+          &#9654; Run Code &amp; Test (Ctrl+Enter)
         </button>
-        <button id="zenLessonAudioToggle" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem;" title="Toggle Mechanical Keystroke Audio">
-          ⌨ Mechanical SFX
+        <button id="zenLessonAudioToggle" class="btn btn-ghost" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; font-family: var(--font-mono);" title="Toggle Keystroke Audio">
+          SFX: ON
         </button>
       </div>
 
       <div style="display: flex; align-items: center; gap: 0.5rem;">
-        <button id="exitLessonZenBtn" class="btn" style="padding: 0.42rem 1.15rem; font-size: 0.84rem; font-weight: 800; background: #ef4444; border: 1px solid #f87171; color: #ffffff; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 10px rgba(239, 68, 68, 0.45);" title="Exit Zen Fullscreen (Press Esc)">
-          ✕ Exit Zen <kbd style="background: rgba(0,0,0,0.4); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.72rem; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.4);">Esc</kbd>
+        <button id="exitLessonZenBtn" class="btn" style="padding: 0.42rem 1.15rem; font-size: 0.84rem; font-weight: 800; background: #ef4444; border: 1px solid #f87171; color: #ffffff; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;" title="Exit Zen Fullscreen (Press Esc)">
+          Exit Zen <kbd style="background: rgba(0,0,0,0.4); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.72rem; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.4);">Esc</kbd>
         </button>
       </div>
     </div>
@@ -131,13 +147,13 @@
       <!-- Study Tabs Bar -->
       <div class="study-tabs-nav">
         <button class="study-tab-btn active" data-study-tab="concept">
-          📖 Lesson &amp; Task
+          01 · Concept &amp; Guide
         </button>
         <button class="study-tab-btn" data-study-tab="quiz">
-          🧠 Quiz &amp; Cheat Sheet
+          02 · Quiz &amp; Cheat Sheet
         </button>
         <button class="study-tab-btn" data-study-tab="models">
-          🏗️ Architecture Models
+          03 · CS50 Memory &amp; AST
         </button>
       </div>
 
@@ -148,10 +164,10 @@
         <div id="studyTabConcept" class="study-tab-content">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
             <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em;">
-              Mental Model &bull; Bite-Sized Learning
+              MENTAL MODEL &bull; BITE-SIZED LEARNING
             </span>
             <span style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); background: var(--bg-panel); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
-              ⏱ {{ lesson.est_minutes }} mins
+              {{ lesson.est_minutes }} mins
             </span>
           </div>
 
@@ -167,7 +183,7 @@
           <div class="cq-memory-box" style="margin: 1.5rem 0; padding: 1.15rem 1.35rem; border-radius: var(--radius-lg); background: rgba(245, 158, 11, 0.08); border: 1.5px solid rgba(245, 158, 11, 0.4); position: relative;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
               <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 1.15rem;">💡</span>
+                <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; color: #090c10; background: #fbbf24; padding: 0.15rem 0.4rem; border-radius: 4px;">TIP</span>
                 <span style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #fbbf24;">
                   Tips &amp; Tricks &bull; Pro Shortcuts &amp; Common Traps
                 </span>
@@ -176,7 +192,7 @@
                 Memory Anchor
               </span>
             </div>
-            <div style="font-size: 0.88rem; color: #e2e8f0; line-height: 1.62;">
+            <div style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.62;">
               {% if lesson.tips_tricks %}
                 {{ lesson.tips_tricks|linebreaksbr }}
               {% else %}
@@ -194,22 +210,22 @@
 
           <!-- Key Takeaways Box -->
           <div style="margin-top: 1.25rem; padding: 1rem 1.25rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);">
-            <div style="font-size: 0.76rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem;">
-              ⚡ Pro Developer Tip
+            <div style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem;">
+              KEY TAKEAWAY // SYNTAX BEST PRACTICE
             </div>
             <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
-              Clean semantic markup improves both SEO indexing and screen reader accessibility for visually impaired learners.
+              Test your code incrementally with Ctrl+Enter and inspect both stdout output and the 2D/3D simulation canvas on the right.
             </div>
           </div>
 
           <!-- Target Objective & Coding Task (Seamlessly visible together with lesson concept) -->
           <div style="margin-top: 1.75rem; padding: 1.25rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-strong); border-left: 4px solid var(--accent); border-radius: var(--radius-md);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
-              <div style="font-size: 0.8rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
-                <span>🎯</span> <span>Target Objective &bull; What to Code</span>
+              <div style="font-size: 0.8rem; font-family: var(--font-mono); font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">
+                TARGET OBJECTIVE &bull; WHAT TO CODE
               </div>
               <button id="inlineFillSolutionBtn" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.2rem 0.65rem; color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); font-weight: 700;" title="Click to auto-populate solution into code editor">
-                ⚡ Auto-Fill Solution
+                Auto-Fill Solution
               </button>
             </div>
             <div style="font-size: 0.94rem; color: var(--text-primary); font-weight: 600; line-height: 1.6; margin-bottom: 0.85rem;">
@@ -222,15 +238,15 @@
             </div>
             <div style="display: flex; justify-content: flex-end; align-items: center;">
               <button id="inlineShowHintBtn" style="background: none; border: none; color: #f59e0b; cursor: pointer; font-size: 0.78rem; font-weight: 700; text-decoration: underline;">
-                💡 Need a hint? Show solution snippet
+                Need a hint? Toggle solution snippet
               </button>
             </div>
 
           <!-- Pillar 4: Post-Lesson Micro-Tasks (3 Automated Tiers) -->
           <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-              <div style="font-size: 0.8rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
-                <span>⚡</span> <span>Post-Lesson Micro-Tasks (Automated Multi-Case)</span>
+              <div style="font-size: 0.8rem; font-family: var(--font-mono); font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em;">
+                POST-LESSON MICRO-TASKS (3 TEST TIERS)
               </div>
               <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; background: rgba(245, 158, 11, 0.1); padding: 0.15rem 0.45rem; border-radius: 4px;">
                 +120 XP Pool
@@ -252,13 +268,18 @@
                   <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.5rem;">
                     {{ mt.description }}
                   </div>
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
                     <span id="mtBadge_{{ mt.id }}" style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">
                       Normal &bull; Edge &bull; Stress
                     </span>
-                    <button onclick="runMicroTask({{ mt.id }})" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">
-                      Evaluate &rarr;
-                    </button>
+                    <div style="display: flex; gap: 0.4rem; align-items: center;">
+                      <button type="button" onclick="loadMicroTaskIntoEditor('{{ mt.starter_code|default:lesson.solution|escapejs }}', '{{ mt.title|escapejs }}', {{ mt.id }})" class="btn btn-ghost" style="padding: 0.25rem 0.55rem; font-size: 0.74rem; font-family: var(--font-mono);">
+                        Load in Editor
+                      </button>
+                      <button type="button" onclick="runMicroTask({{ mt.id }})" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); font-family: var(--font-mono);">
+                        Evaluate &rarr;
+                      </button>
+                    </div>
                   </div>
                 </div>
                 {% endfor %}
@@ -297,8 +318,8 @@
         <!-- Tab 2: Task & Objective -->
         <div id="studyTabTask" class="study-tab-content" style="display: none;">
           <div style="padding: 1.25rem; background: var(--bg-panel); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 1.5rem;">
-            <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.4rem;">
-              🎯 Target Objective
+            <div style="font-size: 0.8rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.4rem;">
+              TARGET OBJECTIVE
             </div>
             <div style="font-size: 0.92rem; color: var(--text-primary); line-height: 1.6;">
               {{ lesson.task_prompt }}
@@ -310,14 +331,14 @@
               Verification Rules
             </div>
             <div style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55;">
-              • Match all opening and closing tags.<br/>
-              • Maintain proper hierarchical parent-child nesting.<br/>
-              • Press <kbd style="background: var(--bg-panel); padding: 0.1rem 0.4rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; border: 1px solid var(--border-medium);">Ctrl+Enter</kbd> to run automated validation tests.
+              &bull; Match required language syntax and output tokens.<br/>
+              &bull; Maintain clean structure and indentation.<br/>
+              &bull; Press <kbd style="background: var(--bg-panel); padding: 0.1rem 0.4rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; border: 1px solid var(--border-medium);">Ctrl+Enter</kbd> to run automated validation tests.
             </div>
           </div>
 
           <button id="openBoxInspectorBtnFromTask" class="btn btn-ghost" style="width: 100%; justify-content: center; font-size: 0.82rem; padding: 0.5rem; border: 1px dashed var(--border-medium);">
-            📐 Launch Visual CSS Box Model Lab
+            Launch Visual CSS Box Model Lab
           </button>
         </div>
 
@@ -326,26 +347,26 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
             <div>
               <div style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em;">
-                Software Architecture &amp; Models
+                CS50 Software Architecture &amp; Models
               </div>
               <div style="font-size: 0.72rem; color: var(--text-muted);">
                 7 Living engineering models &bull; Interactive mental maps
               </div>
             </div>
             <span style="font-size: 0.72rem; color: var(--success); font-family: var(--font-mono); background: rgba(16,185,129,0.12); padding: 0.15rem 0.5rem; border-radius: 999px; border: 1px solid rgba(16,185,129,0.25);">
-              ● Real-Time Sync
+              Real-Time Sync
             </span>
           </div>
 
           <!-- Model Navigation Pills Bar (7 Living Software Models) -->
           <div class="models-nav-pills" style="display: flex; gap: 0.35rem; overflow-x: auto; padding-bottom: 0.65rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); -webkit-overflow-scrolling: touch; scrollbar-width: none;">
-            <button class="model-pill-btn active" data-model="dom">🌳 DOM Tree</button>
-            <button class="model-pill-btn" data-model="box">📦 CSS Box Model</button>
-            <button class="model-pill-btn" data-model="ast">⚡ AST &amp; State</button>
-            <button class="model-pill-btn" data-model="memory">🧠 Memory &amp; Pointers</button>
-            <button class="model-pill-btn" data-model="schema">🗄️ Relational Schema</button>
-            <button class="model-pill-btn" data-model="eventloop">🔄 Event Loop</button>
-            <button class="model-pill-btn" data-model="arch">🏛️ 3-Tier Architecture</button>
+            <button class="model-pill-btn active" data-model="dom">DOM Tree</button>
+            <button class="model-pill-btn" data-model="box">CSS Box Model</button>
+            <button class="model-pill-btn" data-model="ast">AST &amp; State</button>
+            <button class="model-pill-btn" data-model="memory">Stack &amp; Heap</button>
+            <button class="model-pill-btn" data-model="schema">SQL Schema</button>
+            <button class="model-pill-btn" data-model="eventloop">Event Loop</button>
+            <button class="model-pill-btn" data-model="arch">3-Tier Arch</button>
           </div>
 
           <!-- Pane 1: Live DOM Tree (Document Object Model) -->
@@ -358,7 +379,7 @@
               <!-- Populated live by DOM parser -->
             </div>
             <div style="margin-top: 0.75rem; font-size: 0.76rem; color: var(--text-muted); line-height: 1.45;">
-              💡 The Document Object Model (DOM) is an in-memory tree representing every tag, attribute, and text node rendered by the browser engine.
+              Note: The Document Object Model (DOM) is an in-memory tree representing every tag, attribute, and text node rendered by the browser engine.
             </div>
           </div>
 
@@ -477,7 +498,7 @@ margin: 24px; padding: 20px; border: 2px solid;
               <!-- Populated by JS -->
             </div>
             <div style="margin-top: 0.75rem; font-size: 0.74rem; color: var(--text-muted); line-height: 1.45;">
-              💡 Relational databases organize persistent state into mathematical relations with indexed Primary Keys ($O(1)$ lookup) and Foreign Key integrity.
+              Relational databases organize persistent state into mathematical relations with indexed Primary Keys ($O(1)$ lookup) and Foreign Key integrity.
             </div>
           </div>
 
@@ -539,7 +560,7 @@ margin: 24px; padding: 20px; border: 2px solid;
             </div>
 
             <div style="margin-top: 0.75rem; font-size: 0.74rem; color: var(--text-muted); line-height: 1.45;">
-              💡 <strong>Systems Mental Model:</strong> Stack frames allocate fast fixed-size automatic storage for local scope. The Heap provides persistent dynamic memory referenced via 64-bit pointers (e.g. <code>0x7ffee4b2</code>).
+              <strong>Systems Mental Model:</strong> Stack frames allocate fast fixed-size automatic storage for local scope. The Heap provides persistent dynamic memory referenced via 64-bit pointers (e.g. <code>0x7ffee4b2</code>).
             </div>
           </div>
 
@@ -548,7 +569,7 @@ margin: 24px; padding: 20px; border: 2px solid;
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">
               <span>Event Loop &bull; Single-Threaded Concurrency Pipeline</span>
               <button id="btnStepEventLoop" class="btn btn-primary" style="padding: 0.2rem 0.65rem; font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700;">
-                ⚡ Step Event Loop Tick
+                Step Event Loop Tick
               </button>
             </div>
 
@@ -601,7 +622,7 @@ margin: 24px; padding: 20px; border: 2px solid;
             </div>
 
             <div style="margin-top: 0.75rem; font-size: 0.74rem; color: var(--text-muted); line-height: 1.45;">
-              💡 <strong>Runtime Mental Model:</strong> The Event Loop continuously checks if the Call Stack is empty. When empty, it drains all Microtasks (Promises) before dequeuing the next Macrotask (setTimeout/DOM events).
+              <strong>Runtime Mental Model:</strong> The Event Loop continuously checks if the Call Stack is empty. When empty, it drains all Microtasks (Promises) before dequeuing the next Macrotask (setTimeout/DOM events).
             </div>
           </div>
         </div>
@@ -612,7 +633,7 @@ margin: 24px; padding: 20px; border: 2px solid;
           <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
               <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: #a855f7; text-transform: uppercase;">
-                🧠 Knowledge Check &bull; Quick Concept Check
+                Knowledge Check &bull; Quick Concept Check
               </span>
               <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">
                 Instant Feedback
@@ -631,15 +652,15 @@ margin: 24px; padding: 20px; border: 2px solid;
           <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
               <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase;">
-                📋 Quick Reference Cheat Sheet
+                Quick Reference Cheat Sheet
               </span>
               <button id="btnCopyCheatSheet" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono);">
-                Copy Snippet 📋
+                Copy Snippet
               </button>
             </div>
             <pre id="cheatSheetSnippet" style="background: #060913; border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.82rem; color: #38bdf8; overflow-x: auto; margin-bottom: 0.75rem;"><code>{{ lesson.solution }}</code></pre>
             <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
-              💡 <strong>Pro Tip:</strong> Re-type this pattern in the editor instead of copying to reinforce neural muscle memory.
+              <strong>Pro Tip:</strong> Re-type this pattern in the editor instead of copying to reinforce neural muscle memory.
             </div>
           </div>
         </div>
@@ -651,7 +672,7 @@ margin: 24px; padding: 20px; border: 2px solid;
           </div>
 
           <button id="revealHintBtn" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.84rem; padding: 0.55rem; margin-bottom: 1rem;">
-            🔍 Reveal Next Hint
+            Reveal Next Hint
           </button>
 
           <div id="hintDisplayBox" style="display: none; padding: 1rem 1.25rem; background: var(--warning-subtle); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-sm); font-size: 0.88rem; color: var(--text-primary); line-height: 1.6;">
@@ -682,19 +703,19 @@ margin: 24px; padding: 20px; border: 2px solid;
               ⇥ Format
             </button>
             <button id="openBoxInspectorBtn" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.76rem;" title="Open Visual Box Model &amp; Flexbox Inspector">
-              📐 Box Inspector
+              Box Inspector
             </button>
             <button id="resetCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.76rem;" title="Reset Starter Code">
               ↺ Reset
             </button>
             <button id="fillSolutionBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.76rem; color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); font-weight: 700;" title="Auto-fill verified solution code">
-              ⚡ Fill Solution
+              Fill Solution
             </button>
             <button id="runCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.75rem; font-size: 0.76rem;" title="Run live sandboxed preview">
-              ▶ Preview
+              Preview
             </button>
             <button id="checkSolutionBtn" class="btn btn-primary" style="padding: 0.3rem 0.95rem; font-size: 0.78rem; font-weight: 700;">
-              ✔ Check Solution
+              Check Solution
             </button>
           </div>
         </div>
@@ -702,23 +723,23 @@ margin: 24px; padding: 20px; border: 2px solid;
         <textarea id="codeEditor" class="code-editor" style="min-height: 240px; border: none; border-radius: 0; font-size: 0.9rem; outline: none; background: var(--bg-input); color: var(--text-primary); padding: 1.25rem;" spellcheck="false">{{ lesson.starter_code }}</textarea>
       </div>
 
-      <!-- Lower Pane: Tabbed Studio Deck (Preview, Test Suite, Console) -->
+      <!-- Lower Pane: Tabbed Studio Deck (Preview + Game Split, Test Suite, Console) -->
       <div id="panelStudioDeck" class="cq-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
         
         <!-- Studio Deck Tabs Header -->
         <div class="studio-tabs-nav" style="justify-content: space-between;">
-          <div style="display: flex; align-items: center; gap: 0.35rem;">
+          <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
             <button class="studio-tab-btn active" data-studio-tab="preview">
-              🌐 Live Preview
+              01 &middot; Live Preview &amp; Game
             </button>
             <button class="studio-tab-btn" data-studio-tab="tests">
-              🧪 Test Suite <span id="testBadgeCount" style="margin-left: 0.3rem; padding: 0.1rem 0.35rem; border-radius: 999px; background: rgba(99, 102, 241, 0.15); font-size: 0.7rem; font-family: var(--font-mono);">0/{{ lesson.tests_json|length|default:3 }}</span>
+              02 &middot; Test Suite <span id="testBadgeCount" style="margin-left: 0.3rem; padding: 0.1rem 0.35rem; border-radius: 999px; background: rgba(99, 102, 241, 0.15); font-size: 0.7rem; font-family: var(--font-mono);">0/{{ lesson.tests_json|length|default:3 }}</span>
             </button>
             <button class="studio-tab-btn" data-studio-tab="console">
-              🖥️ Console
+              03 &middot; Console
             </button>
             <button class="studio-tab-btn" data-studio-tab="game">
-              🎮 Syntax Game: {{ full_syntax_game.title|default:"Cyber Grid Rover" }}
+              04 &middot; Full Game: {{ full_syntax_game.title|default:"Cyber Grid Rover" }}
             </button>
           </div>
 
@@ -726,15 +747,22 @@ margin: 24px; padding: 20px; border: 2px solid;
           <div style="display: flex; align-items: center; gap: 0.65rem;">
             <span id="runnerStatusMessage" style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 600;"></span>
             <button id="togglePreviewCanvasBtn" class="btn btn-ghost" style="padding: 0.15rem 0.5rem; font-size: 0.7rem; height: auto;" title="Switch Preview Canvas Dark/Light">
-              🌓 Canvas
+              Canvas
             </button>
           </div>
         </div>
 
-        <!-- Studio Tab Content: 1. Live Preview -->
+        <!-- Studio Tab Content: 1. Live Preview + Split 2D/3D Game Canvas -->
         <div id="studioTabPreview" class="studio-tab-pane">
-          <div id="iframeWrapper" style="width: 100%; transition: max-width 0.2s ease; margin: 0 auto;">
-            <iframe id="previewIframe" sandbox="allow-scripts allow-same-origin" style="width: 100%; height: 230px; border: none; background: var(--bg-input); display: block;"></iframe>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0; border-top: 1px solid var(--border-subtle);">
+            <div id="iframeWrapper" style="width: 100%; transition: max-width 0.2s ease; margin: 0 auto; border-right: 1px solid var(--border-subtle);">
+              <iframe id="previewIframe" sandbox="allow-scripts allow-same-origin" style="width: 100%; height: 250px; border: none; background: var(--bg-input); display: block;"></iframe>
+            </div>
+            <div id="studioTabPreviewGameMount" style="background: #080c14; padding: 0.55rem; min-height: 250px; display: flex; flex-direction: column;">
+              <div id="lessonGameMountHost" style="flex: 1; display: flex; flex-direction: column;">
+                <div id="lessonGameCanvas" style="min-height: 230px; flex: 1;"></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -765,9 +793,9 @@ margin: 24px; padding: 20px; border: 2px solid;
           </div>
         </div>
 
-        <!-- Studio Tab Content: 4. Real Code-Writing 2D & 3D Multi-Game Canvas (Pillar 3) -->
-        <div id="studioTabGame" class="studio-tab-pane" style="display: none; padding: 0.85rem; min-height: 260px; background: #080c14;">
-          <div id="lessonGameCanvas" style="min-height: 250px;"></div>
+        <!-- Studio Tab Content: 4. Full-Width 2D & 3D Multi-Game Canvas -->
+        <div id="studioTabGame" class="studio-tab-pane" style="display: none; padding: 0.85rem; min-height: 300px; background: #080c14;">
+          <div id="studioTabGameFullMount" style="min-height: 280px; display: flex; flex-direction: column;"></div>
         </div>
 
       </div>
@@ -918,6 +946,7 @@ margin: 24px; padding: 20px; border: 2px solid;
         indentUnit: 2,
         lineWrapping: true
       });
+      window.CQ_CODE_EDITOR = cmInstance;
 
       // Synchronize changes to textarea, mechanical click audio, and living software models
       cmInstance.on('change', function () {
@@ -959,8 +988,8 @@ margin: 24px; padding: 20px; border: 2px solid;
         for (let i = 0; i < total; i++) {
           cmInstance.indentLine(i);
         }
-        formatBtn.textContent = '✓ Formatted';
-        setTimeout(() => { formatBtn.textContent = '⇥ Format'; }, 1200);
+        formatBtn.textContent = 'Formatted';
+        setTimeout(() => { formatBtn.textContent = 'Format'; }, 1200);
       };
     }
 
@@ -1006,7 +1035,7 @@ margin: 24px; padding: 20px; border: 2px solid;
     if (sfxBtn) {
       sfxBtn.onclick = function () {
         sfxEnabled = !sfxEnabled;
-        sfxBtn.textContent = sfxEnabled ? '⌨ Mechanical SFX' : '🔇 Muted SFX';
+        sfxBtn.textContent = sfxEnabled ? 'SFX: ON' : 'SFX: OFF';
         sfxBtn.style.color = sfxEnabled ? 'var(--accent)' : 'var(--text-muted)';
       };
     }
@@ -1023,7 +1052,7 @@ margin: 24px; padding: 20px; border: 2px solid;
       document.body.classList.toggle('zen-locked', isZen);
 
       if (zenBtn) {
-        zenBtn.innerHTML = isZen ? '✕ Exit Zen' : '⛶ Zen Mode';
+        zenBtn.innerHTML = isZen ? 'Exit Zen' : '[ ] Zen Mode';
         zenBtn.style.borderColor = isZen ? '#ef4444' : '';
       }
 
@@ -1170,55 +1199,28 @@ margin: 24px; padding: 20px; border: 2px solid;
       game: document.getElementById('studioTabGame'),
     };
 
-    // Lightweight Game Canvas Simulation for Pillar 3
-    function initGameCanvas() {
-      var canvas = document.getElementById('syntaxGameCanvas');
-      if (!canvas) return;
-      var ctx = canvas.getContext('2d');
-      var x = 40, y = 100, dx = 1.5;
-      function animate() {
-        ctx.fillStyle = '#030712';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        // Grid lines
-        ctx.strokeStyle = '#0f172a';
-        ctx.lineWidth = 1;
-        for (var i = 0; i < canvas.width; i += 30) {
-          ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
-        }
-        for (var j = 0; j < canvas.height; j += 30) {
-          ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
-        }
-        // Energy Node
-        ctx.fillStyle = '#10b981';
-        ctx.beginPath();
-        ctx.arc(380, 100, 12, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#fff';
-        ctx.font = '9px monospace';
-        ctx.fillText('CORE', 370, 103);
-        // Cyber Rover
-        x += dx;
-        if (x > 320 || x < 40) dx = -dx;
-        ctx.fillStyle = '#38bdf8';
-        ctx.fillRect(x, y - 10, 28, 20);
-        ctx.fillStyle = '#f8fafc';
-        ctx.fillRect(x + 18, y - 5, 8, 10);
-        // Laser trail
-        ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath(); ctx.moveTo(x + 28, y); ctx.lineTo(380, 100); ctx.stroke();
-        ctx.setLineDash([]);
-        requestAnimationFrame(animate);
+    // Load Micro-Task starter code directly into CodeMirror editor & update live preview
+    window.loadMicroTaskIntoEditor = function(starterCode, title, taskId) {
+      var codeToLoad = (starterCode && starterCode.trim()) ? starterCode : '{{ lesson.solution|escapejs }}';
+      if (rawEditor) rawEditor.value = codeToLoad;
+      if (cmInstance) {
+        cmInstance.setValue(codeToLoad);
+        cmInstance.save();
+        cmInstance.focus();
       }
-      animate();
-    }
-    setTimeout(initGameCanvas, 500);
+      var badge = document.getElementById('mtBadge_' + taskId);
+      if (badge) {
+        badge.innerHTML = "<span style='color: #38bdf8;'>Loaded into Editor (" + (title || 'Task') + ")</span>";
+      }
+      var runBtn = document.getElementById('runCodeBtn');
+      if (runBtn) runBtn.click();
+    };
 
     // Micro-Task API runner for Pillar 4
     window.runMicroTask = function(taskId) {
       var card = document.getElementById('mtCard_' + taskId);
       var badge = document.getElementById('mtBadge_' + taskId);
-      if (badge) badge.innerHTML = "<span style='color: #f59e0b;'>⚙️ Evaluating 3 test tiers...</span>";
+      if (badge) badge.innerHTML = "<span style='color: #f59e0b;'>Evaluating 3 test tiers...</span>";
       fetch('/api/micro-task/check/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-CSRFToken': (function() {
@@ -1238,7 +1240,7 @@ margin: 24px; padding: 20px; border: 2px solid;
             card.style.borderColor = '#10b981';
             card.style.background = 'rgba(16, 185, 129, 0.08)';
           }
-          if (badge) badge.innerHTML = "<span style='color: #10b981; font-weight: bold;'>✓ ALL 3 TIERS PASSED (+" + d.xp_awarded + " XP)</span>";
+          if (badge) badge.innerHTML = "<span style='color: #10b981; font-weight: bold;'>ALL 3 TIERS PASSED (+" + d.xp_awarded + " XP)</span>";
           var xpBadge = document.getElementById('xpCount');
           if (xpBadge) {
             var cur = parseInt(xpBadge.textContent.replace(/[^0-9]/g, '')) || 0;
@@ -1247,15 +1249,27 @@ margin: 24px; padding: 20px; border: 2px solid;
         }
       })
       .catch(function(e) {
-        if (badge) badge.innerHTML = "<span style='color: #ef4444;'>❌ Evaluation error</span>";
+        if (badge) badge.innerHTML = "<span style='color: #ef4444;'>Evaluation error</span>";
       });
     };
+
+    const previewGameMount = document.getElementById('studioTabPreviewGameMount');
+    const fullGameMount = document.getElementById('studioTabGameFullMount');
+    const lessonGameMountHost = document.getElementById('lessonGameMountHost');
 
     studioTabBtns.forEach(btn => {
       btn.addEventListener('click', function () {
         const tabKey = btn.getAttribute('data-studio-tab');
         studioTabBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+
+        if (lessonGameMountHost && previewGameMount && fullGameMount) {
+          if (tabKey === 'game') {
+            fullGameMount.appendChild(lessonGameMountHost);
+          } else if (tabKey === 'preview') {
+            previewGameMount.appendChild(lessonGameMountHost);
+          }
+        }
 
         Object.keys(studioPanes).forEach(k => {
           if (studioPanes[k]) {
@@ -1354,7 +1368,13 @@ margin: 24px; padding: 20px; border: 2px solid;
     // Initialize 1-Minute Visual Guide & 2D/3D Multi-Game Studio for this Lesson's Language
     const currentLessonLang = '{{ course.language.slug|default:"python" }}';
     if (window.CQInitMicroVideo) {
-      window.CQInitMicroVideo('lessonMicroVideoPlayer', currentLessonLang);
+      window.CQInitMicroVideo(
+        'lessonMicroVideoPlayer',
+        currentLessonLang,
+        '{{ lesson.title|escapejs }}',
+        '{{ lesson.starter_code|escapejs }}',
+        '{{ lesson.task_prompt|escapejs }}'
+      );
     }
     if (window.CQRenderGameCanvas) {
       window.CQRenderGameCanvas('lessonGameCanvas', currentLessonLang, false, '');
@@ -1482,7 +1502,7 @@ margin: 24px; padding: 20px; border: 2px solid;
         const snippet = document.getElementById('cheatSheetSnippet').textContent;
         navigator.clipboard.writeText(snippet);
         copyCheatBtn.textContent = '✓ Copied!';
-        setTimeout(() => { copyCheatBtn.textContent = 'Copy Snippet 📋'; }, 1500);
+        setTimeout(() => { copyCheatBtn.textContent = 'Copy Snippet'; }, 1500);
       };
     }
 
