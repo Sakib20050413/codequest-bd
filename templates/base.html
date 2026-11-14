@@ -1,22 +1,22 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}CodeQuest BD — Modern Bite-Sized Programming Education{% endblock %}</title>
+  <title>{% block title %}CodeQuest BD — Interactive Programming &amp; 2D/3D Game Studio{% endblock %}</title>
   <meta name="description" content="Learn HTML, CSS, JavaScript, Python, and SQL through structured 3–7 minute interactive lessons, browser-based sandboxes, and automated verification." />
   <meta name="keywords" content="learn programming, coding exercises, bite-sized lessons, interactive coding, web development, python, sql" />
   
   <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}" />
   <link rel="apple-touch-icon" href="{% static 'img/logo-icon.svg' %}" />
   
-  <!-- Typography: Plus Jakarta Sans & JetBrains Mono -->
+  <!-- Typography: Space Grotesk, Fraunces Editorial Serif, Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600;1,9..144,700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   
-  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=12.1" />
+  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=14.0" />
   {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -28,8 +28,8 @@
       <nav class="cq-nav" aria-label="Main Navigation">
         
         <a href="{% url 'landing' %}" class="brand-logo" aria-label="CodeQuest Home">
-          <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="32" class="logo-dark-theme" style="display: block; width: auto;" />
-          <img src="{% static 'img/logo-light.svg' %}" alt="CodeQuest BD" height="32" class="logo-light-theme" style="display: none; width: auto;" />
+          <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="32" class="logo-dark-theme" style="width: auto;" />
+          <img src="{% static 'img/logo-light.svg' %}" alt="CodeQuest BD" height="32" class="logo-light-theme" style="width: auto;" />
         </a>
 
         <ul class="nav-links">
@@ -76,7 +76,7 @@
             <span id="streakCount">{{ course_streak|default:user_streak }}d</span>
           </div>
 
-          <div class="streak-pill desktop-only-stat" title="Daily Game Streak" style="border-color: rgba(56, 189, 248, 0.25); background: rgba(56, 189, 248, 0.08); color: #38bdf8;">
+          <div class="streak-pill games-pill desktop-only-stat" title="Daily Game Streak">
             <span style="color: var(--text-muted); font-weight: 600;">GAME</span>
             <span id="gameStreakCount">{{ game_streak|default:5 }}d</span>
           </div>
@@ -88,8 +88,8 @@
           <button id="soundToggleBtn" style="display: none;" aria-hidden="true"></button>
           <button id="fluidToggleBtn" style="display: none;" aria-hidden="true"></button>
 
-          <button id="themeToggleBtn" class="btn btn-icon" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
-            ☀
+          <button id="themeToggleBtn" class="btn btn-ghost theme-pill-btn" title="Switch Paper Light / Espresso Dark Theme" aria-label="Switch to Dark mode">
+            ☾ Dark
           </button>
 
           {% if user.is_authenticated %}

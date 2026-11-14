@@ -11,16 +11,25 @@
     position: relative;
     width: 100%;
     min-height: 440px;
-    background: #05070f;
+    background: #181512;
     border-radius: var(--radius-lg);
     overflow: hidden;
-    border: 1px solid var(--border-strong);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    border: 1.5px solid var(--border-strong);
+    box-shadow: var(--shadow-md);
+  }
+  .arcade-viewport .btn-ghost {
+    background: rgba(255, 248, 240, 0.12);
+    color: #FAF7F2;
+    border-color: rgba(255, 248, 240, 0.22);
+  }
+  .arcade-viewport .btn-ghost:hover {
+    background: rgba(255, 248, 240, 0.22);
+    color: #FFFFFF;
   }
   .arcade-hud-pill {
-    background: rgba(10, 15, 30, 0.85);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-medium);
+    box-shadow: var(--shadow-xs);
     padding: 0.35rem 0.75rem;
     border-radius: var(--radius-sm);
     font-family: var(--font-mono);
@@ -35,7 +44,7 @@
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: rgba(5, 8, 16, 0.75);
+    background: rgba(24, 21, 18, 0.72);
     backdrop-filter: blur(8px);
     align-items: stretch;
     justify-content: flex-end;
@@ -51,7 +60,7 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6);
+    box-shadow: -8px 0 32px rgba(24, 21, 18, 0.25);
   }
   .arcade-game-item-card {
     display: flex;
@@ -71,7 +80,7 @@
   }
   .arcade-game-item-card.active {
     border-color: var(--accent);
-    background: rgba(20, 184, 166, 0.12);
+    background: var(--accent-subtle);
   }
 </style>
 {% endblock %}
@@ -86,7 +95,7 @@
         &larr; Practice Arena Hub
       </a>
       <span style="color: var(--border-medium);">&bull;</span>
-      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.65rem; border-radius: 999px; border: 1px solid rgba(20, 184, 166, 0.25);">
+      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.65rem; border-radius: 999px; border: 1px solid rgba(217, 78, 40, 0.25);">
         {{ game.category }}
       </span>
     </div>
@@ -96,7 +105,7 @@
       <button id="openCatalogDrawerBtn" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.35rem 0.95rem; border-color: var(--border-medium); font-weight: 700; color: var(--text-primary);">
         Browse All Games &rarr;
       </button>
-      <span style="font-size: 0.82rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid rgba(16, 185, 129, 0.25);">
+      <span style="font-size: 0.82rem; font-family: var(--font-mono); font-weight: 700; color: var(--success); background: var(--success-subtle); padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid rgba(21, 128, 61, 0.25);">
         +{{ game.xp_per_win }} XP / Level
       </span>
     </div>
@@ -122,29 +131,29 @@
       <div style="display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center;">
         <div class="arcade-hud-pill">
           <span>FPS:</span>
-          <strong id="hudFps" style="color: #10b981;">60</strong>
+          <strong id="hudFps" style="color: var(--success);">60</strong>
         </div>
         <div class="arcade-hud-pill">
           <span>SCORE:</span>
-          <strong id="hudScore" style="color: #38bdf8;">0</strong>
+          <strong id="hudScore" style="color: var(--accent-secondary);">0</strong>
         </div>
         <div class="arcade-hud-pill">
           <span>LEVEL:</span>
-          <strong id="hudLevelBadge" style="color: #f59e0b;">1 / 10</strong>
+          <strong id="hudLevelBadge" style="color: var(--warning);">1 / 10</strong>
         </div>
       </div>
     </div>
 
     <!-- Curriculum Bridge Connection Banner -->
-    <div style="background: rgba(20, 184, 166, 0.08); border: 1px solid rgba(20, 184, 166, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+    <div style="background: var(--accent-subtle); border: 1px solid rgba(217, 78, 40, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; color: var(--accent); border: 1px solid rgba(20, 184, 166, 0.35); padding: 0.2rem 0.45rem; border-radius: 4px;">TRACK</span>
+        <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; color: var(--accent); border: 1px solid rgba(217, 78, 40, 0.35); padding: 0.2rem 0.45rem; border-radius: 4px;">TRACK</span>
         <div>
           <div style="font-size: 0.84rem; font-weight: 700; color: var(--accent);">Connected Curriculum: {{ game.category }}</div>
           <div style="font-size: 0.78rem; color: var(--text-muted);">{{ game.tagline }} Practice here to reinforce concepts taught in courses.</div>
         </div>
       </div>
-      <a href="{% url 'catalogue' %}" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.35rem 0.85rem; border-color: rgba(20, 184, 166, 0.3); color: var(--accent);">
+      <a href="{% url 'catalogue' %}" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.35rem 0.85rem; border-color: rgba(217, 78, 40, 0.3); color: var(--accent);">
         View Related Course &rarr;
       </a>
     </div>
@@ -155,7 +164,7 @@
         <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
           <span>MISSION BRIEF &amp; SCORING RULES</span>
         </span>
-        <span id="arcadeWinRuleBadge" style="font-size: 0.74rem; font-family: var(--font-mono); color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.25);">
+        <span id="arcadeWinRuleBadge" style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--success); background: var(--success-subtle); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(21, 128, 61, 0.25);">
           Win Condition: Satisfy Mission Directive &bull; Verified Output
         </span>
       </div>
@@ -168,13 +177,13 @@
         </div>
         <div style="background: var(--bg-panel); padding: 0.75rem 0.95rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
           <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem;">
-            <span style="color: #38bdf8;">2.</span> Code or Auto-Solve
+            <span style="color: var(--accent-secondary);">2.</span> Code or Auto-Solve
           </div>
           <div style="color: var(--text-muted); line-height: 1.45;">Edit the logic in the script console, or click <strong>Auto-Solve Mission</strong> to load the verified solution instantly.</div>
         </div>
         <div style="background: var(--bg-panel); padding: 0.75rem 0.95rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
           <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem;">
-            <span style="color: #10b981;">3.</span> Run &amp; Earn +50 XP
+            <span style="color: var(--success);">3.</span> Run &amp; Earn +50 XP
           </div>
           <div style="color: var(--text-muted); line-height: 1.45;">Press <strong>Run &amp; Verify</strong> or hit <kbd style="font-family: var(--font-mono); font-size: 0.72rem; padding: 0.1rem 0.3rem; background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: 3px;">Ctrl+Enter</kbd> to execute simulation and unlock Level 2–10.</div>
         </div>
@@ -204,14 +213,14 @@
         <div class="arcade-viewport" id="viewportContainer">
 
           <!-- Top Floating Mode Bar -->
-          <div style="position: absolute; top: 12px; left: 12px; z-index: 10; display: flex; gap: 0.4rem; background: rgba(7, 8, 14, 0.85); backdrop-filter: blur(12px); padding: 0.3rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-            <button id="viewMode3dBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 700;">
+          <div style="position: absolute; top: 12px; left: 12px; z-index: 10; display: flex; gap: 0.4rem; background: rgba(24, 21, 18, 0.9); backdrop-filter: blur(12px); padding: 0.35rem; border-radius: var(--radius-sm); border: 1px solid rgba(255, 248, 240, 0.16);">
+            <button id="viewMode3dBtn" class="btn btn-primary" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 700;">
               3D WebGL
             </button>
             <button id="viewMode2dBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 700;">
               2D Vector
             </button>
-            <button id="resetSimBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px;">
+            <button id="resetSimBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-radius: 4px; font-weight: 600;">
               Reset
             </button>
           </div>
@@ -220,15 +229,15 @@
           <div id="threeCanvasMount" style="width: 100%; height: 100%; min-height: 440px; cursor: grab;"></div>
 
           <!-- 2D Canvas Fallback / Vector Mode -->
-          <canvas id="vectorCanvas2d" style="display: none; width: 100%; height: 100%; min-height: 440px; background: #070914;"></canvas>
+          <canvas id="vectorCanvas2d" style="display: none; width: 100%; height: 100%; min-height: 440px; background: #181512;"></canvas>
 
           <!-- Win Overlay Banner -->
-          <div id="winBannerModal" style="display: none; position: absolute; inset: 0; z-index: 20; background: rgba(7, 9, 18, 0.94); backdrop-filter: blur(8px); flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;">
-            <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: 800; color: #10b981; background: rgba(16, 185, 129, 0.14); border: 1px solid rgba(16, 185, 129, 0.35); padding: 0.3rem 0.85rem; border-radius: 999px; margin-bottom: 0.85rem; letter-spacing: 0.08em;">MISSION PASSED</span>
-            <h2 style="font-size: 1.85rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">
+          <div id="winBannerModal" style="display: none; position: absolute; inset: 0; z-index: 20; background: rgba(24, 21, 18, 0.94); backdrop-filter: blur(8px); flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;">
+            <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: 800; color: #4ADE80; background: rgba(74, 222, 128, 0.14); border: 1px solid rgba(74, 222, 128, 0.35); padding: 0.3rem 0.85rem; border-radius: 999px; margin-bottom: 0.85rem; letter-spacing: 0.08em;">MISSION PASSED</span>
+            <h2 style="font-size: 1.85rem; font-weight: 800; color: #FAF7F2; margin-bottom: 0.5rem;">
               Mission Complete
             </h2>
-            <p id="winBannerSubtitle" style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; max-width: 420px;">
+            <p id="winBannerSubtitle" style="color: #D4CEC4; margin-bottom: 1.5rem; font-size: 0.95rem; max-width: 420px;">
               Simulation parameters validated. +{{ game.xp_per_win }} XP awarded to your cadet profile.
             </p>
             <div style="display: flex; gap: 0.75rem;">
@@ -268,7 +277,7 @@
             <div style="font-size: 0.76rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">
               Mission Directive &bull; Expected Output
             </div>
-            <span id="arcadeReturnBadge" style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8;">Return: Boolean true</span>
+            <span id="arcadeReturnBadge" style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent-secondary);">Return: Boolean true</span>
           </div>
           <div id="missionObjectiveText" style="font-size: 0.92rem; color: var(--text-primary); font-weight: 600; line-height: 1.5;">
             Initialize simulation parameters, configure loop conditions, and execute state transitions to pass telemetry checks.
@@ -284,7 +293,7 @@
             <span id="arcadeLangBadge" style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent);">JavaScript / System API</span>
           </div>
 
-          <textarea id="arcadeCodeEditor" class="code-editor" style="flex: 1; min-height: 180px; width: 100%; background: #060913; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem; font-family: var(--font-mono); font-size: 0.86rem; color: #38bdf8; resize: vertical; line-height: 1.5;" spellcheck="false">// Mission Script: {{ game.title }}
+          <textarea id="arcadeCodeEditor" class="code-editor" style="flex: 1; min-height: 180px; width: 100%; background: #181512; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem; font-family: var(--font-mono); font-size: 0.86rem; color: #FAF7F2; resize: vertical; line-height: 1.5;" spellcheck="false">// Mission Script: {{ game.title }}
 function runSimulation(state) {
   state.power = 100;
   state.active = true;
@@ -295,10 +304,10 @@ function runSimulation(state) {
           <!-- Execution Controls -->
           <div style="margin-top: 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <div style="display: flex; gap: 0.45rem; align-items: center;">
-              <button id="btnAutoSolveScript" class="btn btn-ghost" style="padding: 0.45rem 0.95rem; font-size: 0.8rem; font-weight: 700; color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08);" title="Auto-populate the verified winning algorithm">
+              <button id="btnAutoSolveScript" class="btn btn-ghost" style="padding: 0.45rem 0.95rem; font-size: 0.8rem; font-weight: 700; color: var(--success); border-color: rgba(21, 128, 61, 0.35); background: var(--success-subtle);" title="Auto-populate the verified winning algorithm">
                 Auto-Solve Mission
               </button>
-              <button id="btnHintScript" class="btn btn-ghost" style="padding: 0.45rem 0.75rem; font-size: 0.8rem; color: #f59e0b; border-color: rgba(245, 158, 11, 0.35);" title="View a hint for this level">
+              <button id="btnHintScript" class="btn btn-ghost" style="padding: 0.45rem 0.75rem; font-size: 0.8rem; color: var(--warning); border-color: rgba(180, 83, 9, 0.35);" title="View a hint for this level">
                 Hint
               </button>
             </div>
@@ -354,7 +363,7 @@ function runSimulation(state) {
             #{{ g.order|stringformat:"03d" }} &bull; {{ g.category }}
           </div>
         </div>
-        <span style="font-size: 0.72rem; color: #10b981; font-weight: 700; font-family: var(--font-mono);">
+        <span style="font-size: 0.72rem; color: var(--success); font-weight: 700; font-family: var(--font-mono);">
           +{{ g.xp_per_win }} XP
         </span>
       </a>
@@ -449,7 +458,7 @@ function runSimulation(state) {
       p.style.borderRadius = '2px';
       p.style.left = (Math.random() * 80 + 10) + '%';
       p.style.top = '50%';
-      p.style.background = ['#14b8a6', '#38bdf8', '#f59e0b', '#ec4899', '#10b981'][Math.floor(Math.random() * 5)];
+      p.style.background = ['#D94E28', '#2B4C7E', '#F97316', '#818CF8', '#22C55E'][Math.floor(Math.random() * 5)];
       p.style.zIndex = '30';
       p.style.transition = 'all 1s cubic-bezier(0.25, 1, 0.5, 1)';
       mount.appendChild(p);
@@ -1502,7 +1511,7 @@ function runSimulation(state) {
       btn.style.minWidth = '36px';
 
       const isDone = completedLevels.has(i);
-      btn.innerHTML = `${i}${isDone ? ' <span style="color:#10b981;">✓</span>' : ''}`;
+      btn.innerHTML = `${i}${isDone ? ' <span style="color:#22C55E;">✓</span>' : ''}`;
       btn.title = `Level ${i}: ${MISSIONS[i-1].title}`;
 
       btn.onclick = function() {
@@ -1634,14 +1643,14 @@ function runSimulation(state) {
     const w = canvas2d.width;
     const h = canvas2d.height;
 
-    ctx2d.fillStyle = 'rgba(7, 9, 20, 0.25)';
+    ctx2d.fillStyle = 'rgba(24, 21, 18, 0.25)';
     ctx2d.fillRect(0, 0, w, h);
 
     const time = Date.now() * 0.002;
     const cx = w / 2;
     const cy = h / 2;
 
-    ctx2d.strokeStyle = 'rgba(20, 184, 166, 0.4)';
+    ctx2d.strokeStyle = 'rgba(217, 78, 40, 0.42)';
     ctx2d.lineWidth = 1;
     for (let r = 40; r <= 180; r += 45) {
       ctx2d.beginPath();
@@ -1649,14 +1658,14 @@ function runSimulation(state) {
       ctx2d.stroke();
     }
 
-    ctx2d.strokeStyle = '#38bdf8';
+    ctx2d.strokeStyle = '#818CF8';
     ctx2d.lineWidth = 2;
     ctx2d.beginPath();
     ctx2d.moveTo(cx, cy);
     ctx2d.lineTo(cx + Math.cos(time) * 180, cy + Math.sin(time) * 180);
     ctx2d.stroke();
 
-    ctx2d.fillStyle = '#10b981';
+    ctx2d.fillStyle = '#F97316';
     ctx2d.beginPath();
     ctx2d.arc(cx, cy, 6, 0, Math.PI * 2);
     ctx2d.fill();
@@ -1673,7 +1682,7 @@ function runSimulation(state) {
 
     if (statusText) {
       statusText.textContent = messageText || `Telemetry Verified. Level ${currentLevel} passed (+50 XP).`;
-      statusText.style.color = '#10b981';
+      statusText.style.color = '#22C55E';
     }
     if (activeEngine && activeEngine.onSuccess) activeEngine.onSuccess(activeEngineCtx);
 
@@ -1702,7 +1711,7 @@ function runSimulation(state) {
     playSound('error');
     if (statusText) {
       statusText.textContent = messageText;
-      statusText.style.color = isError ? '#ef4444' : '#f59e0b';
+      statusText.style.color = isError ? '#EF4444' : '#F59E0B';
     }
   }
 
@@ -1751,7 +1760,7 @@ function runSimulation(state) {
       // All compiled, scripting & DB tracks execute live on /api/terminal/execute/
       if (statusText) {
         statusText.textContent = `Running ${activeGameLang} sandbox...`;
-        statusText.style.color = '#38bdf8';
+        statusText.style.color = '#818CF8';
       }
       const apiLang = activeGameLang === 'mysql' ? 'sql' : activeGameLang;
       fetch('/api/terminal/execute/', {
@@ -1793,7 +1802,7 @@ function runSimulation(state) {
     editor.value = mission.solution || mission.starter;
     if (statusText) {
       statusText.textContent = `Solution loaded for Mission ${currentLevel}. Verifying...`;
-      statusText.style.color = '#38bdf8';
+      statusText.style.color = '#818CF8';
     }
     executeSimulation();
   }
@@ -1804,7 +1813,7 @@ function runSimulation(state) {
     const statusText = document.getElementById('consoleStatusText');
     if (!statusText || !mission) return;
     statusText.textContent = `Hint: ${mission.hint || 'Verify mission requirements and run again.'}`;
-    statusText.style.color = '#f59e0b';
+    statusText.style.color = '#F59E0B';
     playSound('click');
   }
 
@@ -1885,7 +1894,7 @@ function runSimulation(state) {
         const statusText = document.getElementById('consoleStatusText');
         if (statusText) {
           statusText.textContent = 'Velocity boost applied to 3D matrix.';
-          statusText.style.color = '#38bdf8';
+          statusText.style.color = '#818CF8';
         }
         setTimeout(() => {
           rotationVelocity.x = 0.008;
@@ -1905,7 +1914,7 @@ function runSimulation(state) {
           const statusText = document.getElementById('consoleStatusText');
           if (statusText) {
             statusText.textContent = isShieldOn ? 'Shield barrier engaged.' : 'Shield barrier lowered.';
-            statusText.style.color = isShieldOn ? '#10b981' : 'var(--text-muted)';
+            statusText.style.color = isShieldOn ? '#22C55E' : 'var(--text-muted)';
           }
         }
       };
@@ -1922,7 +1931,7 @@ function runSimulation(state) {
         const statusText = document.getElementById('consoleStatusText');
         if (statusText) {
           statusText.textContent = 'Energy pulse discharged across telemetry sectors.';
-          statusText.style.color = '#a855f7';
+          statusText.style.color = '#F97316';
         }
       };
     }

@@ -10,83 +10,99 @@
        SECTION 1: EDITORIAL HERO + UNIFIED 16-LANGUAGE STUDIO
        ===================================================================== -->
   <section style="padding: 0.75rem 0 3.25rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 1.75rem;">
-      <div style="max-width: 780px;">
-        <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; color: #34d399; text-transform: uppercase; margin-bottom: 0.65rem;">
-          BAIUST CSE 324 &middot; INTERACTIVE POLYGLOT WORKSTATION
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 2rem; align-items: end; margin-bottom: 1.75rem;">
+      <div>
+        <div class="pill-shimmer" style="margin-bottom: 0.9rem;">
+          <span class="pulse-dot"></span>
+          <span>BAIUST CSE 324 &middot; INTERACTIVE ENGINEERING &amp; GAME STUDIO</span>
         </div>
-        <h1 style="font-size: clamp(1.95rem, 3.6vw, 3rem); font-weight: 800; line-height: 1.12; letter-spacing: -0.03em; color: var(--text-primary); margin: 0 0 0.85rem 0;">
-          Write code, run it in the browser, and learn through 1-minute visual guides &amp; 2D/3D games.
+        <h1 style="font-size: clamp(2.15rem, 3.8vw, 3.2rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.03em; color: var(--text-primary); margin: 0 0 0.9rem 0;">
+          Learn Real Code by <span class="editorial-serif">Building &amp; Playing</span> &mdash; Not Memorizing.
         </h1>
-        <p style="font-size: 1rem; line-height: 1.6; color: var(--text-secondary); margin: 0;">
-          16 programming tracks paired with step-by-step visual walkthroughs, an in-browser polyglot CLI compiler, and interactive coding games.
+        <p style="font-size: 1.02rem; line-height: 1.65; color: var(--text-secondary); margin: 0 0 1.35rem 0; max-width: 680px;">
+          16 programming tracks paired with 1-minute interactive visual guides, an in-browser polyglot CLI compiler, and 108 playable 2D &amp; 3D coding games.
         </p>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
+          <a href="{% url 'catalogue' %}" class="btn btn-primary" style="padding: 0.68rem 1.35rem; font-size: 0.9rem;">
+            Explore 16 Tracks &rarr;
+          </a>
+          <a href="{% url 'games_hub' %}" class="btn btn-ghost" style="padding: 0.68rem 1.2rem; font-size: 0.9rem;">
+            2D &amp; 3D Game Arena
+          </a>
+          <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.68rem 1.2rem; font-size: 0.9rem;">
+            Open Browser IDE
+          </a>
+        </div>
       </div>
 
-      <div style="display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center;">
-        <a href="{% url 'catalogue' %}" class="btn btn-primary" style="padding: 0.62rem 1.25rem; font-size: 0.88rem;">
-          Explore 16 Tracks &rarr;
-        </a>
-        <a href="{% url 'games_hub' %}" class="btn btn-ghost" style="padding: 0.62rem 1.1rem; font-size: 0.88rem;">
-          2D &amp; 3D Game Arena
-        </a>
-        <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.62rem 1.1rem; font-size: 0.88rem;">
-          Open Browser IDE
-        </a>
+      <!-- Tactile Editorial Metric Tiles -->
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem;">
+        <div style="padding: 1rem 1.1rem; background: var(--bg-surface); border: 1.5px solid var(--border-medium); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+          <div style="font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--accent); line-height: 1.1;">16</div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 0.35rem;">Languages</div>
+        </div>
+        <div style="padding: 1rem 1.1rem; background: var(--bg-surface); border: 1.5px solid var(--border-medium); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+          <div style="font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--accent-secondary); line-height: 1.1;">{{ total_lessons|default:99 }}</div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 0.35rem;">Short Lessons</div>
+        </div>
+        <div style="padding: 1rem 1.1rem; background: var(--bg-surface); border: 1.5px solid var(--border-medium); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+          <div style="font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--warning); line-height: 1.1;">108</div>
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 0.35rem;">2D &amp; 3D Games</div>
+        </div>
       </div>
     </div>
 
-    <!-- Compact Inline Telemetry Bar -->
-    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; padding: 0.65rem 1rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 8px; margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); align-items: center; justify-content: space-between;">
-      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center;">
-        <span><strong style="color: var(--text-primary);">16</strong> Languages</span>
-        <span>&middot;</span>
-        <span><strong style="color: var(--text-primary);">{{ total_lessons|default:99 }}</strong> Short Lessons</span>
-        <span>&middot;</span>
-        <span><strong style="color: var(--text-primary);">108</strong> 2D/3D Games</span>
-        <span>&middot;</span>
-        <span><strong style="color: #34d399;">Browser CLI</strong> Compiler</span>
-      </div>
-      {% if recent_lesson %}
-      <div style="display: flex; align-items: center; gap: 0.65rem;">
-        <span style="color: var(--text-secondary);">Active: <strong>{{ recent_lesson.title }}</strong></span>
-        <a href="{% url 'lesson_detail' recent_lesson.course.slug recent_lesson.slug %}" style="color: #34d399; font-weight: 700; text-decoration: none;">Resume &rarr;</a>
-      </div>
-      {% endif %}
+    {% if recent_lesson %}
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.65rem 1rem; background: var(--bg-surface-elevated); border: 1.5px solid var(--border-medium); border-radius: var(--radius-sm); margin-bottom: 1.35rem; font-family: var(--font-mono); font-size: 0.78rem;">
+      <span style="color: var(--text-secondary);">Active Track: <strong style="color: var(--text-primary);">{{ recent_lesson.title }}</strong></span>
+      <a href="{% url 'lesson_detail' recent_lesson.course.slug recent_lesson.slug %}" style="color: var(--accent); font-weight: 700; text-decoration: none;">Resume Lesson &rarr;</a>
     </div>
+    {% endif %}
 
     <!-- Unified Interactive 16-Language Visual + Compiler + 2D/3D Game Studio -->
-    <div class="cq-card" style="padding: 1.35rem 1.5rem; border: 1px solid var(--border-medium); background: var(--bg-surface);">
-      <!-- 4-Step Studio Architecture Strip -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.55rem; margin-bottom: 1rem;">
-        <div style="padding: 0.5rem 0.7rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-left: 3px solid #38bdf8; border-radius: 6px;">
-          <div style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; color: #38bdf8;">01 &middot; 60S VISUAL SYNC</div>
-          <div style="font-size: 0.74rem; color: var(--text-secondary);">Scrimba &amp; Fireship interactive playback</div>
+    <div class="cq-card" style="padding: 1.5rem 1.65rem; border: 2px solid var(--border-strong); background: var(--bg-surface); box-shadow: var(--shadow-lg);">
+      <!-- Tactile 4-Step Editorial Ribbon -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.65rem; margin-bottom: 1.15rem;">
+        <div style="padding: 0.6rem 0.8rem; background: var(--bg-surface-elevated); border: 1.5px solid var(--border-medium); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 0.25rem;">
+          <div style="display: flex; align-items: center; gap: 0.45rem;">
+            <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--accent); color: #ffffff;">01</span>
+            <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-primary);">WATCH 60S SYNC</span>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">Interactive visual playback</div>
         </div>
-        <div style="padding: 0.5rem 0.7rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-left: 3px solid #a855f7; border-radius: 6px;">
-          <div style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; color: #a855f7;">02 &middot; CS50 ANATOMY</div>
-          <div style="font-size: 0.74rem; color: var(--text-secondary);">Live DOM, Memory Stack &amp; Event Loop</div>
+        <div style="padding: 0.6rem 0.8rem; background: var(--bg-surface-elevated); border: 1.5px solid var(--border-medium); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 0.25rem;">
+          <div style="display: flex; align-items: center; gap: 0.45rem;">
+            <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--accent-secondary); color: #ffffff;">02</span>
+            <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-primary);">CODE 16 LANGS</span>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">Browser polyglot compiler &amp; CLI</div>
         </div>
-        <div style="padding: 0.5rem 0.7rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-left: 3px solid #10b981; border-radius: 6px;">
-          <div style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; color: #10b981;">03 &middot; 16-LANG SANDBOX</div>
-          <div style="font-size: 0.74rem; color: var(--text-secondary);">Real Polyglot Compiler, SQL &amp; CLI</div>
+        <div style="padding: 0.6rem 0.8rem; background: var(--bg-surface-elevated); border: 1.5px solid var(--border-medium); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 0.25rem;">
+          <div style="display: flex; align-items: center; gap: 0.45rem;">
+            <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--warning); color: #ffffff;">03</span>
+            <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-primary);">PLAY 2D &amp; 3D GAMES</span>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">Drive canvas &amp; WebGL mechanics</div>
         </div>
-        <div style="padding: 0.5rem 0.7rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-left: 3px solid #f59e0b; border-radius: 6px;">
-          <div style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; color: #f59e0b;">04 &middot; 2D/3D + 3-TIER JUDGE</div>
-          <div style="font-size: 0.74rem; color: var(--text-secondary);">CodinGame arena &amp; LeetCode tests</div>
+        <div style="padding: 0.6rem 0.8rem; background: var(--bg-surface-elevated); border: 1.5px solid var(--border-medium); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 0.25rem;">
+          <div style="display: flex; align-items: center; gap: 0.45rem;">
+            <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--success); color: #ffffff;">04</span>
+            <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-primary);">PROVE &amp; EARN XP</span>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">3-tier tests &amp; public certificates</div>
         </div>
       </div>
 
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--border-subtle);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; padding-bottom: 0.85rem; border-bottom: 1.5px solid var(--border-subtle);">
         <div>
           <div style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
             UNIFIED 16-LANGUAGE STUDIO &middot; VISUAL GUIDE + LIVE COMPILER + 2D/3D GAME
           </div>
-          <h2 id="heroSelectedLangTitle" style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; margin: 0.25rem 0 0;">
+          <h2 id="heroSelectedLangTitle" style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; margin: 0.25rem 0 0;">
             Python 3 &middot; 1-Minute Visual Guide &amp; 2D/3D Studio
           </h2>
         </div>
-        <button type="button" id="heroRunTerminalBtn" class="btn btn-primary" style="padding: 0.5rem 1.15rem; font-size: 0.84rem; font-family: var(--font-mono);">
+        <button type="button" id="heroRunTerminalBtn" class="btn btn-primary" style="padding: 0.55rem 1.2rem; font-size: 0.84rem; font-family: var(--font-mono);">
           &#9654; Run Code &amp; Execute Game
         </button>
       </div>
@@ -100,31 +116,38 @@
         <!-- Left Column: 1-Minute Visual Walkthrough + 2D/3D Game Canvas -->
         <div>
           <div id="heroMicroVideoPlayer"></div>
-          <div style="background: #090c10; border: 1px solid var(--border-medium); border-radius: 10px; overflow: hidden;">
+          <div style="background: #181512; border: 1.5px solid var(--border-strong); border-radius: 10px; overflow: hidden;">
             <canvas id="heroLiveGameCanvas" height="215" style="width: 100%; height: 215px; display: block;"></canvas>
           </div>
         </div>
 
         <!-- Right Column: Polyglot Code Editor, CLI Bar, and Live Output -->
         <div style="display: flex; flex-direction: column; gap: 0.85rem;">
-          <div style="background: #090c10; border: 1px solid var(--border-medium); border-radius: 10px; overflow: hidden;">
-            <div style="padding: 0.55rem 0.9rem; background: #10151d; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.74rem;">
-              <span id="heroCliPrompt" style="color: #8b949e;">$ python3 rover_move.py</span>
-              <span style="color: #34d399; font-weight: 700;">EDITOR</span>
+          <div style="background: #181512; border: 1.5px solid var(--border-strong); border-radius: 10px; overflow: hidden;">
+            <div style="padding: 0.55rem 0.9rem; background: #241F1B; border-bottom: 1px solid rgba(250, 247, 242, 0.08); display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.74rem;">
+              <div style="display: flex; align-items: center; gap: 0.65rem;">
+                <span style="display: inline-flex; gap: 0.32rem;">
+                  <span style="width: 9px; height: 9px; border-radius: 50%; background: #D94E28;"></span>
+                  <span style="width: 9px; height: 9px; border-radius: 50%; background: #F59E0B;"></span>
+                  <span style="width: 9px; height: 9px; border-radius: 50%; background: #22C55E;"></span>
+                </span>
+                <span id="heroCliPrompt" style="color: #D6D0C4;">$ python3 rover_move.py</span>
+              </div>
+              <span style="color: #FB923C; font-weight: 700;">EDITOR</span>
             </div>
-            <textarea id="heroTerminalCodeInput" spellcheck="false" style="width: 100%; height: 245px; background: #090c10; color: #e2e8f0; border: none; padding: 0.9rem 1rem; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; outline: none; resize: vertical;" aria-label="Studio code editor"></textarea>
-            <div style="padding: 0.55rem 0.9rem; background: #0d1117; border-top: 1px solid var(--border-subtle); display: flex; gap: 0.5rem; align-items: center;">
-              <span style="font-family: var(--font-mono); color: #38bdf8; font-weight: 700; font-size: 0.8rem;">$</span>
-              <input id="heroCliInput" type="text" placeholder="Run CLI command (e.g. help, python3 main.py, mysql, mongosh)..." style="flex: 1; background: transparent; border: none; color: #f0f6fc; font-family: var(--font-mono); font-size: 0.78rem; outline: none;" aria-label="Terminal CLI command" />
+            <textarea id="heroTerminalCodeInput" spellcheck="false" style="width: 100%; height: 245px; background: #181512; color: #FAF7F2; border: none; padding: 0.9rem 1rem; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; outline: none; resize: vertical;" aria-label="Studio code editor"></textarea>
+            <div style="padding: 0.55rem 0.9rem; background: #211D18; border-top: 1px solid rgba(250, 247, 242, 0.08); display: flex; gap: 0.5rem; align-items: center;">
+              <span style="font-family: var(--font-mono); color: #FB923C; font-weight: 700; font-size: 0.8rem;">$</span>
+              <input id="heroCliInput" type="text" placeholder="Run CLI command (e.g. help, python3 main.py, mysql, mongosh)..." style="flex: 1; background: transparent; border: none; color: #FAF7F2; font-family: var(--font-mono); font-size: 0.78rem; outline: none;" aria-label="Terminal CLI command" />
             </div>
           </div>
 
-          <div style="padding: 0.85rem 1rem; background: #090c10; border: 1px solid var(--border-medium); border-radius: 10px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; font-family: var(--font-mono); font-size: 0.7rem; color: #8b949e; font-weight: 700; text-transform: uppercase;">
+          <div style="padding: 0.85rem 1rem; background: #181512; border: 1.5px solid var(--border-strong); border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; font-family: var(--font-mono); font-size: 0.7rem; color: #9C9488; font-weight: 700; text-transform: uppercase;">
               <span>Compiler &amp; Execution Stdout</span>
-              <span style="color: #34d399;">SANDBOX READY</span>
+              <span style="color: #FB923C;">SANDBOX READY</span>
             </div>
-            <pre id="heroTerminalOutput" style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem; color: #34d399; white-space: pre-wrap; min-height: 130px; max-height: 175px; overflow-y: auto; line-height: 1.55;"></pre>
+            <pre id="heroTerminalOutput" style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem; color: #FAF7F2; white-space: pre-wrap; min-height: 130px; max-height: 175px; overflow-y: auto; line-height: 1.55;"></pre>
           </div>
         </div>
 
@@ -180,16 +203,17 @@
            style="justify-content: space-between; padding: 1.35rem;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.45rem;">
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--text-muted);">#{{ forloop.counter|stringformat:"02d" }}</span>
               <span class="dev-monogram">{{ course.language.slug|upper|slice:":5" }}</span>
               <span class="dev-tag">{{ course.level }}</span>
             </div>
-            <span style="font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700; color: #34d399;">
+            <span style="font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700; color: var(--accent);">
               +{{ course.xp_reward }} XP
             </span>
           </div>
 
-          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.45rem 0; letter-spacing: -0.015em;">
+          <h3 style="font-size: 1.12rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.45rem 0; letter-spacing: -0.015em;">
             <a href="{% url 'course_detail' course.slug %}" style="color: inherit; text-decoration: none;">
               {{ course.title }}
             </a>
@@ -207,7 +231,7 @@
 
         <div style="padding-top: 0.85rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.76rem;">
           <span style="color: var(--text-muted);">{{ course.lessons.count }} Lessons &middot; {{ course.total_minutes }}m</span>
-          <a href="{% url 'course_detail' course.slug %}" style="color: #34d399; font-weight: 700; text-decoration: none;">
+          <a href="{% url 'course_detail' course.slug %}" style="color: var(--accent); font-weight: 700; text-decoration: none;">
             Start Track &rarr;
           </a>
         </div>
@@ -241,7 +265,7 @@
       <a href="{% url 'game_play' 'rover-3d' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.35);">3D WebGL</span>
+            <span class="dev-monogram" style="color: var(--accent-secondary); background: rgba(43, 76, 126, 0.12); border-color: rgba(43, 76, 126, 0.3);">3D WebGL</span>
             <span class="dev-tag">Python / Loops</span>
           </div>
           <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">Rover 3D Pathfinder</h3>
@@ -249,14 +273,14 @@
         </div>
         <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
           <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: #34d399; font-weight: 700;">Launch Game &rarr;</span>
+          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
         </div>
       </a>
 
       <a href="{% url 'game_play' 'flexbox-pond' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: #34d399; border-color: rgba(52, 211, 153, 0.35);">2D Canvas</span>
+            <span class="dev-monogram">2D Canvas</span>
             <span class="dev-tag">HTML5 / CSS3</span>
           </div>
           <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">Flexbox Frog Pond</h3>
@@ -264,14 +288,14 @@
         </div>
         <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
           <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: #34d399; font-weight: 700;">Launch Game &rarr;</span>
+          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
         </div>
       </a>
 
       <a href="{% url 'game_play' 'cyber-crime-detective' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: #fbbf24; border-color: rgba(251, 191, 36, 0.35);">SQL Engine</span>
+            <span class="dev-monogram" style="color: var(--warning); background: var(--warning-subtle); border-color: rgba(180, 83, 9, 0.3);">SQL Engine</span>
             <span class="dev-tag">SQL / PHP / DB</span>
           </div>
           <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">SQL Cyber Detective</h3>
@@ -279,14 +303,14 @@
         </div>
         <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
           <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: #34d399; font-weight: 700;">Launch Game &rarr;</span>
+          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
         </div>
       </a>
 
       <a href="{% url 'game_play' 'drone-flight-3d' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.35);">3D WebGL</span>
+            <span class="dev-monogram" style="color: var(--accent-secondary); background: rgba(43, 76, 126, 0.12); border-color: rgba(43, 76, 126, 0.3);">3D WebGL</span>
             <span class="dev-tag">JS / C / Rust</span>
           </div>
           <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">3D Drone Flight Sim</h3>
@@ -294,14 +318,14 @@
         </div>
         <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
           <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: #34d399; font-weight: 700;">Launch Game &rarr;</span>
+          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
         </div>
       </a>
 
       <a href="{% url 'game_play' 'city-builder-3d' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.35);">3D WebGL</span>
+            <span class="dev-monogram" style="color: var(--accent-secondary); background: rgba(43, 76, 126, 0.12); border-color: rgba(43, 76, 126, 0.3);">3D WebGL</span>
             <span class="dev-tag">Java / OOP / React</span>
           </div>
           <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">3D Voxel City Builder</h3>
@@ -309,14 +333,14 @@
         </div>
         <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
           <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: #34d399; font-weight: 700;">Launch Game &rarr;</span>
+          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
         </div>
       </a>
 
       <a href="{% url 'game_play' 'quantum-cube-3d' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.35);">3D WebGL</span>
+            <span class="dev-monogram" style="color: var(--accent-secondary); background: rgba(43, 76, 126, 0.12); border-color: rgba(43, 76, 126, 0.3);">3D WebGL</span>
             <span class="dev-tag">AI / Algorithms</span>
           </div>
           <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">Quantum Logic Cube 3D</h3>
@@ -324,7 +348,7 @@
         </div>
         <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
           <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: #34d399; font-weight: 700;">Launch Game &rarr;</span>
+          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
         </div>
       </a>
     </div>
@@ -340,15 +364,15 @@
       <div class="cq-card" style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: #fbbf24; border-color: rgba(251, 191, 36, 0.35);">CONTESTS</span>
-            <a href="{% url 'contests_hub' %}" style="font-family: var(--font-mono); font-size: 0.76rem; color: #34d399; text-decoration: none; font-weight: 700;">All Contests &rarr;</a>
+            <span class="dev-monogram" style="color: var(--warning); background: var(--warning-subtle); border-color: rgba(180, 83, 9, 0.3);">CONTESTS</span>
+            <a href="{% url 'contests_hub' %}" style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--accent); text-decoration: none; font-weight: 700;">All Contests &rarr;</a>
           </div>
           <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.65rem 0;">Weekly Coding Competitions</h2>
           <div style="display: flex; flex-direction: column; gap: 0.5rem;">
             {% for contest in active_contests|slice:":3" %}
-            <a href="{% url 'contest_detail' contest.slug %}" style="display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0.75rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: 6px; text-decoration: none; font-size: 0.82rem;">
+            <a href="{% url 'contest_detail' contest.slug %}" style="display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0.75rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: 6px; text-decoration: none; font-size: 0.82rem;">
               <span style="color: var(--text-primary); font-weight: 600;">{{ contest.title }}</span>
-              <span style="font-family: var(--font-mono); font-size: 0.72rem; color: #fbbf24;">+{{ contest.xp_reward }} XP</span>
+              <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--warning); font-weight: 700;">+{{ contest.xp_reward }} XP</span>
             </a>
             {% empty %}
             <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">Live timed problems and batch leaderboards are open in the Contests hub.</p>
@@ -361,7 +385,7 @@
       <div class="cq-card" style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: #34d399; border-color: rgba(52, 211, 153, 0.35);">CREDENTIALS</span>
+            <span class="dev-monogram" style="color: var(--accent-secondary); background: rgba(43, 76, 126, 0.12); border-color: rgba(43, 76, 126, 0.3);">CREDENTIALS</span>
             <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">BAIUST CSE 324 Sessional</span>
           </div>
           <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.5rem 0;">Verifiable Track Certificates &amp; Workspace</h2>

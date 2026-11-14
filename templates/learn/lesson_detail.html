@@ -44,7 +44,7 @@
 
     <!-- Quick Action Controls -->
     <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
-      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.12); padding: 0.25rem 0.65rem; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.25);">
+      <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--success); font-weight: 700; background: var(--success-subtle); padding: 0.25rem 0.65rem; border-radius: 6px; border: 1px solid rgba(21, 128, 61, 0.25);">
         +{{ lesson.xp }} XP
       </span>
 
@@ -74,18 +74,18 @@
   </div>
 
   <!-- 4-Step Progressive Study Architecture Strip -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 0.5rem; margin-bottom: 1rem;">
-    <div style="padding: 0.45rem 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-left: 3px solid #10b981; border-radius: 6px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
-      <strong style="color: #34d399;">01 · 60S GUIDE</strong> Visual Mental Model
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 0.55rem; margin-bottom: 1rem;">
+    <div style="padding: 0.5rem 0.85rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 999px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
+      <strong style="color: var(--accent);">01 &middot; 60S GUIDE</strong> Visual Mental Model
     </div>
-    <div style="padding: 0.45rem 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-left: 3px solid #38bdf8; border-radius: 6px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
-      <strong style="color: #38bdf8;">02 · ANATOMY</strong> Syntax + CS50 Trace
+    <div style="padding: 0.5rem 0.85rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 999px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
+      <strong style="color: var(--accent-secondary);">02 &middot; ANATOMY</strong> Syntax + CS50 Trace
     </div>
-    <div style="padding: 0.45rem 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-left: 3px solid #f59e0b; border-radius: 6px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
-      <strong style="color: #fbbf24;">03 · CODE + GAME</strong> Live 2D/3D Split
+    <div style="padding: 0.5rem 0.85rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 999px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
+      <strong style="color: var(--warning);">03 &middot; CODE + GAME</strong> Live 2D/3D Split
     </div>
-    <div style="padding: 0.45rem 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-left: 3px solid #0284c7; border-radius: 6px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
-      <strong style="color: #38bdf8;">04 · 3-TIER JUDGE</strong> Normal · Edge · Stress
+    <div style="padding: 0.5rem 0.85rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 999px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">
+      <strong style="color: var(--success);">04 &middot; 3-TIER JUDGE</strong> Normal &middot; Edge &middot; Stress
     </div>
   </div>
 
@@ -108,16 +108,16 @@
     <!-- Dedicated Zen Studio HUD for Lessons (Visible only in Fullscreen Zen Mode) -->
     <div class="zen-hud-bar" id="lessonZenHud">
       <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 800; color: #ffffff; background: #059669; padding: 0.2rem 0.6rem; border-radius: 4px; letter-spacing: 0.04em;">
+        <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 800; color: #ffffff; background: var(--accent); padding: 0.2rem 0.6rem; border-radius: 4px; letter-spacing: 0.04em;">
           ZEN STUDY STUDIO
         </span>
         <span style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">
           {{ course.title }} &bull; {{ lesson.title }}
         </span>
-        <button id="zenSyllabusDrawerBtn" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); border-radius: 4px;" title="Jump to Course Lessons">
+        <button id="zenSyllabusDrawerBtn" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(217, 78, 40, 0.25); border-radius: 4px;" title="Jump to Course Lessons">
           &#9776; Lessons ({{ lesson.order }}/{{ all_lessons|length|default:course.lessons.count }})
         </button>
-        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.12); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.25);">
+        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--success); font-weight: 700; background: var(--success-subtle); padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid rgba(21, 128, 61, 0.25);">
           +{{ lesson.xp }} XP
         </span>
       </div>
@@ -180,15 +180,15 @@
           </div>
 
           <!-- Pillar 2: "Tips & Tricks" Memory Box (Pro Shortcuts & Common Traps) -->
-          <div class="cq-memory-box" style="margin: 1.5rem 0; padding: 1.15rem 1.35rem; border-radius: var(--radius-lg); background: rgba(245, 158, 11, 0.08); border: 1.5px solid rgba(245, 158, 11, 0.4); position: relative;">
+          <div class="cq-memory-box" style="margin: 1.5rem 0; padding: 1.15rem 1.35rem; border-radius: var(--radius-lg); background: var(--warning-subtle); border: 1.5px solid rgba(180, 83, 9, 0.35); position: relative;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
               <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; color: #090c10; background: #fbbf24; padding: 0.15rem 0.4rem; border-radius: 4px;">TIP</span>
-                <span style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #fbbf24;">
+                <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; color: #ffffff; background: var(--warning); padding: 0.15rem 0.45rem; border-radius: 4px;">TIP</span>
+                <span style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--warning);">
                   Tips &amp; Tricks &bull; Pro Shortcuts &amp; Common Traps
                 </span>
               </div>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; background: rgba(245, 158, 11, 0.15); padding: 0.15rem 0.45rem; border-radius: 4px;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--warning); background: rgba(180, 83, 9, 0.12); padding: 0.15rem 0.45rem; border-radius: 4px;">
                 Memory Anchor
               </span>
             </div>
@@ -219,12 +219,12 @@
           </div>
 
           <!-- Target Objective & Coding Task (Seamlessly visible together with lesson concept) -->
-          <div style="margin-top: 1.75rem; padding: 1.25rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-strong); border-left: 4px solid var(--accent); border-radius: var(--radius-md);">
+          <div style="margin-top: 1.75rem; padding: 1.25rem; background: var(--bg-surface-elevated); border: 1.5px solid var(--border-strong); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
               <div style="font-size: 0.8rem; font-family: var(--font-mono); font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">
                 TARGET OBJECTIVE &bull; WHAT TO CODE
               </div>
-              <button id="inlineFillSolutionBtn" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.2rem 0.65rem; color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); font-weight: 700;" title="Click to auto-populate solution into code editor">
+              <button id="inlineFillSolutionBtn" class="btn btn-ghost" style="font-size: 0.76rem; padding: 0.2rem 0.65rem; color: var(--success); border-color: rgba(21, 128, 61, 0.35); background: var(--success-subtle); font-weight: 700;" title="Click to auto-populate solution into code editor">
                 Auto-Fill Solution
               </button>
             </div>
@@ -237,7 +237,7 @@
               &bull; Press <kbd style="background: var(--bg-surface); padding: 0.1rem 0.35rem; border-radius: 3px; font-family: var(--font-mono); font-size: 0.72rem; border: 1px solid var(--border-medium);">Ctrl+Enter</kbd> to run tests and earn +{{ lesson.xp }} XP!
             </div>
             <div style="display: flex; justify-content: flex-end; align-items: center;">
-              <button id="inlineShowHintBtn" style="background: none; border: none; color: #f59e0b; cursor: pointer; font-size: 0.78rem; font-weight: 700; text-decoration: underline;">
+              <button id="inlineShowHintBtn" style="background: none; border: none; color: var(--warning); cursor: pointer; font-size: 0.78rem; font-weight: 700; text-decoration: underline;">
                 Need a hint? Toggle solution snippet
               </button>
             </div>
@@ -245,10 +245,10 @@
           <!-- Pillar 4: Post-Lesson Micro-Tasks (3 Automated Tiers) -->
           <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-              <div style="font-size: 0.8rem; font-family: var(--font-mono); font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em;">
+              <div style="font-size: 0.8rem; font-family: var(--font-mono); font-weight: 800; color: var(--accent-secondary); text-transform: uppercase; letter-spacing: 0.05em;">
                 POST-LESSON MICRO-TASKS (3 TEST TIERS)
               </div>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; background: rgba(245, 158, 11, 0.1); padding: 0.15rem 0.45rem; border-radius: 4px;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--warning); background: var(--warning-subtle); padding: 0.15rem 0.45rem; border-radius: 4px;">
                 +120 XP Pool
               </span>
             </div>
@@ -261,7 +261,7 @@
                     <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">
                       {{ mt.title }}
                     </div>
-                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 0.15rem 0.4rem; border-radius: 4px;">
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--success); font-weight: 700; background: var(--success-subtle); padding: 0.15rem 0.4rem; border-radius: 4px;">
                       +{{ mt.xp_reward }} XP
                     </span>
                   </div>
@@ -276,7 +276,7 @@
                       <button type="button" onclick="loadMicroTaskIntoEditor('{{ mt.starter_code|default:lesson.solution|escapejs }}', '{{ mt.title|escapejs }}', {{ mt.id }})" class="btn btn-ghost" style="padding: 0.25rem 0.55rem; font-size: 0.74rem; font-family: var(--font-mono);">
                         Load in Editor
                       </button>
-                      <button type="button" onclick="runMicroTask({{ mt.id }})" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); font-family: var(--font-mono);">
+                      <button type="button" onclick="runMicroTask({{ mt.id }})" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; color: var(--accent-secondary); border: 1px solid rgba(43, 76, 126, 0.3); font-family: var(--font-mono);">
                         Evaluate &rarr;
                       </button>
                     </div>
@@ -287,37 +287,37 @@
                 <div class="cq-card" id="mtCard_t1" style="padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated);">
                   <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Task 1: Core Syntax Check</div>
-                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">+30 XP</span>
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--success); font-weight: 700;">+30 XP</span>
                   </div>
                   <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Deterministic validation of core syntax patterns.</div>
                 </div>
                 <div class="cq-card" id="mtCard_t2" style="padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated);">
                   <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Task 2: Boundary Edge Case</div>
-                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #fbbf24; font-weight: 700;">+40 XP</span>
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--warning); font-weight: 700;">+40 XP</span>
                   </div>
                   <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Empty values and extreme array boundaries guarded.</div>
                 </div>
                 <div class="cq-card" id="mtCard_t3" style="padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: var(--bg-surface-elevated);">
                   <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Task 3: Mini Boss Stress Test</div>
-                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #ec4899; font-weight: 700;">+50 XP</span>
+                    <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700;">+50 XP</span>
                   </div>
                   <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">Sub-10ms latency execution verification.</div>
                 </div>
               {% endif %}
             </div>
           </div>
-            <div id="inlineHintBox" style="display: none; margin-top: 0.65rem; padding: 0.75rem 1rem; background: var(--warning-subtle); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; font-size: 0.82rem; color: var(--text-primary);">
-              <div style="font-weight: 700; color: #f59e0b; margin-bottom: 0.3rem;">Solution Blueprint:</div>
-              <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem; color: #38bdf8; background: #060913; padding: 0.5rem; border-radius: 4px; overflow-x: auto;"><code>{{ lesson.solution }}</code></pre>
+            <div id="inlineHintBox" style="display: none; margin-top: 0.65rem; padding: 0.75rem 1rem; background: var(--warning-subtle); border: 1px solid rgba(180, 83, 9, 0.3); border-radius: 4px; font-size: 0.82rem; color: var(--text-primary);">
+              <div style="font-weight: 700; color: var(--warning); margin-bottom: 0.3rem;">Solution Blueprint:</div>
+              <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem; color: #FAF7F2; background: #181512; padding: 0.5rem; border-radius: 4px; overflow-x: auto;"><code>{{ lesson.solution }}</code></pre>
             </div>
           </div>
         </div>
 
         <!-- Tab 2: Task & Objective -->
         <div id="studyTabTask" class="study-tab-content" style="display: none;">
-          <div style="padding: 1.25rem; background: var(--bg-panel); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 1.5rem;">
+          <div style="padding: 1.25rem; background: var(--bg-panel); border: 1.5px solid var(--border-medium); border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
             <div style="font-size: 0.8rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.4rem;">
               TARGET OBJECTIVE
             </div>
@@ -373,7 +373,7 @@
           <div id="modelPaneDom" class="model-pane-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted);">
               <span id="domStatsBadge">0 Elements &bull; Depth: 0</span>
-              <span style="color: #38bdf8;">HTML5 Living DOM</span>
+              <span style="color: var(--accent-secondary);">HTML5 Living DOM</span>
             </div>
             <div id="liveDomTreeContainer" style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 1rem; min-height: 220px; max-height: 400px; overflow-y: auto;">
               <!-- Populated live by DOM parser -->
@@ -387,14 +387,14 @@
           <div id="modelPaneBox" class="model-pane-content" style="display: none;">
             <div style="background: var(--bg-panel); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem; border: 1px solid var(--border-subtle);">
               <div class="box-model-preview" style="display: flex; justify-content: center; align-items: center;">
-                <div id="inBmMarginLayer" class="bm-layer bm-margin" style="background: rgba(245, 158, 11, 0.12); border: 1px dashed #f59e0b; padding: 24px; border-radius: 8px; text-align: center; transition: all 0.15s ease;">
-                  <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: #f59e0b; font-weight: 700; margin-bottom: 0.25rem;">Margin (<span id="inlineLabelMargin">24px</span>)</span>
-                  <div id="inBmBorderLayer" class="bm-layer bm-border" style="background: rgba(6, 182, 212, 0.15); border: 2px solid #06b6d4; border-radius: 6px; text-align: center; transition: all 0.15s ease;">
-                    <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: #06b6d4; font-weight: 700; margin-bottom: 0.25rem;">Border (<span id="inlineLabelBorder">2px</span>)</span>
-                    <div id="inBmPaddingLayer" class="bm-layer bm-padding" style="background: rgba(16, 185, 129, 0.15); padding: 20px; border-radius: 4px; text-align: center; transition: all 0.15s ease;">
-                      <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: #10b981; font-weight: 700; margin-bottom: 0.25rem;">Padding (<span id="inlineLabelPadding">20px</span>)</span>
-                      <div id="inBmContentLayer" class="bm-layer bm-content" style="background: rgba(99, 102, 241, 0.25); border: 1px solid #6366f1; padding: 0.5rem 1rem; border-radius: 4px; text-align: center; min-width: 140px;">
-                        <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #ffffff; font-weight: 700;">Content (240 × 56px)</span>
+                <div id="inBmMarginLayer" class="bm-layer bm-margin" style="background: rgba(180, 83, 9, 0.1); border: 1px dashed var(--warning); padding: 24px; border-radius: 8px; text-align: center; transition: all 0.15s ease;">
+                  <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: var(--warning); font-weight: 700; margin-bottom: 0.25rem;">Margin (<span id="inlineLabelMargin">24px</span>)</span>
+                  <div id="inBmBorderLayer" class="bm-layer bm-border" style="background: rgba(43, 76, 126, 0.12); border: 2px solid var(--accent-secondary); border-radius: 6px; text-align: center; transition: all 0.15s ease;">
+                    <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: var(--accent-secondary); font-weight: 700; margin-bottom: 0.25rem;">Border (<span id="inlineLabelBorder">2px</span>)</span>
+                    <div id="inBmPaddingLayer" class="bm-layer bm-padding" style="background: rgba(21, 128, 61, 0.12); padding: 20px; border-radius: 4px; text-align: center; transition: all 0.15s ease;">
+                      <span class="bm-label" style="display: block; font-size: 0.68rem; font-family: var(--font-mono); color: var(--success); font-weight: 700; margin-bottom: 0.25rem;">Padding (<span id="inlineLabelPadding">20px</span>)</span>
+                      <div id="inBmContentLayer" class="bm-layer bm-content" style="background: rgba(217, 78, 40, 0.22); border: 1px solid var(--accent); padding: 0.5rem 1rem; border-radius: 4px; text-align: center; min-width: 140px;">
+                        <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-primary); font-weight: 700;">Content (240 × 56px)</span>
                       </div>
                     </div>
                   </div>
@@ -423,25 +423,25 @@
             <!-- Sliders -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1rem;">
               <div>
-                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: #f59e0b;">
+                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: var(--warning);">
                   <span>Margin</span>
                   <span id="inlineValMargin">24px</span>
                 </label>
-                <input type="range" id="inlineInputMargin" min="0" max="48" value="24" style="width: 100%; accent-color: #f59e0b;" />
+                <input type="range" id="inlineInputMargin" min="0" max="48" value="24" style="width: 100%; accent-color: var(--warning);" />
               </div>
               <div>
-                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: #06b6d4;">
+                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: var(--accent-secondary);">
                   <span>Border Width</span>
                   <span id="inlineValBorder">2px</span>
                 </label>
-                <input type="range" id="inlineInputBorder" min="0" max="12" value="2" style="width: 100%; accent-color: #06b6d4;" />
+                <input type="range" id="inlineInputBorder" min="0" max="12" value="2" style="width: 100%; accent-color: var(--accent-secondary);" />
               </div>
               <div>
-                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: #10b981;">
+                <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: var(--success);">
                   <span>Padding</span>
                   <span id="inlineValPadding">20px</span>
                 </label>
-                <input type="range" id="inlineInputPadding" min="0" max="48" value="20" style="width: 100%; accent-color: #10b981;" />
+                <input type="range" id="inlineInputPadding" min="0" max="48" value="20" style="width: 100%; accent-color: var(--success);" />
               </div>
               <div>
                 <label style="display: flex; justify-content: space-between; font-size: 0.74rem; font-family: var(--font-mono); margin-bottom: 0.25rem; color: var(--accent);">
@@ -492,7 +492,7 @@ margin: 24px; padding: 20px; border: 2px solid;
           <div id="modelPaneSchema" class="model-pane-content" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">
               <span>Relational Tables &bull; PostgreSQL / SQLite</span>
-              <span style="color: #10b981;">ACID Safe</span>
+              <span style="color: var(--success);">ACID Safe</span>
             </div>
             <div id="relationalTablesList" style="max-height: 340px; overflow-y: auto;">
               <!-- Populated by JS -->
@@ -516,7 +516,7 @@ margin: 24px; padding: 20px; border: 2px solid;
           <div id="modelPaneMemory" class="model-pane-content" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">
               <span>Memory Layout &bull; Stack Frames vs. Dynamic Heap</span>
-              <span style="color: #38bdf8;">64-bit Hex Pointers</span>
+              <span style="color: var(--accent-secondary);">64-bit Hex Pointers</span>
             </div>
 
             <!-- Memory Action Toolbar -->
@@ -527,10 +527,10 @@ margin: 24px; padding: 20px; border: 2px solid;
               <button id="memBtnPopStack" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono);">
                 - Pop Frame
               </button>
-              <button id="memBtnAllocHeap" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono); color: #10b981;">
+              <button id="memBtnAllocHeap" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono); color: var(--success);">
                 + malloc(64)
               </button>
-              <button id="memBtnFreeHeap" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono); color: #ef4444;">
+              <button id="memBtnFreeHeap" class="btn btn-ghost" style="padding: 0.2rem 0.6rem; font-size: 0.72rem; font-family: var(--font-mono); color: var(--danger);">
                 free()
               </button>
             </div>
@@ -538,7 +538,7 @@ margin: 24px; padding: 20px; border: 2px solid;
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
               <!-- Left: Stack Memory Segment (LIFO) -->
               <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem;">
-                <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #818cf8; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary); margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
                   <span>STACK MEMORY (LIFO)</span>
                   <span style="color: var(--text-muted); font-size: 0.68rem;">High &rarr; Low</span>
                 </div>
@@ -549,7 +549,7 @@ margin: 24px; padding: 20px; border: 2px solid;
 
               <!-- Right: Heap Memory Segment (Dynamic Allocations) -->
               <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.85rem;">
-                <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #34d399; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: var(--success); margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
                   <span>HEAP MEMORY (DYN)</span>
                   <span style="color: var(--text-muted); font-size: 0.68rem;">Low &rarr; High</span>
                 </div>
@@ -576,7 +576,7 @@ margin: 24px; padding: 20px; border: 2px solid;
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.5rem; margin-bottom: 0.75rem;">
               <!-- 1. Call Stack -->
               <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
-                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #818cf8; margin-bottom: 0.35rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary); margin-bottom: 0.35rem;">
                   CALL STACK (LIFO)
                 </div>
                 <div id="elCallStack" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
@@ -586,7 +586,7 @@ margin: 24px; padding: 20px; border: 2px solid;
 
               <!-- 2. Web APIs / Background -->
               <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
-                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b; margin-bottom: 0.35rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning); margin-bottom: 0.35rem;">
                   WEB APIS / IO
                 </div>
                 <div id="elWebApis" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
@@ -596,7 +596,7 @@ margin: 24px; padding: 20px; border: 2px solid;
 
               <!-- 3. Microtask Queue -->
               <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
-                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4; margin-bottom: 0.35rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); margin-bottom: 0.35rem;">
                   MICROTASK (Promises)
                 </div>
                 <div id="elMicrotasks" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
@@ -606,7 +606,7 @@ margin: 24px; padding: 20px; border: 2px solid;
 
               <!-- 4. Macrotask Queue -->
               <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem;">
-                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; margin-bottom: 0.35rem;">
+                <div style="font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: var(--success); margin-bottom: 0.35rem;">
                   TASK QUEUE (Timers)
                 </div>
                 <div id="elMacrotasks" style="min-height: 120px; font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
@@ -616,7 +616,7 @@ margin: 24px; padding: 20px; border: 2px solid;
             </div>
 
             <!-- Loop State Indicator -->
-            <div id="elLoopStatus" style="padding: 0.5rem 0.75rem; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 4px; font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-primary); display: flex; justify-content: space-between; align-items: center;">
+            <div id="elLoopStatus" style="padding: 0.5rem 0.75rem; background: var(--accent-secondary-subtle); border: 1px solid rgba(43, 76, 126, 0.25); border-radius: 4px; font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-primary); display: flex; justify-content: space-between; align-items: center;">
               <span>Loop Status: <strong style="color: var(--accent);">Waiting for next tick</strong></span>
               <span style="color: var(--text-muted); font-size: 0.7rem;">Priority: Microtasks &gt; Tasks</span>
             </div>
@@ -632,7 +632,7 @@ margin: 24px; padding: 20px; border: 2px solid;
           <!-- Knowledge Check Card -->
           <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-              <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: #a855f7; text-transform: uppercase;">
+              <span style="font-size: 0.76rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary); text-transform: uppercase;">
                 Knowledge Check &bull; Quick Concept Check
               </span>
               <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">
@@ -658,7 +658,7 @@ margin: 24px; padding: 20px; border: 2px solid;
                 Copy Snippet
               </button>
             </div>
-            <pre id="cheatSheetSnippet" style="background: #060913; border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.82rem; color: #38bdf8; overflow-x: auto; margin-bottom: 0.75rem;"><code>{{ lesson.solution }}</code></pre>
+            <pre id="cheatSheetSnippet" style="background: #181512; border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.82rem; color: #FAF7F2; overflow-x: auto; margin-bottom: 0.75rem;"><code>{{ lesson.solution }}</code></pre>
             <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
               <strong>Pro Tip:</strong> Re-type this pattern in the editor instead of copying to reinforce neural muscle memory.
             </div>
@@ -675,7 +675,7 @@ margin: 24px; padding: 20px; border: 2px solid;
             Reveal Next Hint
           </button>
 
-          <div id="hintDisplayBox" style="display: none; padding: 1rem 1.25rem; background: var(--warning-subtle); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-sm); font-size: 0.88rem; color: var(--text-primary); line-height: 1.6;">
+          <div id="hintDisplayBox" style="display: none; padding: 1rem 1.25rem; background: var(--warning-subtle); border: 1px solid rgba(180, 83, 9, 0.3); border-radius: var(--radius-sm); font-size: 0.88rem; color: var(--text-primary); line-height: 1.6;">
           </div>
         </div>
 
@@ -708,7 +708,7 @@ margin: 24px; padding: 20px; border: 2px solid;
             <button id="resetCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.6rem; font-size: 0.76rem;" title="Reset Starter Code">
               ↺ Reset
             </button>
-            <button id="fillSolutionBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.76rem; color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); font-weight: 700;" title="Auto-fill verified solution code">
+            <button id="fillSolutionBtn" class="btn btn-ghost" style="padding: 0.25rem 0.65rem; font-size: 0.76rem; color: var(--success); border-color: rgba(21, 128, 61, 0.35); background: var(--success-subtle); font-weight: 700;" title="Auto-fill verified solution code">
               Fill Solution
             </button>
             <button id="runCodeBtn" class="btn btn-ghost" style="padding: 0.25rem 0.75rem; font-size: 0.76rem;" title="Run live sandboxed preview">
@@ -879,19 +879,19 @@ margin: 24px; padding: 20px; border: 2px solid;
       </div>
 
       <div>
-        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: #06b6d4;">
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: var(--accent-secondary);">
           <span>Border Width</span>
           <span id="labelBorder">2px</span>
         </label>
-        <input type="range" id="inputBorder" min="0" max="12" value="2" style="width: 100%; accent-color: #06b6d4;" />
+        <input type="range" id="inputBorder" min="0" max="12" value="2" style="width: 100%; accent-color: var(--accent-secondary);" />
       </div>
 
       <div>
-        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: #10b981;">
+        <label style="display: flex; justify-content: space-between; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 0.35rem; color: var(--success);">
           <span>Padding</span>
           <span id="labelPadding">20px</span>
         </label>
-        <input type="range" id="inputPadding" min="0" max="48" value="20" style="width: 100%; accent-color: #10b981;" />
+        <input type="range" id="inputPadding" min="0" max="48" value="20" style="width: 100%; accent-color: var(--success);" />
       </div>
 
       <div>
@@ -1210,7 +1210,7 @@ margin: 24px; padding: 20px; border: 2px solid;
       }
       var badge = document.getElementById('mtBadge_' + taskId);
       if (badge) {
-        badge.innerHTML = "<span style='color: #38bdf8;'>Loaded into Editor (" + (title || 'Task') + ")</span>";
+        badge.innerHTML = "<span style='color: var(--accent-secondary);'>Loaded into Editor (" + (title || 'Task') + ")</span>";
       }
       var runBtn = document.getElementById('runCodeBtn');
       if (runBtn) runBtn.click();
@@ -1220,7 +1220,7 @@ margin: 24px; padding: 20px; border: 2px solid;
     window.runMicroTask = function(taskId) {
       var card = document.getElementById('mtCard_' + taskId);
       var badge = document.getElementById('mtBadge_' + taskId);
-      if (badge) badge.innerHTML = "<span style='color: #f59e0b;'>Evaluating 3 test tiers...</span>";
+      if (badge) badge.innerHTML = "<span style='color: var(--warning);'>Evaluating 3 test tiers...</span>";
       fetch('/api/micro-task/check/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-CSRFToken': (function() {
@@ -1237,10 +1237,10 @@ margin: 24px; padding: 20px; border: 2px solid;
       .then(function(d) {
         if (d.passed) {
           if (card) {
-            card.style.borderColor = '#10b981';
-            card.style.background = 'rgba(16, 185, 129, 0.08)';
+            card.style.borderColor = 'var(--success)';
+            card.style.background = 'var(--success-subtle)';
           }
-          if (badge) badge.innerHTML = "<span style='color: #10b981; font-weight: bold;'>ALL 3 TIERS PASSED (+" + d.xp_awarded + " XP)</span>";
+          if (badge) badge.innerHTML = "<span style='color: var(--success); font-weight: bold;'>ALL 3 TIERS PASSED (+" + d.xp_awarded + " XP)</span>";
           var xpBadge = document.getElementById('xpCount');
           if (xpBadge) {
             var cur = parseInt(xpBadge.textContent.replace(/[^0-9]/g, '')) || 0;
@@ -1249,7 +1249,7 @@ margin: 24px; padding: 20px; border: 2px solid;
         }
       })
       .catch(function(e) {
-        if (badge) badge.innerHTML = "<span style='color: #ef4444;'>Evaluation error</span>";
+        if (badge) badge.innerHTML = "<span style='color: var(--danger);'>Evaluation error</span>";
       });
     };
 

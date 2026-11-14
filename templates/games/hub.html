@@ -13,10 +13,10 @@
         ARENA // 28 TASKS &bull; 108 CODING GAMES (1,080 LEVELS)
       </div>
       <div style="display: flex; gap: 0.65rem; align-items: center;">
-        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; background: var(--success-subtle); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
+        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--success); background: var(--success-subtle); border: 1px solid rgba(21, 128, 61, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
           54,000+ Total XP
         </span>
-        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(20, 184, 166, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
+        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(217, 78, 40, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
           108 Master Games &bull; 2D/3D Simulators
         </span>
       </div>
@@ -32,7 +32,7 @@
 
 
   <!-- INSTANT 2D & 3D MULTI-GAME STUDIO (6 Built-In 2D/3D Games + Live Code Trigger) -->
-  <div class="cq-card" style="margin-bottom: 2.25rem; padding: 1.35rem 1.5rem; border: 1px solid rgba(16, 185, 129, 0.3); background: var(--bg-surface);">
+  <div class="cq-card" style="margin-bottom: 2.25rem; padding: 1.35rem 1.5rem; border: 1.5px solid var(--border-medium); background: var(--bg-surface);">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
       <div>
         <div class="dev-tag" style="margin-bottom: 0.25rem;">
@@ -129,9 +129,9 @@
         <div id="taskDifficultyFilters" style="display: flex; gap: 0.35rem; align-items: center; font-size: 0.78rem; font-family: var(--font-mono);">
           <span style="color: var(--text-muted); margin-right: 0.25rem;">Level:</span>
           <button class="btn task-diff-pill active" data-task-diff="all" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px;">All</button>
-          <button class="btn btn-ghost task-diff-pill" data-task-diff="easy" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: #10b981;">Easy</button>
-          <button class="btn btn-ghost task-diff-pill" data-task-diff="medium" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: #f59e0b;">Medium</button>
-          <button class="btn btn-ghost task-diff-pill" data-task-diff="hard" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: #ef4444;">Hard</button>
+          <button class="btn btn-ghost task-diff-pill" data-task-diff="easy" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: var(--success);">Easy</button>
+          <button class="btn btn-ghost task-diff-pill" data-task-diff="medium" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: var(--warning);">Medium</button>
+          <button class="btn btn-ghost task-diff-pill" data-task-diff="hard" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: var(--danger);">Hard</button>
         </div>
 
       </div>
@@ -162,7 +162,7 @@
               {% else %}
                 <span class="task-badge-hard">Hard</span>
               {% endif %}
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); padding: 0.15rem 0.45rem; border-radius: 4px;">
+              <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning); background: var(--warning-subtle); border: 1px solid rgba(180, 83, 9, 0.25); padding: 0.15rem 0.45rem; border-radius: 4px;">
                 +{{ task.xp }} XP
               </span>
             </div>
@@ -302,7 +302,7 @@
             The 108 Coding Games Matrix (1,080 Playable Levels)
           </h2>
         </div>
-        <div style="font-size: 0.82rem; font-family: var(--font-mono); color: #10b981; background: var(--success-subtle); padding: 0.35rem 0.85rem; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.25);">
+        <div style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--success); background: var(--success-subtle); padding: 0.35rem 0.85rem; border-radius: 999px; border: 1px solid rgba(21, 128, 61, 0.25);">
           54,000+ Total Earnable XP
         </div>
       </div>
@@ -352,10 +352,10 @@
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
               <span style="font-size: 2.2rem; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));">{{ g.icon_svg }}</span>
               <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
-                <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(20, 184, 166, 0.25);">
+                <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(217, 78, 40, 0.25);">
                   #{{ g.order|stringformat:"03d" }} &bull; 10 Levels
                 </span>
-                <span style="font-size: 0.74rem; font-family: var(--font-mono); color: #10b981; font-weight: 700;">
+                <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--success); font-weight: 700;">
                   +{{ g.xp_per_win }} XP / win
                 </span>
               </div>
@@ -452,7 +452,7 @@
   <section class="arena-engine-section" data-engine="flexbox-pond" style="margin-bottom: 3.5rem;">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; text-transform: uppercase;">
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--success); text-transform: uppercase;">
           Engine 02 &bull; 20 Modern CSS Layout &amp; Alignment Levels
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
@@ -470,7 +470,7 @@
       <a href="{% url 'game_play' 'flexbox-pond' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="css flexbox grid layout align justify {% if forloop.counter <= 10 %}flexbox{% else %}grid{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #10b981;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--success);">
               Level {{ forloop.counter|stringformat:"02d" }} &bull; {% if forloop.counter <= 10 %}Flexbox{% else %}CSS Grid{% endif %}
             </span>
             <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
@@ -503,7 +503,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Reactive Water Canvas</span>
-          <span style="color: #10b981; font-weight: 700;">Play Level &rarr;</span>
+          <span style="color: var(--success); font-weight: 700;">Play Level &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -515,7 +515,7 @@
   <section class="arena-engine-section" data-engine="bug-hunt" style="margin-bottom: 3.5rem;">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #ef4444; text-transform: uppercase;">
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--danger); text-transform: uppercase;">
           Engine 03 &bull; 20 Real-World Code Review &amp; Debugging Missions
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
@@ -533,7 +533,7 @@
       <a href="{% url 'game_play' 'bug-hunt' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="debug bug review {% if forloop.counter in '1,6,9,13,16,20' %}python{% elif forloop.counter in '2,7,10,14,17' %}javascript{% elif forloop.counter in '5,12,18' %}sql{% elif forloop.counter in '4,15' %}css{% elif forloop.counter == 3 %}html{% elif forloop.counter in '8,19' %}c{% elif forloop.counter == 11 %}java{% else %}php{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #ef4444;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--danger);">
               Mission {{ forloop.counter|stringformat:"02d" }}
             </span>
             <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
@@ -566,7 +566,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Click Line to Triage</span>
-          <span style="color: #ef4444; font-weight: 700;">Spot Bug &rarr;</span>
+          <span style="color: var(--danger); font-weight: 700;">Spot Bug &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -578,7 +578,7 @@
   <section class="arena-engine-section" data-engine="output-predictor" style="margin-bottom: 3.5rem;">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #a855f7; text-transform: uppercase;">
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary); text-transform: uppercase;">
           Engine 04 &bull; 20 Mental Model &amp; Scoping Evaluation Puzzles
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
@@ -596,7 +596,7 @@
       <a href="{% url 'game_play' 'output-predictor' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="output predict ast {% if forloop.counter in '1,6,8,11,14,17,20' %}python{% elif forloop.counter in '2,5,7,10,12,15,18' %}javascript{% elif forloop.counter in '3,9,16' %}sql{% else %}c{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #a855f7;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary);">
               Challenge {{ forloop.counter|stringformat:"02d" }}
             </span>
             <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
@@ -629,7 +629,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Evaluate STDOUT</span>
-          <span style="color: #a855f7; font-weight: 700;">Predict Output &rarr;</span>
+          <span style="color: var(--accent-secondary); font-weight: 700;">Predict Output &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -641,7 +641,7 @@
   <section class="arena-engine-section" data-engine="tag-match" style="margin-bottom: 3.5rem;">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; text-transform: uppercase;">
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning); text-transform: uppercase;">
           Engine 05 &bull; 20 Timed Semantic &amp; Web Syntax Speed Drills
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
@@ -659,7 +659,7 @@
       <a href="{% url 'game_play' 'tag-match' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="tag syntax match {% if forloop.counter <= 10 %}html semantic{% elif forloop.counter <= 13 %}css selector{% elif forloop.counter <= 16 %}http api{% elif forloop.counter <= 18 %}git{% else %}sql{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning);">
               Drill {{ forloop.counter|stringformat:"02d" }}
             </span>
             <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
@@ -692,7 +692,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Timed Recognition</span>
-          <span style="color: #fbbf24; font-weight: 700;">Match Token &rarr;</span>
+          <span style="color: var(--warning); font-weight: 700;">Match Token &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -704,7 +704,7 @@
   <section class="arena-engine-section" data-engine="rover-3d" style="margin-bottom: 3.5rem;">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #38bdf8; text-transform: uppercase;">
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary); text-transform: uppercase;">
           Engine 06 &bull; 15 Planetary Spatial Navigation &amp; Robotics Missions
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
@@ -722,7 +722,7 @@
       <a href="{% url 'game_play' 'rover-3d' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="rover 3d webgl space robotics {% if forloop.counter <= 7 %}mars{% elif forloop.counter <= 9 %}europa{% elif forloop.counter <= 11 %}titan{% elif forloop.counter == 12 %}enceladus{% elif forloop.counter == 13 %}moon{% elif forloop.counter == 14 %}asteroid{% else %}deep space{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #38bdf8;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary);">
               Mission {{ forloop.counter|stringformat:"02d" }}
             </span>
             <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
@@ -750,7 +750,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">WebGL Autonomous Scripting</span>
-          <span style="color: #38bdf8; font-weight: 700;">Pilot Mission &rarr;</span>
+          <span style="color: var(--accent-secondary); font-weight: 700;">Pilot Mission &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -762,7 +762,7 @@
   <section class="arena-engine-section" data-engine="grid-builder" style="margin-bottom: 3.5rem;">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4; text-transform: uppercase;">
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary); text-transform: uppercase;">
           Engine 07 &bull; 10 Responsive CSS Grid Wireframe Blueprints
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
@@ -779,7 +779,7 @@
       <a href="{% url 'game_play' 'grid-builder' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="css grid layout web wireframe frontend responsive" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary);">
               Blueprint {{ forloop.counter|stringformat:"02d" }}
             </span>
             <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
@@ -802,7 +802,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">CSS Grid 2D Matrix</span>
-          <span style="color: #06b6d4; font-weight: 700;">Snap Wireframe &rarr;</span>
+          <span style="color: var(--accent-secondary); font-weight: 700;">Snap Wireframe &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -813,7 +813,7 @@
   <section class="arena-engine-section" data-engine="sql-detective" style="margin-bottom: 3.5rem;">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b; text-transform: uppercase;">
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning); text-transform: uppercase;">
           Engine 08 &bull; 10 Relational Data Crime Mystery Cases
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
@@ -830,7 +830,7 @@
       <a href="{% url 'game_play' 'sql-detective' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="sql query database join select where detective crime forensic" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning);">
               Case {{ forloop.counter|stringformat:"02d" }}
             </span>
             <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
@@ -853,7 +853,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">In-Memory Relational Engine</span>
-          <span style="color: #f59e0b; font-weight: 700;">Solve Mystery &rarr;</span>
+          <span style="color: var(--warning); font-weight: 700;">Solve Mystery &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -864,7 +864,7 @@
   <section class="arena-engine-section" data-engine="canvas-blaster-2d" style="margin-bottom: 3.5rem;">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #ec4899; text-transform: uppercase;">
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase;">
           Engine 09 &bull; 10 HTML5 Canvas 2D Physics &amp; Game Loop Waves
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
@@ -881,7 +881,7 @@
       <a href="{% url 'game_play' 'canvas-blaster-2d' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="canvas 2d physics game loop velocity collision particle arcade" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #ec4899;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent);">
               Wave {{ forloop.counter|stringformat:"02d" }}
             </span>
             <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
@@ -904,7 +904,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">60 FPS Canvas Physics</span>
-          <span style="color: #ec4899; font-weight: 700;">Play Wave &rarr;</span>
+          <span style="color: var(--accent); font-weight: 700;">Play Wave &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -915,7 +915,7 @@
   <section class="arena-engine-section" data-engine="city-builder-3d" style="margin-bottom: 3.5rem;">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #8b5cf6; text-transform: uppercase;">
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary); text-transform: uppercase;">
           Engine 10 &bull; 10 WebGL 3D Spatial Geometry Missions
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
@@ -932,7 +932,7 @@
       <a href="{% url 'game_play' 'city-builder-3d' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="3d webgl threejs voxel city spatial coordinates geometry camera" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #8b5cf6;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary);">
               Phase {{ forloop.counter|stringformat:"02d" }}
             </span>
             <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
@@ -955,7 +955,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Three.js WebGL Engine</span>
-          <span style="color: #8b5cf6; font-weight: 700;">Build Phase &rarr;</span>
+          <span style="color: var(--accent-secondary); font-weight: 700;">Build Phase &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -966,7 +966,7 @@
   <section class="arena-engine-section" data-engine="regex-matrix" style="margin-bottom: 3.5rem;">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
       <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #10b981; text-transform: uppercase;">
+        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--success); text-transform: uppercase;">
           Engine 11 &bull; 10 Cyber Pattern Recognition Sectors
         </div>
         <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
@@ -983,7 +983,7 @@
       <a href="{% url 'game_play' 'regex-matrix' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="regex pattern regular expressions cybersecurity matrix packet token" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #10b981;">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--success);">
               Sector {{ forloop.counter|stringformat:"02d" }}
             </span>
             <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
@@ -1006,7 +1006,7 @@
         </div>
         <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
           <span style="color: var(--text-muted); font-family: var(--font-mono);">Matrix Pattern Stream</span>
-          <span style="color: #10b981; font-weight: 700;">Decode Sector &rarr;</span>
+          <span style="color: var(--success); font-weight: 700;">Decode Sector &rarr;</span>
         </div>
       </a>
       {% endfor %}
@@ -1090,11 +1090,11 @@
       <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
         <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
           <span style="color: var(--text-muted);">AVAILABLE REWARDS: </span>
-          <strong style="color: #fbbf24;">+{{ total_quests_xp|default:"2,700" }} XP</strong>
+          <strong style="color: var(--warning);">+{{ total_quests_xp|default:"2,700" }} XP</strong>
         </div>
         <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
           <span style="color: var(--text-muted);">CADENCE: </span>
-          <strong style="color: #10b981;">Daily at 00:00 UTC</strong>
+          <strong style="color: var(--success);">Daily at 00:00 UTC</strong>
         </div>
       </div>
     </div>
@@ -1134,7 +1134,7 @@
                 {{ q.difficulty }}
               </span>
             </div>
-            <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 800; color: #fbbf24; background: rgba(251, 191, 36, 0.1); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid rgba(251, 191, 36, 0.25);">
+            <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 800; color: var(--warning); background: var(--warning-subtle); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid rgba(180, 83, 9, 0.25);">
               +{{ q.xp }} XP
             </span>
           </div>
@@ -1155,12 +1155,12 @@
           <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; margin-bottom: 1.25rem;">
             <div style="display: flex; justify-content: space-between; font-size: 0.72rem; font-family: var(--font-mono); margin-bottom: 0.35rem;">
               <span style="color: var(--text-muted);">Objective Progress</span>
-              <span style="font-weight: 700; color: {% if q.is_completed %}#10b981{% else %}var(--accent){% endif %};">
+              <span style="font-weight: 700; color: {% if q.is_completed %}var(--success){% else %}var(--accent){% endif %};">
                 {% if q.is_completed %}✓ Completed{% else %}{{ q.progress_current }} / {{ q.progress_target }} {{ q.unit }}{% endif %}
               </span>
             </div>
-            <div class="lms-progress-track" style="height: 5px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden;">
-              <div style="height: 100%; width: {% if q.is_completed %}100%{% else %}{% widthratio q.progress_current q.progress_target 100 %}%{% endif %}; background: {% if q.is_completed %}#10b981{% else %}var(--accent-gradient-btn){% endif %}; border-radius: 999px;"></div>
+            <div class="lms-progress-track" style="height: 5px; background: var(--border-subtle); border-radius: 999px; overflow: hidden;">
+              <div style="height: 100%; width: {% if q.is_completed %}100%{% else %}{% widthratio q.progress_current q.progress_target 100 %}%{% endif %}; background: {% if q.is_completed %}var(--success){% else %}var(--accent-gradient-btn){% endif %}; border-radius: 999px;"></div>
             </div>
           </div>
 
@@ -1189,7 +1189,7 @@
             <span id="modalTaskId" style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); padding: 0.15rem 0.45rem; border-radius: 4px;">TASK</span>
             <span id="modalTaskCat" style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">Category</span>
             <span id="modalTaskDiff" class="task-badge-easy">Easy</span>
-            <span id="modalTaskXp" style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.1); padding: 0.15rem 0.45rem; border-radius: 4px;">+0 XP</span>
+            <span id="modalTaskXp" style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning); background: var(--warning-subtle); padding: 0.15rem 0.45rem; border-radius: 4px;">+0 XP</span>
           </div>
           <h2 id="modalTaskTitle" style="font-size: 1.45rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.02em;">
             Task Title

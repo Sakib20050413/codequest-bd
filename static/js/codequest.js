@@ -5,21 +5,21 @@
 (function (global) {
   'use strict';
 
-  // 1. Theme Management (Light / Dark)
+  // 1. Theme Management (Warm Editorial Paper Default / Espresso Dark Toggle)
   function initTheme() {
-    const saved = localStorage.getItem('cq_theme_v11') || 'dark';
+    const saved = localStorage.getItem('cq_theme_v14') || 'light';
     document.documentElement.setAttribute('data-theme', saved);
     const btn = document.getElementById('themeToggleBtn');
     if (btn) {
-      btn.textContent = saved === 'light' ? '☾' : '☀';
-      btn.setAttribute('aria-label', 'Switch to ' + (saved === 'light' ? 'Dark' : 'Light') + ' mode');
+      btn.textContent = saved === 'light' ? '☾ Dark' : '☀ Paper';
+      btn.setAttribute('aria-label', 'Switch to ' + (saved === 'light' ? 'Espresso Dark' : 'Paper Light') + ' mode');
       btn.onclick = function () {
-        const curr = document.documentElement.getAttribute('data-theme') || 'dark';
+        const curr = document.documentElement.getAttribute('data-theme') || 'light';
         const next = curr === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('cq_theme_v11', next);
-        btn.textContent = next === 'light' ? '☾' : '☀';
-        btn.setAttribute('aria-label', 'Switch to ' + (next === 'light' ? 'Dark' : 'Light') + ' mode');
+        localStorage.setItem('cq_theme_v14', next);
+        btn.textContent = next === 'light' ? '☾ Dark' : '☀ Paper';
+        btn.setAttribute('aria-label', 'Switch to ' + (next === 'light' ? 'Espresso Dark' : 'Paper Light') + ' mode');
         window.dispatchEvent(new CustomEvent('cq:theme-changed', { detail: { theme: next } }));
       };
     }

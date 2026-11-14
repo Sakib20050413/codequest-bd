@@ -524,10 +524,10 @@
       canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      // Rich Background Gradient
+      // Warm Espresso Canvas Backdrop
       const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-      bgGrad.addColorStop(0, "#090d16");
-      bgGrad.addColorStop(1, "#0f172a");
+      bgGrad.addColorStop(0, "#181512");
+      bgGrad.addColorStop(1, "#241F1B");
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, w, h);
 
@@ -535,13 +535,13 @@
       const is3D = state.dimension === "3d";
 
       // Top HUD Strip inside Canvas
-      ctx.fillStyle = "rgba(13, 17, 23, 0.92)";
+      ctx.fillStyle = "rgba(24, 21, 18, 0.94)";
       ctx.fillRect(0, 0, w, 30);
-      ctx.fillStyle = "#38bdf8";
+      ctx.fillStyle = "#818CF8";
       ctx.font = "700 11px 'JetBrains Mono', monospace";
       ctx.fillText((is3D ? "3D ENGINE // " : "2D ARCADE // ") + gInfo.label + " (" + meta.name + ")", 10, 19);
 
-      ctx.fillStyle = "#34d399";
+      ctx.fillStyle = "#FB923C";
       ctx.textAlign = "right";
       ctx.font = "700 10.5px 'JetBrains Mono', monospace";
       ctx.fillText(animProgress >= 0.9 ? "STATUS: READY (+35 XP)" : "STATUS: RUNNING...", w - 10, 19);
@@ -572,21 +572,21 @@
               drawIsoBlock(
                 ctx, isoX, isoY, tileW - 2, tileD - 2,
                 isGoal ? 10 : 6,
-                isGoal ? "#10b981" : (isPath ? "#0284c7" : "#1e293b"),
-                isGoal ? "#059669" : "#0f172a",
-                isGoal ? "#047857" : "#334155"
+                isGoal ? "#D94E28" : (isPath ? "#3B5BDB" : "#302B26"),
+                isGoal ? "#B83B1A" : "#241F1B",
+                isGoal ? "#9A3412" : "#443C35"
               );
               if (isGoal) {
                 // 3D Goal Beacon Pillar
-                drawIsoBlock(ctx, isoX, isoY - 10, 14, 8, 22, "#34d399", "#10b981", "#059669");
+                drawIsoBlock(ctx, isoX, isoY - 10, 14, 8, 22, "#FB923C", "#D94E28", "#9A3412");
               }
             }
           }
           // 3D Rover Vehicle
           const roverX = originX + (curr.c - curr.r) * (tileW / 2) - 45;
           const roverY = originY + (curr.c + curr.r) * (tileD / 2) - 6;
-          drawIsoBlock(ctx, roverX, roverY, 26, 14, 16, "#38bdf8", "#0284c7", "#0369a1");
-          ctx.fillStyle = "#ffffff";
+          drawIsoBlock(ctx, roverX, roverY, 26, 14, 16, "#818CF8", "#3B5BDB", "#2B4C7E");
+          ctx.fillStyle = "#FAF7F2";
           ctx.font = "700 9px 'JetBrains Mono', monospace";
           ctx.fillText("3D-BOT", roverX - 16, roverY - 22);
         } else {
@@ -600,12 +600,12 @@
               const x = sx + c * cw, y = sy + r * cw;
               const isGoal = (c === 6 && r === 2);
               const isVisited = pathWaypoints.slice(0, stepIdx + 1).some(p => p.c === c && p.r === r);
-              ctx.fillStyle = isGoal ? "rgba(16,185,129,0.35)" : (isVisited ? "rgba(56,189,248,0.28)" : "#1e293b");
+              ctx.fillStyle = isGoal ? "rgba(217, 78, 40, 0.35)" : (isVisited ? "rgba(129, 140, 248, 0.28)" : "#26221E");
               ctx.fillRect(x, y, cw - 4, cw - 4);
-              ctx.strokeStyle = isGoal ? "#10b981" : "#334155";
+              ctx.strokeStyle = isGoal ? "#D94E28" : "#443C35";
               ctx.strokeRect(x, y, cw - 4, cw - 4);
               if (isGoal) {
-                ctx.fillStyle = "#34d399";
+                ctx.fillStyle = "#FB923C";
                 ctx.font = "700 9px 'JetBrains Mono', monospace";
                 ctx.fillText("GOAL", x + 5, y + cw * 0.62);
               }
@@ -613,11 +613,11 @@
           }
           const rx = sx + curr.c * cw + (cw - 4) / 2;
           const ry = sy + curr.r * cw + (cw - 4) / 2;
-          ctx.fillStyle = "#10b981";
+          ctx.fillStyle = "#F97316";
           ctx.beginPath();
           ctx.arc(rx, ry, cw * 0.35, 0, Math.PI * 2);
           ctx.fill();
-          ctx.fillStyle = "#0f172a";
+          ctx.fillStyle = "#181512";
           ctx.font = "700 8.5px 'JetBrains Mono', monospace";
           ctx.fillText("BOT", rx - 9, ry + 3);
         }
@@ -854,8 +854,8 @@
     });
 
     root.innerHTML = `
-      <div style="background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:10px; overflow:hidden; margin-bottom:14px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 14px; background:var(--bg-surface-elevated); border-bottom:1px solid var(--border-medium); font-size:0.8rem;">
+      <div style="background:var(--bg-surface); border:1.5px solid var(--border-strong); border-radius:10px; overflow:hidden; margin-bottom:14px; box-shadow:var(--shadow-sm);">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 14px; background:var(--bg-surface-elevated); border-bottom:1.5px solid var(--border-medium); font-size:0.8rem;">
           <div style="font-family:var(--font-mono);">
             <strong style="color:var(--text-primary);">60S VISUAL GUIDE // ${titleText}</strong>
             <span style="color:var(--text-muted); margin-left:6px; font-size:0.74rem;">(${meta.name})</span>
@@ -873,7 +873,7 @@
           <div id="${containerId}_caption" style="padding:10px 14px; background:var(--bg-surface); border-top:1px solid var(--border-subtle); color:var(--text-primary); font-size:0.85rem; line-height:1.55;">
             <strong>${chapters[0].title}:</strong> ${chapters[0].caption}
           </div>
-          <div id="${containerId}_mentalModel" style="padding:7px 14px; background:rgba(16, 185, 129, 0.08); border-top:1px solid rgba(16, 185, 129, 0.22); color:#34d399; font-family:var(--font-mono); font-size:0.76rem; line-height:1.45;">
+          <div id="${containerId}_mentalModel" style="padding:7px 14px; background:var(--accent-subtle); border-top:1px solid rgba(217, 78, 40, 0.25); color:var(--accent); font-family:var(--font-mono); font-size:0.76rem; line-height:1.45;">
             <strong>WHY THIS WORKS:</strong> ${chapters[0].mentalModel}
           </div>
         </div>
@@ -885,7 +885,7 @@
               ${chapters.map((c, idx) => `<button type="button" data-ch="${idx}" class="btn btn-ghost" style="padding:3px 8px; font-size:0.72rem;">${c.title}</button>`).join("")}
             </div>
           </div>
-          <input type="range" id="${containerId}_scrub" min="0" max="60" value="0" style="width:120px; accent-color:#059669; cursor:pointer;" aria-label="Lesson timeline">
+          <input type="range" id="${containerId}_scrub" min="0" max="60" value="0" style="width:120px; accent-color:var(--accent); cursor:pointer;" aria-label="Lesson timeline">
         </div>
       </div>
     `;
@@ -931,23 +931,23 @@
       canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      ctx.fillStyle = "#0f172a";
+      ctx.fillStyle = "#181512";
       ctx.fillRect(0, 0, w, h);
 
       const chIdx = Math.min(3, Math.floor(sec / 15));
       const ch = chapters[chIdx];
 
-      ctx.fillStyle = "#34d399";
-      ctx.font = "700 12px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillStyle = "#FB923C";
+      ctx.font = "700 12px 'Space Grotesk', sans-serif";
       ctx.fillText(ch.title + " — " + titleText.slice(0, 48), 16, 23);
 
-      ctx.fillStyle = "#cbd5e1";
+      ctx.fillStyle = "#D6D0C4";
       ctx.font = "400 11.5px 'Plus Jakarta Sans', sans-serif";
       ctx.fillText(ch.caption.slice(0, 86), 16, 42);
 
-      ctx.fillStyle = "#1e293b";
+      ctx.fillStyle = "#241F1B";
       ctx.fillRect(16, 52, w - 32, 100);
-      ctx.strokeStyle = "#475569";
+      ctx.strokeStyle = "#443C35";
       ctx.lineWidth = 1;
       ctx.strokeRect(16, 52, w - 32, 100);
 
@@ -956,16 +956,16 @@
       codeLines.forEach(function (ln, idx) {
         const isCurrentLine = idx === (chIdx % Math.max(1, codeLines.length));
         if (isCurrentLine) {
-          ctx.fillStyle = "rgba(16, 185, 129, 0.2)";
+          ctx.fillStyle = "rgba(217, 78, 40, 0.24)";
           ctx.fillRect(18, 60 + idx * 21, w - 36, 19);
         }
-        ctx.fillStyle = isCurrentLine ? "#34d399" : "#e2e8f0";
+        ctx.fillStyle = isCurrentLine ? "#FB923C" : "#FAF7F2";
         ctx.fillText((idx + 1) + "  " + ln.slice(0, 68), 26, 74 + idx * 21);
       });
 
-      ctx.fillStyle = "#334155";
+      ctx.fillStyle = "#302B26";
       ctx.fillRect(0, h - 5, w, 5);
-      ctx.fillStyle = "#10b981";
+      ctx.fillStyle = "#D94E28";
       ctx.fillRect(0, h - 5, (sec / 60) * w, 5);
 
       captionEl.innerHTML = "<strong>" + ch.title + ":</strong> " + ch.caption;
@@ -974,8 +974,8 @@
       }
       root.querySelectorAll("[data-ch]").forEach(function (b) {
         const isCurr = parseInt(b.getAttribute("data-ch"), 10) === chIdx;
-        b.style.borderColor = isCurr ? "#10b981" : "";
-        b.style.color = isCurr ? "#34d399" : "";
+        b.style.borderColor = isCurr ? "var(--accent)" : "";
+        b.style.color = isCurr ? "var(--accent)" : "";
       });
       const sPad = sec < 10 ? "0" + sec : sec;
       timerEl.textContent = "Step " + (chIdx + 1) + " of 4 (0:" + sPad + " / 1:00)";
@@ -987,8 +987,8 @@
       voiceBtn.addEventListener("click", function () {
         voiceEnabled = !voiceEnabled;
         voiceBtn.textContent = voiceEnabled ? "Voice: ON" : "Voice: OFF";
-        voiceBtn.style.color = voiceEnabled ? "#34d399" : "var(--text-muted)";
-        voiceBtn.style.borderColor = voiceEnabled ? "#10b981" : "";
+        voiceBtn.style.color = voiceEnabled ? "var(--accent)" : "var(--text-muted)";
+        voiceBtn.style.borderColor = voiceEnabled ? "var(--accent)" : "";
         if (!voiceEnabled && "speechSynthesis" in window) {
           window.speechSynthesis.cancel();
         } else {
