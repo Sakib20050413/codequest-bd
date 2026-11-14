@@ -7,54 +7,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600;1,9..144,700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root, [data-theme="light"] {
-  /* Surfaces: Warm Editorial Paper */
-  --bg-canvas: #FAF7F2;
-  --bg-surface: #FFFFFF;
-  --bg-surface-elevated: #F3EFE6;
-  --bg-panel: #EAE4D7;
-  --bg-input: #FFFFFF;
-  --bg-glass: rgba(250, 247, 242, 0.92);
+  /* Surfaces: Lively Knowledge Engine (Tactile Modernist Pop) */
+  --bg-canvas: #f8f9ff;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #eff4ff;
+  --bg-panel: #e5eeff;
+  --bg-input: #ffffff;
+  --bg-glass: rgba(248, 249, 255, 0.92);
 
-  /* Crisp Structural Ink Borders */
-  --border-subtle: #E2DBD0;
-  --border-medium: #C8BFA8;
-  --border-strong: #161514;
-  --border-glow: rgba(217, 78, 40, 0.28);
-  --border-focus: #D94E28;
+  /* Crisp Structural Borders */
+  --border-subtle: #bbcabf;
+  --border-medium: #94a3b8;
+  --border-strong: #0b1c30;
+  --border-glow: rgba(16, 185, 129, 0.25);
+  --border-focus: #10b981;
 
-  /* High-Contrast Warm Ink Typography */
-  --text-primary: #161514;
-  --text-secondary: #3D3A36;
-  --text-muted: #6B665E;
-  --text-dim: #8C857B;
+  /* High-Contrast Ink Typography */
+  --text-primary: #0b1c30;
+  --text-secondary: #1e293b;
+  --text-muted: #3c4a42;
+  --text-dim: #6c7a71;
 
-  /* Brand Accents: Terracotta Vermilion & Royal Cobalt */
-  --accent: #D94E28;
-  --accent-hover: #B83B1A;
-  --accent-primary: #D94E28;
-  --accent-secondary: #2B4C7E;
-  --accent-glow: rgba(217, 78, 40, 0.14);
-  --accent-subtle: rgba(217, 78, 40, 0.10);
-  --accent-gradient: linear-gradient(135deg, #D94E28 0%, #2B4C7E 100%);
-  --accent-gradient-btn: linear-gradient(180deg, #E25831 0%, #C8411D 100%);
+  /* Brand Accents: Quest Emerald & Sky Blue */
+  --accent: #10b981;
+  --accent-hover: #006c49;
+  --accent-primary: #10b981;
+  --accent-secondary: #006591;
+  --accent-glow: rgba(16, 185, 129, 0.16);
+  --accent-subtle: rgba(16, 185, 129, 0.12);
+  --accent-gradient: linear-gradient(135deg, #10b981 0%, #0ea5e9 100%);
+  --accent-gradient-btn: linear-gradient(180deg, #10b981 0%, #006c49 100%);
 
   /* Semantic Status */
-  --success: #15803D;
-  --success-glow: rgba(21, 128, 61, 0.2);
-  --success-subtle: rgba(21, 128, 61, 0.10);
-  --warning: #B45309;
-  --warning-glow: rgba(180, 83, 9, 0.2);
-  --warning-subtle: rgba(180, 83, 9, 0.10);
-  --danger: #DC2626;
-  --danger-glow: rgba(220, 38, 38, 0.2);
-  --danger-subtle: rgba(220, 38, 38, 0.10);
+  --success: #006c49;
+  --success-glow: rgba(16, 185, 129, 0.2);
+  --success-subtle: rgba(16, 185, 129, 0.12);
+  --warning: #fea619;
+  --warning-glow: rgba(254, 166, 25, 0.2);
+  --warning-subtle: rgba(254, 166, 25, 0.14);
+  --danger: #ba1a1a;
+  --danger-glow: rgba(186, 26, 26, 0.2);
+  --danger-subtle: rgba(186, 26, 26, 0.10);
 
   /* Language Accents */
-  --lang-html: #D94E28;
-  --lang-css: #2B4C7E;
-  --lang-js: #B45309;
-  --lang-py: #15803D;
-  --lang-sql: #6D28D9;
+  --lang-html: #f59e0b;
+  --lang-css: #0ea5e9;
+  --lang-js: #fea619;
+  --lang-py: #10b981;
+  --lang-sql: #006591;
 
   /* Typography */
   --font-display: 'Space Grotesk', 'Plus Jakarta Sans', -apple-system, sans-serif;

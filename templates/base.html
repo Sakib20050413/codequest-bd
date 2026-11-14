@@ -1,300 +1,318 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}CodeQuest BD — Interactive Programming &amp; 2D/3D Game Studio{% endblock %}</title>
-  <meta name="description" content="Learn HTML, CSS, JavaScript, Python, and SQL through structured 3–7 minute interactive lessons, browser-based sandboxes, and automated verification." />
-  <meta name="keywords" content="learn programming, coding exercises, bite-sized lessons, interactive coding, web development, python, sql" />
-  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>{% block title %}CodeQuest LMS — Interactive Coding &amp; 2D/3D Game Studio{% endblock %}</title>
+  <meta name="description" content="Master software engineering by playing real 2D/3D games, 5-minute micro-lessons, automated AST verification, and verifiable credentials." />
   <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}" />
-  <link rel="apple-touch-icon" href="{% static 'img/logo-icon.svg' %}" />
-  
-  <!-- Typography: Space Grotesk, Fraunces Editorial Serif, Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600;1,9..144,700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-  
-  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=14.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary-fixed": "#6ffbbe",
+            "on-primary-fixed": "#002113",
+            "tertiary-fixed": "#c9e6ff",
+            "secondary": "#855300",
+            "inverse-on-surface": "#eaf1ff",
+            "outline": "#6c7a71",
+            "on-tertiary-container": "#003d59",
+            "on-primary": "#ffffff",
+            "primary-fixed-dim": "#4edea3",
+            "on-surface-variant": "#3c4a42",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed-variant": "#005236",
+            "background": "#f8f9ff",
+            "tertiary-fixed-dim": "#89ceff",
+            "secondary-container": "#fea619",
+            "on-background": "#0b1c30",
+            "on-secondary": "#ffffff",
+            "surface-dim": "#cbdbf5",
+            "surface-bright": "#f8f9ff",
+            "on-primary-container": "#00422b",
+            "secondary-fixed-dim": "#ffb95f",
+            "inverse-primary": "#4edea3",
+            "surface-container-highest": "#d3e4fe",
+            "surface-variant": "#d3e4fe",
+            "primary": "#006c49",
+            "surface-container-high": "#dce9ff",
+            "tertiary": "#006591",
+            "secondary-fixed": "#ffddb8",
+            "outline-variant": "#bbcabf",
+            "on-tertiary": "#ffffff",
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed": "#001e2f",
+            "surface": "#f8f9ff",
+            "on-secondary-fixed": "#2a1700",
+            "error-container": "#ffdad6",
+            "on-secondary-container": "#684000",
+            "primary-container": "#10b981",
+            "surface-container-low": "#eff4ff",
+            "surface-container": "#e5eeff",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed-variant": "#004c6e",
+            "on-surface": "#0b1c30",
+            "error": "#ba1a1a",
+            "on-secondary-fixed-variant": "#653e00",
+            "surface-tint": "#006c49",
+            "tertiary-container": "#23acf1",
+            "inverse-surface": "#213145"
+          },
+          borderRadius: {
+            DEFAULT: "1rem",
+            lg: "2rem",
+            xl: "3rem",
+            full: "9999px"
+          },
+          spacing: {
+            gutter: "1.25rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2.25rem",
+            margin: "1.5rem"
+          },
+          fontFamily: {
+            mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"]
+          },
+          fontSize: {
+            "label-sm": ["11px", { lineHeight: "14px", fontWeight: "800" }],
+            "label-lg": ["14px", { lineHeight: "18px", fontWeight: "700" }],
+            "headline-lg-mobile": ["24px", { lineHeight: "32px", fontWeight: "700" }],
+            "headline-md": ["22px", { lineHeight: "28px", fontWeight: "700" }],
+            "headline-xl": ["40px", { lineHeight: "48px", fontWeight: "800" }],
+            "body-md": ["15px", { lineHeight: "22px", fontWeight: "500" }],
+            "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "700" }],
+            "body-lg": ["18px", { lineHeight: "28px", fontWeight: "500" }],
+            "headline-xl-mobile": ["32px", { lineHeight: "40px", fontWeight: "800" }],
+            "label-md": ["12px", { lineHeight: "16px", fontWeight: "700" }],
+            "body-sm": ["13px", { lineHeight: "18px", fontWeight: "500" }],
+            "headline-lg": ["30px", { lineHeight: "38px", fontWeight: "700" }]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @layer base {
+      html, body { width: 100%; margin: 0; padding: 0; background-color: #f8f9ff; -webkit-tap-highlight-color: transparent; }
+      body { overscroll-behavior: none; min-height: max(884px, 100dvh); }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+    @keyframes floatGentle {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45); }
+      50% { box-shadow: 0 0 20px 4px rgba(16, 185, 129, 0.25); }
+    }
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(1000%); }
+    }
+    @keyframes radarSweep {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes shimmerPass {
+      0% { transform: translateX(-150%) skewX(-15deg); }
+      50%, 100% { transform: translateX(200%) skewX(-15deg); }
+    }
+    @keyframes blinkCursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .animate-float-gentle { animation: floatGentle 4.5s ease-in-out infinite; }
+    .animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+    .animate-scanline { animation: scanline 4s linear infinite; }
+    .animate-radar-sweep { animation: radarSweep 6s linear infinite; }
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      vertical-align: middle;
+      background-color: #006c49;
+      animation: blinkCursor 1s infinite;
+    }
+    .shimmer-btn { position: relative; overflow: hidden; }
+    .shimmer-btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+      transform: translateX(-150%) skewX(-20deg);
+      animation: shimmerPass 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      pointer-events: none;
+    }
+    .arena-shimmer { position: relative; overflow: hidden; }
+    .arena-shimmer::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(111, 251, 190, 0.12) 0%, transparent 60%);
+      animation: shimmerPass 7s infinite ease-in-out;
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
   {% block extra_head %}{% endblock %}
 </head>
-<body>
-  <div class="ambient-glow-top"></div>
-  <div class="ambient-grid"></div>
-
-  <header class="cq-header">
-    <div class="shell shell-wide">
-      <nav class="cq-nav" aria-label="Main Navigation">
-        
-        <a href="{% url 'landing' %}" class="brand-logo" aria-label="CodeQuest Home">
-          <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="32" class="logo-dark-theme" style="width: auto;" />
-          <img src="{% static 'img/logo-light.svg' %}" alt="CodeQuest BD" height="32" class="logo-light-theme" style="width: auto;" />
+<body class="bg-surface font-body-md text-on-surface min-h-screen flex flex-col antialiased selection:bg-primary selection:text-on-primary">
+  {% block stitch_full_page %}
+  <link rel="stylesheet" href="{% static 'css/codequest.css' %}?v=15.0" />
+  <div class="hidden md:block">
+    <header class="fixed top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+      <div class="h-20 max-w-7xl mx-auto px-margin flex items-center justify-between gap-gutter">
+        <a href="{% url 'landing' %}" class="flex items-center gap-space-sm shrink-0">
+          <div class="w-9 h-9 rounded-DEFAULT bg-primary flex items-center justify-center shadow-[0_3px_0_0_#00422b]">
+            <span class="material-symbols-outlined text-on-primary text-[20px]">auto_awesome</span>
+          </div>
+          <span class="font-headline-md text-headline-md text-on-surface tracking-tight ml-space-xs">CodeQuest</span>
+          <span class="px-space-sm py-space-xs rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase tracking-wide">LMS</span>
         </a>
-
-        <ul class="nav-links">
-          <li>
-            <a href="{% url 'catalogue' %}" class="nav-link {% if '/courses/' in request.path %}active{% endif %}">
-              Courses
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'games_hub' %}" class="nav-link {% if '/games/' in request.path or '/practice/' in request.path %}active{% endif %}">
-              Practice Arena
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'contests_hub' %}" class="nav-link {% if '/contests/' in request.path %}active{% endif %}">
-              Contests
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'certificates_hub' %}" class="nav-link {% if '/certificates/' in request.path or '/verify/' in request.path %}active{% endif %}">
-              Certificates
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'playground' %}" class="nav-link {% if '/playground/' in request.path %}active{% endif %}">
-              Playground
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'admin_panel' %}" class="nav-link {% if '/admin-panel/' in request.path %}active{% endif %}">
-              Admin
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'about_view' %}" class="nav-link {% if '/about/' in request.path %}active{% endif %}">
-              About
-            </a>
-          </li>
-        </ul>
-
-        <div class="nav-actions-cluster">
-          <div class="streak-pill desktop-only-stat" title="Daily Course Streak">
-            <span style="color: var(--text-muted); font-weight: 600;">COURSE</span>
-            <span id="streakCount">{{ course_streak|default:user_streak }}d</span>
+        <nav class="hidden md:flex items-center gap-space-xs">
+          <a class="px-space-md py-space-sm rounded-full font-label-md text-label-md {% if request.path == '/' %}bg-surface-container-high text-on-surface font-bold{% else %}text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface{% endif %} transition-all" href="{% url 'landing' %}">Overview</a>
+          <a class="px-space-md py-space-sm rounded-full font-label-md text-label-md {% if '/courses/' in request.path %}bg-surface-container-high text-on-surface font-bold{% else %}text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface{% endif %} transition-all" href="{% url 'catalogue' %}">LMS Courses</a>
+          <a class="px-space-md py-space-sm rounded-full font-label-md text-label-md {% if '/games/' in request.path %}bg-surface-container-high text-on-surface font-bold{% else %}text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface{% endif %} transition-all" href="{% url 'games_hub' %}">Gaming Arena</a>
+          <a class="px-space-md py-space-sm rounded-full font-label-md text-label-md {% if '/contests/' in request.path %}bg-surface-container-high text-on-surface font-bold{% else %}text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface{% endif %} transition-all" href="{% url 'contests_hub' %}">Tasks &amp; Contests</a>
+          <a class="px-space-md py-space-sm rounded-full font-label-md text-label-md {% if '/certificates/' in request.path or '/verify/' in request.path %}bg-surface-container-high text-on-surface font-bold{% else %}text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface{% endif %} transition-all" href="{% url 'certificates_hub' %}">Certificates</a>
+          <a class="px-space-md py-space-sm rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" href="{% url 'contests_hub' %}?tab=standings">Leaderboard</a>
+        </nav>
+        <div class="flex items-center gap-space-sm shrink-0">
+          <div class="hidden sm:flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-secondary-fixed text-on-secondary-fixed">
+            <span class="material-symbols-outlined text-[18px] text-secondary">local_fire_department</span>
+            <span class="font-label-md text-label-md">14 Days</span>
           </div>
-
-          <div class="streak-pill games-pill desktop-only-stat" title="Daily Game Streak">
-            <span style="color: var(--text-muted); font-weight: 600;">GAME</span>
-            <span id="gameStreakCount">{{ game_streak|default:5 }}d</span>
+          <div class="hidden md:flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-high text-on-surface">
+            <span class="material-symbols-outlined text-[18px] text-secondary-container">bolt</span>
+            <span class="font-label-md text-label-md">4,850 XP</span>
           </div>
-
-          <div class="xp-pill desktop-only-stat" title="Total XP Earned">
-            <span id="xpCount">{{ user_xp }}</span> XP
-          </div>
-
-          <button id="soundToggleBtn" style="display: none;" aria-hidden="true"></button>
-          <button id="fluidToggleBtn" style="display: none;" aria-hidden="true"></button>
-
-          <button id="themeToggleBtn" class="btn btn-ghost theme-pill-btn" title="Switch Paper Light / Espresso Dark Theme" aria-label="Switch to Dark mode">
-            ☾ Dark
-          </button>
-
-          {% if user.is_authenticated %}
-            <a href="{% url 'profile_view' %}" class="btn btn-ghost nav-auth-btn desktop-only-stat" style="padding: 0.4rem 0.85rem; font-size: 0.84rem;">
-              Profile
-            </a>
-            <a href="{% url 'logout_view' %}" class="btn btn-ghost desktop-only-stat" style="padding: 0.4rem 0.75rem; font-size: 0.84rem; color: var(--text-muted);">
-              Logout
-            </a>
-          {% else %}
-            <a href="{% url 'login_view' %}" class="btn btn-ghost nav-auth-btn desktop-only-stat" style="padding: 0.4rem 0.85rem; font-size: 0.84rem;">
-              Sign In
-            </a>
-            <a href="{% url 'signup_view' %}" class="btn btn-primary nav-auth-btn desktop-only-stat" style="padding: 0.4rem 0.95rem; font-size: 0.84rem;">
-              Get Started
-            </a>
-          {% endif %}
-
-          <button id="mobileMenuBtn" class="mobile-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-      </nav>
-    </div>
-  </header>
-
-  <div id="mobileNavDrawer" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
-    <div class="mobile-drawer-header">
-      <div class="mobile-drawer-stats">
-        <div class="streak-pill">
-          <span>COURSE {{ user_streak }}d</span>
-        </div>
-        <div class="xp-pill">
-          <span>{{ user_xp }} XP</span>
+          <a href="{% url 'certificates_hub' %}" class="relative flex items-center shrink-0">
+            <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+            </div>
+            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-primary-container ring-2 ring-surface-container-lowest"></span>
+          </a>
         </div>
       </div>
-      <button id="mobileDrawerCloseBtn" class="mobile-drawer-close" aria-label="Close menu">✕</button>
-    </div>
-
-    <div class="mobile-audio-toggle-bar" style="display: none;">
-      <button id="mobileSoundToggleBtn" class="btn btn-ghost">Sound</button>
-    </div>
-
-    <nav class="mobile-nav-menu">
-      <a href="{% url 'catalogue' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap dev-monogram">CRS</div>
-        <div class="menu-text-wrap">
-          <div class="menu-item-title">All Courses</div>
-          <div class="menu-item-desc">16 language tracks with interactive lessons</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </a>
-
-      <a href="{% url 'games_hub' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap dev-monogram">2D/3D</div>
-        <div class="menu-text-wrap">
-          <div class="menu-item-title">Practice Arena</div>
-          <div class="menu-item-desc">108 coding games &amp; 28 practical tasks</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </a>
-
-      <a href="{% url 'contests_hub' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap dev-monogram">LIVE</div>
-        <div class="menu-text-wrap">
-          <div class="menu-item-title">Competitions</div>
-          <div class="menu-item-desc">Weekly contests &amp; batch leaderboard</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </a>
-
-      <a href="{% url 'certificates_hub' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap dev-monogram">CERT</div>
-        <div class="menu-text-wrap">
-          <div class="menu-item-title">Certificates</div>
-          <div class="menu-item-desc">Verifiable credentials &amp; QR IDs</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </a>
-
-      <a href="{% url 'playground' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap dev-monogram">IDE</div>
-        <div class="menu-text-wrap">
-          <div class="menu-item-title">Playground</div>
-          <div class="menu-item-desc">16-language browser compiler &amp; CLI</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </a>
-
-      <a href="{% url 'admin_panel' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap dev-monogram">ADM</div>
-        <div class="menu-text-wrap">
-          <div class="menu-item-title">Admin Panel</div>
-          <div class="menu-item-desc">Curriculum DB &amp; evaluation controls</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </a>
-
-      <a href="{% url 'about_view' %}" class="mobile-menu-item">
-        <div class="menu-icon-wrap dev-monogram">DOC</div>
-        <div class="menu-text-wrap">
-          <div class="menu-item-title">About CodeQuest</div>
-          <div class="menu-item-desc">BAIUST CSE 324 architecture &amp; specs</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </a>
-    </nav>
-
-    <div class="mobile-auth-footer">
-      {% if user.is_authenticated %}
-        <a href="{% url 'profile_view' %}" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; font-weight: 700;">
-          Student Profile
-        </a>
-        <a href="{% url 'logout_view' %}" class="btn btn-ghost" style="width: 100%; justify-content: center; padding: 0.65rem; color: var(--danger); margin-top: 0.5rem;">
-          Sign Out
-        </a>
-      {% else %}
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-          <a href="{% url 'login_view' %}" class="btn btn-ghost" style="justify-content: center; padding: 0.75rem; font-weight: 600;">Sign In</a>
-          <a href="{% url 'signup_view' %}" class="btn btn-primary" style="justify-content: center; padding: 0.75rem; font-weight: 700;">Get Started</a>
-        </div>
-      {% endif %}
-    </div>
+    </header>
   </div>
 
-  <main style="flex: 1;">
+  <div class="block md:hidden">
+    <header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+      <div class="h-16 px-gutter flex items-center justify-between gap-space-sm">
+        <a href="{% url 'landing' %}" class="flex items-center gap-space-xs min-w-0">
+          <div class="w-9 h-9 rounded-DEFAULT bg-primary-container text-on-primary flex items-center justify-center shadow-[0_3px_0_0_#006c49]">
+            <span class="material-symbols-outlined text-[20px]">terminal</span>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">CodeQuest</span>
+            <span class="text-[9px] font-label-sm uppercase tracking-wider text-primary font-bold -mt-1">LMS</span>
+          </div>
+        </a>
+        <div class="flex items-center gap-space-xs">
+          <div class="flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed px-2.5 py-1 rounded-full shadow-[0_2px_0_0_#fea619]">
+            <span class="material-symbols-outlined text-[16px] text-secondary">local_fire_department</span>
+            <span class="font-label-sm text-label-sm font-bold text-on-secondary-fixed">12</span>
+          </div>
+          <div class="flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed px-2.5 py-1 rounded-full shadow-[0_2px_0_0_#23acf1]">
+            <span class="material-symbols-outlined text-[15px] text-tertiary">bolt</span>
+            <span class="font-label-sm text-label-sm font-bold text-on-tertiary-fixed">2.4k</span>
+          </div>
+          <a href="{% url 'certificates_hub' %}" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+          </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <main class="flex-1 pt-20 pb-24 md:pb-12 bg-surface min-h-screen">
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="cq-footer">
-    <div class="shell">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2.5rem; margin-bottom: 2rem;">
-        
-        <div>
-          <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.75rem;">
-            <img src="{% static 'img/logo.svg' %}" alt="CodeQuest BD" height="28" class="logo-dark-theme" style="display: block;" />
-            <img src="{% static 'img/logo-light.svg' %}" alt="CodeQuest BD" height="28" class="logo-light-theme" style="display: none;" />
+  <div class="hidden md:block">
+    <footer class="w-full bg-surface-container-low mt-space-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+      <div class="max-w-7xl mx-auto px-margin py-space-xl">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-space-md text-on-surface-variant font-label-sm text-label-sm">
+          <p>&copy; {% now "Y" %} CodeQuest LMS, Inc. Crafted with joy for future architects.</p>
+          <div class="flex items-center gap-space-lg">
+            <a class="hover:text-on-surface transition-colors" href="{% url 'catalogue' %}">Courses</a>
+            <a class="hover:text-on-surface transition-colors" href="{% url 'games_hub' %}">Arena</a>
+            <a class="hover:text-on-surface transition-colors" href="{% url 'playground' %}">Playground</a>
+            <a class="hover:text-on-surface transition-colors" href="{% url 'about_view' %}">About</a>
           </div>
-          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; max-width: 340px;">
-            CodeQuest BD — Interactive Programming &amp; 2D/3D Game Learning Platform (BAIUST CSE 324 Sessional). Write, compile, and visualize code directly in the browser.
-          </p>
-        </div>
-
-        <div>
-          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.85rem;">
-            Curriculum
-          </div>
-          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
-            <li><a href="{% url 'course_detail' 'html-core' %}">HTML5 Foundations</a></li>
-            <li><a href="{% url 'course_detail' 'css-core' %}">CSS3 Layouts &amp; Flexbox</a></li>
-            <li><a href="{% url 'course_detail' 'javascript-core' %}">JavaScript &amp; DOM</a></li>
-            <li><a href="{% url 'course_detail' 'python-core' %}">Python 3 Algorithmic Core</a></li>
-            <li><a href="{% url 'course_detail' 'sql-core' %}">SQL Relational Queries</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.85rem;">
-            Practice &amp; Tools
-          </div>
-          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
-            <li><a href="{% url 'games_hub' %}">Practice Challenges Arena</a></li>
-            <li><a href="{% url 'playground' %}">Interactive Playground</a></li>
-            <li><a href="{% url 'game_play' 'tag-match' %}">HTML Tag Match Drill</a></li>
-            <li><a href="{% url 'game_play' 'flexbox-pond' %}">Flexbox Alignment Lab</a></li>
-            <li><a href="{% url 'game_play' 'bug-hunt' %}">Code Review Bug Hunt</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.85rem;">
-            Platform
-          </div>
-          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
-            <li><a href="{% url 'about_view' %}">Architecture &amp; Principles</a></li>
-            <li><a href="{% url 'catalogue' %}">Full Course Roadmap</a></li>
-            {% if user.is_authenticated %}
-              <li><a href="{% url 'profile_view' %}">Your Learning Profile</a></li>
-            {% else %}
-              <li><a href="{% url 'signup_view' %}">Create Free Account</a></li>
-            {% endif %}
-            <li><a href="https://github.com/Sakib20050413/codequest-bd" target="_blank" rel="noopener">GitHub Repository ↗</a></li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
-        <div>
-          &copy; {% now "Y" %} CodeQuest BD &middot; BAIUST CSE 324 Web Technologies Sessional
-        </div>
-        <div>
-          16 Languages &middot; Browser CLI Compiler &middot; 2D/3D Game Studio
         </div>
       </div>
-    </div>
-  </footer>
+    </footer>
+  </div>
 
-  <script src="{% static 'js/ambient_canvas.js' %}?v=12.1"></script>
-  <script src="{% static 'js/codequest.js' %}?v=12.1"></script>
-  <script src="{% static 'js/micro_video_and_game_engine.js' %}?v=12.1"></script>
+  <div class="block md:hidden">
+    <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/80 backdrop-blur-xl shadow-[0_-1px_12px_rgba(0,0,0,0.04)]">
+      <div class="h-16 px-space-xs flex items-center justify-around">
+        <a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant" href="{% url 'landing' %}">
+          <span class="material-symbols-outlined text-[22px]">route</span>
+          <span class="font-label-sm text-label-sm mt-0.5">Tracks</span>
+        </a>
+        <a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant" href="{% url 'catalogue' %}">
+          <span class="material-symbols-outlined text-[22px]">menu_book</span>
+          <span class="font-label-sm text-label-sm mt-0.5">Courses</span>
+        </a>
+        <a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant" href="{% url 'lesson_detail' 'python-core' 'print-syntax' %}">
+          <span class="material-symbols-outlined text-[22px]">stadia_controller</span>
+          <span class="font-label-sm text-label-sm mt-0.5">Studio</span>
+        </a>
+        <a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant" href="{% url 'games_hub' %}">
+          <span class="material-symbols-outlined text-[22px]">swords</span>
+          <span class="font-label-sm text-label-sm mt-0.5">Arena</span>
+        </a>
+        <a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant" href="{% url 'certificates_hub' %}">
+          <span class="material-symbols-outlined text-[22px]">verified</span>
+          <span class="font-label-sm text-label-sm mt-0.5">Profile</span>
+        </a>
+      </div>
+    </nav>
+  </div>
+  {% endblock %}
+
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>

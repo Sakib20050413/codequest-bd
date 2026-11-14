@@ -1,1547 +1,821 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Practice Arena: 175 Playable Coding Challenges, 2D/3D Games &amp; Drills — CodeQuest BD{% endblock %}
+{% block title %}Gaming Arena & Contests — CodeQuest LMS{% endblock %}
 
-{% block content %}
-<div class="shell" style="padding-top: 2.5rem; padding-bottom: 5rem;">
-  
-  <!-- Header & Telemetry -->
-  <div style="margin-bottom: 2.5rem;">
-    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem;">
-      <div class="dev-tag">
-        ARENA // 28 TASKS &bull; 108 CODING GAMES (1,080 LEVELS)
-      </div>
-      <div style="display: flex; gap: 0.65rem; align-items: center;">
-        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--success); background: var(--success-subtle); border: 1px solid rgba(21, 128, 61, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
-          54,000+ Total XP
-        </span>
-        <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); border: 1px solid rgba(217, 78, 40, 0.25); padding: 0.25rem 0.65rem; border-radius: 999px;">
-          108 Master Games &bull; 2D/3D Simulators
-        </span>
-      </div>
-    </div>
-
-    <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; margin-bottom: 0.75rem;">
-      Practice Arena: Coding Tasks &amp; 108 Master Games (1,080 Levels)
-    </h1>
-    <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 840px; line-height: 1.6;">
-      Master software engineering through 28 practical coding tasks and 108 high-attraction coding games across 10 specialized domains. Explore 3D WebGL space exploration, 2D vector physics, CSS design battles, algorithm duels, SQL crime mysteries, cybersecurity CTFs, DevOps cloud simulators, hardware logic gates, keystroke speed circuits, and autonomous AI neural networks.
-    </p>
-  </div>
-
-
-  <!-- INSTANT 2D & 3D MULTI-GAME STUDIO (6 Built-In 2D/3D Games + Live Code Trigger) -->
-  <div class="cq-card" style="margin-bottom: 2.25rem; padding: 1.35rem 1.5rem; border: 1.5px solid var(--border-medium); background: var(--bg-surface);">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-      <div>
-        <div class="dev-tag" style="margin-bottom: 0.25rem;">
-          [2D ARCADE] + [3D WEBGL] // SANDBOX STUDIO
-        </div>
-        <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0.2rem 0 0;">
-          Interactive 2D &amp; 3D Code-to-Game Sandbox (6 Instant Modes + 108 Full Games Below)
-        </h2>
-      </div>
-      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-        <button type="button" class="btn btn-primary" style="padding: 0.4rem 0.95rem; font-size: 0.8rem;" onclick="if(window.CQRenderGameCanvas) window.CQRenderGameCanvas('hubLiveGameCanvas', 'python', true, 'move_rover()')">
-          Run Win Demo (+35 XP)
-        </button>
-        <a href="#arcadeArenaSection" onclick="switchArenaMode('arcade')" class="btn btn-ghost" style="padding: 0.4rem 0.95rem; font-size: 0.8rem;">
-          Browse All 108 Games &darr;
-        </a>
-      </div>
-    </div>
-    <div id="hubLiveGameCanvas" style="min-height: 260px;"></div>
-  </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      if (window.CQRenderGameCanvas) {
-        window.CQRenderGameCanvas("hubLiveGameCanvas", "python", false, "");
+{% block stitch_full_page %}
+<div class="hidden md:block">
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-7xl mx-auto px-5 xl:px-6 flex items-center justify-between gap-3"><a href="/" class="flex items-center gap-space-sm shrink-0 group cursor-pointer"><div class="w-9 h-9 rounded-DEFAULT bg-primary flex items-center justify-center shadow-[0_3px_0_0_#00422b]"><span class="material-symbols-outlined text-on-primary text-[20px]">auto_awesome</span></div><span class="font-headline-md text-headline-md text-on-surface tracking-tight ml-space-xs">CodeQuest</span><span class="px-space-sm py-space-xs rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase tracking-wide">LMS</span></a><nav class="hidden lg:flex items-center gap-1 shrink-0" data-active-classes="bg-surface-container-high text-on-surface font-bold rounded-full"><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="overview" href="/">Overview</a><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="lms-courses" href="/courses/">LMS Courses</a><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md bg-surface-container-high text-on-surface font-bold transition-all" data-path="gaming-arena" href="/games/">Gaming Arena</a><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="tasks-and-contests" href="/contests/">Tasks &amp; Contests</a><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="certificates" href="/certificates/">Certificates</a><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="leaderboard" href="/contests/?tab=standings">Leaderboard</a></nav><div class="flex items-center gap-space-sm shrink-0"><div class="hidden sm:flex items-center gap-1.5 px-2.5 xl:px-3 py-space-xs whitespace-nowrap shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed"><span class="material-symbols-outlined text-[18px] text-secondary">local_fire_department</span><span class="font-label-md text-label-md">14 Days</span></div><div class="hidden md:flex items-center gap-1.5 px-2.5 xl:px-3 py-space-xs whitespace-nowrap shrink-0 rounded-full bg-surface-container-high text-on-surface"><span class="material-symbols-outlined text-[18px] text-secondary-container">bolt</span><span class="font-label-md text-label-md">4,850 XP</span></div><div class="hidden xl:flex items-center gap-1.5 px-2.5 xl:px-3 py-space-xs whitespace-nowrap shrink-0 rounded-full bg-surface-container-low text-on-surface-variant"><span class="material-symbols-outlined text-[18px] text-tertiary">timer</span><span class="font-label-md text-label-md">25/30m</span></div><div class="relative flex items-center shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-primary-container ring-2 ring-surface-container-lowest"></span></div></div></div></header><main class="w-full pt-20 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Interactive Sub-system Script -->
+<script>
+(function() {
+function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('bg-on-surface', 'text-surface-container-lowest', 'shadow-md');
+        el.classList.add('bg-surface-container-low', 'text-on-surface-variant');
+      });
+      const activePane = document.getElementById(tabId);
+      if (activePane) activePane.classList.remove('hidden');
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-surface-container-low', 'text-on-surface-variant');
+        activeBtn.classList.add('bg-on-surface', 'text-surface-container-lowest', 'shadow-md');
       }
-    });
-  </script>
+    }
 
-  <!-- TOP PRIMARY MODE SWITCHER -->
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
-    <div class="arena-mode-nav" role="tablist" aria-label="Practice Arena Modes">
-      <button id="modeBtnTasks" class="arena-mode-btn {% if active_mode == 'tasks' %}active{% endif %}" onclick="switchArenaMode('tasks')">
-        01 &middot; Practical Tasks (28)
-      </button>
-      <button id="modeBtnArcade" class="arena-mode-btn {% if active_mode == 'arcade' %}active{% endif %}" onclick="switchArenaMode('arcade')">
-        02 &middot; 108 Master Games (1,080 Levels)
-      </button>
-      <button id="modeBtnQuests" class="arena-mode-btn {% if active_mode == 'quests' %}active{% endif %}" onclick="switchArenaMode('quests')">
-        03 &middot; Daily Quests (24)
-      </button>
-    </div>
+    function toggleLeaderboardScope(scope) {
+      const isGlobal = scope === 'global';
+      const btnGlobal = document.getElementById('scope-global');
+      const btnUni = document.getElementById('scope-uni');
+      const labelBadge = document.getElementById('current-batch-label');
+      
+      if (isGlobal) {
+        btnGlobal.className = "px-space-md py-space-xs rounded-full font-label-md text-label-md bg-surface-container-lowest text-primary shadow-sm transition-all";
+        btnUni.className = "px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all";
+        if (labelBadge) labelBadge.innerText = "Global Arena Tier S";
+      } else {
+        btnUni.className = "px-space-md py-space-xs rounded-full font-label-md text-label-md bg-surface-container-lowest text-primary shadow-sm transition-all";
+        btnGlobal.className = "px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all";
+        if (labelBadge) labelBadge.innerText = "MIT / Stanford '26 Cohort";
+      }
+    }
 
-    <div style="display: flex; align-items: center; gap: 0.75rem;">
-      <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.45rem 1rem; font-size: 0.82rem; font-family: var(--font-mono);">
-        Open Browser IDE &rarr;
-      </a>
-    </div>
-  </div>
+    function runInteractiveCodeDrill() {
+      const consoleBox = document.getElementById('drill-console-output');
+      const statusPill = document.getElementById('drill-status-pill');
+      if (!consoleBox || !statusPill) return;
 
-  <!-- =====================================================================
-       SECTION 1: PRACTICAL CODING TASKS & PROBLEM SETS (28 Real-World Specs)
-       ===================================================================== -->
-  <div id="tasksArenaSection" style="display: {% if active_mode == 'tasks' %}block{% else %}none{% endif %}; margin-bottom: 4rem;">
+      statusPill.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">refresh</span> Compiling AST...';
+      statusPill.className = "flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm";
 
-    <!-- Task Filter & Search Dock -->
-    <div class="cq-card" style="margin-bottom: 2.25rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border-medium); background: var(--bg-surface);">
-      <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-        
-        <!-- Search Input -->
-        <div style="flex: 1; min-width: 280px; position: relative;">
-          <input type="text" id="taskSearchInput" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; font-size: 0.92rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;" placeholder="Search 28 coding tasks by title, skill, or keyword (e.g. navbar, two-sum, join, pointer)..." aria-label="Search coding tasks">
-          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted); pointer-events: none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
-        </div>
-
-        <!-- Task Live Counter -->
-        <div id="taskCounterDisplay" style="font-size: 0.84rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent);">
-          Showing 28 of 28 Practical Tasks
-        </div>
-      </div>
-
-      <!-- Category Filter Pills & Difficulty Filter Row -->
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
-        
-        <!-- Category Filters -->
-        <div id="taskCategoryFilters" style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-          <button class="btn task-filter-pill active" data-task-cat="all" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
-            All Tasks (28)
-          </button>
-          <button class="btn btn-ghost task-filter-pill" data-task-cat="frontend" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
-            Frontend Web (8)
-          </button>
-          <button class="btn btn-ghost task-filter-pill" data-task-cat="algorithms" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
-            Algorithms &amp; Data Logic (8)
-          </button>
-          <button class="btn btn-ghost task-filter-pill" data-task-cat="sql" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
-            SQL Databases (6)
-          </button>
-          <button class="btn btn-ghost task-filter-pill" data-task-cat="systems" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; border-radius: 999px;">
-            Systems &amp; C (6)
-          </button>
-        </div>
-
-        <!-- Difficulty Pills -->
-        <div id="taskDifficultyFilters" style="display: flex; gap: 0.35rem; align-items: center; font-size: 0.78rem; font-family: var(--font-mono);">
-          <span style="color: var(--text-muted); margin-right: 0.25rem;">Level:</span>
-          <button class="btn task-diff-pill active" data-task-diff="all" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px;">All</button>
-          <button class="btn btn-ghost task-diff-pill" data-task-diff="easy" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: var(--success);">Easy</button>
-          <button class="btn btn-ghost task-diff-pill" data-task-diff="medium" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: var(--warning);">Medium</button>
-          <button class="btn btn-ghost task-diff-pill" data-task-diff="hard" style="padding: 0.25rem 0.65rem; font-size: 0.75rem; border-radius: 6px; color: var(--danger);">Hard</button>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- 28 Tasks Grid -->
-    <div id="tasksGridContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.5rem;">
-      {% for task in tasks %}
-      <div class="arena-task-card task-card-item" data-task-id="{{ task.id }}" data-task-cat="{{ task.cat }}" data-task-diff="{{ task.diff }}" data-task-title="{{ task.title|lower }}" data-task-desc="{{ task.desc|lower }}" data-task-tags="{{ task.tags|join:' '|lower }}">
-        
-        <div>
-          <!-- Header Row -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); padding: 0.15rem 0.45rem; border-radius: 4px;">
-                {{ task.id|upper }}
+      setTimeout(() => {
+        statusPill.innerHTML = '<span class="material-symbols-outlined text-[16px]">verified</span> 3 of 3 Passed (32ms)';
+        statusPill.className = "flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm";
+        consoleBox.innerHTML = `
+          <div class="flex items-center justify-between text-primary font-label-md text-label-md">
+            <span>[TEST_1]: Standard I/O [3x3 Matrix Spiral]</span>
+            <span class="font-bold">PASSED (4ms)</span>
+          </div>
+          <div class="flex items-center justify-between text-primary font-label-md text-label-md">
+            <span>[TEST_2]: Boundary Edge [Null & 1x1 Matrix]</span>
+            <span class="font-bold">PASSED (11ms)</span>
+          </div>
+          <div class="flex items-center justify-between text-primary font-label-md text-label-md">
+            <span>[TEST_3]: AST Execution Depth Check (O(N) Space)</span>
+            <span class="font-bold">PASSED (17ms)</span>
+          </div>
+          <div class="mt-space-xs p-space-xs bg-primary-fixed/40 rounded text-on-primary-fixed font-label-sm text-label-sm flex items-center justify-between">
+            <span>🎉 +80 XP Credited to your Profile!</span>
+            <span class="font-bold">Bonus: +1 Day Streak!</span>
+          </div>
+        `;
+      }, 700);
+    }
+  window.runInteractiveCodeDrill = runInteractiveCodeDrill;
+  window.switchTab = switchTab;
+  window.toggleLeaderboardScope = toggleLeaderboardScope;
+})();
+</script>
+<!-- Arena Container -->
+<div class="max-w-7xl mx-auto px-margin py-space-lg w-full flex flex-col gap-space-xl">
+<!-- 1. Weekly Contest Hero Banner (Season 4 Pathfinder) -->
+<section class="relative overflow-hidden rounded-xl bg-gradient-to-r from-surface-container-high via-surface-container to-surface-variant p-space-lg lg:p-space-xl shadow-sm"><div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-tertiary-fixed/30 blur-3xl pointer-events-none"></div><div class="absolute right-1/3 bottom-0 w-64 h-64 rounded-full bg-primary-fixed/20 blur-2xl pointer-events-none"></div><div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-lg"><div class="flex flex-col gap-space-sm max-w-2xl"><div class="flex flex-wrap items-center gap-space-sm"><span class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-md text-label-md shadow-sm"><span class="material-symbols-outlined text-[18px] text-secondary">swords</span>SEASON 4 ARENA</span><span class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>Live Matchmaking</span><span class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm shadow-sm"><span class="material-symbols-outlined text-[16px] text-tertiary">groups</span>3,820 Active</span></div><h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Graph Pathfinder Challenge</h1><p class="font-body-md text-body-md text-on-surface-variant">Navigate bidirectional Dijkstra bottlenecks, dynamic cycles, and AST memory gates in under 60 minutes.</p><div class="flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-lowest shadow-sm w-fit"><span class="material-symbols-outlined text-[18px] text-secondary-container">military_tech</span><span class="font-label-md text-label-md text-on-surface">Prize: <strong class="text-primary">"Grandmaster Rover"</strong> + 2,500 XP</span></div></div><div class="flex flex-col items-start lg:items-end gap-space-md shrink-0"><div class="bg-surface-container-lowest/90 backdrop-blur-md px-space-lg py-space-sm rounded-lg shadow-sm flex flex-col items-start lg:items-end gap-1"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Closes In</span><div class="flex items-center gap-space-sm"><div class="flex items-baseline gap-0.5"><span class="font-headline-md text-headline-md text-primary font-bold">02</span><span class="font-label-sm text-label-sm text-on-surface-variant">d</span></div><span class="text-on-surface-variant font-bold">:</span><div class="flex items-baseline gap-0.5"><span class="font-headline-md text-headline-md text-primary font-bold">14</span><span class="font-label-sm text-label-sm text-on-surface-variant">h</span></div><span class="text-on-surface-variant font-bold">:</span><div class="flex items-baseline gap-0.5"><span class="font-headline-md text-headline-md text-primary font-bold">22</span><span class="font-label-sm text-label-sm text-on-surface-variant">m</span></div></div></div><button class="relative px-space-xl py-space-md rounded-full bg-primary-container text-on-primary font-label-lg text-label-lg shadow-[0_4px_0_0_#059669] hover:-translate-y-0.5 active:translate-y-1 active:shadow-none transition-all flex items-center gap-space-sm group"><span class="material-symbols-outlined text-[20px] group-hover:rotate-12 transition-transform">sports_esports</span><span>Enter Live Matchmaking</span><span class="material-symbols-outlined text-[18px]">arrow_forward</span></button></div></div></section>
+<!-- 2. Three-Part Navigation Switcher (Pill Style) -->
+<section class="flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex flex-wrap items-center gap-space-xs p-1.5 rounded-full bg-surface-container-high/60">
+<button class="tab-btn px-space-lg py-space-sm rounded-full font-label-md text-label-md bg-on-surface text-surface-container-lowest shadow-md transition-all" id="btn-tab-contests" onclick="switchTab('tab-contests')">
+          Active Weekly Contests
+        </button>
+<button class="tab-btn px-space-lg py-space-sm rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" id="btn-tab-tasks" onclick="switchTab('tab-tasks')">
+          Post-Lesson Micro-Tasks (HackerRank Style)
+        </button>
+<button class="tab-btn px-space-lg py-space-sm rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" id="btn-tab-standings" onclick="switchTab('tab-standings')">
+          University Batch Standings
+        </button>
+</div>
+<div class="flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-lowest shadow-sm text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary">code_blocks</span>
+<span>Environment: Python 3.12 (CPython Runtime)</span>
+</div>
+</section>
+<!-- 3. Tab Pane 1: Active Contests & Matchmaking Status -->
+<div class="tab-pane flex flex-col gap-space-xl" id="tab-contests">
+<!-- Grid: 3 Contest Arenas -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Contest Card 1: Main Graph Sprint -->
+<div class="flex flex-col justify-between p-space-lg rounded-lg bg-surface-container-lowest shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-1.5 bg-primary-container"></div>
+<div>
+<div class="flex items-center justify-between gap-space-xs mb-space-sm">
+<span class="px-space-sm py-space-xs rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase">Weekly Boss</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[15px] text-secondary">local_fire_department</span> High Heat
               </span>
-              <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); font-weight: 600;">
-                {{ task.cat_label }}
-              </span>
-            </div>
-            
-            <div style="display: flex; align-items: center; gap: 0.45rem;">
-              {% if task.diff == 'easy' %}
-                <span class="task-badge-easy">Easy</span>
-              {% elif task.diff == 'medium' %}
-                <span class="task-badge-medium">Medium</span>
-              {% else %}
-                <span class="task-badge-hard">Hard</span>
-              {% endif %}
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning); background: var(--warning-subtle); border: 1px solid rgba(180, 83, 9, 0.25); padding: 0.15rem 0.45rem; border-radius: 4px;">
-                +{{ task.xp }} XP
-              </span>
-            </div>
-          </div>
-
-          <!-- Title & Description -->
-          <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; letter-spacing: -0.015em; line-height: 1.4;">
-            {{ task.title }}
-          </h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 0.75rem;">
-            {{ task.desc }}
-          </p>
-
-          <!-- Acceptance Criteria Checklist -->
-          <div class="task-criteria-box">
-            <div style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.45rem;">
-              Key Acceptance Criteria:
-            </div>
-            {% for item in task.criteria %}
-            <div class="task-criteria-item">
-              <span style="color: var(--accent); font-size: 0.8rem; font-weight: 700;">✓</span>
-              <span>{{ item }}</span>
-            </div>
-            {% endfor %}
-          </div>
-
-          <!-- Tags -->
-          <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
-            {% for tag in task.tags %}
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); background: var(--bg-panel); border: 1px solid var(--border-subtle); padding: 0.15rem 0.45rem; border-radius: 4px; color: var(--text-secondary);">
-              #{{ tag }}
-            </span>
-            {% endfor %}
-          </div>
-        </div>
-
-        <!-- Action Bar -->
-        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border-subtle); gap: 0.75rem;">
-          <button type="button" class="btn btn-ghost" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="openTaskModal('{{ task.id }}')">
-            Spec &amp; Tests
-          </button>
-          <a href="{% url 'playground' %}?task={{ task.id }}" class="btn btn-primary" style="padding: 0.4rem 0.95rem; font-size: 0.8rem;">
-            Solve in IDE &rarr;
-          </a>
-        </div>
-
-      </div>
-      {% endfor %}
-    </div>
-
-    <!-- Empty Results Fallback -->
-    <div id="noTasksFoundMsg" style="display: none; text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
-      <div style="font-size: 0.8rem; font-family: var(--font-mono); letter-spacing: 0.08em; margin-bottom: 0.5rem;">EMPTY_RESULT</div>
-      <div style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">No matching coding tasks found</div>
-      <p style="font-size: 0.88rem;">Try adjusting your keyword search or category filters.</p>
-    </div>
-
-  </div>
-
-  <!-- =====================================================================
-       SECTION 2: GAMIFIED ARCADE & 175 PLAYABLE LEVELS (12 Flagship Engines)
-       ===================================================================== -->
-  <div id="arcadeArenaSection" style="display: {% if active_mode == 'arcade' %}block{% else %}none{% endif %};">
-
-    <!-- Interactive Search & Engine Filter Tabs -->
-    <div class="cq-card" style="margin-bottom: 2.5rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border-medium); background: var(--bg-surface);">
-
-      <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-        <!-- Search Input -->
-        <div style="flex: 1; min-width: 280px; position: relative;">
-          <input type="text" id="arenaSearchInput" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; font-size: 0.92rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); outline: none;" placeholder="Search 175 challenges by language (python, js, css, sql, c) or concept...">
-          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
-        </div>
-
-        <!-- Result Counter -->
-        <div id="arenaFilterCount" style="font-size: 0.84rem; font-family: var(--font-mono); font-weight: 600; color: var(--accent);">
-          Showing 175 of 175 Playable Challenges
-        </div>
-      </div>
-
-      <!-- Category Filter Tabs -->
-      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-        <button class="btn arena-filter-tab active" data-filter="all" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          All (175)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="code-typer" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          Keystroke Racing (20)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="flexbox-pond" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          Flexbox &amp; Grid (20)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="bug-hunt" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          Bug Hunt (20)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="output-predictor" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          Output Predictor (20)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="tag-match" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          Tag &amp; Syntax (20)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="rover-3d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          Cyber Rover 3D (15)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="grid-builder" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          Grid Builder (10)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="sql-detective" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          SQL Detective (10)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="canvas-blaster-2d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          2D Blaster (10)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="city-builder-3d" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          3D City (10)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="regex-matrix" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          Regex Matrix (10)
-        </button>
-        <button class="btn btn-ghost arena-filter-tab" data-filter="api-tower-defense" style="padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 999px;">
-          API Defense (10)
-        </button>
-      </div>
-
-    </div>
-
-
-    <!-- ================================================================
-         THE 108 MASTER CODING GAMES CATALOG (1,080 PLAYABLE LEVELS)
-         ================================================================ -->
-    <div style="margin-bottom: 4rem;">
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; gap: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
-        <div>
-          <div style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--accent); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">
-            Complete Master Arcade &bull; 10 Specialized Domains &bull; 10 Levels Each
-          </div>
-          <h2 style="font-size: 1.7rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-            The 108 Coding Games Matrix (1,080 Playable Levels)
-          </h2>
-        </div>
-        <div style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--success); background: var(--success-subtle); padding: 0.35rem 0.85rem; border-radius: 999px; border: 1px solid rgba(21, 128, 61, 0.25);">
-          54,000+ Total Earnable XP
-        </div>
-      </div>
-
-      <!-- 10 Domain Filter Pills -->
-      <div id="masterArcadeCategoryTabs" style="display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 1.75rem;">
-        <button class="btn arcade-cat-pill active" data-cat="all" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          All Games (108)
-        </button>
-        <button class="btn btn-ghost arcade-cat-pill" data-cat="3d webgl metaverse" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          3D WebGL (10)
-        </button>
-        <button class="btn btn-ghost arcade-cat-pill" data-cat="2d canvas & physics" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          2D Canvas (11)
-        </button>
-        <button class="btn btn-ghost arcade-cat-pill" data-cat="css & frontend battles" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          CSS Battles (11)
-        </button>
-        <button class="btn btn-ghost arcade-cat-pill" data-cat="algorithm & logic arenas" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          Algorithms (11)
-        </button>
-        <button class="btn btn-ghost arcade-cat-pill" data-cat="sql & database mysteries" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          SQL Mysteries (10)
-        </button>
-        <button class="btn btn-ghost arcade-cat-pill" data-cat="cyber security & ctf" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          Cyber &amp; CTF (11)
-        </button>
-        <button class="btn btn-ghost arcade-cat-pill" data-cat="devops & cloud simulators" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          DevOps &amp; Cloud (11)
-        </button>
-        <button class="btn btn-ghost arcade-cat-pill" data-cat="hardware & logic gates" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          Hardware &amp; Gates (11)
-        </button>
-        <button class="btn btn-ghost arcade-cat-pill" data-cat="speed & reflex drills" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          Speed Drills (11)
-        </button>
-        <button class="btn btn-ghost arcade-cat-pill" data-cat="ai & autonomous agents" style="padding: 0.35rem 0.85rem; font-size: 0.78rem; border-radius: 999px;">
-          AI &amp; Neural (11)
-        </button>
-      </div>
-
-      <!-- 108 Master Games Grid -->
-      <div id="masterArcadeGamesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem;">
-        {% for g in games %}
-        <div class="cq-card cq-card-interactive arcade-game-card" data-cat="{{ g.category|lower }}" data-title="{{ g.title|lower }}" data-desc="{{ g.tagline|lower }}" style="padding: 1.35rem; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); position: relative; overflow: hidden; background: var(--bg-surface);">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-              <span style="font-size: 2.2rem; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));">{{ g.icon_svg }}</span>
-              <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
-                <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(217, 78, 40, 0.25);">
-                  #{{ g.order|stringformat:"03d" }} &bull; 10 Levels
-                </span>
-                <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--success); font-weight: 700;">
-                  +{{ g.xp_per_win }} XP / win
-                </span>
-              </div>
-            </div>
-            <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.35rem; line-height: 1.35;">
-              {{ g.title }}
-            </h3>
-            <div style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.65rem;">
-              {{ g.category }} &bull; {{ g.difficulty }}
-            </div>
-            <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin: 0 0 1.25rem;">
-              {{ g.tagline }}
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs">Graph Pathfinder 101</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
+              Construct bidirectional traversal with weight relaxation. Handle negative zero-edges before countdown reaches zero.
             </p>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.85rem; border-top: 1px solid var(--border-subtle);">
-            <span style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">
-              Engine Cartridge
-            </span>
-            <a href="{% url 'game_play' g.slug %}" class="btn btn-primary" style="padding: 0.4rem 1.05rem; font-size: 0.82rem; font-weight: 800;">
-              Play Engine &rarr;
-            </a>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-
-<!-- 6 FLAGSHIP ENGINE SECTIONS WITH 115 PLAYABLE LEVEL CARDS -->
-
-  <!-- ENGINE 1: Code TypeRacer 3D (20 Tracks) -->
-  <section class="arena-engine-section" data-engine="code-typer" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4; text-transform: uppercase;">
-          Engine 01 &bull; 20 High-Speed Keystroke Racing Circuits
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          01 · Code TypeRacer 3D Arena
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'code-typer' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch TypeRacer Arena &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      
-      {% for track in "12345678901234567890"|make_list %}
-      <a href="{% url 'game_play' 'code-typer' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="typer race speed {% if forloop.counter == 1 %}javascript array{% elif forloop.counter == 2 %}python math{% elif forloop.counter == 3 %}sql database{% elif forloop.counter == 4 %}css flexbox{% elif forloop.counter == 5 %}react hook{% elif forloop.counter == 6 %}javascript async fetch{% elif forloop.counter == 7 %}rust memory{% elif forloop.counter == 8 %}typescript generic{% elif forloop.counter == 9 %}cpp vector{% elif forloop.counter == 10 %}go goroutine{% elif forloop.counter == 11 %}java stream{% elif forloop.counter == 12 %}python list{% elif forloop.counter == 13 %}html5 semantic{% elif forloop.counter == 14 %}docker devops{% elif forloop.counter == 15 %}bash linux{% elif forloop.counter == 16 %}css container{% elif forloop.counter == 17 %}sql window{% elif forloop.counter == 18 %}python file{% elif forloop.counter == 19 %}javascript nullish{% else %}rust match{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #06b6d4;">
-              Track {{ forloop.counter|stringformat:"02d" }}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +30 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}JavaScript: Array Transformations
-            {% elif forloop.counter == 2 %}Python: Data Pipeline &amp; Sum
-            {% elif forloop.counter == 3 %}SQL: Modern User Query
-            {% elif forloop.counter == 4 %}CSS: Responsive Flex Container
-            {% elif forloop.counter == 5 %}React: State &amp; Loading Hook
-            {% elif forloop.counter == 6 %}JavaScript: Fetch &amp; Promise Stream
-            {% elif forloop.counter == 7 %}Rust: Safe Memory Allocation
-            {% elif forloop.counter == 8 %}TypeScript: Generic Response Interface
-            {% elif forloop.counter == 9 %}C++: Vector Sorting Algorithm
-            {% elif forloop.counter == 10 %}Go: Goroutines &amp; Channel Concurrency
-            {% elif forloop.counter == 11 %}Java: Stream Filter Collection
-            {% elif forloop.counter == 12 %}Python: List Comprehension Filter
-            {% elif forloop.counter == 13 %}HTML5: Semantic Container Blueprint
-            {% elif forloop.counter == 14 %}Docker: Production Buildfile
-            {% elif forloop.counter == 15 %}Bash: Log Rotation &amp; Archival
-            {% elif forloop.counter == 16 %}CSS: Container Query Responsive
-            {% elif forloop.counter == 17 %}SQL: Window Function Dense Rank
-            {% elif forloop.counter == 18 %}Python: Context Manager Safe IO
-            {% elif forloop.counter == 19 %}JavaScript: Optional Chaining &amp; Nullish
-            {% else %}Rust: Pattern Matching Result
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">Ghost Runners: Turing &amp; Ada</span>
-          <span style="color: #06b6d4; font-weight: 700;">Play Track &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-
-    </div>
-  </section>
-
-  <!-- ENGINE 2: Flexbox & Grid Pond (20 Levels) -->
-  <section class="arena-engine-section" data-engine="flexbox-pond" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--success); text-transform: uppercase;">
-          Engine 02 &bull; 20 Modern CSS Layout &amp; Alignment Levels
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          02 · Flexbox &amp; Grid Alignment Pond
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'flexbox-pond' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch Flexbox Pond &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      
-      {% for lvl in "12345678901234567890"|make_list %}
-      <a href="{% url 'game_play' 'flexbox-pond' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="css flexbox grid layout align justify {% if forloop.counter <= 10 %}flexbox{% else %}grid{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--success);">
-              Level {{ forloop.counter|stringformat:"02d" }} &bull; {% if forloop.counter <= 10 %}Flexbox{% else %}CSS Grid{% endif %}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +25 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}Flexbox: Align Right (justify-content)
-            {% elif forloop.counter == 2 %}Flexbox: Center Horizontally
-            {% elif forloop.counter == 3 %}Flexbox: Move to Bottom (align-items)
-            {% elif forloop.counter == 4 %}Flexbox: Dead Center (2D Alignment)
-            {% elif forloop.counter == 5 %}Flexbox: Bottom Right Corner
-            {% elif forloop.counter == 6 %}Flexbox: Space Around Elements
-            {% elif forloop.counter == 7 %}Flexbox: Space Evenly Distribution
-            {% elif forloop.counter == 8 %}Flexbox: Vertical Column Stacking
-            {% elif forloop.counter == 9 %}Flexbox: Reversed Row Layout
-            {% elif forloop.counter == 10 %}Flexbox: Column Centered Cross-Axis
-            {% elif forloop.counter == 11 %}CSS Grid: Shorthand place-items: center
-            {% elif forloop.counter == 12 %}CSS Grid: Align Items to End
-            {% elif forloop.counter == 13 %}CSS Grid: Align Items to Bottom
-            {% elif forloop.counter == 14 %}CSS Grid: Shorthand place-items: end end
-            {% elif forloop.counter == 15 %}CSS Grid: 3-Column Equal repeat(3, 1fr)
-            {% elif forloop.counter == 16 %}CSS Grid: Proportional 1fr 2fr Columns
-            {% elif forloop.counter == 17 %}CSS Grid: Grid Gap Gutters
-            {% elif forloop.counter == 18 %}CSS Grid: Align Full Grid Content
-            {% elif forloop.counter == 19 %}CSS Grid: Auto-Flow Columns
-            {% else %}CSS Grid: Master Shorthand place-content
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">Reactive Water Canvas</span>
-          <span style="color: var(--success); font-weight: 700;">Play Level &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-
-    </div>
-  </section>
-
-  <!-- ENGINE 3: Bug Hunt (20 Missions) -->
-  <section class="arena-engine-section" data-engine="bug-hunt" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--danger); text-transform: uppercase;">
-          Engine 03 &bull; 20 Real-World Code Review &amp; Debugging Missions
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          03 · Bug Hunt: Spot the Error
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'bug-hunt' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch Bug Hunt &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      
-      {% for m in "12345678901234567890"|make_list %}
-      <a href="{% url 'game_play' 'bug-hunt' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="debug bug review {% if forloop.counter in '1,6,9,13,16,20' %}python{% elif forloop.counter in '2,7,10,14,17' %}javascript{% elif forloop.counter in '5,12,18' %}sql{% elif forloop.counter in '4,15' %}css{% elif forloop.counter == 3 %}html{% elif forloop.counter in '8,19' %}c{% elif forloop.counter == 11 %}java{% else %}php{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--danger);">
-              Mission {{ forloop.counter|stringformat:"02d" }}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +25 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}Python: Missing Loop Colon
-            {% elif forloop.counter == 2 %}JavaScript: Assignment in Condition
-            {% elif forloop.counter == 3 %}HTML: Unclosed Element
-            {% elif forloop.counter == 4 %}CSS: Missing Unit on Length
-            {% elif forloop.counter == 5 %}SQL: Null Equality Comparison
-            {% elif forloop.counter == 6 %}Python: Modifying List in Iteration
-            {% elif forloop.counter == 7 %}JavaScript: Unchecked Property Access
-            {% elif forloop.counter == 8 %}C: Missing Semicolon
-            {% elif forloop.counter == 9 %}Python: Mutable Default Argument
-            {% elif forloop.counter == 10 %}JavaScript: Const Reassignment
-            {% elif forloop.counter == 11 %}Java: String Identity vs Equality
-            {% elif forloop.counter == 12 %}SQL: Missing Column in Group By
-            {% elif forloop.counter == 13 %}Python: Unbound Local Variable
-            {% elif forloop.counter == 14 %}JavaScript: Off-by-One Loop Bounds
-            {% elif forloop.counter == 15 %}CSS: Malformed Hex Color Digits
-            {% elif forloop.counter == 16 %}Python: ZeroDivisionError Handling
-            {% elif forloop.counter == 17 %}JavaScript: Missing Await in Async
-            {% elif forloop.counter == 18 %}SQL: Missing Join ON Condition
-            {% elif forloop.counter == 19 %}C: Array Out-of-Bounds Write
-            {% else %}PHP: Strict Type Mismatch &amp; Unset Key
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">Click Line to Triage</span>
-          <span style="color: var(--danger); font-weight: 700;">Spot Bug &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-
-    </div>
-  </section>
-
-  <!-- ENGINE 4: Output Predictor (20 Challenges) -->
-  <section class="arena-engine-section" data-engine="output-predictor" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary); text-transform: uppercase;">
-          Engine 04 &bull; 20 Mental Model &amp; Scoping Evaluation Puzzles
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          04 · Output Predictor: AST &amp; Evaluation Order
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'output-predictor' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch Output Predictor &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      
-      {% for ch in "12345678901234567890"|make_list %}
-      <a href="{% url 'game_play' 'output-predictor' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="output predict ast {% if forloop.counter in '1,6,8,11,14,17,20' %}python{% elif forloop.counter in '2,5,7,10,12,15,18' %}javascript{% elif forloop.counter in '3,9,16' %}sql{% else %}c{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary);">
-              Challenge {{ forloop.counter|stringformat:"02d" }}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +25 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}Python: List Mutation via Aliasing
-            {% elif forloop.counter == 2 %}JavaScript: The Type of NaN
-            {% elif forloop.counter == 3 %}SQL: Null Equality Comparison
-            {% elif forloop.counter == 4 %}C: Post-Increment Evaluation
-            {% elif forloop.counter == 5 %}JavaScript: Event Loop Microtasks
-            {% elif forloop.counter == 6 %}Python: Negative Step Slicing
-            {% elif forloop.counter == 7 %}JavaScript: Loose Coercion Equality
-            {% elif forloop.counter == 8 %}Python: Dict Key Deduplication
-            {% elif forloop.counter == 9 %}SQL: COUNT(col) vs COUNT(*)
-            {% elif forloop.counter == 10 %}JavaScript: Var Hoisting Semantics
-            {% elif forloop.counter == 11 %}Python: Default Param Retention
-            {% elif forloop.counter == 12 %}JavaScript: Arrow Function 'this'
-            {% elif forloop.counter == 13 %}C: Truncating Integer Division
-            {% elif forloop.counter == 14 %}Python: Boolean Operator Precedence
-            {% elif forloop.counter == 15 %}JavaScript: Lexicographical Sort
-            {% elif forloop.counter == 16 %}SQL: UNION vs UNION ALL
-            {% elif forloop.counter == 17 %}Python: Rest Unpacking
-            {% elif forloop.counter == 18 %}JavaScript: Object Spread Shallow Copy
-            {% elif forloop.counter == 19 %}C: Pointer Dereference
-            {% else %}Python: Generator Evaluation Timing
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">Evaluate STDOUT</span>
-          <span style="color: var(--accent-secondary); font-weight: 700;">Predict Output &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-
-    </div>
-  </section>
-
-  <!-- ENGINE 5: Tag & Syntax Matcher (20 Drills) -->
-  <section class="arena-engine-section" data-engine="tag-match" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning); text-transform: uppercase;">
-          Engine 05 &bull; 20 Timed Semantic &amp; Web Syntax Speed Drills
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          05 · Tag &amp; Syntax Matcher
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'tag-match' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch Tag Matcher &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      
-      {% for dr in "12345678901234567890"|make_list %}
-      <a href="{% url 'game_play' 'tag-match' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="tag syntax match {% if forloop.counter <= 10 %}html semantic{% elif forloop.counter <= 13 %}css selector{% elif forloop.counter <= 16 %}http api{% elif forloop.counter <= 18 %}git{% else %}sql{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning);">
-              Drill {{ forloop.counter|stringformat:"02d" }}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +25 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}HTML5: &lt;main&gt; Document Body
-            {% elif forloop.counter == 2 %}HTML5: &lt;header&gt; Banner &amp; Nav
-            {% elif forloop.counter == 3 %}HTML5: &lt;footer&gt; Legal &amp; Contact
-            {% elif forloop.counter == 4 %}HTML5: &lt;article&gt; Self-Contained Unit
-            {% elif forloop.counter == 5 %}HTML5: &lt;aside&gt; Sidebar &amp; Callout
-            {% elif forloop.counter == 6 %}HTML5: &lt;nav&gt; Primary Links
-            {% elif forloop.counter == 7 %}HTML5: &lt;figure&gt; &amp; Caption
-            {% elif forloop.counter == 8 %}HTML5: &lt;dialog&gt; Native Popups
-            {% elif forloop.counter == 9 %}HTML5: &lt;template&gt; Inert DOM Nodes
-            {% elif forloop.counter == 10 %}HTML5: &lt;mark&gt; Highlighted Text
-            {% elif forloop.counter == 11 %}CSS: :nth-child(even) Pseudo
-            {% elif forloop.counter == 12 %}CSS: :has() Parent Selector
-            {% elif forloop.counter == 13 %}CSS: [attr^='val'] Prefix Selector
-            {% elif forloop.counter == 14 %}HTTP: 201 Created Response
-            {% elif forloop.counter == 15 %}HTTP: 304 Not Modified Cache
-            {% elif forloop.counter == 16 %}HTTP: 429 Rate Limit Warning
-            {% elif forloop.counter == 17 %}Git: git cherry-pick Commit
-            {% elif forloop.counter == 18 %}Git: git stash Shelf
-            {% elif forloop.counter == 19 %}SQL: HAVING Aggregate Filter
-            {% else %}SQL: COALESCE() Fallback
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">Timed Recognition</span>
-          <span style="color: var(--warning); font-weight: 700;">Match Token &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-
-    </div>
-  </section>
-
-  <!-- ENGINE 6: Cyber Rover 3D Explorer (15 Missions) -->
-  <section class="arena-engine-section" data-engine="rover-3d" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary); text-transform: uppercase;">
-          Engine 06 &bull; 15 Planetary Spatial Navigation &amp; Robotics Missions
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          06 · Cyber Rover 3D Space Explorer
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'rover-3d' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch Rover Simulator &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      
-      {% for rov in "123456789012345"|make_list %}
-      <a href="{% url 'game_play' 'rover-3d' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="rover 3d webgl space robotics {% if forloop.counter <= 7 %}mars{% elif forloop.counter <= 9 %}europa{% elif forloop.counter <= 11 %}titan{% elif forloop.counter == 12 %}enceladus{% elif forloop.counter == 13 %}moon{% elif forloop.counter == 14 %}asteroid{% else %}deep space{% endif %}" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary);">
-              Mission {{ forloop.counter|stringformat:"02d" }}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +40 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}Mars Crater Alpha: Pod Landing
-            {% elif forloop.counter == 2 %}Olympus Mons Foothills Mineral Harvest
-            {% elif forloop.counter == 3 %}Valles Marineris Diagonal Trench
-            {% elif forloop.counter == 4 %}Utopia Planitia Basin Perimeter
-            {% elif forloop.counter == 5 %}Elysium Planitia Geothermal Ridge
-            {% elif forloop.counter == 6 %}Jezero River Delta Sediments
-            {% elif forloop.counter == 7 %}Gale Crater Mountain Spiral
-            {% elif forloop.counter == 8 %}Europa Subsurface Ice Sheets
-            {% elif forloop.counter == 9 %}Europa Hydrothermal Geysers
-            {% elif forloop.counter == 10 %}Titan Methane Shoreline Survey
-            {% elif forloop.counter == 11 %}Titan Xanadu Dune Crossing
-            {% elif forloop.counter == 12 %}Enceladus South Polar Tiger Stripes
-            {% elif forloop.counter == 13 %}Lunar Shackleton Crater Shadow Ice
-            {% elif forloop.counter == 14 %}Asteroid 16 Psyche Metallic Core
-            {% else %}Kuiper Belt Outpost Omega Relics
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">WebGL Autonomous Scripting</span>
-          <span style="color: var(--accent-secondary); font-weight: 700;">Pilot Mission &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-
-    </div>
-  </section>
-
-  <!-- ENGINE 7: CSS Grid Builder Lab (10 Wireframes) -->
-  <section class="arena-engine-section" data-engine="grid-builder" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary); text-transform: uppercase;">
-          Engine 07 &bull; 10 Responsive CSS Grid Wireframe Blueprints
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          07 · CSS Grid Builder Lab
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'grid-builder' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch Grid Builder &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      {% for track in "1234567890"|make_list %}
-      <a href="{% url 'game_play' 'grid-builder' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="css grid layout web wireframe frontend responsive" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary);">
-              Blueprint {{ forloop.counter|stringformat:"02d" }}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +50 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}Holy Grail Layout (Header, Nav, Main, Footer)
-            {% elif forloop.counter == 2 %}12-Column Responsive Desktop Grid Matrix
-            {% elif forloop.counter == 3 %}E-Commerce Product Card Catalog
-            {% elif forloop.counter == 4 %}SaaS Analytics Dashboard Multi-Widget Matrix
-            {% elif forloop.counter == 5 %}Magazine Editorial Hero &amp; Asymmetric Articles
-            {% elif forloop.counter == 6 %}Fluid Auto-Fit &amp; MinMax Photo Gallery
-            {% elif forloop.counter == 7 %}Split-Hero Landing Page with Form Dock
-            {% elif forloop.counter == 8 %}Multi-Step Checkout Progress Stepper
-            {% elif forloop.counter == 9 %}Dynamic Portfolio Masonry Layout
-            {% else %}Full LMS Learning Platform Layout Matrix
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">CSS Grid 2D Matrix</span>
-          <span style="color: var(--accent-secondary); font-weight: 700;">Snap Wireframe &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-  </section>
-
-  <!-- ENGINE 8: SQL Crime Detective (10 Mysteries) -->
-  <section class="arena-engine-section" data-engine="sql-detective" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning); text-transform: uppercase;">
-          Engine 08 &bull; 10 Relational Data Crime Mystery Cases
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          08 · SQL Crime Detective
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'sql-detective' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch Detective Desk &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      {% for track in "1234567890"|make_list %}
-      <a href="{% url 'game_play' 'sql-detective' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="sql query database join select where detective crime forensic" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning);">
-              Case {{ forloop.counter|stringformat:"02d" }}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +50 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}Midnight Server Vault Security Breach
-            {% elif forloop.counter == 2 %}Stolen Crypto Assets: Following the Transaction Ledger
-            {% elif forloop.counter == 3 %}Rogue Employee Disloyalty Query
-            {% elif forloop.counter == 4 %}Suspicious Inbound Wire Transfers
-            {% elif forloop.counter == 5 %}Phantom Warehouse Cargo Inventory Discrepancy
-            {% elif forloop.counter == 6 %}Double Agent Cross-Department Access Logs
-            {% elif forloop.counter == 7 %}High-Frequency Trading Market Manipulation
-            {% elif forloop.counter == 8 %}Tampered Digital Signature Certificate Audit
-            {% elif forloop.counter == 9 %}Corrupt Database Schema Backup Reconstruction
-            {% else %}The Mastermind: Multi-Table Inner Join Revelation
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">In-Memory Relational Engine</span>
-          <span style="color: var(--warning); font-weight: 700;">Solve Mystery &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-  </section>
-
-  <!-- ENGINE 9: HTML5 Canvas 2D Blaster (10 Physics Waves) -->
-  <section class="arena-engine-section" data-engine="canvas-blaster-2d" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); text-transform: uppercase;">
-          Engine 09 &bull; 10 HTML5 Canvas 2D Physics &amp; Game Loop Waves
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          09 · HTML5 Canvas 2D Blaster Lab
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'canvas-blaster-2d' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch 2D Blaster &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      {% for track in "1234567890"|make_list %}
-      <a href="{% url 'game_play' 'canvas-blaster-2d' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="canvas 2d physics game loop velocity collision particle arcade" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent);">
-              Wave {{ forloop.counter|stringformat:"02d" }}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +50 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}Velocity Vectors &amp; Delta Time (dx, dy)
-            {% elif forloop.counter == 2 %}AABB Bounding Box Axis Collision
-            {% elif forloop.counter == 3 %}Circle Radial Distance Collision
-            {% elif forloop.counter == 4 %}Gravity Vector &amp; Ballistic Trajectory
-            {% elif forloop.counter == 5 %}Friction &amp; Air Resistance Drag Damping
-            {% elif forloop.counter == 6 %}Elastic Wall Bouncing &amp; Normal Reflection
-            {% elif forloop.counter == 7 %}Angle of Incidence &amp; Trigonometric Spread
-            {% elif forloop.counter == 8 %}Particle System Explosion Alpha Bursts
-            {% elif forloop.counter == 9 %}Spatial Grid Partitioning Optimization
-            {% else %}Boss Mothership: Complete 2D Arcade Game Loop
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">60 FPS Canvas Physics</span>
-          <span style="color: var(--accent); font-weight: 700;">Play Wave &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-  </section>
-
-  <!-- ENGINE 10: 3D Voxel City Architect (10 Spatial Missions) -->
-  <section class="arena-engine-section" data-engine="city-builder-3d" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary); text-transform: uppercase;">
-          Engine 10 &bull; 10 WebGL 3D Spatial Geometry Missions
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          10 · 3D Voxel City Architect
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'city-builder-3d' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch 3D City &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      {% for track in "1234567890"|make_list %}
-      <a href="{% url 'game_play' 'city-builder-3d' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="3d webgl threejs voxel city spatial coordinates geometry camera" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent-secondary);">
-              Phase {{ forloop.counter|stringformat:"02d" }}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +50 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}Cartesian World Origin &amp; Ground Zero (0, 0)
-            {% elif forloop.counter == 2 %}Isometric Camera Angles &amp; Corner Markers
-            {% elif forloop.counter == 3 %}Residential Block Cluster Placement
-            {% elif forloop.counter == 4 %}Downtown Boulevard Transit Road Paving
-            {% elif forloop.counter == 5 %}Commercial High-Rise Skyscrapers
-            {% elif forloop.counter == 6 %}Central Eco-Park &amp; Bio-Sphere Reserve
-            {% elif forloop.counter == 7 %}Cyberpunk Neon Power Grid Beacons
-            {% elif forloop.counter == 8 %}Aquatic Canal &amp; River Waterway Excavation
-            {% elif forloop.counter == 9 %}Industrial Tech Factory District
-            {% else %}Megacity Apex Tower &amp; Hologram Spire
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">Three.js WebGL Engine</span>
-          <span style="color: var(--accent-secondary); font-weight: 700;">Build Phase &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-  </section>
-
-  <!-- ENGINE 11: Regex Matrix Decoder (10 Cyber Sectors) -->
-  <section class="arena-engine-section" data-engine="regex-matrix" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--success); text-transform: uppercase;">
-          Engine 11 &bull; 10 Cyber Pattern Recognition Sectors
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          11 · Regex Matrix Decoder
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'regex-matrix' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch Regex Matrix &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      {% for track in "1234567890"|make_list %}
-      <a href="{% url 'game_play' 'regex-matrix' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="regex pattern regular expressions cybersecurity matrix packet token" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--success);">
-              Sector {{ forloop.counter|stringformat:"02d" }}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +50 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}Character Classes &amp; Port Digits (\d+)
-            {% elif forloop.counter == 2 %}Word Boundary &amp; Privileged Roles (\bADMIN\b)
-            {% elif forloop.counter == 3 %}Hex Color Extraction (#[0-9a-fA-F]{6})
-            {% elif forloop.counter == 4 %}Email Address Sanitization &amp; Validation
-            {% elif forloop.counter == 5 %}IPv4 Network Address Shield
-            {% elif forloop.counter == 6 %}URL Query Parameter Key-Value Pairs
-            {% elif forloop.counter == 7 %}Negative Lookahead Password Filter
-            {% elif forloop.counter == 8 %}Semantic Versioning SemVer Tags
-            {% elif forloop.counter == 9 %}ISO 8601 UTC Timestamp Extractor
-            {% else %}Zero-Day SQL Injection Token Neutralizer
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">Matrix Pattern Stream</span>
-          <span style="color: var(--success); font-weight: 700;">Decode Sector &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-  </section>
-
-  <!-- ENGINE 12: API Route & Traffic Tower Defense (10 Waves) -->
-  <section class="arena-engine-section" data-engine="api-tower-defense" style="margin-bottom: 3.5rem;">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-subtle); gap: 1rem;">
-      <div>
-        <div style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b; text-transform: uppercase;">
-          Engine 12 &bull; 10 Backend Middleware Architecture Waves
-        </div>
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0.25rem 0 0;">
-          12 · API Route &amp; Traffic Tower Defense
-        </h2>
-      </div>
-      <a href="{% url 'game_play' 'api-tower-defense' %}" class="btn btn-primary" style="padding: 0.45rem 1.15rem; font-size: 0.84rem;">
-        Launch Tower Defense &rarr;
-      </a>
-    </div>
-
-    <div class="arena-levels-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-      {% for track in "1234567890"|make_list %}
-      <a href="{% url 'game_play' 'api-tower-defense' %}?level={{ forloop.counter }}" class="cq-card cq-card-interactive arena-level-card" data-tags="api backend middleware rate limit jwt auth redis cache waf ddos" style="padding: 1.15rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: #f59e0b;">
-              Wave {{ forloop.counter|stringformat:"02d" }}
-            </span>
-            <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted);">
-              +50 XP
-            </span>
-          </div>
-          <div class="level-title" style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
-            {% if forloop.counter == 1 %}HTTP 200 OK Route Dispatch
-            {% elif forloop.counter == 2 %}JWT Authentication Bearer Guard (401)
-            {% elif forloop.counter == 3 %}Rate Limiter Leaky Bucket (HTTP 429)
-            {% elif forloop.counter == 4 %}Redis In-Memory Cache Proxy
-            {% elif forloop.counter == 5 %}WAF SQL Injection &amp; XSS Sanitizer
-            {% elif forloop.counter == 6 %}CORS Preflight &amp; Origin Whitelist
-            {% elif forloop.counter == 7 %}Distributed DDoS Botnet Shield
-            {% elif forloop.counter == 8 %}Circuit Breaker Fallback (HTTP 503)
-            {% elif forloop.counter == 9 %}GZIP / Brotli Payload Compression
-            {% else %}Black Friday High-Concurrency Siege
-            {% endif %}
-          </div>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
-          <span style="color: var(--text-muted); font-family: var(--font-mono);">Backend Middleware Highway</span>
-          <span style="color: #f59e0b; font-weight: 700;">Defend Route &rarr;</span>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-  </section>
-
-  </div>
-
-
-  <!-- =====================================================================
-       SECTION 3: DAILY QUESTS & REPUTATION BOUNTIES (24 Live Quests)
-       ===================================================================== -->
-  <div id="questsArenaSection" style="display: {% if active_mode == 'quests' %}block{% else %}none{% endif %}; margin-bottom: 4rem;">
-    
-    <!-- Quests Header & Telemetry -->
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle);">
-      <div>
-        <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem;">
-          Gamified Missions &bull; Streak Multipliers &bull; Level Bounties
-        </div>
-        <h2 style="font-size: clamp(1.6rem, 2.8vw, 2.2rem); font-weight: 800; color: var(--text-primary); margin: 0 0 0.4rem; letter-spacing: -0.02em;">
-          Daily Quests, Bounties &amp; Milestones (24 Quests)
-        </h2>
-        <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 720px; line-height: 1.6; margin: 0;">
-          Level up your developer rank through daily habit sprints, high-reward weekly architecture bounties, speed duels, and milestone career achievements.
-        </p>
-      </div>
-
-      <!-- Live Quest Telemetry Stats -->
-      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
-        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
-          <span style="color: var(--text-muted);">AVAILABLE REWARDS: </span>
-          <strong style="color: var(--warning);">+{{ total_quests_xp|default:"2,700" }} XP</strong>
-        </div>
-        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.82rem;">
-          <span style="color: var(--text-muted);">CADENCE: </span>
-          <strong style="color: var(--success);">Daily at 00:00 UTC</strong>
-        </div>
-      </div>
-    </div>
-
-    <!-- Category Filter Pills Bar -->
-    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 2rem;">
-      <button class="btn btn-ghost quest-filter-pill active" data-qcat="all" onclick="filterQuests('all', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
-        All Quests (24)
-      </button>
-      <button class="btn btn-ghost quest-filter-pill" data-qcat="daily" onclick="filterQuests('daily', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
-        Daily Active (6)
-      </button>
-      <button class="btn btn-ghost quest-filter-pill" data-qcat="weekly" onclick="filterQuests('weekly', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
-        Weekly Bounties (6)
-      </button>
-      <button class="btn btn-ghost quest-filter-pill" data-qcat="milestones" onclick="filterQuests('milestones', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
-        Milestones (6)
-      </button>
-      <button class="btn btn-ghost quest-filter-pill" data-qcat="challenges" onclick="filterQuests('challenges', this)" style="padding: 0.4rem 1rem; font-size: 0.82rem; border-radius: 999px;">
-        Speed Duels (6)
-      </button>
-    </div>
-
-    <!-- Responsive Grid of 24 Quest Cards -->
-    <div id="questsGridContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
-      {% for q in quests %}
-      <div class="cq-card cq-card-interactive quest-card-item" data-qcat="{{ q.category }}" style="padding: 1.65rem; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); display: flex; flex-direction: column; justify-content: space-between; background: var(--bg-surface); position: relative; overflow: hidden;">
-        
-        <div>
-          <!-- Header Badges -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: {{ q.category_color }}; background: rgba(99, 102, 241, 0.08); border: 1px solid {{ q.category_color }}40; padding: 0.2rem 0.55rem; border-radius: 4px;">
-                {{ q.category_label }}
-              </span>
-              <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted); background: var(--bg-panel); padding: 0.15rem 0.45rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
-                {{ q.difficulty }}
-              </span>
-            </div>
-            <span style="font-size: 0.78rem; font-family: var(--font-mono); font-weight: 800; color: var(--warning); background: var(--warning-subtle); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid rgba(180, 83, 9, 0.25);">
-              +{{ q.xp }} XP
-            </span>
-          </div>
-
-          <!-- Quest Title -->
-          <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.5rem; letter-spacing: -0.015em; line-height: 1.35;">
-            {{ q.title }}
-          </h3>
-
-          <!-- Description -->
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.55; margin: 0 0 1.25rem;">
-            {{ q.desc }}
-          </p>
-        </div>
-
-        <div>
-          <!-- Progress Tracking Bar -->
-          <div style="background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; margin-bottom: 1.25rem;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.72rem; font-family: var(--font-mono); margin-bottom: 0.35rem;">
-              <span style="color: var(--text-muted);">Objective Progress</span>
-              <span style="font-weight: 700; color: {% if q.is_completed %}var(--success){% else %}var(--accent){% endif %};">
-                {% if q.is_completed %}✓ Completed{% else %}{{ q.progress_current }} / {{ q.progress_target }} {{ q.unit }}{% endif %}
-              </span>
-            </div>
-            <div class="lms-progress-track" style="height: 5px; background: var(--border-subtle); border-radius: 999px; overflow: hidden;">
-              <div style="height: 100%; width: {% if q.is_completed %}100%{% else %}{% widthratio q.progress_current q.progress_target 100 %}%{% endif %}; background: {% if q.is_completed %}var(--success){% else %}var(--accent-gradient-btn){% endif %}; border-radius: 999px;"></div>
-            </div>
-          </div>
-
-          <!-- Action Button -->
-          <a href="{{ q.action_url }}" class="btn {% if q.is_completed %}btn-ghost{% else %}btn-primary{% endif %}" style="padding: 0.5rem 1rem; font-size: 0.84rem; font-weight: 700; width: 100%; text-align: center; justify-content: center;">
-            {{ q.action_label }}
-          </a>
-        </div>
-
-      </div>
-      {% endfor %}
-    </div>
-
-  </div>
-
-  <!-- =====================================================================
-       INTERACTIVE TASK DETAIL & SPEC MODAL
-       ===================================================================== -->
-  <div id="taskModalBackdrop" class="task-modal-backdrop" onclick="handleModalBackdropClick(event)">
-    <div class="task-modal-box">
-      
-      <!-- Modal Header -->
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-subtle);">
-        <div>
-          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
-            <span id="modalTaskId" style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--accent); background: var(--accent-subtle); padding: 0.15rem 0.45rem; border-radius: 4px;">TASK</span>
-            <span id="modalTaskCat" style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted);">Category</span>
-            <span id="modalTaskDiff" class="task-badge-easy">Easy</span>
-            <span id="modalTaskXp" style="font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; color: var(--warning); background: var(--warning-subtle); padding: 0.15rem 0.45rem; border-radius: 4px;">+0 XP</span>
-          </div>
-          <h2 id="modalTaskTitle" style="font-size: 1.45rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.02em;">
-            Task Title
-          </h2>
-        </div>
-        
-        <button type="button" class="btn btn-icon" onclick="closeTaskModal()" style="font-size: 1.1rem; width: 34px; height: 34px;" title="Close Modal">
-          ✕
-        </button>
-      </div>
-
-      <!-- Problem Statement -->
-      <div style="margin-bottom: 1.25rem;">
-        <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 0.35rem;">
-          Problem Statement &bull; Specification
-        </div>
-        <p id="modalTaskDesc" style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
-          Description
-        </p>
-      </div>
-
-      <!-- Acceptance Criteria -->
-      <div style="margin-bottom: 1.25rem;">
-        <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 0.45rem;">
-          Automated Acceptance Criteria Checklist:
-        </div>
-        <div id="modalTaskCriteria" class="task-criteria-box">
-          <!-- Filled by JS -->
-        </div>
-      </div>
-
-      <!-- Starter Code Snippet Box -->
-      <div style="margin-bottom: 1.5rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
-          <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); font-family: var(--font-mono);">
-            Starter Implementation Blueprint
-          </span>
-          <button id="copyStarterSnippetBtn" class="btn btn-ghost" style="padding: 0.2rem 0.55rem; font-size: 0.72rem;" onclick="copyModalStarterCode()">
-            Copy Snippet
-          </button>
-        </div>
-        <pre id="modalTaskStarter" style="padding: 1rem; border-radius: 8px; background: #080b11; border: 1px solid rgba(255, 255, 255, 0.08); font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.5; color: #e2e8f0; overflow-x: auto; max-height: 180px;"></pre>
-      </div>
-
-      <!-- Modal Footer -->
-      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); gap: 1rem;">
-        <span style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
-          Client-Side In-Browser Execution &bull; 0ms Latency
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-on-surface-variant">
+<span>⏱️ 45 Mins</span>
+<span>•</span>
+<span>🧩 4 Problems</span>
+<span>•</span>
+<span class="text-primary font-bold">+2,500 XP</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-md flex items-center justify-between">
+<div class="flex -space-x-2 overflow-hidden">
+<div class="inline-block h-7 w-7 rounded-full ring-2 ring-surface-container-lowest bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm">JS</div>
+<div class="inline-block h-7 w-7 rounded-full ring-2 ring-surface-container-lowest bg-secondary text-on-secondary flex items-center justify-center font-label-sm text-label-sm">AM</div>
+<div class="inline-block h-7 w-7 rounded-full ring-2 ring-surface-container-lowest bg-tertiary text-on-tertiary flex items-center justify-center font-label-sm text-label-sm">+99</div>
+</div>
+<button class="px-space-md py-space-xs rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-[0_3px_0_0_#00422b] hover:-translate-y-0.5 active:translate-y-0.5 transition-all">
+              Queue Match
+            </button>
+</div>
+</div>
+<!-- Contest Card 2: Speed Debugging Blitz -->
+<div class="flex flex-col justify-between p-space-lg rounded-lg bg-surface-container-lowest shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-1.5 bg-secondary-container"></div>
+<div>
+<div class="flex items-center justify-between gap-space-xs mb-space-sm">
+<span class="px-space-sm py-space-xs rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm uppercase">Blitz Arena</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Round 12</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs">Syntax Trap &amp; Memory Leaks</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
+              Find and repair unclosed sockets, mutating default arguments, and cyclic reference references in 8 fast-paced rounds.
+            </p>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-on-surface-variant">
+<span>⏱️ 15 Mins</span>
+<span>•</span>
+<span>🐞 8 Glitches</span>
+<span>•</span>
+<span class="text-secondary font-bold">+850 XP</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-md flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Starts every 20m</span>
+<button class="px-space-md py-space-xs rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-container-highest transition-all">
+              Spectate (412)
+            </button>
+</div>
+</div>
+<!-- Contest Card 3: University Guild Invitational -->
+<div class="flex flex-col justify-between p-space-lg rounded-lg bg-surface-container-lowest shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-1.5 bg-tertiary-container"></div>
+<div>
+<div class="flex items-center justify-between gap-space-xs mb-space-sm">
+<span class="px-space-sm py-space-xs rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm uppercase">Inter-Collegiate</span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">Tier A Cup</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs">MIT vs Stanford: The Dual</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
+              Synchronous 3v3 team contest. Solve concurrency synchronization barriers and Redis cluster consensus maps.
+            </p>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-on-surface-variant">
+<span>⏱️ 90 Mins</span>
+<span>•</span>
+<span>⚔️ 3v3 Team</span>
+<span>•</span>
+<span class="text-tertiary font-bold">+5,000 XP</span>
+</div>
+</div>
+<div class="mt-space-lg pt-space-md flex items-center justify-between">
+<span class="px-space-sm py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">Invite Only</span>
+<button class="px-space-md py-space-xs rounded-full bg-tertiary text-on-tertiary font-label-md text-label-md shadow-[0_3px_0_0_#003d59] hover:-translate-y-0.5 active:translate-y-0.5 transition-all">
+              Verify Batch Key
+            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Post-Lesson Micro-Tasks Section (HackerRank & Exercism Style) -->
+<div class="tab-pane flex flex-col gap-space-lg" id="tab-tasks"><div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm"><div><h2 class="font-headline-md text-headline-md text-on-surface">Curated Practice Drills</h2><p class="font-body-sm text-body-sm text-on-surface-variant">Micro-tasks aligned with your current lesson progress.</p></div><div class="flex items-center gap-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant">Criterion:</span><span class="px-space-sm py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-bold">100% AST Accuracy</span></div></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter"><div class="flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all border border-surface-container-high/60"><div class="flex flex-col gap-space-sm"><div class="flex items-center justify-between"><span class="px-space-sm py-space-xs rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold">Medium</span><span class="font-label-sm text-label-sm text-primary font-bold flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]">verified</span> 98% Pass</span></div><h3 class="font-headline-sm text-headline-sm text-on-surface">Dynamic Matrix Spiral</h3><p class="font-body-sm text-body-sm text-on-surface-variant">Traverse continuous coordinate buffers in 2D space without reallocation.</p><div class="flex items-center gap-space-xs py-space-xs"><span class="px-space-sm py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">3 Tests</span><span class="px-space-sm py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">1.0s Limit</span></div></div><div class="mt-space-md pt-space-md flex items-center justify-between border-t border-surface-container-low"><span class="font-label-md text-label-md text-primary font-bold">+80 XP</span><button class="px-space-lg py-space-xs rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-[0_3px_0_0_#00422b] hover:-translate-y-0.5 active:translate-y-0.5 transition-all flex items-center gap-space-xs" onclick="runInteractiveCodeDrill()"><span class="material-symbols-outlined text-[16px]">play_arrow</span>Solve Drill</button></div></div><div class="flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all border border-surface-container-high/60"><div class="flex flex-col gap-space-sm"><div class="flex items-center justify-between"><span class="px-space-sm py-space-xs rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold">Hard</span><span class="font-label-sm text-label-sm text-secondary font-bold flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]">bolt</span> 74% Pass</span></div><h3 class="font-headline-sm text-headline-sm text-on-surface">Recursive Maze Backtracker</h3><p class="font-body-sm text-body-sm text-on-surface-variant">Defend memory bounds against circular call stacks in cyclic graphs.</p><div class="flex items-center gap-space-xs py-space-xs"><span class="px-space-sm py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">Cyclic Gate</span><span class="px-space-sm py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">Recursion Cap</span></div></div><div class="mt-space-md pt-space-md flex items-center justify-between border-t border-surface-container-low"><span class="font-label-md text-label-md text-primary font-bold">+150 XP</span><button class="px-space-lg py-space-xs rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-container-highest transition-all flex items-center gap-space-xs"><span class="material-symbols-outlined text-[16px]">lock_open</span>Inspect Spec</button></div></div><div class="flex flex-col justify-between p-space-lg rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all border border-surface-container-high/60"><div class="flex flex-col gap-space-sm"><div class="flex items-center justify-between"><span class="px-space-sm py-space-xs rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold">Refactor</span><span class="font-label-sm text-label-sm text-tertiary font-bold flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]">auto_fix_high</span> PEP-8</span></div><h3 class="font-headline-sm text-headline-sm text-on-surface">List Comprehension vs Loops</h3><p class="font-body-sm text-body-sm text-on-surface-variant">Compress nested map-filter routines into succinct idiomatic comprehensions.</p><div class="flex items-center gap-space-xs py-space-xs"><span class="px-space-sm py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">Code Golf</span><span class="px-space-sm py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">AST Check</span></div></div><div class="mt-space-md pt-space-md flex items-center justify-between border-t border-surface-container-low"><span class="font-label-md text-label-md text-primary font-bold">+40 XP</span><button class="px-space-lg py-space-xs rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-container-highest transition-all flex items-center gap-space-xs"><span class="material-symbols-outlined text-[16px]">tune</span>Quick Refactor</button></div></div></div><div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm border border-surface-container-high/60 flex flex-col gap-space-md"><div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed"><span class="material-symbols-outlined text-[18px]">terminal</span></div><div><span class="font-headline-sm text-headline-sm text-on-surface">Drill Verification Engine</span><p class="font-body-sm text-body-sm text-on-surface-variant">Task: Dynamic Matrix Spiral (Python 3.12)</p></div></div><div class="flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm" id="drill-status-pill"><span class="material-symbols-outlined text-[16px] text-primary">play_circle</span>Ready to test against 3 AST Assertions</div></div><div class="grid grid-cols-1 md:grid-cols-3 gap-space-md"><div class="p-space-md rounded-DEFAULT bg-surface-container-low flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="font-label-sm text-label-sm text-on-surface-variant font-bold">TEST 01: Standard</span><span class="w-2 h-2 rounded-full bg-primary-container"></span></div><span class="font-label-md text-label-md text-on-surface">Standard 3x3 Matrix</span><div class="font-mono text-[11px] p-space-xs bg-surface-container rounded text-on-surface-variant overflow-x-auto">In: [[1,2,3],[4,5,6],[7,8,9]]<br/>Out: [1,2,3,6,9,8,7,4,5]</div></div><div class="p-space-md rounded-DEFAULT bg-surface-container-low flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="font-label-sm text-label-sm text-on-surface-variant font-bold">TEST 02: Boundary</span><span class="w-2 h-2 rounded-full bg-primary-container"></span></div><span class="font-label-md text-label-md text-on-surface">Empty &amp; 1x1 Matrix Cases</span><div class="font-mono text-[11px] p-space-xs bg-surface-container rounded text-on-surface-variant overflow-x-auto">In: [[]] or [[42]]<br/>Out: [] or [42] (0-alloc)</div></div><div class="p-space-md rounded-DEFAULT bg-surface-container-low flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="font-label-sm text-label-sm text-on-surface-variant font-bold">TEST 03: Code Static</span><span class="w-2 h-2 rounded-full bg-tertiary-container"></span></div><span class="font-label-md text-label-md text-on-surface">AST Space Overhead</span><div class="font-mono text-[11px] p-space-xs bg-surface-container rounded text-on-surface-variant overflow-x-auto">O(1) auxiliary complexity<br/>Assert: no matrix.deepcopy()</div></div></div><div class="p-space-md rounded-DEFAULT bg-surface-container text-on-surface font-mono text-[12px] flex flex-col gap-space-xs min-h-[64px] justify-center" id="drill-console-output"><span class="text-on-surface-variant italic">Press "Solve Drill" on Task 1 above to trigger compilation and live AST unit execution.</span></div></div></div>
+<!-- 5. Tab Pane 3: University Batch Standings & Filter -->
+<div class="tab-pane hidden flex flex-col gap-space-md" id="tab-standings">
+<div class="p-space-lg rounded-xl bg-surface-container-low flex items-center justify-between">
+<div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Collegiate Season 4 Standings</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Track your campus cohort across algorithmic problem completions and sprint rounds.</p>
+</div>
+<span class="px-space-md py-space-xs rounded-full bg-primary text-on-primary font-label-md text-label-md">
+          Leader: Stanford Tree Guild (+14,200 XP)
         </span>
-        <a id="modalSolveLink" href="#" class="btn btn-primary" style="padding: 0.55rem 1.4rem; font-size: 0.88rem;">
-          Solve in Browser IDE &rarr;
-        </a>
-      </div>
+</div>
+</div>
+<!-- 6. Live Podium & Multi-Rank Table (Leaderboard Module) -->
+<section class="flex flex-col gap-space-lg">
+<!-- Leaderboard Header Controls -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-md text-headline-md text-on-surface">Arena Hall of Fame</span>
+<span class="px-space-sm py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm" id="current-batch-label">
+            Global Arena Tier S
+          </span>
+</div>
+<!-- Global vs Batch Toggle -->
+<div class="flex items-center p-1 rounded-full bg-surface-container-high shadow-inner">
+<button class="px-space-md py-space-xs rounded-full font-label-md text-label-md bg-surface-container-lowest text-primary shadow-sm transition-all" id="scope-global" onclick="toggleLeaderboardScope('global')">
+            Global Leaderboard
+          </button>
+<button class="px-space-md py-space-xs rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" id="scope-uni" onclick="toggleLeaderboardScope('batch')">
+            MIT / Stanford / Batch '26
+          </button>
+</div>
+</div>
+<!-- Playful Top 3 Podium (Duolingo Style 3D Staged Podiums) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md items-end pt-space-md">
+<!-- 2nd Place: Silver Podium -->
+<div class="order-2 md:order-1 flex flex-col items-center">
+<div class="relative mb-space-sm flex flex-col items-center">
+<span class="absolute -top-3 px-space-sm py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm shadow-sm">🥈 #2 Rank</span>
+<div class="w-16 h-16 rounded-full bg-surface-variant flex items-center justify-center ring-4 ring-surface-container-lowest shadow-md mt-2">
+<span class="material-symbols-outlined text-[32px] text-tertiary">smart_toy</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface mt-space-xs">Aria Chen</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Stanford '26 • AI Guild</span>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px] text-secondary">local_fire_department</span> 24d
+              </span>
+<span class="font-label-md text-label-md text-primary font-bold">11,420 XP</span>
+</div>
+</div>
+<!-- Tactile 3D Pedestal -->
+<div class="w-full h-28 rounded-t-lg bg-surface-container-high shadow-[0_4px_0_0_#bbcabf] flex items-center justify-center">
+<span class="font-headline-xl text-headline-xl text-on-surface-variant/40 font-black">2</span>
+</div>
+</div>
+<!-- 1st Place: Gold Champion Podium (Highest Elevation) -->
+<div class="order-1 md:order-2 flex flex-col items-center -mt-6">
+<div class="relative mb-space-sm flex flex-col items-center">
+<span class="absolute -top-4 px-space-md py-space-xs rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md shadow-md animate-bounce flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">crown</span> 🥇 ARENA CHAMPION
+            </span>
+<div class="w-20 h-20 rounded-full bg-secondary-fixed flex items-center justify-center ring-4 ring-secondary-container shadow-xl mt-3">
+<span class="material-symbols-outlined text-[42px] text-secondary">rocket_launch</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface mt-space-xs">Kaito Tanaka</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">Tokyo Tech • Systems Club</span>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="px-space-sm py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px] text-secondary">local_fire_department</span> 48d Streak
+              </span>
+<span class="font-label-lg text-label-lg text-primary font-bold">14,890 XP</span>
+</div>
+</div>
+<!-- Tactile 3D Pedestal Gold -->
+<div class="w-full h-36 rounded-t-lg bg-secondary-fixed-dim/40 shadow-[0_5px_0_0_#fea619] flex items-center justify-center">
+<span class="font-headline-xl text-headline-xl text-secondary font-black">1</span>
+</div>
+</div>
+<!-- 3rd Place: Bronze Podium -->
+<div class="order-3 md:order-3 flex flex-col items-center">
+<div class="relative mb-space-sm flex flex-col items-center">
+<span class="absolute -top-3 px-space-sm py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm shadow-sm">🥉 #3 Rank</span>
+<div class="w-16 h-16 rounded-full bg-tertiary-fixed flex items-center justify-center ring-4 ring-surface-container-lowest shadow-md mt-2">
+<span class="material-symbols-outlined text-[32px] text-tertiary">terminal</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface mt-space-xs">Lucas Rossi</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">MIT '26 • EECS Squad</span>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px] text-secondary">local_fire_department</span> 19d
+              </span>
+<span class="font-label-md text-label-md text-primary font-bold">9,850 XP</span>
+</div>
+</div>
+<!-- Tactile 3D Pedestal Bronze -->
+<div class="w-full h-20 rounded-t-lg bg-surface-container shadow-[0_4px_0_0_#bbcabf] flex items-center justify-center">
+<span class="font-headline-xl text-headline-xl text-on-surface-variant/30 font-black">3</span>
+</div>
+</div>
+</div>
+<!-- Ranked Table: Ranks #4 to #8 (Duolingo Style Clean Cards) -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden flex flex-col">
+<!-- Table Header -->
+<div class="grid grid-cols-12 px-space-lg py-space-sm bg-surface-container-low font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+<div class="col-span-1">Rank</div>
+<div class="col-span-5 sm:col-span-4">Contender</div>
+<div class="hidden sm:block sm:col-span-3">University / Guild</div>
+<div class="col-span-3 sm:col-span-2 text-center">Tasks / Win%</div>
+<div class="col-span-3 sm:col-span-2 text-right">Season XP</div>
+</div>
+<!-- Row 4 -->
+<div class="grid grid-cols-12 items-center px-space-lg py-space-md hover:bg-surface-container-low transition-colors">
+<div class="col-span-1 font-headline-sm text-headline-sm text-on-surface-variant font-bold">#4</div>
+<div class="col-span-5 sm:col-span-4 flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center font-label-sm text-label-sm text-on-surface font-bold shrink-0">
+              SM
+            </div>
+<div class="truncate">
+<span class="font-label-md text-label-md text-on-surface block truncate">Sophia Müller</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant sm:hidden">TU Munich</span>
+</div>
+</div>
+<div class="hidden sm:block sm:col-span-3 font-body-sm text-body-sm text-on-surface-variant truncate">
+            TU Munich • ByteCraft
+          </div>
+<div class="col-span-3 sm:col-span-2 text-center">
+<span class="font-label-md text-label-md text-on-surface block">84 Cleared</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">92% W/L</span>
+</div>
+<div class="col-span-3 sm:col-span-2 text-right font-headline-sm text-headline-sm text-primary">
+            8,920
+          </div>
+</div>
+<!-- Row 5 -->
+<div class="grid grid-cols-12 items-center px-space-lg py-space-md bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
+<div class="col-span-1 font-headline-sm text-headline-sm text-on-surface-variant font-bold">#5</div>
+<div class="col-span-5 sm:col-span-4 flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-tertiary-fixed flex items-center justify-center font-label-sm text-label-sm text-tertiary font-bold shrink-0">
+              EK
+            </div>
+<div class="truncate">
+<span class="font-label-md text-label-md text-on-surface block truncate">Ethan Kim</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant sm:hidden">UC Berkeley</span>
+</div>
+</div>
+<div class="hidden sm:block sm:col-span-3 font-body-sm text-body-sm text-on-surface-variant truncate">
+            UC Berkeley • CalHacks
+          </div>
+<div class="col-span-3 sm:col-span-2 text-center">
+<span class="font-label-md text-label-md text-on-surface block">79 Cleared</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">88% W/L</span>
+</div>
+<div class="col-span-3 sm:col-span-2 text-right font-headline-sm text-headline-sm text-primary">
+            8,110
+          </div>
+</div>
+<!-- Row 6 -->
+<div class="grid grid-cols-12 items-center px-space-lg py-space-md hover:bg-surface-container-low transition-colors">
+<div class="col-span-1 font-headline-sm text-headline-sm text-on-surface-variant font-bold">#6</div>
+<div class="col-span-5 sm:col-span-4 flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center font-label-sm text-label-sm text-primary font-bold shrink-0">
+              PR
+            </div>
+<div class="truncate">
+<span class="font-label-md text-label-md text-on-surface block truncate">Priya Rao</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant sm:hidden">IIT Bombay</span>
+</div>
+</div>
+<div class="hidden sm:block sm:col-span-3 font-body-sm text-body-sm text-on-surface-variant truncate">
+            IIT Bombay • Algorithmic Club
+          </div>
+<div class="col-span-3 sm:col-span-2 text-center">
+<span class="font-label-md text-label-md text-on-surface block">72 Cleared</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">85% W/L</span>
+</div>
+<div class="col-span-3 sm:col-span-2 text-right font-headline-sm text-headline-sm text-primary">
+            7,650
+          </div>
+</div>
+<!-- Row 7 -->
+<div class="grid grid-cols-12 items-center px-space-lg py-space-md bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
+<div class="col-span-1 font-headline-sm text-headline-sm text-on-surface-variant font-bold">#7</div>
+<div class="col-span-5 sm:col-span-4 flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed flex items-center justify-center font-label-sm text-label-sm text-secondary font-bold shrink-0">
+              DZ
+            </div>
+<div class="truncate">
+<span class="font-label-md text-label-md text-on-surface block truncate">Dmitri Zorin</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant sm:hidden">ETH Zürich</span>
+</div>
+</div>
+<div class="hidden sm:block sm:col-span-3 font-body-sm text-body-sm text-on-surface-variant truncate">
+            ETH Zürich • Quantum Loop
+          </div>
+<div class="col-span-3 sm:col-span-2 text-center">
+<span class="font-label-md text-label-md text-on-surface block">68 Cleared</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">81% W/L</span>
+</div>
+<div class="col-span-3 sm:col-span-2 text-right font-headline-sm text-headline-sm text-primary">
+            7,120
+          </div>
+</div>
+<!-- Row 8 -->
+<div class="grid grid-cols-12 items-center px-space-lg py-space-md hover:bg-surface-container-low transition-colors">
+<div class="col-span-1 font-headline-sm text-headline-sm text-on-surface-variant font-bold">#8</div>
+<div class="col-span-5 sm:col-span-4 flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center font-label-sm text-label-sm text-on-surface font-bold shrink-0">
+              AN
+            </div>
+<div class="truncate">
+<span class="font-label-md text-label-md text-on-surface block truncate">Amara Nwachukwu</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant sm:hidden">Toronto Univ</span>
+</div>
+</div>
+<div class="hidden sm:block sm:col-span-3 font-body-sm text-body-sm text-on-surface-variant truncate">
+            University of Toronto • Vector Guild
+          </div>
+<div class="col-span-3 sm:col-span-2 text-center">
+<span class="font-label-md text-label-md text-on-surface block">65 Cleared</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">79% W/L</span>
+</div>
+<div class="col-span-3 sm:col-span-2 text-right font-headline-sm text-headline-sm text-primary">
+            6,840
+          </div>
+</div>
+</div>
+<!-- 7. Current User's Tactile Sticky Bar (Highlighted Gamified State) -->
+<div class="p-space-md lg:p-space-lg rounded-xl bg-surface-container-high shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<!-- Left: User Identity & Percentile -->
+<div class="flex items-center gap-space-md">
+<div class="relative">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[24px]">person</span>
+</div>
+<span class="absolute -bottom-1 -right-1 px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold">
+              ★
+            </span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface">Your Current Placement</span>
+<span class="px-space-sm py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-bold">
+                Top 2% Global
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              CodeQuest Architect • MIT &amp; Global Season 4 Pool
+            </p>
+</div>
+</div>
+<!-- Center: Quick XP & Rank Numbers -->
+<div class="flex items-center gap-space-xl">
+<div class="flex flex-col items-center">
+<span class="font-headline-md text-headline-md text-on-surface font-extrabold">#42</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Current Rank</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-headline-md text-headline-md text-primary font-extrabold">4,850 XP</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total Points</span>
+</div>
+<div class="hidden sm:flex flex-col items-start">
+<div class="flex items-center justify-between w-36 mb-1 font-label-sm text-label-sm">
+<span class="text-on-surface-variant">To Rank #41</span>
+<span class="text-primary font-bold">+150 XP</span>
+</div>
+<div class="w-36 h-2.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 78%"></div>
+</div>
+</div>
+</div>
+<!-- Right: Action CTA -->
+<div class="flex items-center gap-space-sm shrink-0">
+<button class="px-space-lg py-space-sm rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-[0_4px_0_0_#00422b] hover:-translate-y-0.5 active:translate-y-1 active:shadow-none transition-all flex items-center gap-space-xs" onclick="switchTab('tab-tasks')">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+<span>Earn +150 XP Now</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</div></main><footer class="w-full bg-surface-container-low mt-space-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="max-w-7xl mx-auto px-margin py-space-xl"><div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-space-xl"><div class="flex flex-col gap-space-sm"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface">CodeQuest</span><span class="px-space-xs py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm">LMS</span></div><p class="font-body-sm text-body-sm text-on-surface-variant">The joyful, gamified computer science and software development mastery platform.</p><div class="flex items-center gap-space-xs mt-space-xs px-space-sm py-space-xs rounded-full bg-surface-container-high w-fit"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface">All Systems Cheerful &amp; Operational</span></div></div><div class="flex flex-col gap-space-xs"><span class="font-label-lg text-label-lg text-on-surface mb-space-xs">Learning Paths</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/courses/">Full-Stack Web Arena</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/games/">Data Structures &amp; Algorithms</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/playground/">Systems &amp; Rust Sprint</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/contests/">Cloud Native Quests</a></div><div class="flex flex-col gap-space-xs"><span class="font-label-lg text-label-lg text-on-surface mb-space-xs">Gamification &amp; Guilds</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/certificates/">Daily Quests &amp; Streaks</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/contests/?tab=standings">Global Leaderboards</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/contests/">Boss Fight Contests</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/certificates/">Verified Certificates</a></div><div class="flex flex-col gap-space-sm"><span class="font-label-lg text-label-lg text-on-surface mb-space-xs">Preferences</span><div class="flex items-center justify-between p-space-sm rounded-DEFAULT bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px] text-tertiary">translate</span><span class="font-label-md text-label-md text-on-surface">Language</span></div><span class="font-label-sm text-label-sm text-tertiary font-bold">English (US)</span></div><div class="p-space-sm rounded-DEFAULT bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] flex items-center justify-between"><span class="font-label-md text-label-md text-on-surface-variant">Sound Effects</span><span class="material-symbols-outlined text-primary text-[20px]">volume_up</span></div></div></div><div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-lg text-on-surface-variant font-label-sm text-label-sm"><p>© 2025 CodeQuest LMS, Inc. Crafted with joy for future architects.</p><div class="flex items-center gap-space-lg"><a class="hover:text-on-surface transition-colors" href="/about/">Privacy Policy</a><a class="hover:text-on-surface transition-colors" href="/about/">Terms of Service</a><a class="hover:text-on-surface transition-colors" href="/about/">Community Guidelines</a></div></div></div></footer>
+</div>
 
-    </div>
-  </div>
+<div class="block md:hidden">
+<header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-gutter flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs min-w-0"><div class="w-9 h-9 rounded-DEFAULT bg-primary-container text-on-primary flex items-center justify-center shadow-[0_3px_0_0_#006c49]"><span class="material-symbols-outlined text-[20px]">terminal</span></div><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">CodeQuest</span><span class="text-[9px] font-label-sm uppercase tracking-wider text-primary font-bold -mt-1">LMS</span></div></div><div class="flex items-center gap-space-xs"><div class="flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed px-2.5 py-1 rounded-full shadow-[0_2px_0_0_#fea619]"><span class="material-symbols-outlined text-[16px] text-secondary">local_fire_department</span><span class="font-label-sm text-label-sm font-bold text-on-secondary-fixed">12</span></div><div class="flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed px-2.5 py-1 rounded-full shadow-[0_2px_0_0_#23acf1]"><span class="material-symbols-outlined text-[15px] text-tertiary">bolt</span><span class="font-label-sm text-label-sm font-bold text-on-tertiary-fixed">2.4k</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-gutter pb-8 gap-space-lg">
+<!-- Live Season Banner -->
+<div class="relative w-full rounded-2xl bg-surface-container overflow-hidden shadow-lg p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 bg-error-container text-on-error-container px-2.5 py-0.5 rounded-full shadow-sm animate-pulse">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Season 4 Live</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-label-md text-label-md bg-surface-container-lowest px-2 py-0.5 rounded-full shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary">timer</span>
+<span id="arena-timer">02d : 14h : 22m</span>
+</div>
+</div>
+<div class="flex items-start justify-between gap-space-sm mt-1">
+<div class="flex flex-col min-w-0">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight">Graph Pathfinder</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Dijkstra vs A* Speedrun Duel. 1v1 Async Battle.</p>
+</div>
+<div class="w-14 h-14 rounded-2xl bg-tertiary-container text-on-tertiary-container flex items-center justify-center shrink-0 shadow-md">
+<span class="material-symbols-outlined text-[32px]">hub</span>
+</div>
+</div>
+<!-- Live Duel Pill Stats -->
+<div class="grid grid-cols-3 gap-space-xs mt-1 bg-surface-container-lowest p-space-xs rounded-xl shadow-sm">
+<div class="flex flex-col items-center justify-center py-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">XP Pool</span>
+<span class="font-headline-sm text-headline-sm text-primary">+5,000</span>
+</div>
+<div class="flex flex-col items-center justify-center py-1 bg-surface-container-low rounded-lg">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Queued</span>
+<span class="font-headline-sm text-headline-sm text-tertiary">1,420</span>
+</div>
+<div class="flex flex-col items-center justify-center py-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Tier</span>
+<span class="font-headline-sm text-headline-sm text-secondary">Diamond</span>
+</div>
+</div>
+<!-- Matchmaking Push Button -->
+<button class="w-full mt-2 py-3 px-space-md rounded-full bg-primary text-on-primary font-headline-sm text-headline-sm flex items-center justify-center gap-2 shadow-[0_4px_0_0_#00422b] active:translate-y-1 active:shadow-none transition-all" id="btn-matchmake">
+<span class="material-symbols-outlined text-[20px]">swords</span>
+<span>Enter Matchmaking</span>
+</button>
+</div>
+<!-- Arena Podium Section -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[22px]">trophy</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Global Podium</h3>
+</div>
+<span class="font-label-md text-label-md text-primary bg-primary-fixed/40 px-2 py-0.5 rounded-full">Week 3</span>
+</div>
+<!-- 3D Mobile Podium Cards -->
+<div class="grid grid-cols-3 gap-space-xs items-end pt-4">
+<!-- 2nd Place: Aria Chen -->
+<div class="flex flex-col items-center">
+<div class="relative mb-1">
+<img class="w-14 h-14 rounded-full object-cover shadow-md bg-surface-container-high" data-alt="Cyberpunk female coder portrait avatar wearing futuristic neon holographic visor smiling vibrant emerald accents clean vector style" src="/static/img/stitch/asset_13.jpg"/>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-label-md flex items-center justify-center shadow-sm">2</div>
+</div>
+<span class="font-label-md text-label-md text-on-surface truncate w-full text-center">Aria Chen</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">13.2k XP</span>
+<div class="w-full h-16 bg-surface-container-high rounded-t-xl mt-2 flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-outline text-[24px]">military_tech</span>
+</div>
+</div>
+<!-- 1st Place: Kaito Tanaka -->
+<div class="flex flex-col items-center">
+<div class="relative mb-1">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 text-secondary-container">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">crown</span>
+</div>
+<img class="w-16 h-16 rounded-full object-cover shadow-lg bg-secondary-fixed" data-alt="Anime style male hacker coder character headshot glowing golden headset dark clean modern minimalist illustration" src="/static/img/stitch/asset_07.jpg"/>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md flex items-center justify-center shadow-sm font-bold">1</div>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface truncate w-full text-center font-bold">Kaito T.</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">14,890 XP</span>
+<div class="w-full h-24 bg-secondary-fixed rounded-t-xl mt-2 flex flex-col items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[30px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span class="font-label-sm text-label-sm text-on-secondary-fixed uppercase tracking-tight">Champion</span>
+</div>
+</div>
+<!-- 3rd Place: Lucas Rossi -->
+<div class="flex flex-col items-center">
+<div class="relative mb-1">
+<img class="w-14 h-14 rounded-full object-cover shadow-md bg-surface-container-high" data-alt="Chibi pixel tech specialist boy avatar with glasses looking confident digital illustration crisp clean graphic design" src="/static/img/stitch/asset_10.jpg"/>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-surface-dim text-on-surface font-label-md text-label-md flex items-center justify-center shadow-sm">3</div>
+</div>
+<span class="font-label-md text-label-md text-on-surface truncate w-full text-center">Lucas R.</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">11.9k XP</span>
+<div class="w-full h-12 bg-surface-container-low rounded-t-xl mt-2 flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-outline-variant text-[20px]">military_tech</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Your Placement Sticky Floating Card -->
+<div class="sticky top-20 z-30 w-full rounded-2xl bg-surface-container-lowest shadow-xl p-space-sm flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="w-11 h-11 rounded-xl bg-primary text-on-primary flex flex-col items-center justify-center shrink-0 shadow-sm">
+<span class="text-[10px] font-label-sm uppercase leading-none opacity-80">Rank</span>
+<span class="font-headline-sm text-headline-sm leading-tight">#42</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg text-on-surface truncate">Alex Rivera</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-label-sm px-1.5 py-0.2 rounded-full uppercase tracking-wider shrink-0">Top 2%</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5 text-on-surface-variant font-body-sm text-body-sm">
+<span class="font-bold text-on-surface">4,850 XP</span>
+<span>•</span>
+<span class="text-primary font-bold">+150 XP to #41</span>
+</div>
+</div>
+</div>
+<div class="shrink-0">
+<div class="w-8 h-8 rounded-full bg-primary-fixed/40 text-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]">trending_up</span>
+</div>
+</div>
+</div>
+<!-- Quick Practice Drills Vertical Feed -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[22px]">code_blocks</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Practice Drills</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Fast Queue</span>
+</div>
+<!-- Drill 1: Dynamic Matrix Spiral -->
+<div class="w-full rounded-2xl bg-surface-container-lowest p-space-md shadow-md flex flex-col gap-space-sm transition-transform active:scale-[0.99]">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded-full font-label-sm text-label-sm">Medium</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span> 98% Pass
+            </span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">Dynamic Matrix Spiral</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Iterate through an N×M grid in clockwise order with O(1) space.</p>
+</div>
+<div class="flex items-center gap-1 bg-primary-fixed/40 text-on-primary-fixed px-2 py-1 rounded-xl shrink-0">
+<span class="material-symbols-outlined text-[16px] text-primary">bolt</span>
+<span class="font-label-md text-label-md font-bold">+80 XP</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2">
+<span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-1 rounded-lg">2D Arrays</span>
+<span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-1 rounded-lg">Pointers</span>
+</div>
+<button class="px-space-md py-2 rounded-full bg-primary-container text-on-primary font-label-lg text-label-lg flex items-center gap-1 shadow-[0_3px_0_0_#006c49] active:translate-y-0.5 active:shadow-none transition-all">
+<span>Solve</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Drill 2: Recursive Maze Backtracker -->
+<div class="w-full rounded-2xl bg-surface-container-lowest p-space-md shadow-md flex flex-col gap-space-sm transition-transform active:scale-[0.99]">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-error-container text-on-error-container px-2 py-0.5 rounded-full font-label-sm text-label-sm">Hard</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px] text-tertiary">sync</span> 74% Pass
+            </span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">Recursive Maze Backtracker</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Find shortest exits inside weighted dynamic labyrinths with memoization.</p>
+</div>
+<div class="flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed px-2 py-1 rounded-xl shrink-0">
+<span class="material-symbols-outlined text-[16px] text-secondary">bolt</span>
+<span class="font-label-md text-label-md font-bold">+150 XP</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2">
+<span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-1 rounded-lg">DFS</span>
+<span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-1 rounded-lg">Recursion</span>
+</div>
+<button class="px-space-md py-2 rounded-full bg-surface-container text-on-surface font-label-lg text-label-lg flex items-center gap-1 shadow-[0_3px_0_0_#d3e4fe] active:translate-y-0.5 active:shadow-none transition-all">
+<span>Solve</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Drill 3: List Comprehension vs Loops -->
+<div class="w-full rounded-2xl bg-surface-container-lowest p-space-md shadow-md flex flex-col gap-space-sm transition-transform active:scale-[0.99]">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full font-label-sm text-label-sm">Refactor</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px] text-outline">verified_user</span> PEP-8
+            </span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">List Comprehension vs Loops</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Convert nested accumulator statements into idiomatic one-liner expressions.</p>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-high text-on-surface-variant px-2 py-1 rounded-xl shrink-0">
+<span class="material-symbols-outlined text-[16px] text-tertiary">bolt</span>
+<span class="font-label-md text-label-md font-bold">+40 XP</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2">
+<span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-1 rounded-lg">Python</span>
+<span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-2 py-1 rounded-lg">Clean Code</span>
+</div>
+<button class="px-space-md py-2 rounded-full bg-surface-container text-on-surface font-label-lg text-label-lg flex items-center gap-1 shadow-[0_3px_0_0_#d3e4fe] active:translate-y-0.5 active:shadow-none transition-all">
+<span>Solve</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+(function() {
+(function() {
+    const btn = document.getElementById('btn-matchmake');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        btn.classList.add('bg-tertiary');
+        btn.innerHTML = `<span class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span><span>Searching Opponents...</span>`;
+        setTimeout(() => {
+          btn.classList.remove('bg-tertiary');
+          btn.innerHTML = `<span class="material-symbols-outlined text-[20px]">check</span><span>Match Found! Loading Arena...</span>`;
+        }, 2200);
+      });
+    }
 
-
+    const timer = document.getElementById('arena-timer');
+    if (timer) {
+      let seconds = 22;
+      let minutes = 14;
+      let hours = 14;
+      setInterval(() => {
+        if (seconds > 0) {
+          seconds--;
+        } else {
+          seconds = 59;
+          if (minutes > 0) {
+            minutes--;
+          } else {
+            minutes = 59;
+            if (hours > 0) hours--;
+          }
+        }
+        const s = String(seconds).padStart(2, '0');
+        const m = String(minutes).padStart(2, '0');
+        const h = String(hours).padStart(2, '0');
+        timer.innerText = `02d : ${h}h : ${m}m : ${s}s`;
+      }, 1000);
+    }
+  })();
+})();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/80 backdrop-blur-xl shadow-[0_-1px_12px_rgba(0,0,0,0.04)]" data-active-classes="text-primary bg-primary-fixed/30"><div class="h-16 px-space-xs flex items-center justify-around"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="tracks-home" href="/"><span class="material-symbols-outlined text-[22px]">route</span><span class="font-label-sm text-label-sm mt-0.5">Tracks</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="courses" href="/courses/"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm mt-0.5">Courses</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="game-studio" href="/learn/python-core/print-syntax/"><span class="material-symbols-outlined text-[22px]">stadia_controller</span><span class="font-label-sm text-label-sm mt-0.5">Studio</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT transition-transform active:scale-95 text-primary bg-primary-fixed/30" data-path="arena" href="/games/"><span class="material-symbols-outlined text-[22px]">swords</span><span class="font-label-sm text-label-sm mt-0.5">Arena</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="profile-certificates" href="/certificates/"><span class="material-symbols-outlined text-[22px]">verified</span><span class="font-label-sm text-label-sm mt-0.5">Profile</span></a></div></nav>
 </div>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
-  (function () {
-    'use strict';
-
-    // TASKS DATA CACHE FOR MODAL
-    const tasksData = [
-      {% if tasks %}
-      {% for task in tasks %}
-      {
-        id: "{{ task.id }}",
-        cat: "{{ task.cat }}",
-        cat_label: "{{ task.cat_label }}",
-        diff: "{{ task.diff }}",
-        diff_label: "{{ task.diff_label }}",
-        xp: {{ task.xp }},
-        time: "{{ task.time }}",
-        title: "{{ task.title|escapejs }}",
-        desc: "{{ task.desc|escapejs }}",
-        criteria: [{% for c in task.criteria %}"{{ c|escapejs }}",{% endfor %}],
-        tags: [{% for t in task.tags %}"{{ t|escapejs }}",{% endfor %}],
-        starter: "{{ task.starter|escapejs }}"
-      },
-      {% endfor %}
-      {% endif %}
-    ];
-
-    // 1. PRIMARY ARENA MODE SWITCHER (Tasks vs Arcade vs Quests)
-    window.switchArenaMode = function (mode) {
-      const secTasks = document.getElementById('tasksArenaSection');
-      const secArcade = document.getElementById('arcadeArenaSection');
-      const secQuests = document.getElementById('questsArenaSection');
-
-      const btnTasks = document.getElementById('modeBtnTasks');
-      const btnArcade = document.getElementById('modeBtnArcade');
-      const btnQuests = document.getElementById('modeBtnQuests');
-
-      if (secTasks) secTasks.style.display = mode === 'tasks' ? 'block' : 'none';
-      if (secArcade) secArcade.style.display = mode === 'arcade' ? 'block' : 'none';
-      if (secQuests) secQuests.style.display = mode === 'quests' ? 'block' : 'none';
-
-      [btnTasks, btnArcade, btnQuests].forEach(b => {
-        if (b) b.classList.remove('active');
-      });
-
-      if (mode === 'tasks' && btnTasks) btnTasks.classList.add('active');
-      if (mode === 'arcade' && btnArcade) btnArcade.classList.add('active');
-      if (mode === 'quests' && btnQuests) btnQuests.classList.add('active');
-
-      if (history.replaceState) {
-        const url = new URL(window.location);
-        url.searchParams.set('mode', mode);
-        window.history.replaceState({}, '', url);
-      }
-    };
-
-    // 2. TASK FILTERING & REAL-TIME SEARCH
-    const taskSearch = document.getElementById('taskSearchInput');
-    const taskCatPills = document.querySelectorAll('.task-filter-pill');
-    const taskDiffPills = document.querySelectorAll('.task-diff-pill');
-    const taskCards = document.querySelectorAll('.task-card-item');
-    const taskCounter = document.getElementById('taskCounterDisplay');
-    const noTasksMsg = document.getElementById('noTasksFoundMsg');
-
-    let activeTaskCat = 'all';
-    let activeTaskDiff = 'all';
-
-    function filterTasks() {
-      const q = (taskSearch ? taskSearch.value : '').toLowerCase().trim();
-      let visible = 0;
-
-      taskCards.forEach(function (card) {
-        const cat = card.getAttribute('data-task-cat') || '';
-        const diff = card.getAttribute('data-task-diff') || '';
-        const title = card.getAttribute('data-task-title') || '';
-        const desc = card.getAttribute('data-task-desc') || '';
-        const tags = card.getAttribute('data-task-tags') || '';
-
-        const matchCat = (activeTaskCat === 'all' || cat === activeTaskCat);
-        const matchDiff = (activeTaskDiff === 'all' || diff === activeTaskDiff);
-        const matchQuery = !q || title.includes(q) || desc.includes(q) || tags.includes(q);
-
-        if (matchCat && matchDiff && matchQuery) {
-          card.style.display = 'flex';
-          visible++;
-        } else {
-          card.style.display = 'none';
-        }
-      });
-
-      if (taskCounter) {
-        taskCounter.textContent = `Showing ${visible} of ${taskCards.length} Practical Tasks`;
-      }
-      if (noTasksMsg) {
-        noTasksMsg.style.display = visible === 0 ? 'block' : 'none';
-      }
-    }
-
-    if (taskSearch) {
-      taskSearch.addEventListener('input', filterTasks);
-    }
-
-    taskCatPills.forEach(function (pill) {
-      pill.addEventListener('click', function () {
-        taskCatPills.forEach(p => {
-          p.classList.remove('active');
-          p.classList.add('btn-ghost');
-        });
-        pill.classList.add('active');
-        pill.classList.remove('btn-ghost');
-        activeTaskCat = pill.getAttribute('data-task-cat');
-        filterTasks();
-      });
-    });
-
-    taskDiffPills.forEach(function (pill) {
-      pill.addEventListener('click', function () {
-        taskDiffPills.forEach(p => {
-          p.classList.remove('active');
-          p.classList.add('btn-ghost');
-        });
-        pill.classList.add('active');
-        pill.classList.remove('btn-ghost');
-        activeTaskDiff = pill.getAttribute('data-task-diff');
-        filterTasks();
-      });
-    });
-
-    // 3. TASK MODAL OPEN & CLOSE
-    window.openTaskModal = function (taskId) {
-      const task = tasksData.find(t => t.id === taskId);
-      if (!task) return;
-
-      document.getElementById('modalTaskId').textContent = task.id.toUpperCase();
-      document.getElementById('modalTaskCat').textContent = task.cat_label;
-      
-      const diffBadge = document.getElementById('modalTaskDiff');
-      diffBadge.className = `task-badge-${task.diff}`;
-      diffBadge.textContent = task.diff_label;
-
-      document.getElementById('modalTaskXp').textContent = `+${task.xp} XP`;
-      document.getElementById('modalTaskTitle').textContent = task.title;
-      document.getElementById('modalTaskDesc').textContent = task.desc;
-
-      const critBox = document.getElementById('modalTaskCriteria');
-      critBox.innerHTML = task.criteria.map(c => `
-        <div class="task-criteria-item">
-          <span style="color: var(--accent); font-weight: 700;">✓</span>
-          <span>${c}</span>
-        </div>
-      `).join('');
-
-      document.getElementById('modalTaskStarter').textContent = task.starter.replace(/\\n/g, '\n');
-      document.getElementById('modalSolveLink').href = `/playground/?task=${task.id}`;
-
-      const backdrop = document.getElementById('taskModalBackdrop');
-      backdrop.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    };
-
-    window.closeTaskModal = function () {
-      const backdrop = document.getElementById('taskModalBackdrop');
-      if (backdrop) backdrop.style.display = 'none';
-      document.body.style.overflow = '';
-    };
-
-    window.handleModalBackdropClick = function (e) {
-      if (e.target && e.target.id === 'taskModalBackdrop') {
-        closeTaskModal();
-      }
-    };
-
-    window.copyModalStarterCode = function () {
-      const code = document.getElementById('modalTaskStarter').textContent;
-      navigator.clipboard.writeText(code).then(() => {
-        const btn = document.getElementById('copyStarterSnippetBtn');
-        btn.textContent = 'Copied! ✓';
-        setTimeout(() => { btn.textContent = 'Copy Snippet'; }, 2000);
-      });
-    };
-
-    window.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeTaskModal();
-    });
-
-    // 4. ARCADE ENGINE & 115 CHALLENGES SEARCH & FILTER (PRESERVED)
-    const arenaSearch = document.getElementById('arenaSearchInput');
-    const arenaTabs = document.querySelectorAll('.arena-filter-tab');
-    const arenaSections = document.querySelectorAll('.arena-engine-section');
-    const countDisplay = document.getElementById('arenaFilterCount');
-
-    let activeArenaFilter = 'all';
-
-    function filterArena() {
-      let visibleCount = 0;
-      const q = (arenaSearch ? arenaSearch.value : '').toLowerCase().trim();
-
-      arenaSections.forEach(function (sec) {
-        const engine = sec.getAttribute('data-engine');
-        const matchesTab = (activeArenaFilter === 'all' || activeArenaFilter === engine);
-
-        let sectionHasVisible = false;
-        const cards = sec.querySelectorAll('.arena-level-card');
-
-        cards.forEach(function (card) {
-          const tags = (card.getAttribute('data-tags') || '').toLowerCase();
-          const title = (card.querySelector('.level-title')?.textContent || '').toLowerCase();
-          const matchesSearch = !q || tags.includes(q) || title.includes(q);
-
-          if (matchesTab && matchesSearch) {
-            card.style.display = 'flex';
-            visibleCount++;
-            sectionHasVisible = true;
-          } else {
-            card.style.display = 'none';
-          }
-        });
-
-        sec.style.display = sectionHasVisible ? 'block' : 'none';
-      });
-
-      // Also filter 108 Master Games Grid
-      const masterCards = document.querySelectorAll('.arcade-game-card');
-      let visibleMasterGames = 0;
-      masterCards.forEach(function (card) {
-        const cat = card.getAttribute('data-cat') || '';
-        const title = card.getAttribute('data-title') || '';
-        const desc = card.getAttribute('data-desc') || '';
-        const matchesCat = (activeMasterCat === 'all' || cat === activeMasterCat);
-        const matchesQ = !q || title.includes(q) || desc.includes(q) || cat.includes(q);
-
-        if (matchesCat && matchesQ) {
-          card.style.display = 'flex';
-          visibleMasterGames++;
-        } else {
-          card.style.display = 'none';
-        }
-      });
-
-      if (countDisplay) {
-        countDisplay.textContent = `Showing ${visibleMasterGames} Games & ${visibleCount} Flagship Challenges`;
-      }
-    }
-
-    let activeMasterCat = 'all';
-    const masterCatPills = document.querySelectorAll('.arcade-cat-pill');
-    masterCatPills.forEach(function (pill) {
-      pill.addEventListener('click', function () {
-        masterCatPills.forEach(p => {
-          p.classList.remove('active');
-          p.classList.add('btn-ghost');
-        });
-        pill.classList.add('active');
-        pill.classList.remove('btn-ghost');
-        activeMasterCat = pill.getAttribute('data-cat');
-        filterArena();
-      });
-    });
-
-    if (arenaSearch) {
-      arenaSearch.addEventListener('input', filterArena);
-    }
-
-    arenaTabs.forEach(function (tab) {
-      tab.addEventListener('click', function () {
-        arenaTabs.forEach(t => {
-          t.classList.remove('active');
-          t.classList.add('btn-ghost');
-        });
-        tab.classList.add('active');
-        tab.classList.remove('btn-ghost');
-        activeArenaFilter = tab.getAttribute('data-filter');
-        filterArena();
-      });
-    });
-
-  })();
-
-  window.filterQuests = function(cat, btn) {
-    document.querySelectorAll('.quest-filter-pill').forEach(p => p.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    
-    const cards = document.querySelectorAll('.quest-card-item');
-    cards.forEach(card => {
-      const qcat = card.getAttribute('data-qcat') || '';
-      if (cat === 'all' || qcat === cat) {
-        card.style.display = 'flex';
-      } else {
-        card.style.display = 'none';
-      }
-    });
+(function() {
+  // Global CTA Navigation & Stitch Interactivity Binder
+  const pathRoutes = {
+    "Start Coding Free": "/courses/",
+    "Run Quick Challenge": "/learn/python-core/print-syntax/",
+    "Start Free Micro-Lesson": "/learn/python-core/print-syntax/",
+    "Continue Level 27": "/learn/python-core/print-syntax/",
+    "Resume Micro-Tasks": "/games/",
+    "Unlock with 15 Badges": "/certificates/",
+    "Start Track": "/courses/",
+    "Enter Duel League": "/contests/",
+    "Resume Quest": "/learn/python-core/print-syntax/",
+    "View All": "/games/",
+    "Launch Game Arena": "/games/cyber-grid-rover/",
+    "Module 2": "/courses/",
+    "Continue": "/courses/python-core/",
+    "Resume": "/learn/javascript-core/const-let/",
+    "Begin Path": "/courses/react-core/",
+    "Enroll": "/courses/",
+    "Jump to Arena": "/games/",
+    "Resume Course": "/learn/python-core/print-syntax/",
+    "Queue Match": "/contests/",
+    "Earn +150 XP Now": "/learn/python-core/print-syntax/",
+    "Solve": "/learn/python-core/print-syntax/",
+    "Docs": "/about/"
   };
+
+  document.addEventListener("click", function(e) {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.id || btn.hasAttribute("onclick") || btn.dataset.bound === "1") return;
+    const txt = (btn.innerText || "").replace(/\s+/g, " ").trim();
+    // Search shortcut button in landing navbar
+    if (txt.includes("⌘K") || txt.includes("Search")) {
+      window.location.href = "/courses/";
+      return;
+    }
+    // Track-specific card buttons in Desktop Catalog
+    const card = btn.closest(".group");
+    if (card) {
+      const h3 = card.querySelector("h3");
+      if (h3) {
+        const title = h3.innerText;
+        if (title.includes("Python")) { window.location.href = "/learn/python-core/print-syntax/"; return; }
+        if (title.includes("Modern JS")) { window.location.href = "/learn/javascript-core/const-let/"; return; }
+        if (title.includes("CSS3")) { window.location.href = "/games/flexbox-pond/"; return; }
+        if (title.includes("React")) { window.location.href = "/courses/react-core/"; return; }
+        if (title.includes("SQL")) { window.location.href = "/games/sql-detective/"; return; }
+        if (title.includes("C Memory")) { window.location.href = "/courses/c-lang-core/"; return; }
+      }
+    }
+    for (const [label, dest] of Object.entries(pathRoutes)) {
+      if (txt.includes(label)) {
+        window.location.href = dest;
+        return;
+      }
+    }
+  });
+})();
 </script>
+
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const tab = params.get('tab');
+  if (tab === 'standings' && typeof switchTab === 'function') {
+    switchTab('tab-standings');
+  } else if (tab === 'tasks' && typeof switchTab === 'function') {
+    switchTab('tab-tasks');
+  } else if (tab === 'contests' && typeof switchTab === 'function') {
+    switchTab('tab-contests');
+  }
+})();
+</script>
+
 {% endblock %}

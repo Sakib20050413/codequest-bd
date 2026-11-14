@@ -1,428 +1,1406 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}CodeQuest BD — Interactive Programming &amp; 2D/3D Game Studio{% endblock %}
+{% block title %}CodeQuest LMS — Master Software Engineering by Playing Real Games{% endblock %}
 
-{% block content %}
-<div class="shell shell-wide" style="padding-top: 2rem; padding-bottom: 4.5rem;">
-
-  <!-- =====================================================================
-       SECTION 1: EDITORIAL HERO + UNIFIED 16-LANGUAGE STUDIO
-       ===================================================================== -->
-  <section style="padding: 0.75rem 0 3.25rem;">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 2rem; align-items: end; margin-bottom: 1.75rem;">
-      <div>
-        <div class="pill-shimmer" style="margin-bottom: 0.9rem;">
-          <span class="pulse-dot"></span>
-          <span>BAIUST CSE 324 &middot; INTERACTIVE ENGINEERING &amp; GAME STUDIO</span>
-        </div>
-        <h1 style="font-size: clamp(2.15rem, 3.8vw, 3.2rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.03em; color: var(--text-primary); margin: 0 0 0.9rem 0;">
-          Learn Real Code by <span class="editorial-serif">Building &amp; Playing</span> &mdash; Not Memorizing.
+{% block stitch_full_page %}
+<div class="hidden md:block">
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-7xl mx-auto px-5 xl:px-8 flex items-center justify-between gap-3"><div class="flex items-center gap-3 xl:gap-5 min-w-0"><a class="flex items-center gap-2 group cursor-pointer shrink-0" data-path="overview" href="/"><div class="w-10 h-10 rounded-DEFAULT bg-primary flex items-center justify-center shadow-[0_3px_0_0_#00422b] transition-transform duration-200 group-hover:-translate-y-1 group-active:translate-y-0"><span class="material-symbols-outlined text-on-primary text-[22px] transition-transform duration-300 group-hover:rotate-12">auto_awesome</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">CodeQuest</span><span class="font-label-sm text-label-sm text-primary tracking-wider uppercase mt-0.5">LMS</span></div></a><nav class="hidden lg:flex items-center gap-0.5 xl:gap-1 bg-surface-container-low p-1 rounded-full shrink-0" data-active-classes="bg-primary-container text-on-primary-container font-bold rounded-full shadow-[0_2px_0_0_#00422b]"><a aria-current="page" class="px-2.5 xl:px-3 py-1.5 whitespace-nowrap shrink-0 transition-all duration-200 bg-primary-container text-on-primary-container font-bold rounded-full shadow-[0_2px_0_0_#00422b] hover:brightness-105" data-path="overview" href="/">Overview</a><a class="px-2.5 xl:px-3 py-1.5 whitespace-nowrap shrink-0 rounded-full font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface hover:-translate-y-0.5 transition-all duration-200" data-path="catalog" href="/courses/">Catalog</a><a class="px-2.5 xl:px-3 py-1.5 whitespace-nowrap shrink-0 rounded-full font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface hover:-translate-y-0.5 transition-all duration-200" data-path="game-studio" href="/learn/python-core/print-syntax/">Game Studio</a><a class="px-2.5 xl:px-3 py-1.5 whitespace-nowrap shrink-0 rounded-full font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface hover:-translate-y-0.5 transition-all duration-200" data-path="arena" href="/games/">Arena</a><a class="px-2.5 xl:px-3 py-1.5 whitespace-nowrap shrink-0 rounded-full font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface hover:-translate-y-0.5 transition-all duration-200" data-path="certificates" href="/certificates/">Certificates</a><a class="px-2.5 xl:px-3 py-1.5 whitespace-nowrap shrink-0 rounded-full font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface hover:-translate-y-0.5 transition-all duration-200" data-path="leaderboard" href="/contests/?tab=standings">Leaderboard</a></nav></div><div class="flex items-center gap-3"><div class="hidden md:flex items-center gap-2"><div class="group relative flex items-center gap-1.5 px-2.5 py-1.5 rounded-full whitespace-nowrap shrink-0 bg-secondary-fixed text-on-secondary-fixed shadow-[0_2px_0_0_#ffb95f] cursor-pointer hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(254,166,25,0.3)] transition-all duration-200"><span class="material-symbols-outlined text-[18px] text-secondary group-hover:scale-110 transition-transform">local_fire_department</span><span class="font-label-lg text-label-lg font-bold">14d</span><div class="absolute top-full mt-2 left-1/2 -translate-x-1/2 hidden group-hover:flex flex-col items-center z-50 pointer-events-none transition-opacity duration-200"><div class="w-2 h-2 rotate-45 bg-inverse-surface mb--1"></div><div class="bg-inverse-surface text-inverse-on-surface font-label-sm text-label-sm px-2.5 py-1.5 rounded-DEFAULT shadow-md whitespace-nowrap">14-Day Streak Active! Keep pushing!</div></div></div><div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full whitespace-nowrap shrink-0 bg-tertiary-fixed text-on-tertiary-fixed shadow-[0_2px_0_0_#89ceff] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(35,172,241,0.25)] transition-all duration-200 cursor-pointer"><span class="material-symbols-outlined text-[18px] text-tertiary animate-pulse">bolt</span><span class="font-label-lg text-label-lg font-bold">4,850 XP</span><div class="relative w-4 h-4 flex items-center justify-center"><svg class="w-4 h-4 -rotate-90" viewbox="0 0 36 36"><path class="text-tertiary-fixed-dim" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path><path class="text-tertiary transition-all duration-500" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="70, 100" stroke-linecap="round" stroke-width="4"></path></svg></div></div><div class="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 rounded-full whitespace-nowrap shrink-0 bg-surface-container-low text-on-surface shadow-[0_2px_0_0_#cbdbf5] hover:-translate-y-0.5 transition-transform duration-200"><span class="material-symbols-outlined text-[18px] text-primary">timer</span><span class="font-label-md text-label-md font-bold">25/30m</span></div></div><button class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200 active:scale-95"><span class="material-symbols-outlined text-[18px]">search</span><kbd class="hidden sm:inline-block font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface shadow-[0_1px_0_0_#cbdbf5] hover:shadow transition-shadow">⌘K</kbd></button><div class="relative flex items-center pl-1 cursor-pointer group"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center transition-transform duration-200 group-hover:scale-105 group-hover:ring-2 group-hover:ring-primary-container"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span class="absolute -bottom-1 -right-1 bg-secondary-container text-on-secondary-container font-label-sm text-[9px] px-1 rounded-full font-extrabold shadow-[0_1px_0_0_#684000] transition-transform duration-200 group-hover:scale-110">L12</span></div></div></div></header><main class="w-full pt-20 bg-surface min-h-[calc(100vh-80px)]"><div class="flex flex-col w-full">
+<!-- Dynamic Ambient Glow Backdrops -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[520px] bg-gradient-to-tr from-primary/10 via-tertiary-fixed-dim/20 to-secondary-fixed/15 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+<div class="absolute top-[800px] -left-48 w-[500px] h-[500px] bg-primary-fixed/30 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+<div class="absolute top-[1600px] -right-48 w-[600px] h-[600px] bg-tertiary-fixed/30 rounded-full blur-[130px] pointer-events-none -z-10"></div>
+<!-- Announcement Bar -->
+<div class="max-w-7xl mx-auto px-6 lg:px-12 pt-6">
+<div class="group relative flex flex-wrap items-center justify-between gap-3 p-2.5 sm:px-4 bg-surface-container-lowest rounded-full shadow-[0_4px_16px_rgba(11,28,48,0.04)] border border-outline-variant/30 transition-all duration-300 hover:shadow-[0_8px_24px_rgba(16,185,129,0.12)] hover:border-primary-container/40">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="flex h-6 px-2.5 items-center rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm tracking-wider uppercase animate-pulse">
+            NEW 3.0
+          </span>
+<p class="font-body-sm text-body-sm text-on-surface truncate">
+<span class="font-bold text-primary">WebAssembly 2D Game Runner</span>: Real-syntax engine now executes in-browser with zero install.
+          </p>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<span class="hidden md:inline-flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full">
+<kbd class="font-sans font-bold">⌘</kbd><kbd class="font-sans font-bold">K</kbd> Command Palette
+          </span>
+<a class="inline-flex items-center gap-1 font-label-md text-label-md text-primary font-bold transition-all duration-200 group-hover:translate-x-1" data-path="catalog" href="/courses/">
+            Try Demo <span class="material-symbols-outlined text-[15px] transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 pt-12 pb-16 lg:pt-16 lg:pb-24">
+<div class="flex flex-col items-center text-center max-w-4xl mx-auto">
+<!-- Social Proof Micro-Pill -->
+<div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-surface-container-low shadow-[0_2px_0_0_#d3e4fe] border border-surface-container-high mb-6 transition-transform duration-300 hover:-translate-y-0.5 cursor-pointer">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-[10px] font-bold text-on-primary-container shadow-sm transition-transform duration-200 hover:scale-125 hover:z-20">JD</div>
+<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center text-[10px] font-bold text-on-secondary-container shadow-sm transition-transform duration-200 hover:scale-125 hover:z-20">SK</div>
+<div class="w-6 h-6 rounded-full bg-tertiary-container flex items-center justify-center text-[10px] font-bold text-on-tertiary-container shadow-sm transition-transform duration-200 hover:scale-125 hover:z-20">AL</div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center text-[10px] font-bold text-on-surface shadow-sm transition-transform duration-200 hover:scale-125 hover:z-20">+9k</div>
+</div>
+<span class="font-label-md text-label-md text-on-surface">140,000+ developers from Stanford, Google &amp; MIT</span>
+<div class="flex items-center gap-0.5 text-secondary">
+<span class="material-symbols-outlined text-[16px] animate-bounce" style="font-variation-settings: 'FILL' 1; animation-duration: 2.5s;">star</span>
+<span class="font-label-sm text-label-sm font-extrabold text-on-surface">4.9/5</span>
+</div>
+</div>
+<!-- Hero Headline -->
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight max-w-3xl">
+          Master Software Engineering by <span class="text-primary underline decoration-primary-fixed-dim decoration-wavy decoration-2 transition-all duration-300 hover:decoration-primary">Playing Real Games</span>.
         </h1>
-        <p style="font-size: 1.02rem; line-height: 1.65; color: var(--text-secondary); margin: 0 0 1.35rem 0; max-width: 680px;">
-          16 programming tracks paired with 1-minute interactive visual guides, an in-browser polyglot CLI compiler, and 108 playable 2D &amp; 3D coding games.
+<p class="mt-6 font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
+          Skip 50-hour passive video playlists and toy drag-and-drop blocks. Acquire production-grade mental models via 5-minute interactive theory, live AST verification, and real 2D arena capstones.
         </p>
-        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
-          <a href="{% url 'catalogue' %}" class="btn btn-primary" style="padding: 0.68rem 1.35rem; font-size: 0.9rem;">
-            Explore 16 Tracks &rarr;
-          </a>
-          <a href="{% url 'games_hub' %}" class="btn btn-ghost" style="padding: 0.68rem 1.2rem; font-size: 0.9rem;">
-            2D &amp; 3D Game Arena
-          </a>
-          <a href="{% url 'playground' %}" class="btn btn-ghost" style="padding: 0.68rem 1.2rem; font-size: 0.9rem;">
-            Open Browser IDE
-          </a>
-        </div>
-      </div>
-
-      <!-- Tactile Editorial Metric Tiles -->
-      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem;">
-        <div style="padding: 1rem 1.1rem; background: var(--bg-surface); border: 1.5px solid var(--border-medium); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
-          <div style="font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--accent); line-height: 1.1;">16</div>
-          <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 0.35rem;">Languages</div>
-        </div>
-        <div style="padding: 1rem 1.1rem; background: var(--bg-surface); border: 1.5px solid var(--border-medium); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
-          <div style="font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--accent-secondary); line-height: 1.1;">{{ total_lessons|default:99 }}</div>
-          <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 0.35rem;">Short Lessons</div>
-        </div>
-        <div style="padding: 1rem 1.1rem; background: var(--bg-surface); border: 1.5px solid var(--border-medium); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
-          <div style="font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; color: var(--warning); line-height: 1.1;">108</div>
-          <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 0.35rem;">2D &amp; 3D Games</div>
-        </div>
-      </div>
-    </div>
-
-    {% if recent_lesson %}
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; padding: 0.65rem 1rem; background: var(--bg-surface-elevated); border: 1.5px solid var(--border-medium); border-radius: var(--radius-sm); margin-bottom: 1.35rem; font-family: var(--font-mono); font-size: 0.78rem;">
-      <span style="color: var(--text-secondary);">Active Track: <strong style="color: var(--text-primary);">{{ recent_lesson.title }}</strong></span>
-      <a href="{% url 'lesson_detail' recent_lesson.course.slug recent_lesson.slug %}" style="color: var(--accent); font-weight: 700; text-decoration: none;">Resume Lesson &rarr;</a>
-    </div>
-    {% endif %}
-
-    <!-- Unified Interactive 16-Language Visual + Compiler + 2D/3D Game Studio -->
-    <div class="cq-card" style="padding: 1.5rem 1.65rem; border: 2px solid var(--border-strong); background: var(--bg-surface); box-shadow: var(--shadow-lg);">
-      <!-- Tactile 4-Step Editorial Ribbon -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.65rem; margin-bottom: 1.15rem;">
-        <div style="padding: 0.6rem 0.8rem; background: var(--bg-surface-elevated); border: 1.5px solid var(--border-medium); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 0.25rem;">
-          <div style="display: flex; align-items: center; gap: 0.45rem;">
-            <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--accent); color: #ffffff;">01</span>
-            <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-primary);">WATCH 60S SYNC</span>
-          </div>
-          <div style="font-size: 0.75rem; color: var(--text-secondary);">Interactive visual playback</div>
-        </div>
-        <div style="padding: 0.6rem 0.8rem; background: var(--bg-surface-elevated); border: 1.5px solid var(--border-medium); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 0.25rem;">
-          <div style="display: flex; align-items: center; gap: 0.45rem;">
-            <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--accent-secondary); color: #ffffff;">02</span>
-            <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-primary);">CODE 16 LANGS</span>
-          </div>
-          <div style="font-size: 0.75rem; color: var(--text-secondary);">Browser polyglot compiler &amp; CLI</div>
-        </div>
-        <div style="padding: 0.6rem 0.8rem; background: var(--bg-surface-elevated); border: 1.5px solid var(--border-medium); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 0.25rem;">
-          <div style="display: flex; align-items: center; gap: 0.45rem;">
-            <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--warning); color: #ffffff;">03</span>
-            <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-primary);">PLAY 2D &amp; 3D GAMES</span>
-          </div>
-          <div style="font-size: 0.75rem; color: var(--text-secondary);">Drive canvas &amp; WebGL mechanics</div>
-        </div>
-        <div style="padding: 0.6rem 0.8rem; background: var(--bg-surface-elevated); border: 1.5px solid var(--border-medium); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 0.25rem;">
-          <div style="display: flex; align-items: center; gap: 0.45rem;">
-            <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--success); color: #ffffff;">04</span>
-            <span style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-primary);">PROVE &amp; EARN XP</span>
-          </div>
-          <div style="font-size: 0.75rem; color: var(--text-secondary);">3-tier tests &amp; public certificates</div>
-        </div>
-      </div>
-
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; padding-bottom: 0.85rem; border-bottom: 1.5px solid var(--border-subtle);">
-        <div>
-          <div style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
-            UNIFIED 16-LANGUAGE STUDIO &middot; VISUAL GUIDE + LIVE COMPILER + 2D/3D GAME
-          </div>
-          <h2 id="heroSelectedLangTitle" style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; margin: 0.25rem 0 0;">
-            Python 3 &middot; 1-Minute Visual Guide &amp; 2D/3D Studio
-          </h2>
-        </div>
-        <button type="button" id="heroRunTerminalBtn" class="btn btn-primary" style="padding: 0.55rem 1.2rem; font-size: 0.84rem; font-family: var(--font-mono);">
-          &#9654; Run Code &amp; Execute Game
-        </button>
-      </div>
-
-      <!-- All 16 Languages Selector -->
-      <div id="heroLanguagePicker" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.15rem;"></div>
-
-      <!-- Split Studio Grid: Left = Visual Guide & 2D/3D Game | Right = Code Editor & CLI Output -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 1.25rem; align-items: start;">
-        
-        <!-- Left Column: 1-Minute Visual Walkthrough + 2D/3D Game Canvas -->
-        <div>
-          <div id="heroMicroVideoPlayer"></div>
-          <div style="background: #181512; border: 1.5px solid var(--border-strong); border-radius: 10px; overflow: hidden;">
-            <canvas id="heroLiveGameCanvas" height="215" style="width: 100%; height: 215px; display: block;"></canvas>
-          </div>
-        </div>
-
-        <!-- Right Column: Polyglot Code Editor, CLI Bar, and Live Output -->
-        <div style="display: flex; flex-direction: column; gap: 0.85rem;">
-          <div style="background: #181512; border: 1.5px solid var(--border-strong); border-radius: 10px; overflow: hidden;">
-            <div style="padding: 0.55rem 0.9rem; background: #241F1B; border-bottom: 1px solid rgba(250, 247, 242, 0.08); display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.74rem;">
-              <div style="display: flex; align-items: center; gap: 0.65rem;">
-                <span style="display: inline-flex; gap: 0.32rem;">
-                  <span style="width: 9px; height: 9px; border-radius: 50%; background: #D94E28;"></span>
-                  <span style="width: 9px; height: 9px; border-radius: 50%; background: #F59E0B;"></span>
-                  <span style="width: 9px; height: 9px; border-radius: 50%; background: #22C55E;"></span>
-                </span>
-                <span id="heroCliPrompt" style="color: #D6D0C4;">$ python3 rover_move.py</span>
-              </div>
-              <span style="color: #FB923C; font-weight: 700;">EDITOR</span>
-            </div>
-            <textarea id="heroTerminalCodeInput" spellcheck="false" style="width: 100%; height: 245px; background: #181512; color: #FAF7F2; border: none; padding: 0.9rem 1rem; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; outline: none; resize: vertical;" aria-label="Studio code editor"></textarea>
-            <div style="padding: 0.55rem 0.9rem; background: #211D18; border-top: 1px solid rgba(250, 247, 242, 0.08); display: flex; gap: 0.5rem; align-items: center;">
-              <span style="font-family: var(--font-mono); color: #FB923C; font-weight: 700; font-size: 0.8rem;">$</span>
-              <input id="heroCliInput" type="text" placeholder="Run CLI command (e.g. help, python3 main.py, mysql, mongosh)..." style="flex: 1; background: transparent; border: none; color: #FAF7F2; font-family: var(--font-mono); font-size: 0.78rem; outline: none;" aria-label="Terminal CLI command" />
-            </div>
-          </div>
-
-          <div style="padding: 0.85rem 1rem; background: #181512; border: 1.5px solid var(--border-strong); border-radius: 10px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; font-family: var(--font-mono); font-size: 0.7rem; color: #9C9488; font-weight: 700; text-transform: uppercase;">
-              <span>Compiler &amp; Execution Stdout</span>
-              <span style="color: #FB923C;">SANDBOX READY</span>
-            </div>
-            <pre id="heroTerminalOutput" style="margin: 0; font-family: var(--font-mono); font-size: 0.8rem; color: #FAF7F2; white-space: pre-wrap; min-height: 130px; max-height: 175px; overflow-y: auto; line-height: 1.55;"></pre>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- =====================================================================
-       SECTION 2: ALL 16 PROGRAMMING TRACKS GRID
-       ===================================================================== -->
-  <section style="padding: 2.5rem 0; border-top: 1px solid var(--border-subtle);">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: 1.5rem;">
-      <div>
-        <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem;">
-          CURRICULUM // 16 LANGUAGES
-        </div>
-        <h2 style="font-size: clamp(1.5rem, 2.6vw, 2.1rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.025em; margin: 0 0 0.35rem 0;">
-          16 Programming Tracks
-        </h2>
-        <p style="font-size: 0.92rem; color: var(--text-muted); margin: 0;">
-          Short Lessons &middot; In-Browser Compiler &middot; 3 Micro-Tasks per Lesson
-        </p>
-      </div>
-      <a href="{% url 'catalogue' %}" class="btn btn-ghost" style="font-size: 0.84rem; padding: 0.45rem 1rem;">
-        Full Course Catalog &rarr;
-      </a>
-    </div>
-
-    <!-- Track Filter Tabs -->
-    <div style="display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-      <button type="button" class="btn btn-primary featured-filter-tab active" data-track-cat="all" style="padding: 0.36rem 0.9rem; font-size: 0.78rem; font-family: var(--font-mono);">
-        All 16 ({{ featured_courses|length }})
-      </button>
-      <button type="button" class="btn btn-ghost featured-filter-tab" data-track-cat="web" style="padding: 0.36rem 0.9rem; font-size: 0.78rem; font-family: var(--font-mono);">
-        Web &amp; UI
-      </button>
-      <button type="button" class="btn btn-ghost featured-filter-tab" data-track-cat="data" style="padding: 0.36rem 0.9rem; font-size: 0.78rem; font-family: var(--font-mono);">
-        Backend &amp; DB
-      </button>
-      <button type="button" class="btn btn-ghost featured-filter-tab" data-track-cat="systems" style="padding: 0.36rem 0.9rem; font-size: 0.78rem; font-family: var(--font-mono);">
-        Systems &amp; CLI
-      </button>
-      <button type="button" class="btn btn-ghost featured-filter-tab" data-track-cat="ai" style="padding: 0.36rem 0.9rem; font-size: 0.78rem; font-family: var(--font-mono);">
-        AI &amp; Data
-      </button>
-    </div>
-
-    <!-- 16 Tracks Matrix -->
-    <div class="studio-grid">
-      {% for course in featured_courses %}
-      <div class="cq-card cq-card-interactive featured-course-card"
-           data-cat="{% if course.language.slug == 'html' or course.language.slug == 'css' or course.language.slug == 'javascript' or course.language.slug == 'react' %}web{% elif course.language.slug == 'ai-ml' %}ai{% elif course.language.slug == 'django' or course.language.slug == 'php' or course.language.slug == 'sql' or course.language.slug == 'mysql' or course.language.slug == 'mongodb' or course.language.slug == 'python' %}data{% else %}systems{% endif %}"
-           style="justify-content: space-between; padding: 1.35rem;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
-            <div style="display: flex; align-items: center; gap: 0.45rem;">
-              <span style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--text-muted);">#{{ forloop.counter|stringformat:"02d" }}</span>
-              <span class="dev-monogram">{{ course.language.slug|upper|slice:":5" }}</span>
-              <span class="dev-tag">{{ course.level }}</span>
-            </div>
-            <span style="font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700; color: var(--accent);">
-              +{{ course.xp_reward }} XP
+<!-- CTA Buttons -->
+<div class="mt-9 flex flex-wrap items-center justify-center gap-4">
+<button class="shimmer-btn group px-7 py-3.5 rounded-full bg-primary-container text-on-primary-container font-label-lg text-label-lg shadow-[0_4px_0_0_#00422b] hover:-translate-y-1 hover:shadow-[0_6px_20px_rgba(16,185,129,0.4)] active:translate-y-1 active:shadow-none transition-all duration-200 flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-300 group-hover:rotate-12">sports_esports</span>
+<span>Start Coding Free</span>
+<span class="font-label-sm text-label-sm bg-on-primary-container/15 px-2 py-0.5 rounded-full transition-colors group-hover:bg-on-primary-container/25">No CC</span>
+</button>
+<a class="px-6 py-3.5 rounded-full bg-surface-container-lowest text-on-surface font-label-lg text-label-lg shadow-[0_3px_0_0_#bbcabf] hover:-translate-y-1 hover:shadow-[0_6px_16px_rgba(0,0,0,0.08)] active:translate-y-1 active:shadow-none transition-all duration-200 flex items-center gap-2 group" href="#tracks">
+<span class="group-hover:text-primary transition-colors">Explore 11 Interactive Tracks</span>
+<span class="material-symbols-outlined text-[18px] text-tertiary transition-transform duration-200 group-hover:translate-y-0.5">arrow_downward</span>
+</a>
+<button class="hidden sm:flex items-center gap-2 px-4 py-3.5 rounded-full bg-surface-container-high text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest font-label-md text-label-md transition-all duration-200 active:scale-95" id="quickLauncherBtn">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span>Run Quick Challenge</span>
+<kbd class="px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface text-[10px] font-bold shadow-[0_1px_0_0_#cbdbf5]">↵</kbd>
+</button>
+</div>
+<!-- Micro Feature Badges with Floating & Glow Animations -->
+<div class="mt-8 flex flex-wrap items-center justify-center gap-6 text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<span class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest/80 border border-outline-variant/30 shadow-sm transition-all duration-300 hover:border-primary/40 hover:-translate-y-0.5"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span> Zero-Install WASM</span>
+<span class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest/80 border border-outline-variant/30 shadow-sm transition-all duration-300 hover:border-secondary/40 hover:-translate-y-0.5"><span class="w-2 h-2 rounded-full bg-secondary-container animate-ping" style="animation-duration: 3s;"></span> Cryptographic Certs</span>
+<span class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest/80 border border-outline-variant/30 shadow-sm transition-all duration-300 hover:border-tertiary/40 hover:-translate-y-0.5"><span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span> Real AST Judge</span>
+<span class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest/80 border border-outline-variant/30 shadow-sm transition-all duration-300 hover:border-primary/40 hover:-translate-y-0.5"><span class="w-2 h-2 rounded-full bg-primary"></span> 100% Free Core</span>
+</div>
+</div>
+<!-- Interactive Hero Sandbox / IDE Teaser with Glowing Backdrop Aura -->
+<div class="relative mt-14 max-w-5xl mx-auto">
+<!-- Radiant Ambient Glow behind Sandbox -->
+<div class="absolute -inset-1 bg-gradient-to-r from-primary-fixed-dim/40 via-tertiary-fixed-dim/30 to-secondary-fixed/40 rounded-xl blur-xl opacity-75 group-hover:opacity-100 transition duration-1000 -z-10"></div>
+<div class="rounded-lg bg-surface-container-lowest shadow-[0_20px_50px_rgba(11,28,48,0.12)] border border-outline-variant/40 overflow-hidden transition-all duration-500 hover:shadow-[0_25px_60px_rgba(16,185,129,0.15)]">
+<!-- Editor Header Bar -->
+<div class="bg-surface-container-low px-4 py-3 flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 mr-2">
+<span class="w-3 h-3 rounded-full bg-error transition-transform hover:scale-125 cursor-pointer"></span>
+<span class="w-3 h-3 rounded-full bg-secondary-container transition-transform hover:scale-125 cursor-pointer"></span>
+<span class="w-3 h-3 rounded-full bg-primary-container transition-transform hover:scale-125 cursor-pointer"></span>
+</div>
+<!-- Language Tabs -->
+<div class="flex items-center gap-1 bg-surface-container p-1 rounded-full text-label-sm font-label-sm">
+<button class="lang-tab px-3 py-1 rounded-full bg-surface-container-lowest text-on-surface shadow-sm transition-all duration-200 hover:scale-105 active:scale-95" id="tab-py" onclick="switchLang('py')">Python 3.12</button>
+<button class="lang-tab px-3 py-1 rounded-full text-on-surface-variant hover:text-on-surface transition-all duration-200 hover:scale-105 active:scale-95" id="tab-rs" onclick="switchLang('rs')">Rust 1.78</button>
+<button class="lang-tab px-3 py-1 rounded-full text-on-surface-variant hover:text-on-surface transition-all duration-200 hover:scale-105 active:scale-95" id="tab-ts" onclick="switchLang('ts')">TypeScript 5.4</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="hidden md:flex items-center gap-1.5 font-label-sm text-label-sm text-primary font-bold bg-primary-fixed/40 px-2.5 py-1 rounded-full border border-primary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+              AST Verified • 60 FPS
             </span>
-          </div>
-
-          <h3 style="font-size: 1.12rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.45rem 0; letter-spacing: -0.015em;">
-            <a href="{% url 'course_detail' course.slug %}" style="color: inherit; text-decoration: none;">
-              {{ course.title }}
-            </a>
-          </h3>
-          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.55; margin: 0 0 0.95rem 0;">
-            {{ course.description|truncatewords:20 }}
-          </p>
-
-          <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem;">
-            {% for tag in course.tags_list|slice:":3" %}
-            <span class="dev-tag">{{ tag }}</span>
-            {% endfor %}
-          </div>
-        </div>
-
-        <div style="padding-top: 0.85rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.76rem;">
-          <span style="color: var(--text-muted);">{{ course.lessons.count }} Lessons &middot; {{ course.total_minutes }}m</span>
-          <a href="{% url 'course_detail' course.slug %}" style="color: var(--accent); font-weight: 700; text-decoration: none;">
-            Start Track &rarr;
-          </a>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
-
-  <!-- =====================================================================
-       SECTION 3: 2D ARCADE & 3D WEBGL CODING GAMES MATRIX
-       ===================================================================== -->
-  <section style="padding: 2.5rem 0; border-top: 1px solid var(--border-subtle);">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: 1.5rem;">
-      <div>
-        <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem;">
-          PRACTICE ARENA // 108 ENGINES
-        </div>
-        <h2 style="font-size: clamp(1.5rem, 2.6vw, 2.1rem); font-weight: 800; color: var(--text-primary); letter-spacing: -0.025em; margin: 0 0 0.35rem 0;">
-          2D &amp; 3D Coding Games
-        </h2>
-        <p style="font-size: 0.92rem; color: var(--text-muted); margin: 0;">
-          Write real code to steer 3D rovers, align CSS bridges, query SQL vaults, and construct 3D voxel cities.
+<button class="shimmer-btn flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm shadow-[0_2px_0_0_#00422b] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(16,185,129,0.4)] active:translate-y-0.5 active:shadow-none transition-all duration-200" id="runCodeBtn">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+<span>Run Code</span>
+<kbd class="text-[10px] opacity-75 font-mono">⌘R</kbd>
+</button>
+</div>
+</div>
+<!-- Split Grid: Code Editor on Left, 2D Radar Rover Canvas on Right -->
+<div class="grid grid-cols-1 lg:grid-cols-12 min-h-[380px]">
+<!-- Left: Code Area -->
+<div class="lg:col-span-7 p-6 font-mono text-body-sm flex flex-col justify-between bg-surface-container-lowest">
+<div class="space-y-1.5 leading-relaxed overflow-x-auto text-on-surface" id="codeContentArea">
+<div class="text-on-surface-variant/60 select-none"># Quest: Program the lunar rover's LiDAR path-finder</div>
+<div><span class="text-tertiary font-bold">from</span> quest_rover <span class="text-tertiary font-bold">import</span> AutonomousRover, SensorGrid</div>
+<div class="pt-2"><span class="text-secondary font-bold">def</span> <span class="text-primary font-bold">navigate_lunar_trench</span>(rover: AutonomousRover):</div>
+<div class="pl-4 text-on-surface-variant/75">grid = rover.scan_surroundings(radius=<span class="text-secondary">4</span>)</div>
+<div class="pl-4"><span class="text-tertiary font-bold">for</span> coordinate <span class="text-tertiary font-bold">in</span> grid.obstacles:</div>
+<div class="pl-8"><span class="text-tertiary font-bold">if</span> coordinate.is_hazardous():</div>
+<div class="pl-12 text-primary font-bold">rover.reroute_vector(bypass=coordinate.vector)</div>
+<div class="pl-8"><span class="text-tertiary font-bold">else</span>:</div>
+<div class="pl-12 text-secondary font-bold">rover.boost_thrusters(power=<span class="text-on-surface">1.8</span>)</div>
+<div class="pl-4 pt-1"><span class="text-tertiary font-bold">return</span> rover.collect_sample_and_fire_beacon()<span class="typing-cursor ml-1"></span></div>
+</div>
+<!-- Terminal Output / Verification State -->
+<div class="mt-6 pt-4 bg-surface-container-low rounded-DEFAULT p-3 border border-outline-variant/30 transition-all duration-300 hover:border-primary-fixed">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant mb-2">
+<span class="flex items-center gap-1.5 text-primary font-bold"><span class="material-symbols-outlined text-[16px]">check_circle</span> Test Suite 3/3 Passed</span>
+<span class="font-mono text-[11px] bg-surface-container-highest px-2 py-0.5 rounded-full text-on-surface">Execution: 1.42ms</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-[10px] transition-transform duration-200 hover:scale-105 cursor-default">Test 1: Crater Avoidance</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-[10px] transition-transform duration-200 hover:scale-105 cursor-default">Test 2: Thruster Delta</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-[10px] transition-transform duration-200 hover:scale-105 cursor-default">Test 3: Beacon Relay</span>
+</div>
+</div>
+</div>
+<!-- Right: 2D Game Simulation Canvas -->
+<div class="lg:col-span-5 bg-surface-container-high p-6 flex flex-col justify-between relative overflow-hidden">
+<!-- Subtle CRT/Scanline Overlayer -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden opacity-30 z-0">
+<div class="w-full h-1 bg-gradient-to-r from-transparent via-primary-container/40 to-transparent animate-scanline"></div>
+</div>
+<!-- Canvas HUD -->
+<div class="flex items-center justify-between z-10">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant flex items-center gap-1 bg-surface-container-lowest/80 backdrop-blur-sm px-2.5 py-1 rounded-full border border-outline-variant/20">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+                Canvas 2D • Simulation Active
+              </span>
+<span class="px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold shadow-[0_2px_0_0_#ffb95f] transition-transform duration-200 hover:scale-105">
+                +150 XP
+              </span>
+</div>
+<!-- Interactive Game Surface (CSS Canvas Mockup) -->
+<div class="relative my-6 h-52 w-full rounded-DEFAULT bg-surface-container-lowest overflow-hidden flex items-center justify-center shadow-inner border border-outline-variant/30" id="simArea">
+<!-- Grid Floor Pattern -->
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#006c49 1px, transparent 1px); background-size: 16px 16px;"></div>
+<!-- Animated Obstacles -->
+<div class="absolute top-6 left-8 w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface-variant shadow-sm transition-transform duration-300 hover:scale-110">
+<span class="material-symbols-outlined text-[16px] text-tertiary">landscape</span>
+</div>
+<div class="absolute bottom-8 right-12 w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface-variant shadow-sm transition-transform duration-300 hover:scale-110">
+<span class="material-symbols-outlined text-[20px] text-secondary">mountain_flag</span>
+</div>
+<!-- Radar Scan Circles & Sweep Beam -->
+<div class="absolute w-40 h-40 rounded-full bg-primary/10 animate-ping pointer-events-none" style="animation-duration: 3s;"></div>
+<div class="absolute w-48 h-48 rounded-full border border-primary/20 pointer-events-none animate-radar-sweep flex items-center justify-center">
+<div class="w-1/2 h-0.5 bg-gradient-to-r from-transparent to-primary-container origin-right self-start"></div>
+</div>
+<!-- The Rover Sprite -->
+<div class="relative z-10 w-12 h-12 rounded-DEFAULT bg-primary text-on-primary flex items-center justify-center shadow-[0_4px_0_0_#00422b] transition-all duration-700 hover:scale-110 cursor-pointer" id="roverToken" title="Interactive Rover Token">
+<span class="material-symbols-outlined text-[24px]">precision_manufacturing</span>
+</div>
+<!-- Destination Beacon with Animated Blinking Pulse -->
+<div class="absolute right-6 top-6 w-9 h-9 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shadow-[0_2px_0_0_#ffb95f] transition-transform duration-300 hover:scale-115">
+<span class="material-symbols-outlined text-[20px] animate-bounce" style="animation-duration: 1.8s;">flag</span>
+<span class="absolute inset-0 rounded-full border-2 border-secondary animate-ping opacity-60"></span>
+</div>
+</div>
+<!-- Sim Diagnostics -->
+<div class="grid grid-cols-3 gap-2 text-center z-10">
+<div class="bg-surface-container-lowest p-2 rounded-DEFAULT border border-outline-variant/20 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary-fixed">
+<div class="font-label-sm text-[10px] text-on-surface-variant">VELOCITY</div>
+<div class="font-label-md text-label-md font-bold text-on-surface">3.4 m/s</div>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-DEFAULT border border-outline-variant/20 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary-fixed">
+<div class="font-label-sm text-[10px] text-on-surface-variant">SAMPLES</div>
+<div class="font-label-md text-label-md font-bold text-primary">12/12</div>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-DEFAULT border border-outline-variant/20 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary-fixed">
+<div class="font-label-sm text-[10px] text-on-surface-variant">FPS</div>
+<div class="font-label-md text-label-md font-bold text-tertiary">60.0</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Section: Modern Engineered Pedagogy -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-16">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-extrabold">Next-Gen Architecture</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">Engineered for 4x Retention &amp; Authentic Mastery</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+          Unlike passive platforms where you stare at video timelines, CodeQuest forces neuromuscular muscle memory via live game state modification.
         </p>
-      </div>
-      <a href="{% url 'games_hub' %}" class="btn btn-primary" style="font-size: 0.84rem; padding: 0.45rem 1.05rem;">
-        Browse All 108 Games &rarr;
-      </a>
-    </div>
-
-    <div class="studio-grid">
-      <a href="{% url 'game_play' 'rover-3d' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: var(--accent-secondary); background: rgba(43, 76, 126, 0.12); border-color: rgba(43, 76, 126, 0.3);">3D WebGL</span>
-            <span class="dev-tag">Python / Loops</span>
-          </div>
-          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">Rover 3D Pathfinder</h3>
-          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.55; margin: 0;">Program movement coordinates and loops to guide an autonomous rover across 3D Martian terrain.</p>
-        </div>
-        <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
-          <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
-        </div>
-      </a>
-
-      <a href="{% url 'game_play' 'flexbox-pond' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram">2D Canvas</span>
-            <span class="dev-tag">HTML5 / CSS3</span>
-          </div>
-          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">Flexbox Frog Pond</h3>
-          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.55; margin: 0;">Write live Flexbox and Grid declarations to snap bridge planks and lilypads into place.</p>
-        </div>
-        <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
-          <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
-        </div>
-      </a>
-
-      <a href="{% url 'game_play' 'cyber-crime-detective' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: var(--warning); background: var(--warning-subtle); border-color: rgba(180, 83, 9, 0.3);">SQL Engine</span>
-            <span class="dev-tag">SQL / PHP / DB</span>
-          </div>
-          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">SQL Cyber Detective</h3>
-          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.55; margin: 0;">Inspect relational tables with SELECT, WHERE, and JOIN queries to audit records and solve cases.</p>
-        </div>
-        <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
-          <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
-        </div>
-      </a>
-
-      <a href="{% url 'game_play' 'drone-flight-3d' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: var(--accent-secondary); background: rgba(43, 76, 126, 0.12); border-color: rgba(43, 76, 126, 0.3);">3D WebGL</span>
-            <span class="dev-tag">JS / C / Rust</span>
-          </div>
-          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">3D Drone Flight Sim</h3>
-          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.55; margin: 0;">Calibrate vector coordinates and control functions to steer a 3D quadcopter through waypoint gates.</p>
-        </div>
-        <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
-          <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
-        </div>
-      </a>
-
-      <a href="{% url 'game_play' 'city-builder-3d' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: var(--accent-secondary); background: rgba(43, 76, 126, 0.12); border-color: rgba(43, 76, 126, 0.3);">3D WebGL</span>
-            <span class="dev-tag">Java / OOP / React</span>
-          </div>
-          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">3D Voxel City Builder</h3>
-          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.55; margin: 0;">Instantiate modular building classes and array loops to assemble a 3D isometric city grid.</p>
-        </div>
-        <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
-          <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
-        </div>
-      </a>
-
-      <a href="{% url 'game_play' 'quantum-cube-3d' %}" class="cq-card cq-card-interactive" style="justify-content: space-between; padding: 1.35rem;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: var(--accent-secondary); background: rgba(43, 76, 126, 0.12); border-color: rgba(43, 76, 126, 0.3);">3D WebGL</span>
-            <span class="dev-tag">AI / Algorithms</span>
-          </div>
-          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.4rem 0;">Quantum Logic Cube 3D</h3>
-          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.55; margin: 0;">Solve tensor transformations and state logic puzzles in a rotatable 3D neural coordinate cube.</p>
-        </div>
-        <div style="margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem;">
-          <span style="color: var(--text-muted);">10 Levels</span>
-          <span style="color: var(--accent); font-weight: 700;">Launch Game &rarr;</span>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <!-- =====================================================================
-       SECTION 4: LIVE COMPETITIONS & VERIFIABLE CREDENTIALS STRIP
-       ===================================================================== -->
-  <section style="padding: 2.5rem 0 0; border-top: 1px solid var(--border-subtle);">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 1.25rem;">
-
-      <!-- Left: Weekly Coding Competitions -->
-      <div class="cq-card" style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: var(--warning); background: var(--warning-subtle); border-color: rgba(180, 83, 9, 0.3);">CONTESTS</span>
-            <a href="{% url 'contests_hub' %}" style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--accent); text-decoration: none; font-weight: 700;">All Contests &rarr;</a>
-          </div>
-          <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.65rem 0;">Weekly Coding Competitions</h2>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            {% for contest in active_contests|slice:":3" %}
-            <a href="{% url 'contest_detail' contest.slug %}" style="display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0.75rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: 6px; text-decoration: none; font-size: 0.82rem;">
-              <span style="color: var(--text-primary); font-weight: 600;">{{ contest.title }}</span>
-              <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--warning); font-weight: 700;">+{{ contest.xp_reward }} XP</span>
-            </a>
-            {% empty %}
-            <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">Live timed problems and batch leaderboards are open in the Contests hub.</p>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-
-      <!-- Right: Verifiable Certificates & System Telemetry -->
-      <div class="cq-card" style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="dev-monogram" style="color: var(--accent-secondary); background: rgba(43, 76, 126, 0.12); border-color: rgba(43, 76, 126, 0.3);">CREDENTIALS</span>
-            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">BAIUST CSE 324 Sessional</span>
-          </div>
-          <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.5rem 0;">Verifiable Track Certificates &amp; Workspace</h2>
-          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; margin: 0 0 1rem 0;">
-            16 Languages &middot; {{ total_lessons|default:99 }} Lessons &middot; 297 Micro-Tasks &middot; 108 Games. Earn public verification credentials or inspect the database and curriculum telemetry.
+</div>
+<!-- Bento Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Bento Card 1: 2D Arena Engine (Span 7) -->
+<div class="md:col-span-7 bg-surface-container-lowest rounded-lg p-8 shadow-[0_8px_24px_rgba(11,28,48,0.04)] border border-outline-variant/20 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(0,108,73,0.12)] hover:border-primary-container/50">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="w-10 h-10 rounded-DEFAULT bg-primary-fixed flex items-center justify-center text-primary shadow-[0_2px_0_0_#4edea3] transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+<span class="material-symbols-outlined text-[22px]">videogame_asset</span>
+</span>
+<span class="font-label-sm text-label-sm px-3 py-1 rounded-full bg-surface-container-high text-on-surface font-bold transition-colors group-hover:bg-primary-fixed group-hover:text-on-primary-fixed">WASM Core 3.0</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface tracking-tight group-hover:text-primary transition-colors">Real-Time 2D Game Arena Simulator</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-lg leading-relaxed">
+              Every coding exercise powers a tangible game entity. Write binary tree traversals to guide rescue drones, use Dijkstra’s algorithm to navigate pirate fleets, and conquer memory leaks.
+            </p>
+</div>
+<!-- Interactive Micro Grid Preview -->
+<div class="mt-8 bg-surface-container-low rounded-DEFAULT p-4 flex flex-col gap-3 border border-outline-variant/20 transition-all duration-300 group-hover:border-primary-container/40">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant font-bold">Node Path: A* Pathfinding Visualizer</span>
+<span class="text-primary font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">check</span> Converged (6 iterations)</span>
+</div>
+<div class="grid grid-cols-8 gap-1.5 py-2">
+<div class="h-7 rounded-sm bg-primary-container flex items-center justify-center text-on-primary-container text-[10px] font-bold transition-transform duration-200 hover:scale-110 cursor-pointer">S</div>
+<div class="h-7 rounded-sm bg-primary-fixed-dim transition-transform duration-200 hover:scale-110"></div>
+<div class="h-7 rounded-sm bg-primary-fixed-dim transition-transform duration-200 hover:scale-110"></div>
+<div class="h-7 rounded-sm bg-surface-container-highest transition-transform duration-200 hover:scale-110"></div>
+<div class="h-7 rounded-sm bg-surface-container-highest transition-transform duration-200 hover:scale-110"></div>
+<div class="h-7 rounded-sm bg-primary-fixed-dim transition-transform duration-200 hover:scale-110"></div>
+<div class="h-7 rounded-sm bg-primary-fixed-dim transition-transform duration-200 hover:scale-110"></div>
+<div class="h-7 rounded-sm bg-secondary-container flex items-center justify-center text-on-secondary-container text-[10px] font-bold transition-transform duration-200 hover:scale-110 cursor-pointer">E</div>
+</div>
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+<span>Shortest Path Weight: <strong>14.2</strong></span>
+<span>Memory Footprint: <strong>3.1 KB</strong></span>
+</div>
+</div>
+</div>
+<!-- Bento Card 2: 5-Minute Micro Theory (Span 5) -->
+<div class="md:col-span-5 bg-surface-container-lowest rounded-lg p-8 shadow-[0_8px_24px_rgba(11,28,48,0.04)] border border-outline-variant/20 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(254,166,25,0.12)] hover:border-secondary-container/50">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="w-10 h-10 rounded-DEFAULT bg-secondary-fixed flex items-center justify-center text-secondary shadow-[0_2px_0_0_#ffb95f] transition-all duration-300 group-hover:scale-110 group-hover:rotate-12">
+<span class="material-symbols-outlined text-[22px]">psychology</span>
+</span>
+<span class="font-label-sm text-label-sm px-3 py-1 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed font-bold">Cognitive Design</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface tracking-tight group-hover:text-secondary transition-colors">5-Minute Micro-Theory</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
+              No rambling monologues. Each lesson distills heavy computer science into high-leverage mental models with interactive tactile diagrams.
+            </p>
+</div>
+<!-- Notion-like Micro Card -->
+<div class="mt-6 bg-surface-container-low rounded-DEFAULT p-4 font-body-sm text-body-sm text-on-surface space-y-2.5 border border-outline-variant/20 transition-all duration-300 group-hover:border-secondary-fixed">
+<div class="flex items-center gap-2 text-primary font-bold">
+<span class="material-symbols-outlined text-[18px] transition-transform duration-300 group-hover:scale-125">lightbulb</span>
+<span>Memory Hook: The Off-By-One Pitfall</span>
+</div>
+<p class="text-on-surface-variant text-[13px] leading-snug">
+              Array indices count offsets from memory start, not total items. <code class="bg-surface-container-highest px-1 rounded text-primary font-mono text-[11px] transition-colors group-hover:bg-primary-fixed/50">arr[0]</code> points to zero distance away.
+            </p>
+<div class="flex items-center gap-2 pt-1">
+<span class="w-4 h-4 rounded bg-primary flex items-center justify-center text-on-primary text-[10px] transition-transform duration-300 group-hover:scale-110"><span class="material-symbols-outlined text-[12px]">check</span></span>
+<span class="font-label-sm text-label-sm text-on-surface">Interactive Check: Zero-indexed Pointer Logic</span>
+</div>
+</div>
+</div>
+<!-- Bento Card 3: 3-Tier AST Judge (Span 5) -->
+<div class="md:col-span-5 bg-surface-container-lowest rounded-lg p-8 shadow-[0_8px_24px_rgba(11,28,48,0.04)] border border-outline-variant/20 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(35,172,241,0.12)] hover:border-tertiary-container/50">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="w-10 h-10 rounded-DEFAULT bg-tertiary-fixed flex items-center justify-center text-tertiary shadow-[0_2px_0_0_#89ceff] transition-all duration-300 group-hover:scale-110 group-hover:-rotate-12">
+<span class="material-symbols-outlined text-[22px]">rule</span>
+</span>
+<span class="font-label-sm text-label-sm px-3 py-1 rounded-full bg-tertiary-fixed/50 text-on-tertiary-fixed font-bold">Industrial Rigor</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface tracking-tight group-hover:text-tertiary transition-colors">3-Tier AST Verification</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
+              We parse your abstract syntax tree before running execution. You learn idiomatic conventions, not just hacks that happen to pass sample inputs.
+            </p>
+</div>
+<!-- Pipeline Stack -->
+<div class="mt-6 space-y-2">
+<div class="flex items-center justify-between p-2.5 rounded-DEFAULT bg-surface-container-low text-on-surface font-label-md text-label-md border border-outline-variant/20 transition-all duration-200 hover:translate-x-1 hover:border-primary-fixed">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-primary">data_object</span> Phase 1: AST Structural Syntax</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">PASSED</span>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-DEFAULT bg-surface-container-low text-on-surface font-label-md text-label-md border border-outline-variant/20 transition-all duration-200 hover:translate-x-1 hover:border-primary-fixed">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-primary">security</span> Phase 2: WASM Sandboxed Eval</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">0.8ms</span>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-DEFAULT bg-surface-container-low text-on-surface font-label-md text-label-md border border-outline-variant/20 transition-all duration-200 hover:translate-x-1 hover:border-primary-fixed">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-primary">flaky</span> Phase 3: Boundary Fuzz Testing</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">100/100</span>
+</div>
+</div>
+</div>
+<!-- Bento Card 4: Cryptographic On-Chain Diplomas (Span 7) -->
+<div class="md:col-span-7 bg-surface-container-lowest rounded-lg p-8 shadow-[0_8px_24px_rgba(11,28,48,0.04)] border border-outline-variant/20 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(0,108,73,0.12)] hover:border-primary-container/50">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="w-10 h-10 rounded-DEFAULT bg-primary-fixed flex items-center justify-center text-primary shadow-[0_2px_0_0_#4edea3] transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+<span class="material-symbols-outlined text-[22px]">workspace_premium</span>
+</span>
+<span class="font-label-sm text-label-sm px-3 py-1 rounded-full bg-primary-fixed/40 text-on-primary-fixed font-bold">Tamper-Proof</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface tracking-tight group-hover:text-primary transition-colors">Verifiable Proof-of-Skill Diplomas</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-lg leading-relaxed">
+              Capstones generate cryptographically signed proof hashes certifying your raw code, latency benchmarks, and capstone commits. Trusted by top engineering hiring managers.
+            </p>
+</div>
+<!-- Credential Mini Preview -->
+<div class="mt-6 p-4 rounded-DEFAULT bg-surface-container-low flex flex-wrap items-center justify-between gap-4 border border-outline-variant/20 transition-all duration-300 group-hover:border-primary-fixed">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-DEFAULT bg-surface-container-highest flex items-center justify-center text-on-surface shadow-sm transition-transform duration-300 group-hover:scale-110">
+<span class="material-symbols-outlined text-[28px] text-secondary">verified</span>
+</div>
+<div>
+<div class="font-label-lg text-label-lg text-on-surface font-bold">Full-Stack Distributed Systems Architect</div>
+<div class="font-mono text-label-sm text-[11px] text-on-surface-variant">ID: CQ-8942-WASM-AUTH-2025</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<a class="px-3.5 py-1.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high transition-all duration-200 active:scale-95 shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow" data-path="certificates" href="/certificates/">
+                View On-Chain Sample
+              </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Track Explorer: Interactive & Categorized -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-16" id="tracks">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-extrabold">Curated Learning Paths</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">Explore 11 Interactive Tracks</h2>
+</div>
+<!-- Track Filter Pills -->
+<div class="flex flex-wrap items-center gap-1.5 bg-surface-container-low p-1.5 rounded-full border border-outline-variant/20 shadow-sm">
+<button class="track-filter px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md font-bold shadow-[0_2px_0_0_#00422b] transition-all duration-200 hover:scale-105 active:scale-95" onclick="filterTracks('all', this)">All 11 Tracks</button>
+<button class="track-filter px-4 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all duration-200 hover:scale-105 active:scale-95" onclick="filterTracks('popular', this)">⚡ Popular</button>
+<button class="track-filter px-4 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all duration-200 hover:scale-105 active:scale-95" onclick="filterTracks('frontend', this)">Frontend &amp; UI</button>
+<button class="track-filter px-4 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all duration-200 hover:scale-105 active:scale-95" onclick="filterTracks('backend', this)">Backend &amp; Systems</button>
+<button class="track-filter px-4 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all duration-200 hover:scale-105 active:scale-95" onclick="filterTracks('systems', this)">Low-Level &amp; C++</button>
+</div>
+</div>
+<!-- Track Cards Grid with Springy Elevate & Glowing Border Transitions -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="tracksContainer"><!-- Track 1: Python -->
+<div class="track-card bg-surface-container-lowest rounded-lg p-5 shadow-[0_4px_16px_rgba(11,28,48,0.04)] border border-outline-variant/20 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-primary-container/60 flex flex-col justify-between group cursor-pointer" data-category="popular backend">
+<div>
+<div class="relative h-36 rounded bg-gradient-to-br from-primary/10 to-primary-fixed/30 overflow-hidden flex items-center justify-center mb-4 border border-outline/20">
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#006c49 1px, transparent 1px); background-size: 14px 14px;"></div>
+<div class="relative flex items-center justify-center gap-3">
+<div class="w-10 h-10 rounded-DEFAULT bg-primary flex items-center justify-center text-on-primary shadow-[0_3px_0_0_#00422b] transition-transform duration-300 group-hover:scale-115 group-hover:rotate-6">
+<span class="material-symbols-outlined text-[20px]">precision_manufacturing</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="w-2 h-2 rounded-full bg-primary-fixed"></span>
+<span class="w-2 h-2 rounded-full bg-surface-variant"></span>
+</div>
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shadow-sm transition-transform duration-300 group-hover:scale-110">
+<span class="material-symbols-outlined text-[16px]">flag</span>
+</div>
+</div>
+<span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-[10px] font-extrabold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">sports_esports</span> Cyber Rover 2D
+      </span>
+<span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-[10px] font-extrabold">
+        Beginner
+      </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors">Python 3 Fundamentals</h3>
+<div class="flex items-center gap-2 mt-2 font-label-sm text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-primary">layers</span> 42 Modules</span>
+<span>•</span>
+<span class="flex items-center gap-1 text-secondary font-bold"><span class="material-symbols-outlined text-[14px]">bolt</span> +2,400 XP</span>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-outline/20 flex items-center justify-between gap-3">
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden flex-1">
+<div class="bg-primary h-full rounded-full transition-all duration-500 group-hover:brightness-110" style="width: 35%;"></div>
+</div>
+<a class="shimmer-btn px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm font-bold shadow-[0_2px_0_0_#00422b] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(16,185,129,0.3)] active:translate-y-0.5 active:shadow-none transition-all duration-200 flex items-center gap-1 shrink-0" data-path="catalog" href="/courses/">
+<span>Play</span>
+<span class="material-symbols-outlined text-[15px] transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Track 2: JavaScript -->
+<div class="track-card bg-surface-container-lowest rounded-lg p-5 shadow-[0_4px_16px_rgba(11,28,48,0.04)] border border-outline-variant/20 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-secondary-container/60 flex flex-col justify-between group cursor-pointer" data-category="popular frontend">
+<div>
+<div class="relative h-36 rounded bg-gradient-to-br from-secondary-fixed/30 to-secondary-container/20 overflow-hidden flex items-center justify-center mb-4 border border-outline/20">
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#855300 1px, transparent 1px); background-size: 14px 14px;"></div>
+<div class="relative flex items-center justify-center gap-3">
+<div class="w-10 h-10 rounded-DEFAULT bg-secondary-fixed flex items-center justify-center text-secondary shadow-[0_2px_0_0_#ffb95f] transition-transform duration-300 group-hover:scale-115 group-hover:rotate-6">
+<span class="material-symbols-outlined text-[20px]">shield</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-secondary shadow-sm transition-transform duration-300 group-hover:scale-110">
+<span class="material-symbols-outlined text-[16px]">crisis_alert</span>
+</div>
+</div>
+<span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-secondary font-label-sm text-[10px] font-extrabold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">sports_esports</span> Tower Defense
+      </span>
+<span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed font-label-sm text-[10px] font-extrabold">
+        Intermediate
+      </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-secondary transition-colors">JavaScript ES6+ &amp; Event Loop</h3>
+<div class="flex items-center gap-2 mt-2 font-label-sm text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-secondary">layers</span> 38 Modules</span>
+<span>•</span>
+<span class="flex items-center gap-1 text-secondary font-bold"><span class="material-symbols-outlined text-[14px]">bolt</span> +2,900 XP</span>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-outline/20 flex items-center justify-between gap-3">
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden flex-1">
+<div class="bg-secondary-container h-full rounded-full transition-all duration-500 group-hover:brightness-110" style="width: 60%;"></div>
+</div>
+<a class="shimmer-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-sm text-label-sm font-bold shadow-[0_2px_0_0_#bbcabf] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] active:translate-y-0.5 active:shadow-none transition-all duration-200 flex items-center gap-1 shrink-0" data-path="catalog" href="/courses/">
+<span>Play</span>
+<span class="material-symbols-outlined text-[15px] transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Track 3: React 19 -->
+<div class="track-card bg-surface-container-lowest rounded-lg p-5 shadow-[0_4px_16px_rgba(11,28,48,0.04)] border border-outline-variant/20 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-tertiary-container/60 flex flex-col justify-between group cursor-pointer" data-category="frontend">
+<div>
+<div class="relative h-36 rounded bg-gradient-to-br from-tertiary-fixed/40 to-tertiary-container/20 overflow-hidden flex items-center justify-center mb-4 border border-outline/20">
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#006591 1px, transparent 1px); background-size: 14px 14px;"></div>
+<div class="relative flex items-center justify-center gap-3">
+<div class="w-10 h-10 rounded-DEFAULT bg-tertiary-fixed flex items-center justify-center text-tertiary shadow-[0_2px_0_0_#89ceff] transition-transform duration-300 group-hover:scale-115 group-hover:rotate-6">
+<span class="material-symbols-outlined text-[20px]">apartment</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span>
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-tertiary shadow-sm transition-transform duration-300 group-hover:scale-110">
+<span class="material-symbols-outlined text-[16px]">electric_bolt</span>
+</div>
+</div>
+<span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-tertiary font-label-sm text-[10px] font-extrabold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">sports_esports</span> City Tycoon
+      </span>
+<span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-tertiary-fixed/50 text-on-tertiary-fixed font-label-sm text-[10px] font-extrabold">
+        Intermediate
+      </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-tertiary transition-colors">React 19 &amp; Server Actions</h3>
+<div class="flex items-center gap-2 mt-2 font-label-sm text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-tertiary">layers</span> 45 Modules</span>
+<span>•</span>
+<span class="flex items-center gap-1 text-secondary font-bold"><span class="material-symbols-outlined text-[14px]">bolt</span> +3,400 XP</span>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-outline/20 flex items-center justify-between gap-3">
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden flex-1">
+<div class="bg-tertiary-container h-full rounded-full transition-all duration-500 group-hover:brightness-110" style="width: 15%;"></div>
+</div>
+<a class="shimmer-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-sm text-label-sm font-bold shadow-[0_2px_0_0_#bbcabf] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] active:translate-y-0.5 active:shadow-none transition-all duration-200 flex items-center gap-1 shrink-0" data-path="catalog" href="/courses/">
+<span>Play</span>
+<span class="material-symbols-outlined text-[15px] transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Track 4: C & Memory -->
+<div class="track-card bg-surface-container-lowest rounded-lg p-5 shadow-[0_4px_16px_rgba(11,28,48,0.04)] border border-outline-variant/20 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-error/50 flex flex-col justify-between group cursor-pointer" data-category="systems">
+<div>
+<div class="relative h-36 rounded bg-gradient-to-br from-error-container to-surface-variant overflow-hidden flex items-center justify-center mb-4 border border-outline/20">
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#ba1a1a 1px, transparent 1px); background-size: 14px 14px;"></div>
+<div class="relative flex items-center justify-center gap-3">
+<div class="w-10 h-10 rounded-DEFAULT bg-error-container flex items-center justify-center text-on-error-container shadow-sm transition-transform duration-300 group-hover:scale-115 group-hover:rotate-6">
+<span class="material-symbols-outlined text-[20px]">memory</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<span class="w-2 h-2 rounded-full bg-error-container"></span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-error shadow-sm transition-transform duration-300 group-hover:scale-110">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+</div>
+</div>
+<span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-error font-label-sm text-[10px] font-extrabold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">sports_esports</span> Leak Sweeper
+      </span>
+<span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-[10px] font-extrabold">
+        Advanced
+      </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-error transition-colors">C Pointers &amp; Memory Hazmat</h3>
+<div class="flex items-center gap-2 mt-2 font-label-sm text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-error">layers</span> 50 Modules</span>
+<span>•</span>
+<span class="flex items-center gap-1 text-secondary font-bold"><span class="material-symbols-outlined text-[14px]">bolt</span> +4,100 XP</span>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-outline/20 flex items-center justify-between gap-3">
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden flex-1">
+<div class="bg-error h-full rounded-full transition-all duration-500 group-hover:brightness-110" style="width: 10%;"></div>
+</div>
+<a class="shimmer-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-sm text-label-sm font-bold shadow-[0_2px_0_0_#bbcabf] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] active:translate-y-0.5 active:shadow-none transition-all duration-200 flex items-center gap-1 shrink-0" data-path="catalog" href="/courses/">
+<span>Play</span>
+<span class="material-symbols-outlined text-[15px] transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Track 5: CSS Flexbox -->
+<div class="track-card bg-surface-container-lowest rounded-lg p-5 shadow-[0_4px_16px_rgba(11,28,48,0.04)] border border-outline-variant/20 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-primary-container/60 flex flex-col justify-between group cursor-pointer" data-category="frontend">
+<div>
+<div class="relative h-36 rounded bg-gradient-to-br from-primary-fixed/30 to-surface-container-high overflow-hidden flex items-center justify-center mb-4 border border-outline/20">
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#006c49 1px, transparent 1px); background-size: 14px 14px;"></div>
+<div class="relative flex items-center justify-center gap-3">
+<div class="w-10 h-10 rounded-DEFAULT bg-primary-fixed flex items-center justify-center text-primary shadow-[0_2px_0_0_#4edea3] transition-transform duration-300 group-hover:scale-115 group-hover:rotate-6">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim"></span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-primary shadow-sm transition-transform duration-300 group-hover:scale-110">
+<span class="material-symbols-outlined text-[16px]">palette</span>
+</div>
+</div>
+<span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-[10px] font-extrabold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">sports_esports</span> Froggy Archipelago
+      </span>
+<span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-primary-fixed/40 text-on-primary-fixed font-label-sm text-[10px] font-extrabold">
+        Beginner
+      </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors">CSS3 Flexbox, Grid &amp; FX</h3>
+<div class="flex items-center gap-2 mt-2 font-label-sm text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-primary">layers</span> 28 Modules</span>
+<span>•</span>
+<span class="flex items-center gap-1 text-secondary font-bold"><span class="material-symbols-outlined text-[14px]">bolt</span> +1,800 XP</span>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-outline/20 flex items-center justify-between gap-3">
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden flex-1">
+<div class="bg-primary-container h-full rounded-full transition-all duration-500 group-hover:brightness-110" style="width: 80%;"></div>
+</div>
+<a class="shimmer-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-sm text-label-sm font-bold shadow-[0_2px_0_0_#bbcabf] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] active:translate-y-0.5 active:shadow-none transition-all duration-200 flex items-center gap-1 shrink-0" data-path="catalog" href="/courses/">
+<span>Play</span>
+<span class="material-symbols-outlined text-[15px] transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Track 6: PostgreSQL -->
+<div class="track-card bg-surface-container-lowest rounded-lg p-5 shadow-[0_4px_16px_rgba(11,28,48,0.04)] border border-outline-variant/20 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-tertiary-container/60 flex flex-col justify-between group cursor-pointer" data-category="popular backend">
+<div>
+<div class="relative h-36 rounded bg-gradient-to-br from-tertiary-fixed/30 to-surface-container-highest overflow-hidden flex items-center justify-center mb-4 border border-outline/20">
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#006591 1px, transparent 1px); background-size: 14px 14px;"></div>
+<div class="relative flex items-center justify-center gap-3">
+<div class="w-10 h-10 rounded-DEFAULT bg-tertiary-fixed flex items-center justify-center text-tertiary shadow-[0_2px_0_0_#89ceff] transition-transform duration-300 group-hover:scale-115 group-hover:rotate-6">
+<span class="material-symbols-outlined text-[20px]">database</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span>
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed"></span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-tertiary shadow-sm transition-transform duration-300 group-hover:scale-110">
+<span class="material-symbols-outlined text-[16px]">search_check</span>
+</div>
+</div>
+<span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-tertiary font-label-sm text-[10px] font-extrabold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">sports_esports</span> SQL Detective
+      </span>
+<span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed font-label-sm text-[10px] font-extrabold">
+        Intermediate
+      </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-tertiary transition-colors">PostgreSQL &amp; Query Optimization</h3>
+<div class="flex items-center gap-2 mt-2 font-label-sm text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-secondary">layers</span> 36 Modules</span>
+<span>•</span>
+<span class="flex items-center gap-1 text-secondary font-bold"><span class="material-symbols-outlined text-[14px]">bolt</span> +2,750 XP</span>
+</div>
+</div>
+<div class="mt-5 pt-3 border-t border-outline/20 flex items-center justify-between gap-3">
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden flex-1">
+<div class="bg-tertiary h-full rounded-full transition-all duration-500 group-hover:brightness-110" style="width: 45%;"></div>
+</div>
+<a class="shimmer-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface font-label-sm text-label-sm font-bold shadow-[0_2px_0_0_#bbcabf] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] active:translate-y-0.5 active:shadow-none transition-all duration-200 flex items-center gap-1 shrink-0" data-path="catalog" href="/courses/">
+<span>Play</span>
+<span class="material-symbols-outlined text-[15px] transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div></div>
+</section>
+<!-- Visual Storytelling Feature Showcase (Image with scrim and subtle shimmering action) -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+<div class="arena-shimmer relative w-full rounded-lg overflow-hidden bg-surface-container-highest shadow-[0_16px_40px_rgba(11,28,48,0.08)] border border-outline-variant/30 min-h-[420px] flex items-center transition-all duration-500 hover:shadow-[0_24px_50px_rgba(0,108,73,0.15)]">
+<!-- Visual Backdrop Image -->
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 hover:scale-105" data-alt="Vibrant modern isometric 3D game arena showing a colorful robotic explorer navigating glowing neon green algorithmic nodes and glowing puzzle pathways in a playful laboratory setting with soft sunlight and soft shadow lighting." style="background-image: url('/static/img/stitch/asset_01.jpg')"></div>
+<!-- Gradient Scrim for Readability -->
+<div class="absolute inset-0 bg-gradient-to-r from-on-surface via-on-surface/85 to-transparent"></div>
+<!-- Content Overlay -->
+<div class="relative z-10 max-w-xl p-8 lg:p-12 text-surface-bright space-y-4">
+<span class="px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase tracking-wider font-bold inline-block shadow-sm">
+            Live Multiplayer Arenas
+          </span>
+<h2 class="font-headline-lg text-headline-lg text-white tracking-tight">
+            Battle Fellow Engineers in 1-on-1 Code Duels
+          </h2>
+<p class="font-body-md text-body-md text-surface-container-highest leading-relaxed">
+            Put your algorithms to the ultimate live test. Match up against developers globally in timed 8-minute rounds. Real syntax, deterministic sandboxes, live Elo ladder.
           </p>
-        </div>
-        <div style="display: flex; flex-wrap: wrap; gap: 0.65rem;">
-          <a href="{% url 'certificates_hub' %}" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.45rem 0.95rem;">Claim Certificate &rarr;</a>
-          <a href="{% url 'playground' %}" class="btn btn-ghost" style="font-size: 0.8rem; padding: 0.45rem 0.95rem;">Playground IDE</a>
-          <a href="{% url 'admin_panel' %}" class="btn btn-ghost" style="font-size: 0.8rem; padding: 0.45rem 0.95rem;">Admin Panel</a>
-        </div>
-      </div>
+<div class="pt-2 flex flex-wrap items-center gap-4">
+<a class="shimmer-btn px-6 py-3 rounded-full bg-primary-container text-on-primary-container font-label-lg text-label-lg font-bold shadow-[0_4px_0_0_#00422b] hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(16,185,129,0.5)] active:translate-y-0.5 active:shadow-none transition-all duration-200 flex items-center gap-2 group" data-path="arena" href="/games/">
+<span class="material-symbols-outlined text-[18px] transition-transform duration-300 group-hover:rotate-45">swords</span>
+<span>Enter Arena Queue</span>
+</a>
+<!-- Animated Pulsing Radar Badge for Online Queue Count -->
+<div class="relative flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container-lowest/15 backdrop-blur-md border border-white/10 text-surface-bright transition-all duration-300 hover:border-primary-fixed">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary-container"></span>
+</span>
+<span class="font-label-sm text-label-sm text-surface-dim font-medium">418 Engineers currently in queue</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Comparison Section: The Honest Truth -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-16">
+<div class="text-center max-w-3xl mx-auto mb-14">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-extrabold">Radical Transparency</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
+          Why CodeQuest Outperforms 40-Hour Video Lectures
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-3 leading-relaxed">
+          Watching someone else code builds the illusion of competence. CodeQuest builds genuine cognitive muscle memory from keystroke one.
+        </p>
+</div>
+<!-- Comparison Matrix -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Traditional Video Courses -->
+<div class="bg-surface-container-lowest rounded-lg p-6 shadow-[0_4px_16px_rgba(11,28,48,0.03)] border border-outline-variant/20 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+<div>
+<div class="w-10 h-10 rounded-DEFAULT bg-surface-container-high flex items-center justify-center text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-[20px]">smart_display</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Video Courses</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Udemy, Coursera, YouTube</p>
+<div class="mt-4 text-headline-md font-bold text-error">4%</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Average Course Completion Rate</div>
+<ul class="mt-6 space-y-3 font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-start gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-error text-[18px] shrink-0 mt-0.5">close</span>
+<span>Passive 'tutorial hell' where students copy paste without retention</span>
+</li>
+<li class="flex items-start gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-error text-[18px] shrink-0 mt-0.5">close</span>
+<span>Hours of video playback with zero tactile code execution</span>
+</li>
+<li class="flex items-start gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-error text-[18px] shrink-0 mt-0.5">close</span>
+<span>No automated verification of algorithmic edge cases</span>
+</li>
+</ul>
+</div>
+<div class="mt-6 pt-4 bg-surface-container-low rounded-DEFAULT p-3 text-center font-label-sm text-label-sm text-on-surface-variant">
+            Result: Quick burnout after chapter 3
+          </div>
+</div>
+<!-- Toy Coding Games -->
+<div class="bg-surface-container-lowest rounded-lg p-6 shadow-[0_4px_16px_rgba(11,28,48,0.03)] border border-outline-variant/20 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+<div>
+<div class="w-10 h-10 rounded-DEFAULT bg-secondary-fixed/50 flex items-center justify-center text-secondary mb-4">
+<span class="material-symbols-outlined text-[20px]">extension</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Toy Block Coding</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Scratch, Block-based games</p>
+<div class="mt-4 text-headline-md font-bold text-secondary">31%</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Transferable Skills to Industry</div>
+<ul class="mt-6 space-y-3 font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-start gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">remove</span>
+<span>Drag-and-drop puzzles conceal real compiler semantics</span>
+</li>
+<li class="flex items-start gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-error text-[18px] shrink-0 mt-0.5">close</span>
+<span>Zero experience with real IDEs, git workflows, or terminal ASTs</span>
+</li>
+<li class="flex items-start gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">remove</span>
+<span>Fun micro-puzzles that fail to translate into production engineering</span>
+</li>
+</ul>
+</div>
+<div class="mt-6 pt-4 bg-surface-container-low rounded-DEFAULT p-3 text-center font-label-sm text-label-sm text-on-surface-variant">
+            Result: Hits a hard ceiling when typing syntax
+          </div>
+</div>
+<!-- CodeQuest LMS (Highlight Hero) -->
+<div class="relative bg-surface-container-lowest rounded-lg p-6 shadow-[0_12px_32px_rgba(0,108,73,0.12)] border-2 border-primary-container/60 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,108,73,0.2)]">
+<div class="absolute -top-3.5 right-6 px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm font-extrabold shadow-sm uppercase tracking-wider animate-pulse">
+            Engineered Best
+          </div>
+<div>
+<div class="w-10 h-10 rounded-DEFAULT bg-primary flex items-center justify-center text-on-primary mb-4 shadow-[0_2px_0_0_#00422b]">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">CodeQuest LMS</h3>
+<p class="font-label-sm text-label-sm text-primary font-bold mt-0.5">Tactile WASM Game Engine</p>
+<div class="mt-4 text-headline-md font-bold text-primary">78%</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Verified Track Completion Rate</div>
+<ul class="mt-6 space-y-3 font-body-sm text-body-sm text-on-surface">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-bold">Authentic Multi-Line Syntax: You type genuine production Python, JS, C, and Rust.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Immediate 2D game state execution: witness algorithmic cause and effect in real time.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<span>Cryptographically verifiable diplomas accepted by leading tech recruiters.</span>
+</li>
+</ul>
+</div>
+<div class="mt-6 pt-4 bg-primary-fixed/30 rounded-DEFAULT p-3 text-center font-label-sm text-label-sm text-primary font-bold">
+            Result: Job-ready mental models in 1/4 the time
+          </div>
+</div>
+</div>
+</section>
+<!-- Bottom Conversion Banner -->
+<section class="max-w-7xl mx-auto px-6 lg:px-12 py-16 mb-8">
+<div class="relative rounded-xl p-8 lg:p-14 bg-gradient-to-br from-primary via-on-primary-fixed-variant to-on-primary-container text-white overflow-hidden shadow-[0_16px_40px_rgba(0,108,73,0.25)] flex flex-col md:flex-row items-center justify-between gap-8">
+<!-- Abstract Shapes in Background -->
+<div class="absolute -right-16 -bottom-16 w-80 h-80 rounded-full bg-primary-fixed/20 blur-3xl pointer-events-none"></div>
+<div class="absolute top-0 right-1/3 w-64 h-64 rounded-full bg-secondary-container/20 blur-2xl pointer-events-none"></div>
+<div class="relative z-10 max-w-xl space-y-3 text-center md:text-left">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-primary-fixed font-label-sm text-label-sm font-bold uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-fixed animate-ping"></span>
+            Zero Setup • Immediate Keystroke
+          </div>
+<h2 class="font-headline-lg text-headline-lg font-extrabold tracking-tight text-white">
+            Ready to Level Up Your Real Engineering Skills?
+          </h2>
+<p class="font-body-md text-body-md text-surface-container-high/90">
+            Join over 140,000 developers building authentic algorithmic intuition today. Start the 5-minute rover pathfinding quest completely free.
+          </p>
+</div>
+<div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 shrink-0">
+<button class="shimmer-btn w-full sm:w-auto px-8 py-4 rounded-full bg-primary-container text-on-primary-container font-label-lg text-label-lg font-extrabold shadow-[0_4px_0_0_#002113] hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(16,185,129,0.5)] active:translate-y-1 active:shadow-none transition-all duration-200 flex items-center justify-center gap-2 group">
+<span>Start Free Micro-Lesson</span>
+<span class="material-symbols-outlined text-[20px] transition-transform duration-300 group-hover:scale-125">bolt</span>
+</button>
+<a class="w-full sm:w-auto px-6 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white font-label-lg text-label-lg font-bold backdrop-blur-md transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 group" data-path="leaderboard" href="/contests/?tab=standings">
+<span class="group-hover:underline">Leaderboard</span>
+<span class="material-symbols-outlined text-[18px] transition-transform duration-200 group-hover:-translate-y-0.5">trophy</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Floating Keyboard Dock / ProTip Indicator with Keycap Bounce & Smooth Hover -->
+<div class="sticky bottom-6 z-40 max-w-max mx-auto px-4 py-2 rounded-full bg-inverse-surface/95 text-inverse-on-surface backdrop-blur-xl shadow-2xl flex items-center gap-3 font-label-sm text-label-sm border border-outline-variant/30 transition-transform duration-200 hover:scale-102">
+<span class="material-symbols-outlined text-[16px] text-secondary-container animate-pulse">tips_and_updates</span>
+<span class="hidden sm:inline font-bold">ProTip:</span>
+<span class="flex items-center gap-1.5 cursor-pointer group" onclick="if(document.getElementById('runCodeBtn')) document.getElementById('runCodeBtn').click();">
+<kbd class="px-1.5 py-0.5 rounded bg-surface/20 text-inverse-on-surface font-mono text-[10px] shadow-sm transition-all duration-150 group-hover:bg-primary-container group-hover:text-on-primary-container active:scale-90">R</kbd> <span class="group-hover:underline">Run Sandbox</span>
+</span>
+<span class="text-outline">/</span>
+<span class="flex items-center gap-1.5 cursor-pointer group">
+<kbd class="px-1.5 py-0.5 rounded bg-surface/20 text-inverse-on-surface font-mono text-[10px] shadow-sm transition-all duration-150 group-hover:bg-primary-container group-hover:text-on-primary-container active:scale-90">P</kbd> <span class="group-hover:underline">Pause Simulation</span>
+</span>
+<span class="text-outline">/</span>
+<span class="flex items-center gap-1.5 cursor-pointer group">
+<kbd class="px-1.5 py-0.5 rounded bg-surface/20 text-inverse-on-surface font-mono text-[10px] shadow-sm transition-all duration-150 group-hover:bg-primary-container group-hover:text-on-primary-container active:scale-90">⌘K</kbd> <span class="group-hover:underline">Track Search</span>
+</span>
+</div>
+</div>
+</div>
+<script>
+(function() {
+// Language Switcher in Interactive Sandbox
+  const codeSnippets = {
+    py: `<div class="text-on-surface-variant/60 select-none"># Quest: Program the lunar rover's LiDAR path-finder</div>
+<div><span class="text-tertiary font-bold">from</span> quest_rover <span class="text-tertiary font-bold">import</span> AutonomousRover, SensorGrid</div>
+<div class="pt-2"><span class="text-secondary font-bold">def</span> <span class="text-primary font-bold">navigate_lunar_trench</span>(rover: AutonomousRover):</div>
+<div class="pl-4 text-on-surface-variant/75">grid = rover.scan_surroundings(radius=<span class="text-secondary">4</span>)</div>
+<div class="pl-4"><span class="text-tertiary font-bold">for</span> coordinate <span class="text-tertiary font-bold">in</span> grid.obstacles:</div>
+<div class="pl-8"><span class="text-tertiary font-bold">if</span> coordinate.is_hazardous():</div>
+<div class="pl-12 text-primary font-bold">rover.reroute_vector(bypass=coordinate.vector)</div>
+<div class="pl-8"><span class="text-tertiary font-bold">else</span>:</div>
+<div class="pl-12 text-secondary font-bold">rover.boost_thrusters(power=<span class="text-on-surface">1.8</span>)</div>
+<div class="pl-4 pt-1"><span class="text-tertiary font-bold">return</span> rover.collect_sample_and_fire_beacon()<span class="typing-cursor ml-1"></span></div>`,
+    rs: `<div class="text-on-surface-variant/60 select-none">// Quest: Compile safety-critical rover actuation in Rust</div>
+<div><span class="text-tertiary font-bold">use</span> quest_core::{RoverDevice, SensorMap, NavError};</div>
+<div class="pt-2"><span class="text-secondary font-bold">pub fn</span> <span class="text-primary font-bold">navigate_terrain</span>(rover: &amp;<span class="text-tertiary">mut</span> RoverDevice) -&gt; Result&lt;(), NavError&gt; {</div>
+<div class="pl-4 text-on-surface-variant/75">let telemetry = rover.scan_radial_grid(<span class="text-secondary">4</span>)?;</div>
+<div class="pl-4"><span class="text-tertiary font-bold">for</span> obstacle <span class="text-tertiary font-bold">in</span> telemetry.detected_hazards() {</div>
+<div class="pl-8"><span class="text-tertiary font-bold">if</span> obstacle.severity &gt; <span class="text-secondary">0.75</span> {</div>
+<div class="pl-12 text-primary font-bold">rover.emergency_evasion_vector(obstacle.delta)?;</div>
+<div class="pl-8">}</div>
+<div class="pl-4">}</div>
+<div class="pl-4 pt-1">rover.fire_telemetry_beacon()<span class="typing-cursor ml-1"></span></div>
+<div>}</div>`,
+    ts: `<div class="text-on-surface-variant/60 select-none">// Quest: Reactively stream rover coordinates via RxJS</div>
+<div><span class="text-tertiary font-bold">import</span> { AutonomousRover, Vector2D } <span class="text-tertiary font-bold">from</span> <span class="text-secondary">'@codequest/rover-core'</span>;</div>
+<div class="pt-2"><span class="text-secondary font-bold">export async function</span> <span class="text-primary font-bold">routeRoverPath</span>(rover: AutonomousRover): Promise&lt;boolean&gt; {</div>
+<div class="pl-4 text-on-surface-variant/75">const sensorFeed$ = rover.observeSensorMatrix(<span class="text-secondary">4</span>);</div>
+<div class="pl-4">const safeVector = await sensorFeed$.pipe(</div>
+<div class="pl-8">filter(hazard =&gt; hazard.distance &gt; <span class="text-secondary">1.2</span>),</div>
+<div class="pl-8">map(h =&gt; h.calculateBypass())</div>
+<div class="pl-4">).toPromise();</div>
+<div class="pl-4 pt-1"><span class="text-tertiary font-bold">return</span> rover.engageSubThrust(safeVector);<span class="typing-cursor ml-1"></span></div>
+<div>}</div>`
+  };
 
-    </div>
-  </section>
+  function switchLang(lang) {
+    document.querySelectorAll('.lang-tab').forEach(tab => {
+      tab.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm');
+      tab.classList.add('text-on-surface-variant');
+    });
+    const activeTab = document.getElementById('tab-' + lang);
+    if (activeTab) {
+      activeTab.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm');
+      activeTab.classList.remove('text-on-surface-variant');
+    }
+    const codeArea = document.getElementById('codeContentArea');
+    if (codeArea && codeSnippets[lang]) {
+      codeArea.style.opacity = '0';
+      setTimeout(() => {
+        codeArea.innerHTML = codeSnippets[lang];
+        codeArea.style.opacity = '1';
+      }, 150);
+    }
+  }
 
+  // Interactive Code Execution Trigger
+  const runBtn = document.getElementById('runCodeBtn');
+  const roverToken = document.getElementById('roverToken');
+
+  if (runBtn && roverToken) {
+    runBtn.addEventListener('click', () => {
+      runBtn.classList.add('scale-95');
+      setTimeout(() => runBtn.classList.remove('scale-95'), 150);
+
+      // Animate rover along path
+      roverToken.style.transform = 'translate(60px, -20px) rotate(25deg)';
+      setTimeout(() => {
+        roverToken.style.transform = 'translate(120px, 10px) rotate(-15deg)';
+      }, 500);
+      setTimeout(() => {
+        roverToken.style.transform = 'translate(180px, -40px) rotate(0deg)';
+      }, 1000);
+      setTimeout(() => {
+        roverToken.style.transform = 'translate(0px, 0px) rotate(0deg)';
+      }, 2200);
+    });
+  }
+
+  // Keyboard shortcut listener for 'R' and 'P'
+  window.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'r') {
+      e.preventDefault();
+      if (runBtn) runBtn.click();
+    } else if (e.key.toLowerCase() === 'r' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      if (runBtn) runBtn.click();
+    }
+  });
+
+  // Track Categorization Filters
+  function filterTracks(category, btnEl) {
+    const tabs = document.querySelectorAll('.track-filter');
+    tabs.forEach(tab => {
+      tab.classList.remove('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-[0_2px_0_0_#00422b]');
+      tab.classList.add('text-on-surface-variant');
+    });
+
+    (btnEl || (window.event && window.event.target)).classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-[0_2px_0_0_#00422b]');
+    (btnEl || (window.event && window.event.target)).classList.remove('text-on-surface-variant');
+
+    const cards = document.querySelectorAll('.track-card');
+    cards.forEach(card => {
+      if (category === 'all') {
+        card.style.display = 'flex';
+      } else {
+        const cardCats = card.getAttribute('data-category') || '';
+        if (cardCats.includes(category)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      }
+    });
+  }
+  window.filterTracks = filterTracks;
+  window.switchLang = switchLang;
+})();
+</script></main><footer class="w-full bg-surface-container-low py-12"><div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-6"><div class="flex flex-col items-center md:items-start gap-2"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-DEFAULT bg-primary flex items-center justify-center transition-transform hover:scale-110"><span class="material-symbols-outlined text-on-primary text-[14px]">auto_awesome</span></div><span class="font-headline-sm text-headline-sm text-on-surface">CodeQuest LMS</span></div><p class="font-body-sm text-body-sm text-on-surface-variant text-center md:text-left">Gamified software engineering tracks built for modern mastery.</p></div><div class="flex flex-wrap justify-center items-center gap-6"><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors hover:underline" data-path="catalog" href="/courses/">Full-Stack Track</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors hover:underline" data-path="arena" href="/games/">Algo Battles</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors hover:underline" data-path="game-studio" href="/learn/python-core/print-syntax/">Web3 Studio</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors hover:underline" data-path="certificates" href="/certificates/">Certifications</a></div><div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-highest transition-transform hover:scale-105 cursor-default"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface">All Systems Operational</span></div></div></footer>
 </div>
 
+<div class="block md:hidden">
+<header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-gutter flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs min-w-0"><div class="w-9 h-9 rounded-DEFAULT bg-primary-container text-on-primary flex items-center justify-center shadow-[0_3px_0_0_#006c49]"><span class="material-symbols-outlined text-[20px]">terminal</span></div><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">CodeQuest</span><span class="text-[9px] font-label-sm uppercase tracking-wider text-primary font-bold -mt-1">LMS</span></div></div><div class="flex items-center gap-space-xs"><div class="flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed px-2.5 py-1 rounded-full shadow-[0_2px_0_0_#fea619]"><span class="material-symbols-outlined text-[16px] text-secondary">local_fire_department</span><span class="font-label-sm text-label-sm font-bold text-on-secondary-fixed">12</span></div><div class="flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed px-2.5 py-1 rounded-full shadow-[0_2px_0_0_#23acf1]"><span class="material-symbols-outlined text-[15px] text-tertiary">bolt</span><span class="font-label-sm text-label-sm font-bold text-on-tertiary-fixed">2.4k</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full pb-8">
+<!-- Interactive Matchmaking / Daily Mission Ticker -->
+<section class="px-gutter pt-3 pb-2">
+<div class="bg-surface-container-high text-on-surface rounded-DEFAULT p-3 shadow-sm flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="relative flex h-3 w-3 shrink-0">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm uppercase tracking-wide text-primary">Live Multiplayer Lobby</span>
+<span class="font-body-sm text-body-sm truncate text-on-surface-variant"><strong class="text-on-surface font-bold">418</strong> devs queuing ranked 1v1</span>
+</div>
+</div>
+<button class="shrink-0 bg-secondary text-on-secondary px-3 py-1.5 rounded-full font-label-md text-label-md shadow-[0_3px_0_0_#653e00] active:translate-y-[3px] active:shadow-none transition-all flex items-center gap-1" id="quick-duel-btn">
+<span class="material-symbols-outlined text-[16px]">swords</span>
+<span>Duel</span>
+</button>
+</div>
+</section>
+<!-- Mobile Hero Section -->
+<section class="px-gutter py-3">
+<div class="bg-surface-container-lowest rounded-lg p-5 shadow-sm relative overflow-hidden">
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-primary-fixed/20 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Top Badges & Meta -->
+<div class="flex items-center justify-between mb-3">
+<div class="inline-flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed px-2.5 py-1 rounded-full font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">sports_esports</span>
+<span>Gamified Learning</span>
+</div>
+<div class="flex items-center gap-1 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.9</span>
+<span class="text-outline text-[10px]">(140k+ devs)</span>
+</div>
+</div>
+<!-- Headline & Subtitle -->
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight mb-2">
+        Master Software Engineering by <span class="text-primary">Playing Real Games</span>
+</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
+        Zero boring video marathons. Write deterministic code to pilot rovers, solve puzzles, and debug live game engines.
+      </p>
+<!-- Key Pill Highlights -->
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-surface-container-low rounded-DEFAULT p-2.5 flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">code</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-sm text-label-sm text-on-surface">AST Parser</div>
+<div class="text-[10px] text-outline truncate">Instant dry-run eval</div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-DEFAULT p-2.5 flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-sm text-label-sm text-on-surface">On-chain Proof</div>
+<div class="text-[10px] text-outline truncate">Verifiable skill NFT</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Visual Hero Asset -->
+<section class="px-gutter py-2">
+<div class="w-full h-36 rounded-DEFAULT overflow-hidden shadow-sm relative">
+<img class="w-full h-full object-cover" data-alt="Stylized 3D low poly digital game playground featuring autonomous robotic rovers traversing glowing geometric circuit terrain under warm futuristic dawn lighting with emerald green energy pillars and sleek holographic HUD overlays in high fidelity" src="/static/img/stitch/asset_05.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent flex items-end p-3">
+<span class="font-label-sm text-label-sm text-inverse-on-surface bg-inverse-surface/60 backdrop-blur-md px-2.5 py-1 rounded-full">
+          Mission 04: The Red Planet Terminal Sandbox
+        </span>
+</div>
+</div>
+</section>
+<!-- Live 2D Micro-Simulation Card -->
+<section class="px-gutter py-3">
+<div class="bg-surface-container-lowest rounded-lg p-4 shadow-sm flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 min-w-0">
+<div class="w-7 h-7 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[17px]">smart_toy</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Mars Rover Pathing</h2>
+<p class="font-body-sm text-body-sm text-outline">Interactive AST Simulation</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container px-2 py-0.5 rounded-full text-on-surface-variant font-bold" id="sim-status">READY</span>
+</div>
+<!-- Canvas Micro Game Area -->
+<div class="relative bg-inverse-surface rounded-DEFAULT h-40 overflow-hidden flex items-center justify-center p-3">
+<!-- Grid Matrix Background -->
+<div class="absolute inset-0 opacity-15 bg-[radial-gradient(#89ceff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+<!-- Waypoint Target -->
+<div class="absolute right-8 top-6 w-9 h-9 rounded-full bg-secondary-container/30 flex items-center justify-center animate-pulse" id="target-node">
+<span class="material-symbols-outlined text-secondary-container text-[20px]" style="font-variation-settings: 'FILL' 1;">flag</span>
+</div>
+<!-- Rover Sprite -->
+<div class="absolute left-8 bottom-6 w-11 h-11 rounded-DEFAULT bg-primary flex items-center justify-center text-on-primary shadow-lg transition-all duration-700 ease-in-out" id="rover-sprite">
+<span class="material-symbols-outlined text-[24px]">navigation</span>
+</div>
+<!-- Micro Code Terminal HUD -->
+<div class="absolute top-2 left-2 bg-inverse-surface/90 text-primary-fixed font-mono text-[10px] px-2 py-1 rounded backdrop-blur-md">
+<span class="text-tertiary-fixed">rover</span>.move_forward(<span id="dist-val">4</span>);
+        </div>
+</div>
+<!-- Action Button with Tactile Extrusion -->
+<div class="flex items-center gap-2">
+<button class="flex-1 bg-primary text-on-primary py-3 rounded-full font-label-lg text-label-lg shadow-[0_4px_0_0_#00422b] active:translate-y-[4px] active:shadow-none transition-all flex items-center justify-center gap-2" id="run-code-action">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span>Run Code & Evaluate</span>
+</button>
+<button class="w-12 h-12 bg-surface-container text-on-surface-variant rounded-full flex items-center justify-center shadow-[0_3px_0_0_#cbdbf5] active:translate-y-[3px] active:shadow-none transition-all shrink-0" id="reset-code-action">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Interactive Tracks Mobile Cards -->
+<section class="px-gutter py-3">
+<div class="flex items-center justify-between mb-3">
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Career Tracks</h2>
+<p class="font-body-sm text-body-sm text-outline">Gamified masteries with boss battles</p>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold bg-primary-fixed/40 px-2 py-1 rounded-full">5 Tracks</span>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Track 1: Python -->
+<div class="bg-surface-container-lowest rounded-lg p-4 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-DEFAULT bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center shrink-0 shadow-[0_3px_0_0_#fea619]">
+<span class="material-symbols-outlined text-[26px]">data_object</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm uppercase font-bold text-secondary">Beginner Friendly</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Python 3 Fundamentals</h3>
+</div>
+</div>
+<div class="bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold shrink-0">
+            +2400 XP
+          </div>
+</div>
+<div class="flex items-center justify-between text-outline font-body-sm text-body-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">menu_book</span>
+            42 Interactive Missions
+          </span>
+<span class="flex items-center gap-1 text-primary font-bold">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            64% Completed
+          </span>
+</div>
+<!-- Progress bar -->
+<div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 64%"></div>
+</div>
+<button class="w-full bg-primary text-on-primary py-2.5 rounded-full font-label-md text-label-md shadow-[0_3px_0_0_#00422b] active:translate-y-[3px] active:shadow-none transition-all flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">sports_esports</span>
+<span>Continue Level 27</span>
+</button>
+</div>
+<!-- Track 2: Modern JS -->
+<div class="bg-surface-container-lowest rounded-lg p-4 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-DEFAULT bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0 shadow-[0_3px_0_0_#23acf1]">
+<span class="material-symbols-outlined text-[26px]">javascript</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm uppercase font-bold text-tertiary">Intermediate</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Modern JS & Event Loop</h3>
+</div>
+</div>
+<div class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold shrink-0">
+            +3100 XP
+          </div>
+</div>
+<div class="flex items-center justify-between text-outline font-body-sm text-body-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">menu_book</span>
+            38 Modules & Micro-Tasks
+          </span>
+<span class="flex items-center gap-1 text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-[16px]">lock_open</span>
+            12% Started
+          </span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 12%"></div>
+</div>
+<button class="w-full bg-surface-container-high text-on-surface py-2.5 rounded-full font-label-md text-label-md shadow-[0_3px_0_0_#cbdbf5] active:translate-y-[3px] active:shadow-none transition-all flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span>Resume Micro-Tasks</span>
+</button>
+</div>
+<!-- Track 3: React 19 -->
+<div class="bg-surface-container-lowest rounded-lg p-4 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-DEFAULT bg-surface-container-highest text-primary flex items-center justify-center shrink-0 shadow-[0_3px_0_0_#cbdbf5]">
+<span class="material-symbols-outlined text-[26px]">sync_alt</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm uppercase font-bold text-primary">Advanced Core</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">React 19 & Server Actions</h3>
+</div>
+</div>
+<div class="bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold shrink-0">
+            +4500 XP
+          </div>
+</div>
+<div class="flex items-center justify-between text-outline font-body-sm text-body-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+            52 Boss Encounters
+          </span>
+<span class="flex items-center gap-1 text-secondary font-bold">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+            Hot Release
+          </span>
+</div>
+<button class="w-full bg-surface-container text-on-surface py-2.5 rounded-full font-label-md text-label-md shadow-[0_3px_0_0_#cbdbf5] active:translate-y-[3px] active:shadow-none transition-all flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">rocket_launch</span>
+<span>Start Track</span>
+</button>
+</div>
+<!-- Track 4: C Pointers -->
+<div class="bg-surface-container-lowest rounded-lg p-4 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-DEFAULT bg-error-container text-on-error-container flex items-center justify-center shrink-0 shadow-[0_3px_0_0_#ba1a1a]">
+<span class="material-symbols-outlined text-[26px]">memory</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm uppercase font-bold text-error">Hazmat Tier</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">C Pointers & Memory Safety</h3>
+</div>
+</div>
+<div class="bg-error-container text-on-error-container px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold shrink-0">
+            +5200 XP
+          </div>
+</div>
+<div class="flex items-center justify-between text-outline font-body-sm text-body-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">bug_report</span>
+            30 Heap Arenas
+          </span>
+<span class="text-error font-bold font-label-sm text-label-sm">High Difficulty</span>
+</div>
+<button class="w-full bg-surface-container text-on-surface py-2.5 rounded-full font-label-md text-label-md shadow-[0_3px_0_0_#cbdbf5] active:translate-y-[3px] active:shadow-none transition-all flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+<span>Unlock with 15 Badges</span>
+</button>
+</div>
+<!-- Track 5: PostgreSQL -->
+<div class="bg-surface-container-lowest rounded-lg p-4 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-DEFAULT bg-surface-container text-tertiary flex items-center justify-center shrink-0 shadow-[0_3px_0_0_#cbdbf5]">
+<span class="material-symbols-outlined text-[26px]">database</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm uppercase font-bold text-tertiary">Data Architect</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">PostgreSQL Query Optimizer</h3>
+</div>
+</div>
+<div class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold shrink-0">
+            +2900 XP
+          </div>
+</div>
+<div class="flex items-center justify-between text-outline font-body-sm text-body-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">query_stats</span>
+            25 Explain Analyze Drills
+          </span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Self-Paced</span>
+</div>
+<button class="w-full bg-surface-container text-on-surface py-2.5 rounded-full font-label-md text-label-md shadow-[0_3px_0_0_#cbdbf5] active:translate-y-[3px] active:shadow-none transition-all flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span>Start Track</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Architecture Highlights: Interactive Stack / Micro-Carousel -->
+<section class="px-gutter py-3">
+<div class="mb-3">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">How CodeQuest Works</h2>
+<p class="font-body-sm text-body-sm text-outline">Engineered for deep flow states and zero burnout</p>
+</div>
+<!-- Visual Asset Banner -->
+<div class="w-full h-32 rounded-DEFAULT overflow-hidden shadow-sm relative mb-3">
+<img class="w-full h-full object-cover" data-alt="Charming isometric game academy lab containing colorful computer consoles holographic badges code cubes and cozy study pods with warm ambient neon emerald lighting in clean minimal modern style" src="/static/img/stitch/asset_02.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-r from-inverse-surface/70 via-transparent to-transparent flex items-center p-4">
+<span class="font-headline-sm text-headline-sm text-inverse-on-surface max-w-[200px]">
+          The 4 Pillars of Tactile Code
+        </span>
+</div>
+</div>
+<!-- Compact Feature Cards Grid -->
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-3.5 rounded-DEFAULT shadow-sm flex flex-col gap-2">
+<div class="w-9 h-9 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]">sports_esports</span>
+</div>
+<h3 class="font-label-lg text-label-lg text-on-surface">2D Game Arena</h3>
+<p class="font-body-sm text-body-sm text-outline">Control autonomous physical agents via custom scripts.</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-3.5 rounded-DEFAULT shadow-sm flex flex-col gap-2">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</div>
+<h3 class="font-label-lg text-label-lg text-on-surface">5-Min Micro-Theory</h3>
+<p class="font-body-sm text-body-sm text-outline">High-density mental models before each game level.</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-3.5 rounded-DEFAULT shadow-sm flex flex-col gap-2">
+<div class="w-9 h-9 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+</div>
+<h3 class="font-label-lg text-label-lg text-on-surface">AST Verification</h3>
+<p class="font-body-sm text-body-sm text-outline">Instant static analysis catches bad patterns on keystroke.</p>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-3.5 rounded-DEFAULT shadow-sm flex flex-col gap-2">
+<div class="w-9 h-9 rounded-full bg-surface-container-high text-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+</div>
+<h3 class="font-label-lg text-label-lg text-on-surface">Verifiable Diplomas</h3>
+<p class="font-body-sm text-body-sm text-outline">Share cryptographic proof of completed coding challenges.</p>
+</div>
+</div>
+</section>
+<!-- Bottom CTA Card -->
+<section class="px-gutter pt-2">
+<div class="bg-surface-container-high rounded-lg p-5 shadow-sm flex flex-col items-center text-center gap-3 relative overflow-hidden">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shadow-[0_3px_0_0_#fea619]">
+<span class="material-symbols-outlined text-[28px]">trophy</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Ready to Climb the Arena?</h2>
+<p class="font-body-sm text-body-sm text-outline mt-1 max-w-xs">
+          Match with engineers worldwide and write bug-free algorithms in real-time speed coding battles.
+        </p>
+</div>
+<button class="w-full bg-primary text-on-primary py-3 rounded-full font-label-lg text-label-lg shadow-[0_4px_0_0_#00422b] active:translate-y-[4px] active:shadow-none transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+<span>Enter Duel League</span>
+</button>
+</div>
+</section>
+</div>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const filterTabs = document.querySelectorAll(".featured-filter-tab");
-    const cards = document.querySelectorAll(".featured-course-card");
-    filterTabs.forEach(function (tab) {
-      tab.addEventListener("click", function () {
-        filterTabs.forEach(function (t) {
-          t.classList.remove("active", "btn-primary");
-          t.classList.add("btn-ghost");
-        });
-        tab.classList.add("active", "btn-primary");
-        tab.classList.remove("btn-ghost");
-        const cat = tab.getAttribute("data-track-cat");
-        cards.forEach(function (c) {
-          c.style.display = (cat === "all" || c.getAttribute("data-cat") === cat) ? "flex" : "none";
-        });
-      });
+(function() {
+// Simple micro-interaction for the Mars Rover Pathing Card
+  (function initRoverSimulation() {
+    const runBtn = document.getElementById('run-code-action');
+    const resetBtn = document.getElementById('reset-code-action');
+    const rover = document.getElementById('rover-sprite');
+    const statusPill = document.getElementById('sim-status');
+    const duelBtn = document.getElementById('quick-duel-btn');
+
+    if (!runBtn || !rover || !statusPill) return;
+
+    let isRunning = false;
+
+    runBtn.addEventListener('click', () => {
+      if (isRunning) return;
+      isRunning = true;
+      statusPill.textContent = 'COMPILING AST...';
+      statusPill.className = 'font-label-sm text-label-sm bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded-full font-bold animate-pulse';
+
+      setTimeout(() => {
+        statusPill.textContent = 'EXECUTING (4 UNITS)';
+        statusPill.className = 'font-label-sm text-label-sm bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full font-bold';
+        
+        // Translate rover forward and up towards target
+        rover.style.transform = 'translate(140px, -60px) rotate(45deg)';
+      }, 500);
+
+      setTimeout(() => {
+        statusPill.textContent = 'GOAL REACHED! +100 XP';
+        statusPill.className = 'font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full font-bold';
+        isRunning = false;
+      }, 1400);
     });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        rover.style.transform = 'translate(0px, 0px) rotate(0deg)';
+        statusPill.textContent = 'READY';
+        statusPill.className = 'font-label-sm text-label-sm bg-surface-container px-2 py-0.5 rounded-full text-on-surface-variant font-bold';
+        isRunning = false;
+      });
+    }
+
+    if (duelBtn) {
+      duelBtn.addEventListener('click', () => {
+        duelBtn.classList.add('bg-primary');
+        duelBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">hourglass_top</span><span>Searching...</span>';
+        setTimeout(() => {
+          duelBtn.classList.remove('bg-primary');
+          duelBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">swords</span><span>Duel</span>';
+        }, 2200);
+      });
+    }
+  })();
+})();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/80 backdrop-blur-xl shadow-[0_-1px_12px_rgba(0,0,0,0.04)]" data-active-classes="text-primary bg-primary-fixed/30"><div class="h-16 px-space-xs flex items-center justify-around"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT transition-transform active:scale-95 text-primary bg-primary-fixed/30" data-path="tracks-home" href="/"><span class="material-symbols-outlined text-[22px]">route</span><span class="font-label-sm text-label-sm mt-0.5">Tracks</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="courses" href="/courses/"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm mt-0.5">Courses</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="game-studio" href="/learn/python-core/print-syntax/"><span class="material-symbols-outlined text-[22px]">stadia_controller</span><span class="font-label-sm text-label-sm mt-0.5">Studio</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="arena" href="/games/"><span class="material-symbols-outlined text-[22px]">swords</span><span class="font-label-sm text-label-sm mt-0.5">Arena</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="profile-certificates" href="/certificates/"><span class="material-symbols-outlined text-[22px]">verified</span><span class="font-label-sm text-label-sm mt-0.5">Profile</span></a></div></nav>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function() {
+  // Global CTA Navigation & Stitch Interactivity Binder
+  const pathRoutes = {
+    "Start Coding Free": "/courses/",
+    "Run Quick Challenge": "/learn/python-core/print-syntax/",
+    "Start Free Micro-Lesson": "/learn/python-core/print-syntax/",
+    "Continue Level 27": "/learn/python-core/print-syntax/",
+    "Resume Micro-Tasks": "/games/",
+    "Unlock with 15 Badges": "/certificates/",
+    "Start Track": "/courses/",
+    "Enter Duel League": "/contests/",
+    "Resume Quest": "/learn/python-core/print-syntax/",
+    "View All": "/games/",
+    "Launch Game Arena": "/games/cyber-grid-rover/",
+    "Module 2": "/courses/",
+    "Continue": "/courses/python-core/",
+    "Resume": "/learn/javascript-core/const-let/",
+    "Begin Path": "/courses/react-core/",
+    "Enroll": "/courses/",
+    "Jump to Arena": "/games/",
+    "Resume Course": "/learn/python-core/print-syntax/",
+    "Queue Match": "/contests/",
+    "Earn +150 XP Now": "/learn/python-core/print-syntax/",
+    "Solve": "/learn/python-core/print-syntax/",
+    "Docs": "/about/"
+  };
+
+  document.addEventListener("click", function(e) {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.id || btn.hasAttribute("onclick") || btn.dataset.bound === "1") return;
+    const txt = (btn.innerText || "").replace(/\s+/g, " ").trim();
+    // Search shortcut button in landing navbar
+    if (txt.includes("⌘K") || txt.includes("Search")) {
+      window.location.href = "/courses/";
+      return;
+    }
+    // Track-specific card buttons in Desktop Catalog
+    const card = btn.closest(".group");
+    if (card) {
+      const h3 = card.querySelector("h3");
+      if (h3) {
+        const title = h3.innerText;
+        if (title.includes("Python")) { window.location.href = "/learn/python-core/print-syntax/"; return; }
+        if (title.includes("Modern JS")) { window.location.href = "/learn/javascript-core/const-let/"; return; }
+        if (title.includes("CSS3")) { window.location.href = "/games/flexbox-pond/"; return; }
+        if (title.includes("React")) { window.location.href = "/courses/react-core/"; return; }
+        if (title.includes("SQL")) { window.location.href = "/games/sql-detective/"; return; }
+        if (title.includes("C Memory")) { window.location.href = "/courses/c-lang-core/"; return; }
+      }
+    }
+    for (const [label, dest] of Object.entries(pathRoutes)) {
+      if (txt.includes(label)) {
+        window.location.href = dest;
+        return;
+      }
+    }
   });
+})();
 </script>
+
 {% endblock %}

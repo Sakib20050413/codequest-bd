@@ -1,414 +1,884 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ user.username }} — Student Command Center — CodeQuest BD{% endblock %}
+{% block title %}Certificates & Learner Progress — CodeQuest LMS{% endblock %}
 
-{% block content %}
-<div class="shell shell-wide" style="padding-top: 2.5rem; padding-bottom: 5rem;">
-  
-  <!-- Profile Command Header Card -->
-  <div class="cq-card" style="padding: 2.25rem; margin-bottom: 2rem; border: 1px solid var(--border-strong); background: radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.1), var(--bg-surface) 75%); position: relative; overflow: hidden;">
-    
-    <!-- Ambient subtle background glow -->
-    <div style="position: absolute; top: -50px; right: -50px; width: 220px; height: 220px; border-radius: 50%; background: var(--accent-subtle); filter: blur(50px); pointer-events: none;"></div>
-
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; position: relative; z-index: 1;">
-      
-      <!-- Avatar & Username Info -->
-      <div style="display: flex; align-items: center; gap: 1.35rem;">
-        <div style="width: 72px; height: 72px; border-radius: 50%; background: #0b0e17; border: 2.5px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; color: #38bdf8; font-family: var(--font-mono); box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);">
-          {{ user.username|make_list|first|upper }}
-        </div>
-        <div>
-          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem; margin-bottom: 0.25rem;">
-            <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.02em;">
-              {{ user.username }}
-            </h1>
-            <span id="rankBadge" style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent); background: var(--accent-subtle); padding: 0.2rem 0.65rem; border-radius: 999px; border: 1px solid rgba(99, 102, 241, 0.35); font-weight: 700;">
-              {% if profile.xp < 200 %}Junior Cadet (Lvl 1)
-              {% elif profile.xp < 500 %}Software Apprentice (Lvl 2)
-              {% elif profile.xp < 1000 %}Systems Specialist (Lvl 3)
-              {% elif profile.xp < 2000 %}Senior Architect (Lvl 4)
-              {% else %}Staff Engineer (Lvl 5){% endif %}
+{% block stitch_full_page %}
+<div class="hidden md:block">
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-7xl mx-auto px-5 xl:px-6 flex items-center justify-between gap-3"><a href="/" class="flex items-center gap-space-sm shrink-0 group cursor-pointer"><div class="w-9 h-9 rounded-DEFAULT bg-primary flex items-center justify-center shadow-[0_3px_0_0_#00422b]"><span class="material-symbols-outlined text-on-primary text-[20px]">auto_awesome</span></div><span class="font-headline-md text-headline-md text-on-surface tracking-tight ml-space-xs">CodeQuest</span><span class="px-space-sm py-space-xs rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase tracking-wide">LMS</span></a><nav class="hidden lg:flex items-center gap-1 shrink-0" data-active-classes="bg-surface-container-high text-on-surface font-bold rounded-full"><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="overview" href="/">Overview</a><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="lms-courses" href="/courses/">LMS Courses</a><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="gaming-arena" href="/games/">Gaming Arena</a><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="tasks-and-contests" href="/contests/">Tasks &amp; Contests</a><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md bg-surface-container-high text-on-surface font-bold transition-all" data-path="certificates" href="/certificates/">Certificates</a><a class="px-2.5 xl:px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="leaderboard" href="/contests/?tab=standings">Leaderboard</a></nav><div class="flex items-center gap-space-sm shrink-0"><div class="hidden sm:flex items-center gap-1.5 px-2.5 xl:px-3 py-space-xs whitespace-nowrap shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed"><span class="material-symbols-outlined text-[18px] text-secondary">local_fire_department</span><span class="font-label-md text-label-md">14 Days</span></div><div class="hidden md:flex items-center gap-1.5 px-2.5 xl:px-3 py-space-xs whitespace-nowrap shrink-0 rounded-full bg-surface-container-high text-on-surface"><span class="material-symbols-outlined text-[18px] text-secondary-container">bolt</span><span class="font-label-md text-label-md">4,850 XP</span></div><div class="hidden xl:flex items-center gap-1.5 px-2.5 xl:px-3 py-space-xs whitespace-nowrap shrink-0 rounded-full bg-surface-container-low text-on-surface-variant"><span class="material-symbols-outlined text-[18px] text-tertiary">timer</span><span class="font-label-md text-label-md">25/30m</span></div><div class="relative flex items-center shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-primary-container ring-2 ring-surface-container-lowest"></span></div></div></div></header><main class="w-full pt-20 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="max-w-7xl mx-auto w-full px-margin py-space-xl flex flex-col gap-space-xl">
+<!-- Top Greeting & Motivation Banner -->
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-r from-surface-container-high via-surface-container to-surface-variant p-space-xl shadow-sm">
+<div class="absolute -right-8 -top-8 w-64 h-64 rounded-full bg-primary-fixed/30 blur-2xl pointer-events-none"></div>
+<div class="absolute right-32 -bottom-10 w-48 h-48 rounded-full bg-secondary-fixed/40 blur-xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg">
+<div class="flex flex-col gap-space-xs max-w-2xl">
+<div class="flex items-center gap-space-sm">
+<span class="px-space-sm py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-wider shadow-sm">Active Learner • Tier Gold</span>
+<span class="flex items-center gap-1 font-label-md text-label-md text-primary font-bold">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-ping"></span>
+              Synchronized 2 mins ago
             </span>
-            <span style="font-size: 0.72rem; color: #10b981; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.15rem 0.55rem; border-radius: 999px; font-weight: 600;">
-              ● ACTIVE SESSION
-            </span>
-          </div>
-          <span style="font-size: 0.85rem; color: var(--text-muted);">
-            Member since {{ user.date_joined|date:"F Y" }} &bull; Bangladesh Developer Cohort
-          </span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">
+            Welcome back, <span class="text-primary underline decoration-primary-container decoration-wavy underline-offset-4">Alex!</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+            Keep your 14-day momentum alive. You are just 5 minutes away from locking in today’s streak bonus and unlocking your weekly bonus loot chest!
+          </p>
+</div>
+<div class="flex items-center gap-space-md shrink-0">
+<div class="flex items-center gap-space-md bg-surface-container-lowest/80 backdrop-blur-md p-space-md rounded-lg shadow-sm">
+<div class="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-on-primary text-[28px] font-headline-md shadow-inner">
+              AM
+            </div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Alex M. Chen</span>
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">verified</span>
+                CodeQuest Prodigy #8842
+              </span>
+</div>
+</div>
+<button class="hidden sm:inline-flex items-center gap-space-xs px-space-lg py-space-md rounded-full bg-primary text-on-primary font-label-lg text-label-lg shadow-[0_4px_0_0_#00422b] hover:shadow-[0_5px_0_0_#00422b] hover:-translate-y-0.5 active:translate-y-1 active:shadow-none transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">play_arrow</span>
+            Jump to Arena
+          </button>
+</div>
+</div>
+</div>
+<!-- 4 Retention Metric Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-gutter">
+<!-- Card 1: Streak -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-[0_3px_0_0_#dce9ff] flex flex-col justify-between hover:-translate-y-0.5 transition-all">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Current Streak</span>
+<div class="flex items-baseline gap-space-xs mt-1">
+<span class="font-headline-xl text-headline-xl text-on-surface font-extrabold tracking-tight">14</span>
+<span class="font-label-md text-label-md text-secondary font-bold">Days Active</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shadow-sm">
+<span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between border-t border-surface-container-high/60">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary">shield</span>
+<span class="font-label-sm text-label-sm text-on-surface font-bold">2 Shields</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-4 h-1.5 rounded-full bg-tertiary-container"></span>
+<span class="w-4 h-1.5 rounded-full bg-tertiary-container"></span>
+<span class="w-4 h-1.5 rounded-full bg-surface-container-highest"></span>
+</div>
+</div>
+</div>
+<!-- Card 2: Total XP & Level -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-[0_3px_0_0_#dce9ff] flex flex-col justify-between hover:-translate-y-0.5 transition-all">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Experience</span>
+<div class="flex items-baseline gap-space-xs mt-1">
+<span class="font-headline-xl text-headline-xl text-on-surface font-extrabold tracking-tight">4,850</span>
+<span class="font-label-md text-label-md text-primary font-bold">XP</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed shadow-sm">
+<span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex flex-col gap-1 border-t border-surface-container-high/60">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface font-bold">Lvl 12 Pathfinder</span>
+<span class="text-primary font-bold">82%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 82%"></div>
+</div>
+</div>
+</div>
+<!-- Card 3: Daily Target Ring & Progress -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-[0_3px_0_0_#dce9ff] flex flex-col justify-between hover:-translate-y-0.5 transition-all">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Daily Goal</span>
+<div class="flex items-baseline gap-space-xs mt-1">
+<span class="font-headline-xl text-headline-xl text-on-surface font-extrabold tracking-tight">25<span class="text-body-md text-on-surface-variant font-bold">/30m</span></span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-tertiary shadow-sm">
+<span class="material-symbols-outlined text-[24px]">timer</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex flex-col gap-1 border-t border-surface-container-high/60">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">5m remaining today</span>
+<span class="text-tertiary font-bold">83%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 83%"></div>
+</div>
+</div>
+</div>
+<!-- Card 4: Mastered Credentials -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-[0_3px_0_0_#dce9ff] flex flex-col justify-between hover:-translate-y-0.5 transition-all">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Credentials</span>
+<div class="flex items-baseline gap-space-xs mt-1">
+<span class="font-headline-xl text-headline-xl text-on-surface font-extrabold tracking-tight">1</span>
+<span class="font-label-md text-label-md text-primary font-bold">Earned</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-secondary-fixed/50 flex items-center justify-center text-secondary shadow-sm">
+<span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between border-t border-surface-container-high/60">
+<span class="font-label-sm text-label-sm text-on-surface font-bold truncate max-w-[140px]">Python 3 Master</span>
+<span class="px-space-xs py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-bold">Active</span>
+</div>
+</div>
+</div>
+<!-- Main Grid: Heatmap + Weekly Quests -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Consistency Heatmap (8 Cols) -->
+<div class="lg:col-span-8 flex flex-col p-space-xl rounded-xl bg-surface-container-lowest shadow-[0_3px_0_0_#dce9ff]">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-lg">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">calendar_month</span>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">30-Day Activity Habit Matrix</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Unbroken learning velocity &amp; daily challenge completions.</p>
+</div>
+<div class="flex items-center gap-2 px-space-md py-1 rounded-full bg-surface-container-low">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Intensity:</span>
+<div class="flex items-center gap-1">
+<span class="w-3 h-3 rounded-sm bg-surface-container-high"></span>
+<span class="w-3 h-3 rounded-sm bg-primary-fixed-dim"></span>
+<span class="w-3 h-3 rounded-sm bg-primary-container"></span>
+<span class="w-3 h-3 rounded-sm bg-primary"></span>
+</div>
+</div>
+</div>
+<!-- 30-Day Grid -->
+<div class="bg-surface-container-low/60 p-space-lg rounded-xl flex flex-col gap-space-md border border-surface-container-high/40">
+<div class="grid grid-cols-10 sm:grid-cols-15 gap-2 sm:gap-2.5 justify-items-center">
+<div class="w-8 h-8 rounded-DEFAULT bg-primary-container flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 1: 45m">1</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 2: 60m">2</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary-fixed-dim flex items-center justify-center font-label-sm text-label-sm text-on-primary-fixed hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 3: 20m">3</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-surface-container-high flex items-center justify-center font-label-sm text-label-sm text-outline hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 4: Rest">4</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 5: 50m">5</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary-container flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 6: 35m">6</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 7: 65m">7</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-tertiary-fixed flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-xs text-tertiary" title="Day 8: Shield Freeze Used">
+<span class="material-symbols-outlined text-[15px]">ac_unit</span>
+</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary-container flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 9: 40m">9</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 10: 55m">10</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 11: 45m">11</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary-fixed-dim flex items-center justify-center font-label-sm text-label-sm text-on-primary-fixed hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 12: 25m">12</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary-container flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 13: 35m">13</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 14: 70m">14</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 15: 45m">15</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary-container flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 16: 30m">16</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 17: 50m">17</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 18: 60m">18</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary-container flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 19: 35m">19</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 20: 80m">20</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 21: 45m">21</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary-container flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 22: 30m">22</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 23: 55m">23</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 24: 40m">24</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary-container flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 25: 35m">25</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 26: 50m">26</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 27: 60m">27</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary-fixed-dim flex items-center justify-center font-label-sm text-label-sm text-on-primary-fixed hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 28: 25m">28</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-primary flex items-center justify-center font-label-sm text-label-sm text-on-primary hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Day 29: 45m">29</div>
+<div class="w-8 h-8 rounded-DEFAULT bg-secondary-container flex items-center justify-center text-on-secondary-container ring-2 ring-secondary-fixed hover:scale-110 transition-transform cursor-pointer shadow-xs" title="Today: 25m (Active)">
+<span class="material-symbols-outlined text-[17px] animate-pulse">local_fire_department</span>
+</div>
+</div>
+<!-- Matrix Footer Info -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs border-t border-surface-container-high/40">
+<div class="flex items-center gap-space-md text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-primary"></span>28 Active</span>
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed"></span>1 Shielded</span>
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-surface-container-high"></span>1 Rest</span>
+</div>
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-primary font-bold">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>93.3% Consistency Score</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Weekly Quests (4 Cols) -->
+<div class="lg:col-span-4 flex flex-col p-space-xl rounded-xl bg-surface-container-lowest shadow-[0_3px_0_0_#dce9ff]">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[22px]">flag</span>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Weekly Quests</h2>
+</div>
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold">2d left</span>
+</div>
+<div class="flex flex-col gap-space-sm">
+<!-- Quest 1 -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface text-[15px]">Asteroid Boss Arena</span>
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold">+100 XP</span>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>Boss Fights</span>
+<span class="font-bold text-on-surface">2 / 3</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 66%"></div>
+</div>
+</div>
+<!-- Quest 2 -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface text-[15px]">5 Tasks Without Hints</span>
+<span class="px-space-xs py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-bold">Completed</span>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>Pure Algorithms</span>
+<span class="font-bold text-primary">5 / 5 Done!</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<!-- Quest 3 -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface text-[15px]">Daily Goal 5 Days Streak</span>
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold">+200 XP</span>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>Focus Target</span>
+<span class="font-bold text-on-surface">4 / 5</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Exam-Gated Verifiable Certificate Showcase -->
+<div class="flex flex-col gap-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-space-xs">
+<div>
+<span class="px-space-sm py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase tracking-wide">Cryptographically Verifiable</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">Exam-Gated Engineering Credentials</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Industry-recognized diplomas automatically issued upon 100% curriculum completion and capstone exam validation.</p>
+</div>
+<div class="flex items-center gap-space-xs text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">lock_reset</span>
+          Blockchain Audit Trail Active
         </div>
-      </div>
+</div>
+<!-- Hero Certificate Display Card -->
+<div class="p-space-xl rounded-xl bg-surface-container-lowest shadow-[0_4px_0_0_#dce9ff] flex flex-col lg:flex-row gap-space-xl items-stretch">
+<!-- Physical Certificate Canvas Mockup -->
+<div class="lg:w-7/12 relative rounded-lg p-space-xl bg-gradient-to-br from-surface-container-lowest via-surface-bright to-surface-container-low shadow-md overflow-hidden flex flex-col justify-between min-h-[380px]">
+<!-- Ornate Inner Frame Accents -->
+<div class="absolute inset-2 rounded-lg pointer-events-none bg-gradient-to-b from-transparent via-primary/5 to-transparent"></div>
+<!-- Watermark Code Quest Shield -->
+<div class="absolute right-6 -bottom-10 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[240px]">workspace_premium</span>
+</div>
+<!-- Certificate Header -->
+<div class="relative z-10 flex items-start justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[22px]">terminal</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">CodeQuest LMS</span>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest mt-1">Foundational Engineering Academy</span>
+</div>
+</div>
+<!-- Gold Foil Seal Badge -->
+<div class="relative flex flex-col items-center justify-center w-16 h-16 rounded-full bg-secondary-fixed text-on-secondary-fixed shadow-[0_3px_0_0_#855300]">
+<span class="material-symbols-outlined text-[26px] text-secondary" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-label-sm text-label-sm text-[9px] uppercase tracking-tighter text-secondary font-black">Verified</span>
+</div>
+</div>
+<!-- Certificate Central Credential Text -->
+<div class="relative z-10 my-space-lg flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">This officially certifies that</span>
+<h3 class="font-headline-xl text-headline-xl text-on-surface font-black mt-space-xs tracking-tight">Alex M. Chen</h3>
+<div class="w-24 h-1 bg-primary-container rounded-full my-space-xs"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">has successfully satisfied all rigor standards and capstone assessments for</span>
+<h4 class="font-headline-md text-headline-md text-primary mt-space-xs max-w-md">Python 3 Algorithms &amp; Autonomous Simulation Architecture</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-lg mt-space-sm bg-surface-container-high/50 p-space-xs rounded-DEFAULT">
+              Passed Capstone Automated Judge with 98.4% Score • 34 Arena Levels Solved • 100% Micro-Lessons Completed
+            </p>
+</div>
+<!-- Certificate Footer Meta & QR Signature -->
+<div class="relative z-10 flex items-end justify-between pt-space-md bg-surface-container-low/50 rounded-DEFAULT p-space-sm">
+<div class="flex flex-col gap-0.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider text-[10px]">Credential ID</span>
+<span class="font-label-md text-label-md text-on-surface font-mono font-bold">CQ-LMS-2026-8842-PY</span>
+<span class="font-label-sm text-label-sm text-primary font-bold text-[10px]">Issued February 28, 2026</span>
+</div>
+<!-- Stylized QR Code Placeholder -->
+<div class="flex items-center gap-space-sm">
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-on-surface font-bold text-[11px]">Scan to Authenticate</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-[10px]">Public Ledger #9420</span>
+</div>
+<div class="w-12 h-12 bg-surface-container-lowest p-1 rounded-DEFAULT shadow-xs flex items-center justify-center">
+<!-- Inline SVG QR mockup -->
+<svg class="w-10 h-10 text-on-surface" fill="currentColor" viewbox="0 0 24 24">
+<path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm10-2h8v8h-8V2zm2 2v4h4V4h-4zM2 14h8v8H2v-8zm2 2v4h4v-4H4zm14 2h2v4h-2v-4zm-4-4h2v2h-2v-2zm2 2h2v2h-2v-2zm-2 2h2v2h-2v-2zm4-2h2v2h-2v-2zm2-2h-2v-2h2v2zm-2-2h-2v-2h2v2z"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<!-- Certificate Control & Verification Details (Right 5 Cols) -->
+<div class="lg:w-5/12 flex flex-col justify-between gap-space-lg">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center gap-space-xs text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+<span>Status: Publicly Verified &amp; Permanent</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Verified Certificate of Engineering Mastery</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              Your credentials are cryptographically anchored. Share with hiring partners, recruiters, or link directly to your public developer portfolio.
+            </p>
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-space-xs">
+<div class="flex items-center justify-between text-on-surface font-label-md text-label-md">
+<span class="text-on-surface-variant">Recipient:</span>
+<span class="font-bold">Alex M. Chen</span>
+</div>
+<div class="flex items-center justify-between text-on-surface font-label-md text-label-md">
+<span class="text-on-surface-variant">Exam Score:</span>
+<span class="font-bold text-primary">98.4% (Top 1.2% Worldwide)</span>
+</div>
+<div class="flex items-center justify-between text-on-surface font-label-md text-label-md">
+<span class="text-on-surface-variant">Skills Validated:</span>
+<span class="font-bold">Trees, Graphs, Dynamic Prog.</span>
+</div>
+</div>
+<!-- Public Verification URL Input Box -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Public Verification URL</label>
+<div class="flex items-center gap-space-xs bg-surface-container-high/50 p-space-xs rounded-full">
+<span class="font-label-sm text-label-sm text-on-surface-variant px-space-sm truncate">https://codequest.dev/verify/CQ-LMS-2026-8842-PY</span>
+<button class="shrink-0 px-space-md py-space-xs rounded-full bg-surface-container-lowest text-primary hover:bg-primary hover:text-on-primary font-label-sm text-label-sm transition-all shadow-xs cursor-pointer" onclick="copyVerifyUrl(this)">
+                  Copy URL
+                </button>
+</div>
+</div>
+</div>
+<!-- Action Push Buttons -->
+<div class="flex flex-col sm:flex-row gap-space-sm pt-space-sm">
+<button class="flex-1 flex items-center justify-center gap-space-xs px-space-lg py-space-md rounded-full bg-primary text-on-primary font-label-lg text-label-lg shadow-[0_4px_0_0_#00422b] hover:shadow-[0_5px_0_0_#00422b] hover:-translate-y-0.5 active:translate-y-1 active:shadow-none transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">download</span>
+              Download PDF
+            </button>
+<button class="flex-1 flex items-center justify-center gap-space-xs px-space-lg py-space-md rounded-full bg-surface-container-lowest text-tertiary font-label-lg text-label-lg shadow-[0_4px_0_0_#c9e6ff] hover:shadow-[0_5px_0_0_#c9e6ff] hover:-translate-y-0.5 active:translate-y-1 active:shadow-none transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">share</span>
+              Add to LinkedIn
+            </button>
+</div>
+</div>
+</div>
+<!-- Locked / In-Progress Certificate Queue -->
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Certificates in Progress (Exam-Gated Queue)</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Complete remaining levels to schedule capstone</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Locked Track 1: CSS3 Flexbox & Grid -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-[0_3px_0_0_#dce9ff] flex flex-col justify-between gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[26px]">view_quilt</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">CSS3 Modern Layouts &amp; Responsive UI</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Track 2 of 4</span>
+</div>
+</div>
+<span class="px-space-sm py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm">72% Completed</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Progress to Capstone Exam</span>
+<span class="text-primary font-bold">18 / 25 Modules Solved</span>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full transition-all" style="width: 72%"></div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">lock</span>
+                Exam Unlocks at 100%
+              </span>
+<button class="px-space-md py-space-xs rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm hover:bg-surface-container-highest transition-all cursor-pointer">
+                Resume Course
+              </button>
+</div>
+</div>
+<!-- Locked Track 2: JavaScript ES6+ Modern Architecture -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-[0_3px_0_0_#dce9ff] flex flex-col justify-between gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[26px]">javascript</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">JavaScript ES6+ Deep Execution Engines</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Track 3 of 4</span>
+</div>
+</div>
+<span class="px-space-sm py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm">18% Completed</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Progress to Capstone Exam</span>
+<span class="text-on-surface font-bold">6 / 32 Modules Solved</span>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full transition-all" style="width: 18%"></div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">lock</span>
+                Exam Unlocks at 100%
+              </span>
+<button class="px-space-md py-space-xs rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm hover:bg-surface-container-highest transition-all cursor-pointer">
+                Resume Course
+              </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+(function() {
+function setDailyGoal(minutes, btn) {
+    document.querySelectorAll('.goal-pill').forEach(b => {
+      b.classList.remove('bg-surface-container-lowest', 'text-tertiary', 'font-bold', 'shadow-sm');
+      b.classList.add('text-on-surface-variant');
+    });
+    btn.classList.add('bg-surface-container-lowest', 'text-tertiary', 'font-bold', 'shadow-sm');
+    btn.classList.remove('text-on-surface-variant');
 
-      <!-- Quick Action Cluster -->
-      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-        <button id="syncStorageBtn" class="btn btn-ghost" style="font-size: 0.82rem; padding: 0.5rem 1rem;">
-          🔄 Sync Local Progress
-        </button>
-        <a href="{% url 'catalogue' %}" class="btn btn-primary" style="font-size: 0.82rem; padding: 0.5rem 1.1rem;">
-          Resume Courses &rarr;
-        </a>
-      </div>
-    </div>
-
-    <!-- Level Progression Bar -->
-    <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); position: relative; z-index: 1;">
-      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; margin-bottom: 0.5rem;">
-        <span style="font-weight: 600; color: var(--text-primary);">XP Milestone Progression</span>
-        <span style="font-family: var(--font-mono); color: var(--accent); font-weight: 700;">{{ profile.xp }} Total XP</span>
-      </div>
-      <div style="height: 8px; background: var(--bg-input); border-radius: 999px; overflow: hidden; border: 1px solid var(--border-subtle);">
-        {% widthratio profile.xp 1000 100 as xp_pct %}
-        <div style="width: {% if xp_pct > 100 %}100{% else %}{{ xp_pct|default:'5' }}{% endif %}%; height: 100%; background: linear-gradient(90deg, #6366f1, #38bdf8); border-radius: 999px; transition: width 0.6s ease;"></div>
-      </div>
-    </div>
-
-    <!-- Quick Telemetry Stats Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; position: relative; z-index: 1;">
-      
-      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle);">
-        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Total Earned XP</div>
-        <div style="font-size: 1.75rem; font-weight: 800; color: #38bdf8; margin-top: 0.25rem; font-family: var(--font-mono);">⚡ {{ profile.xp }}</div>
-      </div>
-
-      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle);">
-        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Active Streak</div>
-        <div style="font-size: 1.75rem; font-weight: 800; color: #f59e0b; margin-top: 0.25rem; font-family: var(--font-mono);">🔥 {{ profile.streak }}d</div>
-      </div>
-
-      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle);">
-        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Completed Lessons</div>
-        <div style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem; font-family: var(--font-mono);">📚 {{ progress_list|length }}</div>
-      </div>
-
-      <div class="cq-card" style="padding: 1rem 1.25rem; background: var(--bg-panel); border: 1px solid var(--border-subtle);">
-        <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Earned Badges</div>
-        <div style="font-size: 1.75rem; font-weight: 800; color: #10b981; margin-top: 0.25rem; font-family: var(--font-mono);">🏆 {{ badges|length }}</div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Weekly Habit & Retention Mechanics Banner (Point 21) -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+    const currentMins = 25;
+    const pct = Math.min(100, Math.round((currentMins / minutes) * 100));
+    const bar = document.getElementById('goal-progress-bar');
+    const text = document.getElementById('goal-progress-text');
     
-    <!-- 7-Day Consistency Tracker -->
-    <div class="cq-card" style="padding: 1.5rem; border: 1px solid var(--border-strong);">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <div>
-          <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--accent); letter-spacing: 0.05em;">Consistency Calendar</div>
-          <div style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary);">7-Day Practice Streak</div>
-        </div>
-        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: #f59e0b; background: rgba(245, 158, 11, 0.12); padding: 0.2rem 0.55rem; border-radius: 999px;">
-          🔥 {{ profile.streak }} DAYS STRONG
+    if (bar && text) {
+      bar.style.width = pct + '%';
+      text.innerText = `${currentMins} / ${minutes} mins (${pct}%)`;
+    }
+  }
+
+  function copyVerifyUrl(button) {
+    navigator.clipboard.writeText("https://codequest.dev/verify/CQ-LMS-2026-8842-PY");
+    const originalText = button.innerText;
+    button.innerText = "Copied!";
+    button.classList.add('bg-primary-container', 'text-on-primary-container');
+    setTimeout(() => {
+      button.innerText = originalText;
+      button.classList.remove('bg-primary-container', 'text-on-primary-container');
+    }, 2000);
+  }
+  window.copyVerifyUrl = copyVerifyUrl;
+})();
+</script></main><footer class="w-full bg-surface-container-low mt-space-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="max-w-7xl mx-auto px-margin py-space-xl"><div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-space-xl"><div class="flex flex-col gap-space-sm"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface">CodeQuest</span><span class="px-space-xs py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm">LMS</span></div><p class="font-body-sm text-body-sm text-on-surface-variant">The joyful, gamified computer science and software development mastery platform.</p><div class="flex items-center gap-space-xs mt-space-xs px-space-sm py-space-xs rounded-full bg-surface-container-high w-fit"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface">All Systems Cheerful &amp; Operational</span></div></div><div class="flex flex-col gap-space-xs"><span class="font-label-lg text-label-lg text-on-surface mb-space-xs">Learning Paths</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/courses/">Full-Stack Web Arena</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/games/">Data Structures &amp; Algorithms</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/playground/">Systems &amp; Rust Sprint</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/contests/">Cloud Native Quests</a></div><div class="flex flex-col gap-space-xs"><span class="font-label-lg text-label-lg text-on-surface mb-space-xs">Gamification &amp; Guilds</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/certificates/">Daily Quests &amp; Streaks</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/contests/?tab=standings">Global Leaderboards</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/contests/">Boss Fight Contests</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="/certificates/">Verified Certificates</a></div><div class="flex flex-col gap-space-sm"><span class="font-label-lg text-label-lg text-on-surface mb-space-xs">Preferences</span><div class="flex items-center justify-between p-space-sm rounded-DEFAULT bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px] text-tertiary">translate</span><span class="font-label-md text-label-md text-on-surface">Language</span></div><span class="font-label-sm text-label-sm text-tertiary font-bold">English (US)</span></div><div class="p-space-sm rounded-DEFAULT bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] flex items-center justify-between"><span class="font-label-md text-label-md text-on-surface-variant">Sound Effects</span><span class="material-symbols-outlined text-primary text-[20px]">volume_up</span></div></div></div><div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-lg text-on-surface-variant font-label-sm text-label-sm"><p>© 2025 CodeQuest LMS, Inc. Crafted with joy for future architects.</p><div class="flex items-center gap-space-lg"><a class="hover:text-on-surface transition-colors" href="/about/">Privacy Policy</a><a class="hover:text-on-surface transition-colors" href="/about/">Terms of Service</a><a class="hover:text-on-surface transition-colors" href="/about/">Community Guidelines</a></div></div></div></footer>
+</div>
+
+<div class="block md:hidden">
+<header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-gutter flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs min-w-0"><div class="w-9 h-9 rounded-DEFAULT bg-primary-container text-on-primary flex items-center justify-center shadow-[0_3px_0_0_#006c49]"><span class="material-symbols-outlined text-[20px]">terminal</span></div><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">CodeQuest</span><span class="text-[9px] font-label-sm uppercase tracking-wider text-primary font-bold -mt-1">LMS</span></div></div><div class="flex items-center gap-space-xs"><div class="flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed px-2.5 py-1 rounded-full shadow-[0_2px_0_0_#fea619]"><span class="material-symbols-outlined text-[16px] text-secondary">local_fire_department</span><span class="font-label-sm text-label-sm font-bold text-on-secondary-fixed">12</span></div><div class="flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed px-2.5 py-1 rounded-full shadow-[0_2px_0_0_#23acf1]"><span class="material-symbols-outlined text-[15px] text-tertiary">bolt</span><span class="font-label-sm text-label-sm font-bold text-on-tertiary-fixed">2.4k</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-margin pb-6 gap-y-4">
+<!-- Top Welcome & Daily Momentum Card -->
+<section class="w-full bg-surface-container-lowest rounded-lg p-space-md shadow-sm relative overflow-hidden">
+<div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-primary-fixed/20 pointer-events-none blur-2xl"></div>
+<div class="flex items-center justify-between mb-space-sm relative z-10">
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">Welcome back, Alex!</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+          Ready to shatter your code targets today?
         </span>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; gap: 0.5rem; text-align: center;">
-        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">MON</div>
-          <div style="font-size: 1.1rem; margin-top: 0.35rem;">✓</div>
+</div>
+<div class="w-12 h-12 rounded-DEFAULT bg-surface-container-low flex items-center justify-center shrink-0 shadow-sm">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Stylized 3D render avatar of a young energetic tech engineer wearing neon green cyber goggles, friendly smile, clean minimalist lighting on soft mint backdrop" src="/static/img/stitch/asset_12.jpg"/>
+</div>
+</div>
+<!-- Quick Metric Badges Bento Row -->
+<div class="grid grid-cols-3 gap-space-xs pt-space-xs relative z-10">
+<div class="flex flex-col items-center justify-center bg-secondary-fixed/40 rounded-DEFAULT py-2 px-1 text-center">
+<div class="flex items-center gap-0.5 text-secondary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-secondary-fixed">14d</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-secondary-fixed-variant uppercase">Streak</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-tertiary-fixed/40 rounded-DEFAULT py-2 px-1 text-center">
+<div class="flex items-center gap-0.5 text-tertiary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-tertiary-fixed">4,850</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-tertiary-fixed-variant uppercase">XP Points</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-fixed/40 rounded-DEFAULT py-2 px-1 text-center">
+<div class="flex items-center gap-0.5 text-primary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-primary-fixed">1 Cert</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-primary-fixed-variant uppercase">Earned</span>
+</div>
+</div>
+<!-- Daily Focus Micro Meter -->
+<div class="mt-3.5 bg-surface-container-low rounded-DEFAULT p-2.5 flex items-center justify-between gap-3">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-primary text-[20px]">timer</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface truncate">Daily Coding Goal</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant font-bold">25 <span class="font-body-sm text-body-sm font-normal text-on-surface-variant">/ 30 min</span></span>
+</div>
+</div>
+<div class="w-28 flex flex-col items-end gap-1">
+<div class="w-full bg-surface-container-highest rounded-full h-2 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full transition-all duration-500" style="width: 83%"></div>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">83% Done</span>
+</div>
+</div>
+</section>
+<!-- Habit Consistency Matrix Section -->
+<section class="w-full bg-surface-container-lowest rounded-lg p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Activity Habit Matrix</span>
+</div>
+<div class="flex items-center gap-1 bg-primary-fixed/30 text-primary px-2 py-0.5 rounded-full">
+<span class="font-label-sm text-label-sm font-bold">93.3% Rate</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant mb-2 px-0.5">
+<span class="font-label-sm text-label-sm">Last 30 Days Record</span>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1 font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container inline-block"></span> Active
         </div>
-        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">TUE</div>
-          <div style="font-size: 1.1rem; margin-top: 0.35rem;">✓</div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-secondary-container inline-block"></span> Shield
         </div>
-        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">WED</div>
-          <div style="font-size: 1.1rem; margin-top: 0.35rem;">✓</div>
-        </div>
-        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">THU</div>
-          <div style="font-size: 1.1rem; margin-top: 0.35rem;">✓</div>
-        </div>
-        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">FRI</div>
-          <div style="font-size: 1.1rem; margin-top: 0.35rem;">✓</div>
-        </div>
-        <div style="flex: 1; padding: 0.65rem 0.25rem; background: rgba(99, 102, 241, 0.15); border-radius: var(--radius-sm); border: 1px solid var(--accent);">
-          <div style="font-size: 0.68rem; color: var(--accent); font-weight: 700;">TODAY</div>
-          <div style="font-size: 1.1rem; margin-top: 0.35rem; color: var(--accent);">🔥</div>
-        </div>
-        <div style="flex: 1; padding: 0.65rem 0.25rem; background: var(--bg-panel); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); opacity: 0.5;">
-          <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600;">SUN</div>
-          <div style="font-size: 1.1rem; margin-top: 0.35rem;">—</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Daily Quests & Streak Freeze Protection -->
-    <div class="cq-card" style="padding: 1.5rem; border: 1px solid var(--border-strong);">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-        <div>
-          <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: #10b981; letter-spacing: 0.05em;">Daily Mission Directives</div>
-          <div style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary);">Today's Quests</div>
-        </div>
-        <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; background: rgba(56, 189, 248, 0.12); color: #38bdf8; padding: 0.2rem 0.55rem; border-radius: 999px; font-weight: 600;">
-          <span>🛡️</span> Streak Freeze Equipped
-        </div>
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
-        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; padding: 0.45rem 0.75rem; background: var(--bg-panel); border-radius: var(--radius-sm);">
-          <div style="display: flex; align-items: center; gap: 0.6rem;">
-            <input type="checkbox" id="quest1" checked disabled style="accent-color: var(--accent);" />
-            <label for="quest1" style="color: var(--text-primary); text-decoration: line-through; opacity: 0.7;">Complete 1 interactive lesson</label>
-          </div>
-          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #10b981; font-weight: 700;">+25 XP</span>
-        </div>
-
-        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; padding: 0.45rem 0.75rem; background: var(--bg-panel); border-radius: var(--radius-sm);">
-          <div style="display: flex; align-items: center; gap: 0.6rem;">
-            <input type="checkbox" id="quest2" style="accent-color: var(--accent);" />
-            <label for="quest2" style="color: var(--text-primary);">Play 1 game in the Practice Arena</label>
-          </div>
-          <a href="{% url 'games_hub' %}" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); font-weight: 700; text-decoration: none;">+30 XP &rarr;</a>
-        </div>
-
-        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; padding: 0.45rem 0.75rem; background: var(--bg-panel); border-radius: var(--radius-sm);">
-          <div style="display: flex; align-items: center; gap: 0.6rem;">
-            <input type="checkbox" id="quest3" checked disabled style="accent-color: var(--accent);" />
-            <label for="quest3" style="color: var(--text-primary); text-decoration: line-through; opacity: 0.7;">Preserve daily streak momentum</label>
-          </div>
-          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #10b981; font-weight: 700;">+15 XP</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Studio Dashboard 2-Column Grid -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 2rem; align-items: start;">
-    
-    <!-- Left Column: Skill Competency Radar & Practice Quicklaunch -->
-    <div style="display: flex; flex-direction: column; gap: 2rem;">
-      
-      <!-- Skill Mastery Telemetry -->
-      <section class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-strong);">
-        <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin-bottom: 1.25rem;">
-          Skill Competency Radar
-        </h2>
-        
-        <div style="display: flex; flex-direction: column; gap: 1.2rem;">
-          <!-- HTML5 Competency -->
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
-              <span style="font-weight: 600; color: #e34f26;">🌐 HTML5 Semantic Architecture</span>
-              <span style="font-family: var(--font-mono); color: var(--text-muted);">Active Track (85%)</span>
-            </div>
-            <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
-              <div style="width: 85%; height: 100%; background: #e34f26; border-radius: 999px;"></div>
-            </div>
-          </div>
-
-          <!-- CSS3 Competency -->
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
-              <span style="font-weight: 600; color: #0284c7;">🎨 CSS3 Modern Layouts &amp; Flexbox</span>
-              <span style="font-family: var(--font-mono); color: var(--text-muted);">Active Track (70%)</span>
-            </div>
-            <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
-              <div style="width: 70%; height: 100%; background: #0284c7; border-radius: 999px;"></div>
-            </div>
-          </div>
-
-          <!-- JavaScript Competency -->
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
-              <span style="font-weight: 600; color: #eab308;">⚡ JavaScript DOM &amp; State Loops</span>
-              <span style="font-family: var(--font-mono); color: var(--text-muted);">In Progress (50%)</span>
-            </div>
-            <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
-              <div style="width: 50%; height: 100%; background: #eab308; border-radius: 999px;"></div>
-            </div>
-          </div>
-
-          <!-- Python Competency -->
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
-              <span style="font-weight: 600; color: #10b981;">🐍 Python 3 Data &amp; Automation</span>
-              <span style="font-family: var(--font-mono); color: var(--text-muted);">Ready to Unlock (30%)</span>
-            </div>
-            <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
-              <div style="width: 30%; height: 100%; background: #10b981; border-radius: 999px;"></div>
-            </div>
-          </div>
-
-          <!-- SQL Competency -->
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem;">
-              <span style="font-weight: 600; color: #a855f7;">🗄️ SQL Relational Schema &amp; Joins</span>
-              <span style="font-family: var(--font-mono); color: var(--text-muted);">Ready to Unlock</span>
-            </div>
-            <div style="height: 6px; background: var(--bg-input); border-radius: 999px; overflow: hidden;">
-              <div style="width: 20%; height: 100%; background: #a855f7; border-radius: 999px;"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Practice Arena Recommendations -->
-      <section class="cq-card" style="padding: 1.75rem; background: var(--bg-panel); border: 1px solid var(--border-medium);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-          <h2 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin: 0;">
-            Next Practice Drills
-          </h2>
-          <a href="{% url 'games_hub' %}" style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--accent); text-decoration: none;">
-            View All Arena Games &rarr;
-          </a>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-          <a href="{% url 'game_play' 'code-typer' %}" class="cq-card cq-card-interactive" style="padding: 0.85rem 1.15rem; text-decoration: none; display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-              <span style="font-size: 1.4rem;">🏎️</span>
-              <div>
-                <div style="font-weight: 700; font-size: 0.88rem; color: var(--text-primary);">Code TypeRacer 3D</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Race vs Bot Turing &amp; Ada</div>
-              </div>
-            </div>
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); font-weight: 700;">+30 XP</span>
-          </a>
-
-          <a href="{% url 'game_play' 'rover-3d' %}" class="cq-card cq-card-interactive" style="padding: 0.85rem 1.15rem; text-decoration: none; display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-              <span style="font-size: 1.4rem;">🤖</span>
-              <div>
-                <div style="font-weight: 700; font-size: 0.88rem; color: var(--text-primary);">Cyber Rover 3D</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">WebGL Space Gem Explorer</div>
-              </div>
-            </div>
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); font-weight: 700;">+40 XP</span>
-          </a>
-
-          <a href="{% url 'game_play' 'flexbox-pond' %}" class="cq-card cq-card-interactive" style="padding: 0.85rem 1.15rem; text-decoration: none; display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-              <span style="font-size: 1.4rem;">🐸</span>
-              <div>
-                <div style="font-weight: 700; font-size: 0.88rem; color: var(--text-primary);">Flexbox Alignment Pond</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Master CSS layout axis</div>
-              </div>
-            </div>
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); font-weight: 700;">+25 XP</span>
-          </a>
-        </div>
-      </section>
-
-    </div>
-
-    <!-- Right Column: Achievements & Completed Lessons -->
-    <div style="display: flex; flex-direction: column; gap: 2rem;">
-      
-      <!-- Badges & Achievements Section -->
-      <section class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-strong);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-          <div>
-            <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin: 0;">
-              Achievements &amp; Badges
-            </h2>
-            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">Verified milestone credentials</div>
-          </div>
-          <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
-            {{ badges|length }} / {{ badges|length|add:available_badges|length }} unlocked
+</div>
+</div>
+<!-- 30-Day Grid (6 cols x 5 rows) -->
+<div class="grid grid-cols-6 gap-1.5 p-2 bg-surface-container-low rounded-DEFAULT">
+<div class="h-6 rounded-sm bg-primary-container/80 flex items-center justify-center text-on-primary font-label-sm text-[10px]">1</div>
+<div class="h-6 rounded-sm bg-primary-container/90 flex items-center justify-center text-on-primary font-label-sm text-[10px]">2</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">3</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">4</div>
+<div class="h-6 rounded-sm bg-secondary-container flex items-center justify-center text-on-secondary-container" title="Streak Freeze Shield">
+<span class="material-symbols-outlined text-[13px]">shield</span>
+</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">6</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">7</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">8</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">9</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">10</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">11</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">12</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">13</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">14</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">15</div>
+<div class="h-6 rounded-sm bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[13px]">shield</span>
+</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">17</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">18</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">19</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">20</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">21</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">22</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">23</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">24</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">25</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">26</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">27</div>
+<div class="h-6 rounded-sm bg-primary-container flex items-center justify-center text-on-primary font-label-sm text-[10px]">28</div>
+<div class="h-6 rounded-sm bg-surface-container-highest flex items-center justify-center text-on-surface-variant font-label-sm text-[10px]">29</div>
+<div class="h-6 rounded-sm bg-primary flex items-center justify-center text-on-primary font-label-sm text-[10px] shadow-sm">Today</div>
+</div>
+<div class="mt-2 text-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">28 days active of 30 • 2 Streak freezes applied</span>
+</div>
+</section>
+<!-- Weekly Quests Module -->
+<section class="w-full flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface">Weekly Quests</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">Ends in 2d 14h</span>
+</div>
+<!-- Quest 1 -->
+<div class="bg-surface-container-lowest p-3 rounded-lg shadow-sm flex items-center gap-3">
+<div class="w-10 h-10 rounded-DEFAULT bg-tertiary-fixed flex items-center justify-center text-tertiary shrink-0">
+<span class="material-symbols-outlined text-[22px]">sports_esports</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-lg text-label-lg text-on-surface truncate">Asteroid Boss Arena</span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">2 / 3</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5">
+<div class="bg-tertiary-container h-1.5 rounded-full" style="width: 66%"></div>
+</div>
+</div>
+</div>
+<!-- Quest 2 -->
+<div class="bg-surface-container-lowest p-3 rounded-lg shadow-sm flex items-center gap-3">
+<div class="w-10 h-10 rounded-DEFAULT bg-primary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-lg text-label-lg text-on-surface truncate">5 Tasks Without Hints</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">5 / 5 Done!</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5">
+<div class="bg-primary-container h-1.5 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+</div>
+<!-- Quest 3 -->
+<div class="bg-surface-container-lowest p-3 rounded-lg shadow-sm flex items-center gap-3">
+<div class="w-10 h-10 rounded-DEFAULT bg-secondary-fixed flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[22px]">flag</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-lg text-label-lg text-on-surface truncate">Daily Goal 5-Day Streak</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">4 / 5</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5">
+<div class="bg-secondary-container h-1.5 rounded-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Verifiable Engineering Credential Card -->
+<section class="w-full bg-surface-container-lowest rounded-lg p-space-md shadow-sm relative overflow-hidden flex flex-col gap-3.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Verifiable Credential</span>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant font-bold">Issued May 2026</span>
+</div>
+<!-- Certificate Aesthetic Canvas -->
+<div class="bg-surface-container-low rounded-DEFAULT p-space-md flex flex-col gap-3 relative shadow-inner">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">CodeQuest Academy</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface leading-tight mt-0.5">Alex M. Chen</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-snug">Python 3 Algorithms & Autonomous Simulation Architecture</span>
+</div>
+<!-- Official Seal Graphic Badge -->
+<div class="w-14 h-14 rounded-full bg-surface-container-lowest flex items-center justify-center shrink-0 shadow-sm relative">
+<div class="w-11 h-11 rounded-full bg-primary-fixed/50 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+</div>
+</div>
+<!-- QR Code & Credential Token Metadata -->
+<div class="flex items-center justify-between bg-surface-container-lowest rounded-DEFAULT p-2.5 gap-2">
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Credential Token ID</span>
+<span class="font-label-md text-label-md text-on-surface font-mono tracking-tight truncate select-all">CQ-LMS-2026-8842-PY</span>
+<span class="font-label-sm text-[10px] text-primary flex items-center gap-0.5 mt-0.5">
+<span class="material-symbols-outlined text-[12px]">lock</span> Cryptographically Anchored
           </span>
-        </div>
+</div>
+<!-- QR Placeholder -->
+<div class="w-14 h-14 bg-surface-container-highest rounded-DEFAULT p-1 shrink-0 flex items-center justify-center shadow-xs">
+<img class="w-full h-full object-contain" data-alt="High contrast clean digital QR code token square on crisp white backing with dark cyber green corner alignment targets" src="/static/img/stitch/asset_08.jpg"/>
+</div>
+</div>
+</div>
+<!-- Mobile Action Buttons -->
+<div class="grid grid-cols-2 gap-space-xs pt-1">
+<button class="w-full bg-primary-container text-on-primary py-2.5 px-3 rounded-full flex items-center justify-center gap-1.5 shadow-[0_3px_0_0_#006c49] active:translate-y-0.5 transition-transform" id="btnDownload">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span class="font-label-md text-label-md">Download PDF</span>
+</button>
+<button class="w-full bg-surface-container-highest text-tertiary py-2.5 px-3 rounded-full flex items-center justify-center gap-1.5 shadow-[0_3px_0_0_#89ceff] active:translate-y-0.5 transition-transform" id="btnShare">
+<span class="material-symbols-outlined text-[18px]">share</span>
+<span class="font-label-md text-label-md">Share LinkedIn</span>
+</button>
+</div>
+</section>
+<!-- In-Progress Certifications -->
+<section class="w-full flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface">Next Credentials in Queue</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold">2 Active</span>
+</div>
+<!-- Track 1: CSS3 Modern Layouts -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded-DEFAULT bg-tertiary-fixed flex items-center justify-center text-tertiary shrink-0">
+<span class="material-symbols-outlined text-[18px]">style</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface truncate">CSS3 Modern Layouts</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Grid, Subgrid & Container Queries</span>
+</div>
+</div>
+<span class="font-label-md text-label-md text-tertiary font-bold">72%</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-tertiary-container h-2 rounded-full transition-all duration-300" style="width: 72%"></div>
+</div>
+</div>
+<!-- Track 2: JS ES6+ -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-8 h-8 rounded-DEFAULT bg-secondary-fixed flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[18px]">javascript</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface truncate">JavaScript ES6+ Deep Dive</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Async/Await, Streams & V8 Engine</span>
+</div>
+</div>
+<span class="font-label-md text-label-md text-secondary font-bold">18%</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-secondary-container h-2 rounded-full transition-all duration-300" style="width: 18%"></div>
+</div>
+</div>
+</section>
+<!-- Interactive Feedback Toast (DOM dynamic) -->
+<div class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-4 py-2 rounded-full shadow-lg font-label-md text-label-md opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2 z-50" id="toastNotification">
+<span class="material-symbols-outlined text-primary-fixed text-[18px]">check_circle</span>
+<span id="toastMsg">Action completed!</span>
+</div>
+</div>
+<script>
+(function() {
+(function() {
+    const toast = document.getElementById('toastNotification');
+    const toastMsg = document.getElementById('toastMsg');
+    let timeoutId;
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.85rem;">
-          {% for badge in badges %}
-          <div class="cq-card" style="padding: 1rem; border-color: rgba(99, 102, 241, 0.4); background: var(--accent-subtle); text-align: center;">
-            <div style="font-size: 1.6rem; margin-bottom: 0.35rem;">{{ badge.icon|default:'🏆' }}</div>
-            <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.15rem;">{{ badge.name }}</div>
-            <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.35;">{{ badge.description }}</div>
-          </div>
-          {% endfor %}
+    function showToast(message) {
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = message;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none');
+        toast.classList.remove('opacity-100');
+      }, 2400);
+    }
 
-          {% for badge in available_badges %}
-          <div class="cq-card" style="padding: 1rem; opacity: 0.5; filter: grayscale(1); text-align: center; border-style: dashed;">
-            <div style="font-size: 1.6rem; margin-bottom: 0.35rem;">🔒</div>
-            <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.15rem;">{{ badge.name }}</div>
-            <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.35;">{{ badge.description }}</div>
-          </div>
-          {% endfor %}
-        </div>
-      </section>
+    const btnDownload = document.getElementById('btnDownload');
+    const btnShare = document.getElementById('btnShare');
 
-      <!-- Completed Lessons History -->
-      <section class="cq-card" style="padding: 1.75rem; border: 1px solid var(--border-strong);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-          <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; margin: 0;">
-            Completed Lessons History
-          </h2>
-          <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
-            {{ progress_list|length }} Completed
-          </span>
-        </div>
+    if (btnDownload) {
+      btnDownload.addEventListener('click', () => {
+        showToast('Official PDF certificate downloaded!');
+      });
+    }
 
-        <div style="display: flex; flex-direction: column; gap: 0.65rem; max-height: 380px; overflow-y: auto;">
-          {% for prog in progress_list %}
-          <div class="cq-card" style="padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; background: var(--bg-panel);">
-            <div>
-              <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--accent); margin-right: 0.4rem; font-weight: 600;">
-                {{ prog.lesson.course.language.name }}
-              </span>
-              <a href="{% url 'lesson_detail' prog.lesson.course.slug prog.lesson.slug %}" style="font-weight: 600; color: var(--text-primary); text-decoration: none; font-size: 0.88rem;">
-                {{ prog.lesson.title }}
-              </a>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-              <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">
-                {{ prog.completed_at|date:"M d, Y" }}
-              </span>
-              <a href="{% url 'lesson_detail' prog.lesson.course.slug prog.lesson.slug %}" class="btn btn-ghost" style="padding: 0.2rem 0.55rem; font-size: 0.75rem;">
-                Review &rarr;
-              </a>
-            </div>
-          </div>
-          {% empty %}
-          <div style="text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); font-size: 0.85rem; border: 1px dashed var(--border-subtle); border-radius: var(--radius-sm);">
-            <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">🚀</div>
-            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Ready to Begin Your First Mission?</div>
-            <p style="margin-bottom: 1rem;">Complete your first 3-minute micro-lesson in HTML, CSS or JS to start earning XP and rank up.</p>
-            <a href="{% url 'catalogue' %}" class="btn btn-primary" style="font-size: 0.82rem; padding: 0.45rem 1rem;">
-              Explore Curriculum &rarr;
-            </a>
-          </div>
-          {% endfor %}
-        </div>
-      </section>
-
-    </div>
-
-  </div>
-
+    if (btnShare) {
+      btnShare.addEventListener('click', () => {
+        showToast('Credential link copied for LinkedIn!');
+      });
+    }
+  })();
+})();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/80 backdrop-blur-xl shadow-[0_-1px_12px_rgba(0,0,0,0.04)]" data-active-classes="text-primary bg-primary-fixed/30"><div class="h-16 px-space-xs flex items-center justify-around"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="tracks-home" href="/"><span class="material-symbols-outlined text-[22px]">route</span><span class="font-label-sm text-label-sm mt-0.5">Tracks</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="courses" href="/courses/"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm mt-0.5">Courses</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="game-studio" href="/learn/python-core/print-syntax/"><span class="material-symbols-outlined text-[22px]">stadia_controller</span><span class="font-label-sm text-label-sm mt-0.5">Studio</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT text-on-surface-variant transition-transform active:scale-95" data-path="arena" href="/games/"><span class="material-symbols-outlined text-[22px]">swords</span><span class="font-label-sm text-label-sm mt-0.5">Arena</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] px-2 py-1 rounded-DEFAULT transition-transform active:scale-95 text-primary bg-primary-fixed/30" data-path="profile-certificates" href="/certificates/"><span class="material-symbols-outlined text-[22px]">verified</span><span class="font-label-sm text-label-sm mt-0.5">Profile</span></a></div></nav>
 </div>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
-  document.getElementById('syncStorageBtn')?.addEventListener('click', function () {
-    const btn = this;
-    btn.textContent = '⏳ Syncing...';
-    btn.disabled = true;
-    if (window.CodeQuest && window.CodeQuest.syncGuestProgress) {
-      window.CodeQuest.syncGuestProgress().then(function (res) {
-        if (res.ok) {
-          if (window.CodeQuest.fireConfetti) window.CodeQuest.fireConfetti();
-          btn.textContent = '✓ Synced!';
-          setTimeout(function () { location.reload(); }, 800);
-        } else {
-          btn.textContent = '🔄 Sync Local Progress';
-          btn.disabled = false;
-          alert('Sync response: ' + (res.error || 'No new local progress found.'));
-        }
-      }).catch(function (err) {
-        btn.textContent = '🔄 Sync Local Progress';
-        btn.disabled = false;
-        alert('Unable to sync progress right now.');
-      });
-    } else {
-      btn.disabled = false;
-      btn.textContent = '🔄 Sync Local Progress';
+(function() {
+  // Global CTA Navigation & Stitch Interactivity Binder
+  const pathRoutes = {
+    "Start Coding Free": "/courses/",
+    "Run Quick Challenge": "/learn/python-core/print-syntax/",
+    "Start Free Micro-Lesson": "/learn/python-core/print-syntax/",
+    "Continue Level 27": "/learn/python-core/print-syntax/",
+    "Resume Micro-Tasks": "/games/",
+    "Unlock with 15 Badges": "/certificates/",
+    "Start Track": "/courses/",
+    "Enter Duel League": "/contests/",
+    "Resume Quest": "/learn/python-core/print-syntax/",
+    "View All": "/games/",
+    "Launch Game Arena": "/games/cyber-grid-rover/",
+    "Module 2": "/courses/",
+    "Continue": "/courses/python-core/",
+    "Resume": "/learn/javascript-core/const-let/",
+    "Begin Path": "/courses/react-core/",
+    "Enroll": "/courses/",
+    "Jump to Arena": "/games/",
+    "Resume Course": "/learn/python-core/print-syntax/",
+    "Queue Match": "/contests/",
+    "Earn +150 XP Now": "/learn/python-core/print-syntax/",
+    "Solve": "/learn/python-core/print-syntax/",
+    "Docs": "/about/"
+  };
+
+  document.addEventListener("click", function(e) {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.id || btn.hasAttribute("onclick") || btn.dataset.bound === "1") return;
+    const txt = (btn.innerText || "").replace(/\s+/g, " ").trim();
+    // Search shortcut button in landing navbar
+    if (txt.includes("⌘K") || txt.includes("Search")) {
+      window.location.href = "/courses/";
+      return;
+    }
+    // Track-specific card buttons in Desktop Catalog
+    const card = btn.closest(".group");
+    if (card) {
+      const h3 = card.querySelector("h3");
+      if (h3) {
+        const title = h3.innerText;
+        if (title.includes("Python")) { window.location.href = "/learn/python-core/print-syntax/"; return; }
+        if (title.includes("Modern JS")) { window.location.href = "/learn/javascript-core/const-let/"; return; }
+        if (title.includes("CSS3")) { window.location.href = "/games/flexbox-pond/"; return; }
+        if (title.includes("React")) { window.location.href = "/courses/react-core/"; return; }
+        if (title.includes("SQL")) { window.location.href = "/games/sql-detective/"; return; }
+        if (title.includes("C Memory")) { window.location.href = "/courses/c-lang-core/"; return; }
+      }
+    }
+    for (const [label, dest] of Object.entries(pathRoutes)) {
+      if (txt.includes(label)) {
+        window.location.href = dest;
+        return;
+      }
     }
   });
+})();
 </script>
+
 {% endblock %}
